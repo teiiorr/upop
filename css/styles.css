@@ -56,7 +56,16 @@
 }
 
 * { box-sizing: border-box; }
-html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  /* clip the off-screen reveal transforms (translateX) so they never
+     open a sliver of horizontal scroll on mobile; `clip` (unlike hidden)
+     does not create a scroll container, so position:sticky keeps working */
+  overflow-x: clip;
+  /* keep anchor jumps from landing section headings under the sticky nav */
+  scroll-padding-top: calc(var(--nav-h) + 8px);
+}
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
 
 body {
