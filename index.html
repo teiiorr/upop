@@ -45,15 +45,6 @@
 <header class="nav" id="nav">
   <div class="nav__inner">
 
-    <a class="nav__brand" href="#top" aria-label="U POP TREND">
-      <img
-        src="logo-hero.png"
-        alt="U POP TREND"
-        width="234"
-        height="200"
-      />
-    </a>
-
     <button
       type="button"
       class="nav__burger"
@@ -69,7 +60,7 @@
 
   <div class="mobilemenu" id="mobileMenu" hidden>
 
-    <select class="langswitch-select mobile-lang" role="group" aria-label="Language">
+    <select class="langswitch-select" role="group" aria-label="Language">
       <option value="uz" selected>🇺🇿 UZ</option>
       <option value="ru">🇷🇺 RU</option>
       <option value="en">🇬🇧 EN</option>
@@ -111,32 +102,24 @@
   <div class="hero__grain" aria-hidden="true"></div>
 
   <div class="hero__inner">
-    
     <div class="hero__logo" data-animate>
       <img src="logo-hero.png" alt="U POP TREND" width="900" height="769" fetchpriority="high" />
     </div>
 
-    <!-- НОВЫЙ БЛОК: Группировка текста и кнопки -->
-    <div class="hero__text-group">
-      <h1 class="hero__title" id="hero-title" data-animate data-i18n-html="hero_title">
-        Qadriyatlarning <span class="hl">qayta yaralishi.</span>
-      </h1>
-
-      <p class="hero__sub" data-animate data-i18n="hero_sub">
-        Birinchi milliy iste'dodlar kastingi
-      </p>
-
-      <div class="hero__cta" data-animate>
-        <a href="#apply" class="btn btn--pop btn--lg" data-i18n="hero_cta">
-          Anketani to‘ldiring
-        </a>
-      </div>
+    <!-- Кнопка сразу после логотипа -->
+    <div class="hero__cta" data-animate>
+      <a href="#apply" class="btn btn--pop btn--lg" data-i18n="hero_cta">
+        Anketani to'ldiring
+      </a>
     </div>
-    <!-- Конец нового блока -->
 
-  </div>
+    <!-- Текст под кнопкой -->
+    <div class="hero__text-block" data-animate>
+      <p class="hero-line">Yoshingiz 15 dan 21 gacha!</p>
+      <p class="hero-line">Va siz jonli kuylay olasiz!</p>
+      <p class="hero-line">Demak, bu sizning sahnangiz!</p>
+    </div>
 </section>
-
 
   <!-- ============ WHO / CHANCE + STATS ============ -->
 
