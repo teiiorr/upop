@@ -47,7 +47,7 @@
 
     <a class="nav__brand" href="#top" aria-label="U POP TREND">
       <img
-        src="logo-nav.webp"
+        src="logo-hero.png"
         alt="U POP TREND"
         width="234"
         height="200"
@@ -159,71 +159,37 @@
 
 <main id="top">
 
-  <!-- ============ HERO ============ -->
+ <!-- ============ HERO ============ -->
+<section class="hero" aria-labelledby="hero-title">
+  <div class="hero__aura" aria-hidden="true"></div>
+  <div class="hero__grain" aria-hidden="true"></div>
 
-  <section
-    class="hero"
-    aria-labelledby="hero-title"
-  >
+  <div class="hero__inner">
+    
+    <div class="hero__logo" data-animate>
+      <img src="logo-hero.png" alt="U POP TREND" width="900" height="769" fetchpriority="high" />
+    </div>
 
-    <div
-      class="hero__aura"
-      aria-hidden="true"
-    ></div>
-
-    <div
-      class="hero__grain"
-      aria-hidden="true"
-    ></div>
-
-    <div class="hero__inner">
-
-      <div
-        class="hero__logo"
-        data-animate
-      >
-        <img
-          src="logo-hero.png"
-          alt="U POP TREND"
-          width="900"
-          height="769"
-          fetchpriority="high"
-        />
-      </div>
-
-      <h1
-        class="hero__title"
-        id="hero-title"
-        data-animate
-        data-i18n-html="hero_title"
-      >
-        Qadriyatlarning
-        <span class="hl">qayta yaralishi.</span>
+    <!-- НОВЫЙ БЛОК: Группировка текста и кнопки -->
+    <div class="hero__text-group">
+      <h1 class="hero__title" id="hero-title" data-animate data-i18n-html="hero_title">
+        Qadriyatlarning <span class="hl">qayta yaralishi.</span>
       </h1>
 
-      <p
-        class="hero__sub"
-        data-animate
-        data-i18n="hero_sub"
-      >
+      <p class="hero__sub" data-animate data-i18n="hero_sub">
         Birinchi milliy iste'dodlar kastingi
       </p>
 
-      <div
-        class="hero__cta"
-        data-animate
-      >
-        <a
-          href="#apply"
-          class="btn btn--pop btn--lg"
-          data-i18n="hero_cta"
-        >
+      <div class="hero__cta" data-animate>
+        <a href="#apply" class="btn btn--pop btn--lg" data-i18n="hero_cta">
           Anketani to‘ldiring
         </a>
       </div>
-
     </div>
-  </section>
+    <!-- Конец нового блока -->
+
+  </div>
+</section>
 
 
   <!-- ============ WHO / CHANCE + STATS ============ -->
@@ -1293,7 +1259,7 @@
       />
 
       <img
-        src="./blue.jpg"
+        src="./blue.png"
         alt="UPOP Trend"
         class="foot__logo foot__logo--blue"
       />
