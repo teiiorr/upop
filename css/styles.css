@@ -1061,7 +1061,52 @@ a { color: inherit; text-decoration: none; }
 }
 
 /* ============================================================
-   GOLDEN TEXT BLOCK UNDER HERO
+   HERO MOBILE STYLES
    ============================================================ */
-
 @media (max-width: 768px) {
+  .hero {
+    min-height: 100dvh;
+    padding: clamp(16px, 4vh, 32px) var(--pad) clamp(48px, 8vh, 84px);
+  }
+  
+  .hero-logo-img {
+    max-height: min(45vh, 400px);
+    max-width: min(85vw, 500px);
+  }
+  
+  .hero-title {
+    font-size: clamp(1.5rem, 5vw, 2.5rem);
+    margin-top: clamp(12px, 3vh, 20px);
+  }
+  
+  .hero__cta {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    margin-top: clamp(20px, 5vh, 32px);
+  }
+  
+  .hero__cta .btn--lg {
+    width: 100%;
+    max-width: 400px;
+    padding: 18px 32px;
+    font-size: 1.1rem;
+  }
+}
+
+/* Desktop: hide button in hero, show only in nav */
+@media (min-width: 769px) {
+  .hero__cta {
+    display: none;
+  }
+  
+  .hero-logo-img {
+    max-height: min(60vh, 650px);
+    max-width: min(75vw, 850px);
+  }
+  
+  .hero-title {
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    margin-top: clamp(20px, 4vh, 32px);
+  }
+}
