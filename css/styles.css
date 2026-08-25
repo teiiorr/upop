@@ -323,9 +323,30 @@ a { color: inherit; text-decoration: none; }
   text-shadow: 0 2px 8px rgba(201,162,90,.3);
 }
 
+/* Новый класс для текстового блока с тремя строками */
+.hero__text-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.hero-line {
+  position: relative; z-index: 1;
+  color: var(--gold);
+  font-size: clamp(1.3rem, 2.8vw, 1.8rem);
+  font-weight: 700;
+  margin: 0;
+  text-shadow: 0 2px 8px rgba(201,162,90,.3);
+  text-align: center;
+  line-height: 1.2;
+}
+
 .hero__cta { 
   position: relative; z-index: 1; 
-  margin-top: 0.5rem;
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
 }
 /* language switch — segmented with sliding thumb */
 .langswitch {
@@ -906,10 +927,6 @@ a { color: inherit; text-decoration: none; }
   .langswitch-select {
     font-size: 0.75rem;
     padding: 6px 28px 6px 10px;
-  }
-  .mobile-lang {
-    width: 100%;
-    margin-bottom: 12px;
   }
 }
 
