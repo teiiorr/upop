@@ -373,6 +373,11 @@ function applyLang(lang) {
     b.setAttribute("aria-pressed", on ? "true" : "false");
   });
 
+  // Update select dropdowns
+  document.querySelectorAll(".langswitch-select").forEach((select) => {
+    select.value = lang;
+  });
+
   moveThumb();
   localStorage.setItem(LS_KEY, lang);
 }
@@ -419,8 +424,16 @@ document.addEventListener("DOMContentLoaded", () => {
 /* ---------- language switch ---------- */
 
 function initLangSwitch() {
+  // Old button-based switch (keep for backward compatibility)
   document.querySelectorAll(".langswitch__btn").forEach((btn) => {
     btn.addEventListener("click", () => applyLang(btn.dataset.lang));
+  });
+
+  // New select dropdown switch
+  document.querySelectorAll(".langswitch-select").forEach((select) => {
+    select.addEventListener("change", (e) => {
+      applyLang(e.target.value);
+    });
   });
 
   moveThumb();

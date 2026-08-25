@@ -52,6 +52,12 @@
         width="234"
         height="200"
       />
+      <img
+        src="gidro.png"
+        alt="Gidro"
+        width="180"
+        height="150"
+      />
     </a>
 
     <nav class="nav__links" aria-label="Primary">
@@ -74,43 +80,18 @@
 
     <div class="nav__actions">
 
-      <div class="langswitch" role="group" aria-label="Language">
-        <button
-          type="button"
-          class="langswitch__btn"
-          data-lang="uz"
-          aria-pressed="true"
-        >
-          UZ
-        </button>
-
-        <button
-          type="button"
-          class="langswitch__btn"
-          data-lang="ru"
-          aria-pressed="false"
-        >
-          RU
-        </button>
-
-        <button
-          type="button"
-          class="langswitch__btn"
-          data-lang="en"
-          aria-pressed="false"
-        >
-          EN
-        </button>
-
-        <span class="langswitch__thumb" aria-hidden="true"></span>
-      </div>
+      <select class="langswitch-select" role="group" aria-label="Language">
+        <option value="uz" selected>🇺🇿 UZ</option>
+        <option value="ru">🇷🇺 RU</option>
+        <option value="en">🇬🇧 EN</option>
+      </select>
 
       <a
         href="#apply"
         class="btn btn--pop nav__cta"
         data-i18n="nav_apply"
       >
-        Anketani to‘ldiring
+        Anketani to'ldiring
       </a>
 
       <button
@@ -145,12 +126,18 @@
       Savollar
     </a>
 
+    <select class="langswitch-select mobile-lang" role="group" aria-label="Language">
+      <option value="uz" selected>🇺🇿 UZ</option>
+      <option value="ru">🇷🇺 RU</option>
+      <option value="en">🇬🇧 EN</option>
+    </select>
+
     <a
       href="#apply"
       class="btn btn--pop"
       data-i18n="nav_apply"
     >
-      Anketani to‘ldiring
+      Anketani to'ldiring
     </a>
 
   </div>
