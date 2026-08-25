@@ -108,6 +108,9 @@ const DICT = {
     success_title: `Anketa qabul qilindi`,
     success_text: `Tanlangan shahardagi kastingdan oldin siz bilan bog'lanamiz. Tafsilotlarni upoptrend.uz saytida kuzating.`,
 
+    golden_title: `HAQIQIY ISTEDODLARNI QIDIRAMIZ!`,
+    golden_subtitle: `Agar siz 15-21 yoshda bo'lsangiz va milliy madaniyatimizni chuqur bilsangiz - bu loyiha siz uchun!`,
+
     footer_details: `Barcha tafsilotlar — <a href="https://upoptrend.uz" target="_blank" rel="noopener">upoptrend.uz</a>`,
     footer_copy: `© 2026 UPOP TREND`,
     footer_credit: `Designed & Developed by teiior`,
@@ -216,6 +219,9 @@ const DICT = {
     success_title: `Анкета принята`,
     success_text: `Мы свяжемся с вами перед кастингом в выбранном городе. Следите за подробностями на upoptrend.uz.`,
 
+    golden_title: `ИЩЕМ НАСТОЯЩИЕ ТАЛАНТЫ!`,
+    golden_subtitle: `Если вам от 15 до 21 года и вы глубоко знаете нашу национальную культуру — этот проект для вас!`,
+
     footer_details: `Все подробности — <a href="https://upoptrend.uz" target="_blank" rel="noopener">upoptrend.uz</a>`,
     footer_copy: `© 2026 UPOP TREND`,
     footer_credit: `Designed & Developed by teiior`,
@@ -323,6 +329,9 @@ const DICT = {
 
     success_title: `Application received`,
     success_text: `We will contact you before the casting in your chosen city. Follow updates at upoptrend.uz.`,
+
+    golden_title: `WE ARE LOOKING FOR REAL TALENTS!`,
+    golden_subtitle: `If you are between 15 and 21 years old and deeply know our national culture - this project is for you!`,
 
     footer_details: `All details — <a href="https://upoptrend.uz" target="_blank" rel="noopener">upoptrend.uz</a>`,
     footer_copy: `© 2026 UPOP TREND`,
