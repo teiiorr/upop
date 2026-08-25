@@ -134,9 +134,18 @@ a { color: inherit; text-decoration: none; }
 
 
 #who-title .title-line {
-
   display: block;
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  line-height: 1.15;
+  margin-bottom: 0.3em;
+  font-weight: 800;
+}
 
+@media (max-width: 768px) {
+  #who-title .title-line {
+    font-size: clamp(1.4rem, 5vw, 2rem);
+    line-height: 1.2;
+  }
 }
 
 /* ---------- shared type ---------- */
