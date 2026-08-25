@@ -24,7 +24,6 @@ const DICT = {
     hero_scroll: `Pastga`,
 
 chance_title: `Yoshingiz <span class="hl">15 dan 21 gacha!</span><br>Va siz jonli kuylay olasiz!<br>Demak, bu sizning sahnangiz!`,
-    chance_text: `O'zbekiston tarixida ilk bor o'tkazilayotgan milliy kasting — tajriba, ma'lumot va tayyorgarlikdan qat'iy nazar — barcha uchun ochiq.`,
 
     stat1_num: `15–21`,
     stat1_label: `Ishtirokchilar yoshi`,
