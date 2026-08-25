@@ -363,21 +363,21 @@ a { color: inherit; text-decoration: none; }
 }
 
 .hero__inner { 
-  max-width: 900px; 
+  max-width: 1000px; 
   width: 100%; 
   display: flex; 
   flex-direction: column; 
   align-items: center; 
   justify-content: center;
-  gap: clamp(2rem, 5vh, 4rem);
+  gap: clamp(1.5rem, 3vh, 2.5rem);
   text-align: center;
 }
 
 .hero-title {
   font-family: var(--font-disp);
   font-weight: 800;
-  font-size: clamp(2.5rem, 6vw, 5rem);
-  line-height: 1.05;
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  line-height: 1.1;
   letter-spacing: -0.02em;
   margin: 0;
   color: var(--gold);
@@ -388,6 +388,7 @@ a { color: inherit; text-decoration: none; }
 .hero__cta { 
   position: relative; 
   z-index: 1;
+  margin-top: 0;
 }
 /* language switch — segmented with sliding thumb */
 .langswitch {
@@ -497,14 +498,20 @@ a { color: inherit; text-decoration: none; }
   line-height: 1.5;
 }
 
-.hero__logo { position: relative; z-index: 1; width: 100%; }
+.hero__logo { 
+  position: relative; 
+  z-index: 1; 
+  width: 100%; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
-.hero__logo img {
+.hero-logo-img {
   width: auto;
   height: auto;
-  /* Увеличиваем лимиты, чтобы логотип стал больше */
-  max-height: min(75vh, 800px); 
-  max-width: min(95vw, 1000px); 
+  max-height: min(55vh, 600px);
+  max-width: min(70vw, 800px);
   margin: 0 auto;
   filter:
     drop-shadow(0 24px 60px rgba(0,0,0,.55))
