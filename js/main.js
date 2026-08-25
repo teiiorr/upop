@@ -23,7 +23,7 @@ const DICT = {
     hero_cta: `Anketani to‘ldiring`,
     hero_scroll: `Pastga`,
 
-    chance_title: `Yoshingiz <span class="hl">15 dan 21 gacha!</span> Va siz jonli kuylay olasiz! Demak, bu sizning sahnangiz!`,
+chance_title: `Yoshingiz <span class="hl">15 dan 21 gacha!</span><br>Va siz jonli kuylay olasiz!<br>Demak, bu sizning sahnangiz!`,
     chance_text: `O'zbekiston tarixida ilk bor o'tkazilayotgan milliy kasting — tajriba, ma'lumot va tayyorgarlikdan qat'iy nazar — barcha uchun ochiq.`,
 
     stat1_num: `15–21`,
