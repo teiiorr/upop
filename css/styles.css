@@ -274,17 +274,6 @@ a { color: inherit; text-decoration: none; }
   height: 42px; 
   width: auto; 
 }
-.nav__links { 
-  display: flex; 
-  gap: clamp(14px, 2vw, 30px); 
-  margin-left: 24px;
-}
-
-.nav__actions { 
-  display: flex; 
-  align-items: center; 
-  gap: 16px;
-}
 
 /* ============================================================
    HERO (Исправление дыры и группировка)
@@ -909,6 +898,10 @@ a { color: inherit; text-decoration: none; }
     font-size: 0.75rem;
     padding: 6px 28px 6px 10px;
   }
+  .mobile-lang {
+    width: 100%;
+    margin-bottom: 12px;
+  }
 }
 
 
@@ -995,45 +988,5 @@ a { color: inherit; text-decoration: none; }
 /* ============================================================
    GOLDEN TEXT BLOCK UNDER HERO
    ============================================================ */
-.golden-text-container {
-  padding: clamp(30px, 5vw, 60px) var(--pad);
-  text-align: center;
-}
-
-.golden-text-block {
-  max-width: 900px;
-  margin: 0 auto;
-  padding: clamp(24px, 4vw, 40px) clamp(20px, 3vw, 32px);
-  background: linear-gradient(135deg, rgba(201, 162, 90, 0.08), rgba(201, 162, 90, 0.03));
-  border: 1px solid rgba(201, 162, 90, 0.2);
-  border-radius: 16px;
-  backdrop-filter: blur(8px);
-}
-
-.golden-title {
-  font-family: var(--font-disp);
-  font-size: clamp(24px, 4vw, 36px);
-  font-weight: 700;
-  color: var(--gold);
-  margin: 0 0 12px 0;
-  letter-spacing: 0.02em;
-  text-shadow: 0 2px 8px rgba(201, 162, 90, 0.3);
-}
-
-.golden-subtitle {
-  font-size: clamp(15px, 2.2vw, 18px);
-  color: var(--ivory);
-  margin: 0;
-  line-height: 1.6;
-  opacity: 0.9;
-}
 
 @media (max-width: 768px) {
-  .golden-text-container {
-    padding: 24px var(--pad);
-  }
-  
-  .golden-text-block {
-    padding: 20px 16px;
-  }
-}

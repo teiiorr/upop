@@ -54,55 +54,26 @@
       />
     </a>
 
-    <nav class="nav__links" aria-label="Primary">
-      <a href="#who" data-i18n="nav_who">
-        Kim qatnashadi
-      </a>
+    <button
+      type="button"
+      class="nav__burger"
+      aria-label="Menu"
+      aria-expanded="false"
+      aria-controls="mobileMenu"
+    >
+      <span></span>
+      <span></span>
+    </button>
 
-      <a href="#how" data-i18n="nav_how">
-        Bu qanday ishlaydi
-      </a>
-
-      <a href="#cities" data-i18n="nav_cities">
-        Shaharlar va sanalar
-      </a>
-
-      <a href="#faq" data-i18n="nav_faq">
-        Savollar
-      </a>
-    </nav>
-
-    <div class="nav__actions">
-
-      <select class="langswitch-select" role="group" aria-label="Language">
-        <option value="uz" selected>🇺🇿 UZ</option>
-        <option value="ru">🇷🇺 RU</option>
-        <option value="en">🇬🇧 EN</option>
-      </select>
-
-      <a
-        href="#apply"
-        class="btn btn--pop nav__cta"
-        data-i18n="nav_apply"
-      >
-        Anketani to'ldiring
-      </a>
-
-      <button
-        type="button"
-        class="nav__burger"
-        aria-label="Menu"
-        aria-expanded="false"
-        aria-controls="mobileMenu"
-      >
-        <span></span>
-        <span></span>
-      </button>
-
-    </div>
   </div>
 
   <div class="mobilemenu" id="mobileMenu" hidden>
+
+    <select class="langswitch-select mobile-lang" role="group" aria-label="Language">
+      <option value="uz" selected>🇺🇿 UZ</option>
+      <option value="ru">🇷🇺 RU</option>
+      <option value="en">🇬🇧 EN</option>
+    </select>
 
     <a href="#who" data-i18n="nav_who">
       Kim qatnashadi
@@ -131,15 +102,7 @@
   </div>
 </header>
 
-<!-- Golden Text Under Hero -->
-<div class="golden-text-container">
-  <div class="golden-text-block">
-    <h2 class="golden-title" data-i18n="golden_title">HAQIQIY ISTEDODLARNI QIDIRAMIZ!</h2>
-    <p class="golden-subtitle" data-i18n="golden_subtitle">Agar siz 15-21 yoshda bo'lsangiz va milliy madaniyatimizni chuqur bilsangiz - bu loyiha siz uchun!</p>
-  </div>
-</div>
-
-
+  
 <main id="top">
 
  <!-- ============ HERO ============ -->
