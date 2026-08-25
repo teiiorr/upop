@@ -134,7 +134,6 @@ chance_title: `Yoshingiz <span class="hl">15 dan 21 gacha!</span><br>Va siz jonl
     hero_scroll: `Листай вниз`,
 
     chance_title: `Вам <span class="hl">от 15 до 21 года!</span> И вы умеете петь вживую? Значит, это ваша сцена!`,
-    chance_text: `Впервые в истории Узбекистана проводится национальный кастинг, открытый для всех — независимо от опыта, образования и подготовки.`,
 
     stat1_num: `15–21`,
     stat1_label: `Возраст участников`,
@@ -245,7 +244,6 @@ chance_title: `Yoshingiz <span class="hl">15 dan 21 gacha!</span><br>Va siz jonl
     hero_scroll: `Scroll`,
 
     chance_title: `Are you <span class="hl">15 to 21 years old?</span> And can you sing live? Then this is your stage!`,
-    chance_text: `For the first time in the history of Uzbekistan, a national casting is being held and is open to everyone — regardless of experience, education or training.`,
 
     stat1_num: `15–21`,
     stat1_label: `Age of participants`,
