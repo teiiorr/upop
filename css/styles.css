@@ -173,23 +173,21 @@ a { color: inherit; text-decoration: none; }
   display: inline-flex; align-items: center; justify-content: center; gap: .55em;
   font-family: var(--font-sans);
   font-weight: 700; 
-  font-size: .95rem; /* Слегка уменьшенный шрифт */
+  font-size: 0.95rem;
   letter-spacing: .01em;
-  padding: .65em 1.3em; /* Уменьшенные отступы */
+  padding: 0.7em 1.4em;
   border: 0; 
-  /* Меняем форму с "пилюли" на стильный прямоугольник со скругленными углами */
-  border-radius: 12px; 
+  border-radius: 10px; 
   color: var(--ink); background: transparent;
   cursor: pointer; white-space: nowrap;
   transform: translateY(var(--tsy));
-  /* Добавляем плавность для border-radius на всякий случай */
   transition: transform .18s var(--e-quint), box-shadow .3s var(--e-quint), filter .3s ease, border-radius .3s ease;
   -webkit-tap-highlight-color: transparent;
 }
 
 .btn--lg { 
-  font-size: 1rem; 
-  padding: .75em 1.6em; /* Делаем большую кнопку тоже чуть компактнее */
+  font-size: 1.05rem; 
+  padding: 0.85em 1.8em;
 }
 .btn--block { width: 100%; }
 
@@ -199,7 +197,7 @@ a { color: inherit; text-decoration: none; }
   background: var(--pop-btn);
   background-size: 150% 150%;
   box-shadow: 0 4px 15px rgba(214,62,140,.4), inset 0 1px 0 rgba(255,255,255,.22);
-  overflow: hidden; /* Важно, чтобы блик не выходил за новые скругленные углы */
+  overflow: hidden;
 }
 
 /* Креативное неоновое свечение при наведении */
@@ -261,40 +259,51 @@ a { color: inherit; text-decoration: none; }
   margin: 0 auto;
   height: var(--nav-h); 
   padding: 0 var(--pad);
-  width: 100%; /* Занимаем всю доступную ширину */
+  width: 100%;
   display: flex; 
   align-items: center; 
-  justify-content: space-between; /* Расталкиваем элементы по краям */
+  justify-content: space-between;
 }
 
-.nav__brand { flex: 0 0 auto; display: flex; align-items: center; }
-.nav__brand img { height: 42px; width: auto; }
+.nav__brand { 
+  flex: 0 0 auto; 
+  display: flex; 
+  align-items: center;
+  gap: 12px; /* Space between logos */
+}
+.nav__brand img { 
+  height: 42px; 
+  width: auto; 
+}
+/* Second logo - gidro.png styling */
+.nav__brand img:last-child {
+  height: 36px;
+  margin-left: 8px;
+}
 
 .nav__links { 
   display: flex; 
   gap: clamp(14px, 2vw, 30px); 
-  margin-left: 12px; 
-  /* margin-right: auto; - удалено, так как работает space-between */
+  margin-left: 24px;
 }
 
 .nav__actions { 
   display: flex; 
   align-items: center; 
-  gap: 12px; 
-  /* margin-left: auto; - удалено */
+  gap: 16px;
 }
 
 /* ============================================================
    HERO (Исправление дыры и группировка)
    ============================================================ */
 .hero__inner { 
-  max-width: 900px; 
+  max-width: 1000px; 
   width: 100%; 
   display: flex; 
   flex-direction: column; 
   align-items: center; 
-  justify-content: center; /* Центрируем содержимое */
-  gap: 3rem; /* Жестко фиксируем расстояние между логотипом и текстом */
+  justify-content: center;
+  gap: 1.5rem; /* Уменьшенное расстояние между логотипом и текстом */
 }
 
 /* Новый класс для монолитного текстового блока */
@@ -302,28 +311,29 @@ a { color: inherit; text-decoration: none; }
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1.5rem; /* Равномерное расстояние между заголовками и кнопкой */
+  gap: 1rem; /* Компактное расстояние между элементами текста */
 }
 
 .hero__title {
   position: relative; z-index: 1;
   font-family: var(--font-disp); font-weight: 700;
-  font-size: clamp(1.5rem, 4.4vw, 2.7rem);
+  font-size: clamp(1.8rem, 5vw, 3.2rem); /* Увеличенный размер */
   line-height: 1.08; letter-spacing: -.02em;
-  margin: 0; /* Обнулено */
+  margin: 0;
   text-wrap: balance;
 }
 
 .hero__sub {
   position: relative; z-index: 1;
-  color: var(--ink-70); font-size: clamp(1rem, 1.8vw, 1.2rem);
+  color: var(--ink-70); font-size: clamp(1.1rem, 2vw, 1.4rem); /* Увеличенный размер */
   font-weight: 500;
-  margin: 0; /* Обнулено */
+  margin: 0;
+  max-width: 60ch; /* Более широкий текст */
 }
 
 .hero__cta { 
   position: relative; z-index: 1; 
-  margin-top: 0; /* Обнулено */
+  margin-top: 0.5rem;
 }
 /* language switch — segmented with sliding thumb */
 .langswitch {
@@ -344,6 +354,44 @@ a { color: inherit; text-decoration: none; }
   border-radius: 999px; background: var(--metal);
   box-shadow: 0 3px 10px -3px rgba(201,162,90,.6);
   transition: transform .34s var(--e-quint), width .34s var(--e-quint);
+}
+
+/* New language select dropdown */
+.langswitch-select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background: rgba(255,255,255,.05);
+  border: 1px solid var(--line-gold);
+  border-radius: 8px;
+  padding: 8px 32px 8px 12px;
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: var(--ink);
+  cursor: pointer;
+  transition: all 0.2s var(--e-quint);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23C9A25A' d='M1.5 4.5L6 9l4.5-4.5'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+}
+.langswitch-select:hover {
+  background-color: rgba(255,255,255,.08);
+  border-color: var(--gold);
+}
+.langswitch-select:focus {
+  outline: none;
+  border-color: var(--turquoise);
+  box-shadow: 0 0 0 2px rgba(24,184,201,.2);
+}
+.langswitch-select option {
+  background: var(--bg-2);
+  color: var(--ink);
+  padding: 8px 12px;
+}
+.mobile-lang {
+  width: 100%;
+  margin: 12px 0;
 }
 
 .nav__burger { display: none; }
@@ -372,7 +420,7 @@ a { color: inherit; text-decoration: none; }
   padding: clamp(8px, 2vh, 24px) var(--pad) clamp(48px, 8vh, 84px);
   overflow: hidden;
 }
-.hero__inner { max-width: 900px; width: 100%; display: flex; flex-direction: column; align-items: center; }
+.hero__inner { max-width: 1000px; width: 100%; display: flex; flex-direction: column; align-items: center; gap: 1.5rem; }
 
 .hero__aura {
   position: absolute; z-index: 0;
@@ -416,16 +464,17 @@ a { color: inherit; text-decoration: none; }
 .hero__title {
   position: relative; z-index: 1;
   font-family: var(--font-disp); font-weight: 700;
-  font-size: clamp(1.5rem, 4.4vw, 2.7rem);
+  font-size: clamp(1.8rem, 5vw, 3.2rem);
   line-height: 1.08; letter-spacing: -.02em;
-  margin: clamp(16px, 3.5vh, 34px) 0 0; text-wrap: balance;
+  margin: clamp(8px, 2vh, 16px) 0 0; text-wrap: balance;
 }
 .hero__sub {
   position: relative; z-index: 1;
-  color: var(--ink-70); font-size: clamp(1rem, 1.8vw, 1.2rem);
-  margin: .7rem 0 0; font-weight: 500;
+  color: var(--ink-70); font-size: clamp(1.1rem, 2vw, 1.4rem);
+  margin: .5rem 0 0; font-weight: 500;
+  max-width: 60ch;
 }
-.hero__cta { position: relative; z-index: 1; margin-top: clamp(22px, 4vh, 38px); }
+.hero__cta { position: relative; z-index: 1; margin-top: clamp(16px, 3vh, 28px); }
 
 .hero__scroll {
   position: absolute; bottom: clamp(16px, 3vh, 30px); left: 50%; translate: -50% 0;
@@ -850,6 +899,21 @@ a { color: inherit; text-decoration: none; }
   .stop:hover .stop__dot { transform: scale(1.35); }
   .stop__no { min-width: 2.4ch; }
   .stop__city { margin-right: auto; }
+  
+  /* Mobile nav improvements */
+  .nav__inner {
+    padding: 0 16px;
+  }
+  .nav__brand img:first-child {
+    height: 36px;
+  }
+  .nav__brand img:last-child {
+    height: 30px;
+  }
+  .langswitch-select {
+    font-size: 0.75rem;
+    padding: 6px 28px 6px 10px;
+  }
 }
 
 
