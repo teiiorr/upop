@@ -421,6 +421,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initAccordion();
   initMagnetic();
   initForm();
+  initNavIndicator();
 
   // Keep the language thumb aligned once webfonts settle / on resize.
   if (document.fonts && document.fonts.ready) {
@@ -738,6 +739,51 @@ function initAccordion() {
 }
 
 /* ---------- magnetic CTA (fine pointer, motion-on only) ---------- */
+
+function initNavIndicator() {
+  const nav = document.querySelector('.nav__desktop');
+  const indicator = document.querySelector('.nav__indicator');
+  const links = nav?.querySelectorAll('a');
+  
+  if (!nav || !indicator || !links.length) return;
+  
+  // Set initial position based on link widths
+  let currentOffset = 40; // starting padding-left
+  
+  links.forEach((link, index) => {
+    if (index > 0) {
+      currentOffset += 32; // gap between links
+    }
+    // Store offset for each link
+    link.dataset.offset = currentOffset;
+    currentOffset += link.offsetWidth;
+  });
+  
+  // Update offsets on resize
+  window.addEventListener('resize', debounce(() => {
+    let offset = 40;
+    links.forEach((link, index) => {
+      if (index > 0) offset += 32;
+      link.dataset.offset = offset;
+      offset += link.offsetWidth;
+    });
+  }, 150));
+  
+  // Move indicator on hover
+  links.forEach(link => {
+    link.addEventListener('mouseenter', () => {
+      const offset = link.dataset.offset;
+      indicator.style.setProperty('--link-offset', offset);
+      indicator.style.height = '24px';
+      indicator.style.opacity = '1';
+    });
+    
+    link.addEventListener('mouseleave', () => {
+      indicator.style.height = '0';
+      indicator.style.opacity = '0';
+    });
+  });
+}
 
 function initMagnetic() {
   if (
