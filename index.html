@@ -45,6 +45,39 @@
 <header class="nav" id="nav">
   <div class="nav__inner">
 
+    <!-- Desktop Logo -->
+    <a href="#top" class="nav__logo">
+      <img src="white.png" alt="U POP TREND" height="40" />
+      <img src="gidro.png" alt="" height="40" class="nav__gidro" />
+      <img src="blue.png" alt="" height="40" />
+    </a>
+
+    <!-- Desktop Navigation -->
+    <nav class="nav__desktop">
+      <a href="#who" data-i18n="nav_who">Kim qatnashadi</a>
+      <a href="#how" data-i18n="nav_how">Bu qanday ishlaydi</a>
+      <a href="#cities" data-i18n="nav_cities">Shaharlar va sanalar</a>
+      <a href="#faq" data-i18n="nav_faq">Savollar</a>
+    </nav>
+
+    <!-- Language Selector & CTA -->
+    <div class="nav__actions">
+      <select class="langswitch-select" role="group" aria-label="Language">
+        <option value="uz" selected>🇺🇿 UZ</option>
+        <option value="ru">🇷🇺 RU</option>
+        <option value="en">🇬🇧 EN</option>
+      </select>
+
+      <a
+        href="#apply"
+        class="btn btn--pop"
+        data-i18n="nav_apply"
+      >
+        Anketani to'ldiring
+      </a>
+    </div>
+
+    <!-- Mobile Burger -->
     <button
       type="button"
       class="nav__burger"
@@ -106,19 +139,23 @@
       <img src="logo-hero.png" alt="U POP TREND" width="900" height="769" fetchpriority="high" />
     </div>
 
-    <!-- Кнопка сразу после логотипа -->
+    <!-- Текст под логотипом на весь экран -->
+    <div class="hero__text-block" data-animate>
+      <h1 class="hero-title" data-i18n-html="hero_title">
+        HAQIQIY ISTEDODLARNI QIDIRAMIZ!
+      </h1>
+      <p class="hero-subtitle" data-i18n="hero_subtitle">
+        Agar siz 15-21 yoshda bo'lsangiz va milliy madaniyatimizni chuqur bilsangiz - bu loyiha siz uchun!
+      </p>
+    </div>
+
+    <!-- Кнопка после текста -->
     <div class="hero__cta" data-animate>
       <a href="#apply" class="btn btn--pop btn--lg" data-i18n="hero_cta">
         Anketani to'ldiring
       </a>
     </div>
-
-    <!-- Текст под кнопкой -->
-    <div class="hero__text-block" data-animate>
-      <p class="hero-line">Yoshingiz 15 dan 21 gacha!</p>
-      <p class="hero-line">Va siz jonli kuylay olasiz!</p>
-      <p class="hero-line">Demak, bu sizning sahnangiz!</p>
-    </div>
+  </div>
 </section>
 
   <!-- ============ WHO / CHANCE + STATS ============ -->
