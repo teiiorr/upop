@@ -839,363 +839,357 @@
 
   <!-- ============ APPLY / FORM ============ -->
 
-  <section
-    class="apply"
-    id="apply"
-    aria-labelledby="apply-title"
-  >
+  <!-- ============ APPLY / ANKETA WIZARD ============ -->
+  <section class="apply" id="apply" aria-labelledby="apply-title">
 
     <div class="apply__head">
-
-      <p
-        class="apply__kicker reveal"
-        data-i18n="form_kicker"
-      >
-        Sahnaga chiqishga tayyormisiz?
-      </p>
-
+      <p class="apply__kicker reveal" data-i18n="form_kicker">Sahnaga chiqishga tayyormisiz?</p>
     </div>
-
 
     <div class="card reveal">
-
-      <div
-        class="card__glow"
-        aria-hidden="true"
-      ></div>
-
-
-      <div
-        class="formwrap"
-        id="formwrap"
-      >
-
-        <h2
-          class="card__title"
-          id="apply-title"
-          data-i18n="form_card_title"
-        >
-          Anketani to‘ldiring
-        </h2>
-
-        <p
-          class="card__sub"
-          data-i18n="form_sub"
-        >
-          Anketani to‘ldiring — biz sizga aniq vaqt va manzilni yuboramiz.
-        </p>
-
-
-        <form
-          class="form"
-          id="castingForm"
-          novalidate
-        >
-
-
-          <!-- NAME -->
-
-          <div class="field">
-
-            <label
-              for="f-name"
-              data-i18n="label_name"
-            >
-              Ism va familiya
-            </label>
-
-            <input
-              id="f-name"
-              name="name"
-              type="text"
-              autocomplete="name"
-              data-i18n-ph="ph_name"
-              placeholder="Ismingiz nima?"
-              required
-            />
-
-            <span
-              class="field__err"
-              data-err="name"
-              data-i18n="err_name"
-              hidden
-            >
-              Ismingizni kiriting
-            </span>
-
-          </div>
-
-
-          <!-- AGE + CITY -->
-
-          <div class="field-row">
-
-            <div class="field">
-
-              <label
-                for="f-age"
-                data-i18n="label_age"
-              >
-                Yosh
-              </label>
-
-              <input
-                id="f-age"
-                name="age"
-                type="number"
-                inputmode="numeric"
-                min="15"
-                max="21"
-                data-i18n-ph="ph_age"
-                placeholder="Yoshingiz"
-                required
-              />
-
-              <span
-                class="field__err"
-                data-err="age"
-                data-i18n="err_age"
-                hidden
-              >
-                Yosh 15–21 oralig'ida bo'lishi kerak
-              </span>
-
-            </div>
-
-
-            <div class="field">
-
-              <label
-                for="f-city"
-                data-i18n="label_city"
-              >
-                Kasting shahri
-              </label>
-
-              <select
-                id="f-city"
-                name="city"
-                required
-              >
-
-                <option
-                  value=""
-                  data-i18n="city_ph"
-                >
-                  Shaharni tanlang
-                </option>
-
-                <option
-                  value="fargona"
-                  data-i18n="city1_name"
-                >
-                  Farg'ona
-                </option>
-
-                <option
-                  value="xorazm"
-                  data-i18n="city2_name"
-                >
-                  Xorazm
-                </option>
-
-                <option
-                  value="buxoro"
-                  data-i18n="city3_name"
-                >
-                  Buxoro
-                </option>
-
-                <option
-                  value="samarqand"
-                  data-i18n="city4_name"
-                >
-                  Samarqand
-                </option>
-
-                <option
-                  value="toshkent"
-                  data-i18n="city5_name"
-                >
-                  Toshkent
-                </option>
-
-              </select>
-
-              <span
-                class="field__err"
-                data-err="city"
-                data-i18n="err_city"
-                hidden
-              >
-                Shaharni tanlang
-              </span>
-
-            </div>
-
-          </div>
-
-
-          <!-- PHONE -->
-
-          <div class="field">
-
-            <label
-              for="f-phone"
-              data-i18n="label_phone"
-            >
-              Telefon
-            </label>
-
-            <input
-              id="f-phone"
-              name="phone"
-              type="tel"
-              autocomplete="tel"
-              placeholder="+998 __ ___ __ __"
-              required
-            />
-
-            <span
-              class="field__err"
-              data-err="phone"
-              data-i18n="err_phone"
-              hidden
-            >
-              To'g'ri telefon raqamini kiriting
-            </span>
-
-          </div>
-
-
-          <!-- CONSENT -->
-
-          <label class="consent">
-
-            <input
-              type="checkbox"
-              id="f-consent"
-              name="consent"
-              required
-            />
-
-            <span
-              class="consent__box"
-              aria-hidden="true"
-            ></span>
-
-            <span
-              class="consent__text"
-              data-i18n="consent"
-            >
-              Shaxsiy ma'lumotlarim qayta ishlanishiga va
-              UPOP TREND kastingi haqida ma'lumot olishga roziman
-            </span>
-
-          </label>
-
-
-          <span
-            class="field__err field__err--consent"
-            data-err="consent"
-            data-i18n="err_consent"
-            hidden
-          >
-            Davom etish uchun rozilik bering
-          </span>
-
-
-          <!-- SUBMIT -->
-
-          <button
-            type="submit"
-            class="btn btn--pop btn--lg btn--block"
-            id="submitBtn"
-          >
-
-            <span
-              class="btn__label"
-              data-i18n="submit"
-            >
-              Anketani yuborish
-            </span>
-
-            <span
-              class="btn__spinner"
-              aria-hidden="true"
-            ></span>
-
-          </button>
-
-        </form>
-
-      </div>
-
-
-      <!-- SUCCESS -->
-
-      <div
-        class="success"
-        id="success"
-        hidden
-      >
-
-        <div
-          class="success__mark"
-          aria-hidden="true"
-        >
-
-          <svg
-            viewBox="0 0 52 52"
-            width="52"
-            height="52"
-          >
-
-            <circle
-              cx="26"
-              cy="26"
-              r="24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2.5"
-              opacity=".35"
-            />
-
-            <path
-              class="success__tick"
-              d="M15 27l7 7 15-16"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="3.2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-
-          </svg>
-
+      <div class="card__glow" aria-hidden="true"></div>
+
+      <div class="formwrap" id="formwrap">
+
+        <h2 class="card__title" id="apply-title" data-i18n="form_card_title">Milliy tanlov anketasi</h2>
+        <p class="card__sub" data-i18n="form_sub">Anketani diqqat bilan to‘ldiring.</p>
+
+        <!-- progress stepper -->
+        <div class="wiz-progress" aria-hidden="true">
+          <ol class="wiz-steps" id="wizSteps">
+            <li class="wiz-steps__item is-active" data-goto="1"><span class="wiz-steps__num">1</span><span class="wiz-steps__label" data-i18n="st1">Shaxsiy</span></li>
+            <li class="wiz-steps__item" data-goto="2"><span class="wiz-steps__num">2</span><span class="wiz-steps__label" data-i18n="st2">Ota-ona</span></li>
+            <li class="wiz-steps__item" data-goto="3"><span class="wiz-steps__num">3</span><span class="wiz-steps__label" data-i18n="st3">Ijod</span></li>
+            <li class="wiz-steps__item" data-goto="4"><span class="wiz-steps__num">4</span><span class="wiz-steps__label" data-i18n="st4">O‘zingiz</span></li>
+            <li class="wiz-steps__item" data-goto="5"><span class="wiz-steps__num">5</span><span class="wiz-steps__label" data-i18n="st5">Sog‘liq</span></li>
+            <li class="wiz-steps__item" data-goto="6"><span class="wiz-steps__num">6</span><span class="wiz-steps__label" data-i18n="st6">Logistika</span></li>
+            <li class="wiz-steps__item" data-goto="7"><span class="wiz-steps__num">7</span><span class="wiz-steps__label" data-i18n="st7">Rozilik</span></li>
+          </ol>
+          <div class="wiz-bar"><span class="wiz-bar__fill" id="wizBarFill"></span></div>
         </div>
 
+        <form class="form wiz-form" id="castingForm" novalidate>
 
-        <h2
-          class="success__title"
-          data-i18n="success_title"
-        >
-          Ariza qabul qilindi
-        </h2>
+          <!-- ===== STEP 1 · Personal ===== -->
+          <fieldset class="wiz-panel is-active" data-step="1">
+            <legend class="wiz-panel__title"><span class="wiz-panel__num">1</span><span data-i18n="sec1">Shaxsiy ma’lumotlar</span></legend>
 
+            <div class="field-row">
+              <div class="field field--req">
+                <label for="f-city" data-i18n="s1_city">Kasting shahri</label>
+                <select id="f-city" name="city" required>
+                  <option value="" data-i18n="city_ph">Shaharni tanlang</option>
+                  <option value="fargona" data-city-date="city1_date" data-i18n="city1_name">Farg‘ona</option>
+                  <option value="xorazm" data-city-date="city2_date" data-i18n="city2_name">Xorazm</option>
+                  <option value="buxoro" data-city-date="city3_date" data-i18n="city3_name">Buxoro</option>
+                  <option value="samarqand" data-city-date="city4_date" data-i18n="city4_name">Samarqand</option>
+                  <option value="toshkent" data-city-date="city5_date" data-i18n="city5_name">Toshkent</option>
+                </select>
+              </div>
+              <div class="field">
+                <label data-i18n="s1_date_label">Kasting sanasi</label>
+                <output class="field__date" id="castDate" aria-live="polite">—</output>
+              </div>
+            </div>
 
-        <p
-          class="success__text"
-          data-i18n="success_text"
-        >
-          Tanlangan shahardagi kastingdan oldin siz bilan bog'lanamiz.
-          Tafsilotlarni upoptrend.uz saytida kuzating.
-        </p>
+            <div class="field field--req">
+              <label for="f-name" data-i18n="s1_fullname">F.I.Sh. (to‘liq)</label>
+              <input id="f-name" name="fullname" type="text" autocomplete="name" data-i18n-ph="s1_fullname_ph" placeholder="Familiya Ism Sharif" required />
+            </div>
 
+            <div class="field-row">
+              <div class="field field--req">
+                <label for="f-birth" data-i18n="s1_birth">Tug‘ilgan sana</label>
+                <input id="f-birth" name="birthdate" type="date" required />
+              </div>
+              <div class="field field--req">
+                <label for="f-age" data-i18n="s1_age">Yosh</label>
+                <input id="f-age" name="age" type="number" inputmode="numeric" min="15" max="21" data-i18n-ph="ph_age" placeholder="15–21" required />
+                <span class="field__err" data-i18n="err_age" hidden>Yosh 15–21 oralig‘ida</span>
+              </div>
+            </div>
+
+            <div class="field-row">
+              <div class="field field--req">
+                <label for="f-gender" data-i18n="s1_gender">Jins</label>
+                <select id="f-gender" name="gender" required>
+                  <option value="" data-i18n="gender_ph">Tanlang</option>
+                  <option value="m" data-i18n="gender_m">Erkak</option>
+                  <option value="f" data-i18n="gender_f">Ayol</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="f-citizen" data-i18n="s1_citizen">Fuqarolik</label>
+                <input id="f-citizen" name="citizenship" type="text" placeholder="—" />
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="f-region" data-i18n="s1_region">Yashash shahri / tumani</label>
+              <input id="f-region" name="region" type="text" placeholder="—" />
+            </div>
+
+            <div class="field">
+              <label for="f-address" data-i18n="s1_address">Ro‘yxatga olingan manzil</label>
+              <input id="f-address" name="address" type="text" placeholder="—" />
+            </div>
+
+            <div class="field-row">
+              <div class="field field--req">
+                <label for="f-phone" data-i18n="s1_phone">Telefon</label>
+                <input id="f-phone" name="phone" type="tel" autocomplete="tel" placeholder="+998 __ ___ __ __" required />
+                <span class="field__err" data-i18n="err_phone" hidden>To‘g‘ri raqam kiriting</span>
+              </div>
+              <div class="field">
+                <label for="f-email" data-i18n="s1_email">E-mail</label>
+                <input id="f-email" name="email" type="email" autocomplete="email" placeholder="mail@example.com" />
+                <span class="field__err" data-i18n="err_email" hidden>To‘g‘ri e-mail kiriting</span>
+              </div>
+            </div>
+
+            <p class="wiz-sublabel" data-i18n="s1_socials">Ijtimoiy tarmoqlar</p>
+            <div class="field-row">
+              <div class="field"><label for="f-ig">Instagram</label><input id="f-ig" name="instagram" type="text" placeholder="@" /></div>
+              <div class="field"><label for="f-tt">TikTok</label><input id="f-tt" name="tiktok" type="text" placeholder="@" /></div>
+            </div>
+            <div class="field-row">
+              <div class="field"><label for="f-tg">Telegram</label><input id="f-tg" name="telegram" type="text" placeholder="@" /></div>
+              <div class="field"><label for="f-yt">YouTube</label><input id="f-yt" name="youtube" type="text" placeholder="—" /></div>
+            </div>
+
+            <p class="wiz-note" data-i18n="s1_agenote">Ishtirokchilar anketa topshirish paytida 15 dan 21 yoshgacha bo‘lishi shart.</p>
+          </fieldset>
+
+          <!-- ===== STEP 2 · Parent ===== -->
+          <fieldset class="wiz-panel" data-step="2">
+            <legend class="wiz-panel__title"><span class="wiz-panel__num">2</span><span data-i18n="sec2">Ota-ona / qonuniy vakil</span></legend>
+            <p class="wiz-note wiz-note--accent" data-i18n="s2_note">Barcha ishtirokchilar uchun to‘ldirilishi shart.</p>
+
+            <div class="field field--req">
+              <label for="f-pname" data-i18n="s2_name">Ota-ona / vakil F.I.Sh.</label>
+              <input id="f-pname" name="parent_name" type="text" placeholder="—" required />
+            </div>
+            <div class="field field--req">
+              <label for="f-prel" data-i18n="s2_relation">Ishtirokchiga kimsiz?</label>
+              <input id="f-prel" name="parent_relation" type="text" data-i18n-ph="s2_relation_ph" placeholder="—" required />
+            </div>
+            <div class="field-row">
+              <div class="field field--req">
+                <label for="f-pphone" data-i18n="s2_phone">Telefon</label>
+                <input id="f-pphone" name="parent_phone" type="tel" placeholder="+998 __ ___ __ __" required />
+                <span class="field__err" data-i18n="err_phone" hidden>To‘g‘ri raqam kiriting</span>
+              </div>
+              <div class="field">
+                <label for="f-pemail" data-i18n="s2_email">E-mail</label>
+                <input id="f-pemail" name="parent_email" type="email" placeholder="mail@example.com" />
+                <span class="field__err" data-i18n="err_email" hidden>To‘g‘ri e-mail kiriting</span>
+              </div>
+            </div>
+
+            <label class="consent consent--req">
+              <input type="checkbox" name="parent_consent" required />
+              <span class="consent__box" aria-hidden="true"></span>
+              <span class="consent__text" data-i18n="s2_consent">Men ishtirokchining qonuniy vakili ekanligimni tasdiqlayman va uning ishtirokiga rozilik beraman.</span>
+            </label>
+          </fieldset>
+
+          <!-- ===== STEP 3 · Creative ===== -->
+          <fieldset class="wiz-panel" data-step="3">
+            <legend class="wiz-panel__title"><span class="wiz-panel__num">3</span><span data-i18n="sec3">Ijodiy ma’lumot</span></legend>
+
+            <div class="wiz-rule">
+              <span class="wiz-rule__badge" aria-hidden="true">!</span>
+              <div>
+                <p class="wiz-rule__title" data-i18n="s3_rule_title">Ijro qoidasi</p>
+                <p class="wiz-rule__text" data-i18n="s3_rule">Faqat milliy va folklor yo‘nalishidagi asarlar ijro etiladi. Minusovka kerak emas — barcha a cappella kuylaydi.</p>
+              </div>
+            </div>
+            <label class="consent consent--req">
+              <input type="checkbox" name="rule_agree" required />
+              <span class="consent__box" aria-hidden="true"></span>
+              <span class="consent__text" data-i18n="s3_agree">Qoidalar bilan tanishdim va asarim talablarga javob berishini kafolatlayman.</span>
+            </label>
+
+            <div class="field field--req">
+              <label for="f-piece" data-i18n="s3_piece">Ijro etiladigan asar (nomi, muallifi)</label>
+              <input id="f-piece" name="piece" type="text" placeholder="—" required />
+            </div>
+            <div class="field field--req">
+              <label for="f-genre" data-i18n="s3_genre">Janr / yo‘nalish</label>
+              <input id="f-genre" name="genre" type="text" data-i18n-ph="s3_genre_ph" placeholder="maqom, ashula, suvora…" required />
+            </div>
+            <div class="field">
+              <label for="f-edu" data-i18n="s3_edu">Musiqiy ma’lumotingiz bormi? Qayerda?</label>
+              <input id="f-edu" name="education" type="text" placeholder="—" />
+            </div>
+            <div class="field">
+              <label for="f-instr" data-i18n="s3_instr">Musiqa asbobida chalasizmi? Qaysi?</label>
+              <input id="f-instr" name="instruments" type="text" placeholder="—" />
+            </div>
+            <div class="field-row">
+              <div class="field">
+                <label for="f-years" data-i18n="s3_years">Necha yildan beri kuylaysiz?</label>
+                <input id="f-years" name="years_singing" type="number" inputmode="numeric" min="0" max="30" placeholder="—" />
+              </div>
+              <div class="field">
+                <label for="f-teacher" data-i18n="s3_teacher">Vokal ustozingiz bormi?</label>
+                <input id="f-teacher" name="vocal_teacher" type="text" placeholder="—" />
+              </div>
+            </div>
+            <div class="field">
+              <label for="f-contests" data-i18n="s3_contests">Tanlov / shoularda qatnashganmisiz? Natijangiz?</label>
+              <textarea id="f-contests" name="contests" rows="2" placeholder="—"></textarea>
+            </div>
+            <div class="field">
+              <label for="f-video" data-i18n="s3_video">Ijro videosiga havola (agar bo‘lsa)</label>
+              <input id="f-video" name="video" type="url" placeholder="https://" />
+            </div>
+          </fieldset>
+
+          <!-- ===== STEP 4 · About ===== -->
+          <fieldset class="wiz-panel" data-step="4">
+            <legend class="wiz-panel__title"><span class="wiz-panel__num">4</span><span data-i18n="sec4">O‘zingiz haqingizda</span></legend>
+
+            <div class="field field--req">
+              <label for="f-why" data-i18n="s4_why">Nega U-POP TREND’da ishtirok etmoqchisiz?</label>
+              <textarea id="f-why" name="why" rows="2" placeholder="—" required></textarea>
+            </div>
+            <div class="field field--req">
+              <label for="f-music" data-i18n="s4_music">Musiqa siz uchun nima?</label>
+              <textarea id="f-music" name="music_means" rows="2" placeholder="—" required></textarea>
+            </div>
+            <div class="field-row">
+              <div class="field">
+                <label for="f-words" data-i18n="s4_words">Uch so‘z bilan o‘zingizni ta’riflang</label>
+                <input id="f-words" name="three_words" type="text" placeholder="—" />
+              </div>
+              <div class="field">
+                <label for="f-idol" data-i18n="s4_idol">Kumiringiz / ilhomlantiruvchi</label>
+                <input id="f-idol" name="idol" type="text" placeholder="—" />
+              </div>
+            </div>
+            <div class="field-row">
+              <div class="field">
+                <label for="f-hobby" data-i18n="s4_hobby">Qiziqishlaringiz (musiqadan tashqari)</label>
+                <input id="f-hobby" name="hobbies" type="text" placeholder="—" />
+              </div>
+              <div class="field">
+                <label for="f-free" data-i18n="s4_free">Bo‘sh vaqtdagi sevimli mashg‘ulot</label>
+                <input id="f-free" name="free_time" type="text" placeholder="—" />
+              </div>
+            </div>
+
+            <p class="wiz-sublabel" data-i18n="s4_family">Oilam</p>
+            <div class="field-row">
+              <div class="field"><label for="f-father" data-i18n="s4_father">Otam — F.I.Sh.</label><input id="f-father" name="father_name" type="text" placeholder="—" /></div>
+              <div class="field"><label for="f-fjob" data-i18n="s4_father_job">Otamning ish joyi</label><input id="f-fjob" name="father_job" type="text" placeholder="—" /></div>
+            </div>
+            <div class="field-row">
+              <div class="field"><label for="f-mother" data-i18n="s4_mother">Onam — F.I.Sh.</label><input id="f-mother" name="mother_name" type="text" placeholder="—" /></div>
+              <div class="field"><label for="f-mjob" data-i18n="s4_mother_job">Onamning ish joyi</label><input id="f-mjob" name="mother_job" type="text" placeholder="—" /></div>
+            </div>
+            <div class="field">
+              <label for="f-siblings" data-i18n="s4_siblings">Aka-uka / opa-singillar (ism, yosh)</label>
+              <input id="f-siblings" name="siblings" type="text" placeholder="—" />
+            </div>
+            <div class="field-row">
+              <div class="field"><label for="f-livewith" data-i18n="s4_livewith">Kim bilan istiqomat qilasiz?</label><input id="f-livewith" name="live_with" type="text" placeholder="—" /></div>
+              <div class="field"><label for="f-support" data-i18n="s4_support">Sizni kim ko‘proq qo‘llaydi va nega?</label><input id="f-support" name="support" type="text" placeholder="—" /></div>
+            </div>
+          </fieldset>
+
+          <!-- ===== STEP 5 · Health ===== -->
+          <fieldset class="wiz-panel" data-step="5">
+            <legend class="wiz-panel__title"><span class="wiz-panel__num">5</span><span data-i18n="sec5">Tibbiy ma’lumot</span></legend>
+            <div class="field">
+              <label for="f-chronic" data-i18n="s5_chronic">Surunkali kasalliklar / cheklovlar (agar bo‘lsa)</label>
+              <textarea id="f-chronic" name="chronic" rows="2" placeholder="—"></textarea>
+            </div>
+            <div class="field">
+              <label for="f-allergy" data-i18n="s5_allergy">Allergiya (agar bo‘lsa)</label>
+              <input id="f-allergy" name="allergy" type="text" placeholder="—" />
+            </div>
+            <div class="field field--req">
+              <label for="f-emerg" data-i18n="s5_emergency">Favqulodda holat uchun kontakt (F.I.Sh., telefon)</label>
+              <input id="f-emerg" name="emergency_contact" type="text" placeholder="—" required />
+            </div>
+          </fieldset>
+
+          <!-- ===== STEP 6 · Logistics ===== -->
+          <fieldset class="wiz-panel" data-step="6">
+            <legend class="wiz-panel__title"><span class="wiz-panel__num">6</span><span data-i18n="sec6">Logistika</span></legend>
+            <label class="consent consent--req">
+              <input type="checkbox" name="log_attend" required />
+              <span class="consent__box" aria-hidden="true"></span>
+              <span class="consent__text" data-i18n="s6_1">Belgilangan shahar va vaqtda kastingga shaxsan boraman.</span>
+            </label>
+            <label class="consent consent--req">
+              <input type="checkbox" name="log_stages" required />
+              <span class="consent__box" aria-hidden="true"></span>
+              <span class="consent__text" data-i18n="s6_2">Kastingdan o‘tsam, keyingi bosqichlarda qatnashishga tayyorman.</span>
+            </label>
+            <label class="consent consent--req">
+              <input type="checkbox" name="log_travel" required />
+              <span class="consent__box" aria-hidden="true"></span>
+              <span class="consent__text" data-i18n="s6_3">Boshqa shaharlarga borish kerak bo‘lishi mumkinligini tushunaman.</span>
+            </label>
+          </fieldset>
+
+          <!-- ===== STEP 7 · Consent ===== -->
+          <fieldset class="wiz-panel" data-step="7">
+            <legend class="wiz-panel__title"><span class="wiz-panel__num">7</span><span data-i18n="sec7">Rozilik va tasdiqlash</span></legend>
+            <label class="consent consent--req">
+              <input type="checkbox" name="consent_data" required />
+              <span class="consent__box" aria-hidden="true"></span>
+              <span class="consent__text" data-i18n="s7_1">Shaxsiy ma’lumotlarimni qayta ishlashga rozilik beraman.</span>
+            </label>
+            <label class="consent consent--req">
+              <input type="checkbox" name="consent_media" required />
+              <span class="consent__box" aria-hidden="true"></span>
+              <span class="consent__text" data-i18n="s7_2">Foto / video / audio materiallardan foydalanishga rozilik beraman.</span>
+            </label>
+            <label class="consent consent--req">
+              <input type="checkbox" name="consent_rules" required />
+              <span class="consent__box" aria-hidden="true"></span>
+              <span class="consent__text" data-i18n="s7_3">Kasting qoidalari bilan tanishdim va roziman.</span>
+            </label>
+            <label class="consent consent--req">
+              <input type="checkbox" name="consent_true" required />
+              <span class="consent__box" aria-hidden="true"></span>
+              <span class="consent__text" data-i18n="s7_4">Anketadagi ma’lumotlar haqqoniy ekanligini tasdiqlayman.</span>
+            </label>
+            <p class="wiz-note" data-i18n="s7_final">Yuborishdan oldin ma’lumotlarni tekshiring.</p>
+          </fieldset>
+
+          <!-- error summary + navigation -->
+          <p class="wiz-panel__err" id="wizErr" data-i18n="err_fill" hidden>Belgilangan majburiy maydonlarni to‘ldiring.</p>
+
+          <div class="wiz-nav">
+            <button type="button" class="btn wiz-back" id="wizBack" data-i18n="wiz_back" hidden>Orqaga</button>
+            <span class="wiz-count"><b id="wizCur">1</b> / 7</span>
+            <button type="button" class="btn btn--pop wiz-next" id="wizNext" data-i18n="wiz_next">Keyingi</button>
+            <button type="submit" class="btn btn--pop wiz-submit" id="submitBtn" hidden>
+              <span class="btn__label" data-i18n="submit">Anketani yuborish</span>
+              <span class="btn__spinner" aria-hidden="true"></span>
+            </button>
+          </div>
+
+        </form>
+      </div>
+
+      <!-- SUCCESS -->
+      <div class="success" id="success" hidden>
+        <div class="success__mark" aria-hidden="true">
+          <svg viewBox="0 0 52 52" width="52" height="52">
+            <circle cx="26" cy="26" r="24" fill="none" stroke="currentColor" stroke-width="2.5" opacity=".35" />
+            <path class="success__tick" d="M15 27l7 7 15-16" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </div>
+        <h2 class="success__title" data-i18n="success_title">Anketa qabul qilindi</h2>
+        <p class="success__text" data-i18n="success_text">Tanlangan shahardagi kastingdan oldin siz bilan bog‘lanamiz.</p>
       </div>
 
     </div>
-
   </section>
 
 </main>
