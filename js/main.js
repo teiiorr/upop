@@ -18,10 +18,8 @@ const DICT = {
     nav_faq: `Savollar`,
     nav_apply: `Anketani to‘ldiring`,
 
-    hero_org: `Bolalar kontentini rivojlantirish markazi, «O'zgidroenergo» AJ va «Milliy» telekanali taqdim etadi`,
     hero_title: `Qadriyatlarning qayta yaralishi`,
     hero_cta: `Anketani to‘ldiring`,
-    hero_scroll: `Pastga`,
 
 chance_title: `Yoshingiz <span class="hl">15 dan 21 gacha!</span><br>Va siz jonli kuylay olasiz!<br>Demak, bu sizning sahnangiz!`,
 
@@ -127,11 +125,8 @@ chance_title: `Yoshingiz <span class="hl">15 dan 21 gacha!</span><br>Va siz jonl
     nav_faq: `Вопросы`,
     nav_apply: `Заполнить анкету`,
 
-    hero_org: `Центр развития детского контента, АО «Узгидроэнерго» и телеканал «Milliy» представляют`,
     hero_title: `Возрождение ценностей</span>`,
-    hero_sub: `Первый национальный кастинг талантов`,
     hero_cta: `Заполнить анкету`,
-    hero_scroll: `Листай вниз`,
 
     chance_title: `Вам <span class="hl">от 15 до 21 года!</span> И вы умеете петь вживую? Значит, это ваша сцена!`,
 
@@ -237,11 +232,8 @@ chance_title: `Yoshingiz <span class="hl">15 dan 21 gacha!</span><br>Va siz jonl
     nav_faq: `FAQ`,
     nav_apply: `Fill in the form`,
 
-    hero_org: `Children's Content Development Center, Uzgidroenergo JSC and Milliy TV present`,
     hero_title: `The rebirth of values`,
-    hero_sub: `The first national talent casting`,
     hero_cta: `Fill in the form`,
-    hero_scroll: `Scroll`,
 
     chance_title: `Are you <span class="hl">15 to 21 years old?</span> And can you sing live? Then this is your stage!`,
 
@@ -374,28 +366,12 @@ function applyLang(lang) {
     if (v != null) el.setAttribute("placeholder", v);
   });
 
-  document.querySelectorAll(".langswitch__btn").forEach((b) => {
-    const on = b.dataset.lang === lang;
-    b.setAttribute("aria-pressed", on ? "true" : "false");
-  });
-
-  // Update select dropdowns
+  // Sync the language select dropdowns
   document.querySelectorAll(".langswitch-select").forEach((select) => {
     select.value = lang;
   });
 
-  moveThumb();
   localStorage.setItem(LS_KEY, lang);
-}
-
-function moveThumb() {
-  const active = document.querySelector('.langswitch__btn[aria-pressed="true"]');
-  const thumb = document.querySelector(".langswitch__thumb");
-
-  if (!active || !thumb) return;
-
-  thumb.style.width = active.offsetWidth + "px";
-  thumb.style.transform = `translateX(${active.offsetLeft - 3}px)`;
 }
 
 /* ============================================================
@@ -418,32 +394,16 @@ document.addEventListener("DOMContentLoaded", () => {
   initAccordion();
   initMagnetic();
   initForm();
-  initNavIndicator();
-
-  // Keep the language thumb aligned once webfonts settle / on resize.
-  if (document.fonts && document.fonts.ready) {
-    document.fonts.ready.then(moveThumb);
-  }
-
-  window.addEventListener("resize", debounce(moveThumb, 120));
 });
 
 /* ---------- language switch ---------- */
 
 function initLangSwitch() {
-  // Old button-based switch (keep for backward compatibility)
-  document.querySelectorAll(".langswitch__btn").forEach((btn) => {
-    btn.addEventListener("click", () => applyLang(btn.dataset.lang));
-  });
-
-  // New select dropdown switch
   document.querySelectorAll(".langswitch-select").forEach((select) => {
     select.addEventListener("change", (e) => {
       applyLang(e.target.value);
     });
   });
-
-  moveThumb();
 }
 
 /* ---------- nav: glass background after scroll ---------- */
@@ -736,51 +696,6 @@ function initAccordion() {
 }
 
 /* ---------- magnetic CTA (fine pointer, motion-on only) ---------- */
-
-function initNavIndicator() {
-  const nav = document.querySelector('.nav__desktop');
-  const indicator = document.querySelector('.nav__indicator');
-  const links = nav?.querySelectorAll('a');
-  
-  if (!nav || !indicator || !links.length) return;
-  
-  // Set initial position based on link widths
-  let currentOffset = 40; // starting padding-left
-  
-  links.forEach((link, index) => {
-    if (index > 0) {
-      currentOffset += 32; // gap between links
-    }
-    // Store offset for each link
-    link.dataset.offset = currentOffset;
-    currentOffset += link.offsetWidth;
-  });
-  
-  // Update offsets on resize
-  window.addEventListener('resize', debounce(() => {
-    let offset = 40;
-    links.forEach((link, index) => {
-      if (index > 0) offset += 32;
-      link.dataset.offset = offset;
-      offset += link.offsetWidth;
-    });
-  }, 150));
-  
-  // Move indicator on hover
-  links.forEach(link => {
-    link.addEventListener('mouseenter', () => {
-      const offset = link.dataset.offset;
-      indicator.style.setProperty('--link-offset', offset);
-      indicator.style.height = '24px';
-      indicator.style.opacity = '1';
-    });
-    
-    link.addEventListener('mouseleave', () => {
-      indicator.style.height = '0';
-      indicator.style.opacity = '0';
-    });
-  });
-}
 
 function initMagnetic() {
   if (
