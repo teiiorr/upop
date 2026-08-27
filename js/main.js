@@ -643,6 +643,14 @@ document.addEventListener("DOMContentLoaded", () => {
   initAccordion();
   initMagnetic();
   initForm();
+
+  // Open at the very top unless the URL points to a section anchor.
+  if (!location.hash) window.scrollTo(0, 0);
+});
+
+// Also reset on back/forward (bfcache) restores so the page never reopens scrolled.
+window.addEventListener("pageshow", (e) => {
+  if (e.persisted && !location.hash) window.scrollTo(0, 0);
 });
 
 /* ---------- language switch ---------- */
