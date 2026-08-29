@@ -232,7 +232,8 @@ html { scrollbar-width: thin; scrollbar-color: var(--gold-lo) var(--bg); }
 }
 .marquee__track {
   display: inline-flex; white-space: nowrap; will-change: transform;
-  animation: marquee 30s linear infinite;
+  /* -50% of the 8-copy track = 4 copies; 110s keeps the same ~35px/s drift */
+  animation: marquee 110s linear infinite;
 }
 .marquee:hover .marquee__track { animation-play-state: paused; }
 .marquee__text {
@@ -289,8 +290,9 @@ html { scrollbar-width: thin; scrollbar-color: var(--gold-lo) var(--bg); }
   box-shadow: 0 12px 26px -8px rgba(214,62,140,.65), 0 4px 12px -6px rgba(106,57,217,.5), inset 0 1px 0 rgba(255,255,255,.3);
 }
 
-/* Создаем красивый широкий блик */
-.btn--pop::after { 
+/* Создаем красивый широкий блик
+   (.wiz-next is excluded: its ::after carries the drawn chevron instead) */
+.btn--pop:not(.wiz-next)::after {
   content: ""; position: absolute; inset: 0; border-radius: inherit;
   background: linear-gradient(115deg, transparent 20%, rgba(255,255,255,.4) 50%, transparent 80%);
   background-size: 200% 100%; background-position: 200% 0;
@@ -298,7 +300,7 @@ html { scrollbar-width: thin; scrollbar-color: var(--gold-lo) var(--bg); }
 }
 
 /* Запускаем цикличную анимацию блика при наведении */
-.btn--pop:hover::after { 
+.btn--pop:not(.wiz-next):hover::after { 
   opacity: 1; 
   animation: sheen 1.5s var(--e-cubic) infinite; 
 }
@@ -325,6 +327,12 @@ html { scrollbar-width: thin; scrollbar-color: var(--gold-lo) var(--bg); }
   animation:
     popShift 7s var(--e-inout) infinite,
     ctaPulse 2.8s ease-out 1.4s infinite;
+}
+/* pause the ring while interacting so the hover/active shadow can apply
+   (a running box-shadow animation outranks the hover declaration) */
+.hero__cta .btn--pop:hover,
+.hero__cta .btn--pop:active {
+  animation: popShift 7s var(--e-inout) infinite;
 }
 @keyframes ctaPulse {
   0% {
@@ -766,7 +774,7 @@ body.sec-faq    .nav__desktop a[href="#faq"] { color: var(--gold-hi); }
    FAQ
    ============================================================ */
 .faq { padding: clamp(64px, 12vh, 150px) var(--pad); }
-.accordion { max-width: 860px; margin: 0 auto; counter-reset: faq; }
+.accordion { max-width: 860px; margin: 0 auto; }
 .ac { border-top: 1px solid var(--line); }
 .ac:last-child { border-bottom: 1px solid var(--line); }
 .ac__q {
@@ -776,17 +784,16 @@ body.sec-faq    .nav__desktop a[href="#faq"] { color: var(--gold-hi); }
   font-family: var(--font-disp); font-weight: 500; font-size: clamp(1rem, 1.9vw, 1.28rem); letter-spacing: -.01em;
   transition: color .25s ease;
 }
-/* questions carry the same numbering language as the rest of the page */
-.ac__q::before {
-  counter-increment: faq;
-  content: counter(faq, decimal-leading-zero);
+/* questions carry the same numbering language as the rest of the page
+   (real aria-hidden spans, so the number stays out of the accessible name) */
+.ac__no {
   flex: 0 0 30px;
   font-size: .78rem; font-weight: 700; color: var(--gold);
   opacity: .55; letter-spacing: .08em;
   transition: opacity .25s ease;
 }
-.ac__q:hover::before, .ac__q[aria-expanded="true"]::before { opacity: 1; }
-.ac__q > span:first-of-type { flex: 1; }
+.ac__q:hover .ac__no, .ac__q[aria-expanded="true"] .ac__no { opacity: 1; }
+.ac__q > span[data-i18n] { flex: 1; }
 .ac__ico { margin-left: auto; }
 .ac__q:hover { color: var(--gold-hi); }
 .ac__ico { position: relative; flex: 0 0 auto; width: 20px; height: 20px; }
@@ -1086,11 +1093,15 @@ body.sec-faq    .nav__desktop a[href="#faq"] { color: var(--gold-hi); }
   .caravan__line { top: 0; bottom: 0; left: 7px; right: auto; width: 2px; height: auto; transform-origin: top;
     background: linear-gradient(180deg, var(--gold-lo), var(--gold), var(--turquoise)); scale: 1 0; }
   .caravan.is-in .caravan__line { scale: 1 1; }
-  .stop { flex-direction: row; align-items: baseline; gap: 12px; text-align: left; padding: 20px 0 20px 30px; }
+  /* wrap so the date chip and final badge drop to a second line on narrow
+     phones instead of clipping past the viewport edge */
+  .stop { flex-direction: row; flex-wrap: wrap; align-items: baseline; row-gap: 4px; gap: 12px; text-align: left; padding: 20px 0 20px 30px; }
   .stop__dot { top: 24px; left: 1px; translate: 0 0; }
   .stop:hover .stop__dot { transform: scale(1.35); }
   .stop__no { min-width: 2.4ch; }
   .stop__city { margin-right: auto; }
+  .stop__date { white-space: nowrap; margin-top: 0; }
+  .stop__badge { white-space: nowrap; margin-top: 0; }
   
   /* Mobile nav improvements */
   .nav__inner {
@@ -1112,10 +1123,15 @@ body.sec-faq    .nav__desktop a[href="#faq"] { color: var(--gold-hi); }
   .foot__logos { justify-content: center; }
   .foot__logo { height: 40px; }
   .foot__logo--sq { height: 52px; }
-  .foot__sep { height: 26px; }
+  .foot__logos .foot__sep { height: 26px; } /* keep the legal bar's --sm at 12px */
   .marquee__text { font-size: .68rem; letter-spacing: .2em; }
   .sec-mark { gap: 10px; }
   .sec-mark__rule { width: 22px; }
+}
+/* below ~480px the logo row and legal bar wrap — a divider dangling at a
+   line end divides nothing, so drop them and let the wrap do the grouping */
+@media (max-width: 479px) {
+  .foot__sep { display: none; }
 }
 
 /* ============================================================
@@ -1127,6 +1143,10 @@ body.sec-faq    .nav__desktop a[href="#faq"] { color: var(--gold-hi); }
   .hero__aura { animation: none; }
   .caravan__line { scale: 1 1 !important; }
   .success__tick { stroke-dashoffset: 0 !important; }
+  /* the pulse rings only exist inside their keyframes — without motion
+     they would freeze as solid rings, so remove them entirely */
+  .stop--final .stop__dot::after,
+  .success__mark::after { content: none; }
 }
 
 /* ============================================================

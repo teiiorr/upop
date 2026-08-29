@@ -926,6 +926,15 @@ function initSectionFx() {
     document.body.classList.add(
       "sec-" + k
     );
+
+    // Mirror the visual gold highlight for assistive tech.
+    document.querySelectorAll(".nav__desktop a").forEach((a) => {
+      if (a.getAttribute("href") === "#" + k) {
+        a.setAttribute("aria-current", "true");
+      } else {
+        a.removeAttribute("aria-current");
+      }
+    });
   };
 
   set("hero");
