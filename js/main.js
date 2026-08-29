@@ -18,11 +18,8 @@ const DICT = {
     nav_faq: `Savollar`,
     nav_apply: `Anketani to‘ldiring`,
 
-    hero_title: `Qadriyatlarning qayta yaralishi`,
+    hero_title: `«Qadriyatlarning qayta yaralishi»`,
     hero_cta: `Anketani to‘ldiring`,
-
-    marquee: `U POP TREND ✦ Milliy kasting ✦ 5 shahar ✦ 15–21 yosh ✦ Jonli ijro ✦ Ishtirok bepul ✦ `,
-
 chance_title: `Yoshingiz <span class="hl">15 dan 21 gacha!</span><br>Va siz jonli kuylay olasiz!<br>Demak, bu sizning sahnangiz!`,
     who_lede: `O'zbekiston tarixidagi ilk milliy kasting — tajriba va tayyorgarlikdan qat'i nazar, barcha uchun ochiq.`,
 
@@ -199,7 +196,7 @@ chance_title: `Yoshingiz <span class="hl">15 dan 21 gacha!</span><br>Va siz jonl
 
     footer_details: `Barcha tafsilotlar — <a href="https://upoptrend.uz" target="_blank" rel="noopener">upoptrend.uz</a>`,
     footer_copy: `© 2026 UPOP TREND`,
-    footer_credit: `Designed & Developed by teiior`,
+    footer_credit: `Designed & Developed by <a href="https://teiior.uz" target="_blank" rel="noopener">teiior</a>`,
   },
 
   /* ---------------------------------------------------- RU */
@@ -214,11 +211,8 @@ chance_title: `Yoshingiz <span class="hl">15 dan 21 gacha!</span><br>Va siz jonl
     nav_faq: `Вопросы`,
     nav_apply: `Заполнить анкету`,
 
-    hero_title: `Возрождение ценностей`,
+    hero_title: `«Возрождение ценностей»`,
     hero_cta: `Заполнить анкету`,
-
-    marquee: `U POP TREND ✦ Национальный кастинг ✦ 5 городов ✦ 15–21 год ✦ Живой звук ✦ Участие бесплатно ✦ `,
-
     chance_title: `Вам <span class="hl">от 15 до 21 года!</span><br>И вы умеете петь вживую?<br>Значит, это ваша сцена!`,
     who_lede: `Первый национальный кастинг в истории Узбекистана — открыт для всех, независимо от опыта и подготовки.`,
 
@@ -395,7 +389,7 @@ chance_title: `Yoshingiz <span class="hl">15 dan 21 gacha!</span><br>Va siz jonl
 
     footer_details: `Все подробности — <a href="https://upoptrend.uz" target="_blank" rel="noopener">upoptrend.uz</a>`,
     footer_copy: `© 2026 UPOP TREND`,
-    footer_credit: `Designed & Developed by teiior`,
+    footer_credit: `Designed & Developed by <a href="https://teiior.uz" target="_blank" rel="noopener">teiior</a>`,
   },
 
   /* ---------------------------------------------------- EN */
@@ -410,11 +404,8 @@ chance_title: `Yoshingiz <span class="hl">15 dan 21 gacha!</span><br>Va siz jonl
     nav_faq: `FAQ`,
     nav_apply: `Fill in the form`,
 
-    hero_title: `The rebirth of values`,
+    hero_title: `“The rebirth of values”`,
     hero_cta: `Fill in the form`,
-
-    marquee: `U POP TREND ✦ National casting ✦ 5 cities ✦ Ages 15–21 ✦ Live vocals ✦ Free to enter ✦ `,
-
     chance_title: `Are you <span class="hl">15 to 21 years old?</span><br>And can you sing live?<br>Then this is your stage!`,
     who_lede: `The first national casting in Uzbekistan's history — open to everyone, regardless of experience or training.`,
 
@@ -591,7 +582,7 @@ chance_title: `Yoshingiz <span class="hl">15 dan 21 gacha!</span><br>Va siz jonl
 
     footer_details: `All details — <a href="https://upoptrend.uz" target="_blank" rel="noopener">upoptrend.uz</a>`,
     footer_copy: `© 2026 UPOP TREND`,
-    footer_credit: `Designed & Developed by teiior`,
+    footer_credit: `Designed & Developed by <a href="https://teiior.uz" target="_blank" rel="noopener">teiior</a>`,
   },
 };
 
