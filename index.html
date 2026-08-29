@@ -161,6 +161,16 @@
 </section>
 
 
+  <!-- ============ MARQUEE RIBBON ============ -->
+
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee__track">
+      <span class="marquee__text" data-i18n="marquee">U POP TREND ✦ Milliy kasting ✦ 5 shahar ✦ 15–21 yosh ✦ Jonli ijro ✦ Ishtirok bepul ✦&nbsp;</span>
+      <span class="marquee__text" data-i18n="marquee">U POP TREND ✦ Milliy kasting ✦ 5 shahar ✦ 15–21 yosh ✦ Jonli ijro ✦ Ishtirok bepul ✦&nbsp;</span>
+    </div>
+  </div>
+
+
   <!-- ============ WHO / CHANCE + STATS ============ -->
 
   <section
@@ -172,6 +182,12 @@
     <div class="who__grid">
 
       <div class="who__text">
+
+  <p class="sec-mark reveal">
+    <span class="sec-mark__no">01</span>
+    <span class="sec-mark__rule" aria-hidden="true"></span>
+    <span class="sec-mark__label" data-i18n="nav_who">Kim qatnashadi</span>
+  </p>
 
   <h2
   class="h-display reveal"
@@ -191,7 +207,10 @@
   </span>
 </h2>
 
-      
+      <p class="lede sec-lede reveal" data-i18n="who_lede">
+        O'zbekiston tarixidagi ilk milliy kasting — tajriba va
+        tayyorgarlikdan qat'i nazar, barcha uchun ochiq.
+      </p>
 
       </div>
 
@@ -273,12 +292,18 @@
 
     <div class="section-head">
 
+      <p class="sec-mark reveal">
+        <span class="sec-mark__no">02</span>
+        <span class="sec-mark__rule" aria-hidden="true"></span>
+        <span class="sec-mark__label" data-i18n="nav_how">Bu qanday ishlaydi</span>
+      </p>
+
       <h2
         class="h-display reveal"
         id="steps-title"
-        data-i18n="steps_title"
+        data-i18n-html="steps_title"
       >
-        Sahnagacha uch qadam
+        Sahnagacha <span class="hl">uch qadam</span>
       </h2>
 
     </div>
@@ -400,13 +425,23 @@
 
     <div class="section-head">
 
+      <p class="sec-mark reveal">
+        <span class="sec-mark__no">03</span>
+        <span class="sec-mark__rule" aria-hidden="true"></span>
+        <span class="sec-mark__label" data-i18n="nav_cities">Shaharlar va sanalar</span>
+      </p>
+
       <h2
         class="h-display reveal"
         id="cities-title"
-        data-i18n="cities_title"
+        data-i18n-html="cities_title"
       >
-        Kasting respublika bo'ylab o'tkaziladi
+        Kasting <span class="hl">respublika bo'ylab</span> o'tkaziladi
       </h2>
+
+      <p class="lede reveal" data-i18n="cities_lede">
+        Besh shahar — besh sahna. O'zingizga qulayini tanlang.
+      </p>
 
     </div>
 
@@ -584,6 +619,13 @@
           19–20-sentabr
         </span>
 
+        <span
+          class="stop__badge"
+          data-i18n="final_badge"
+        >
+          Katta final
+        </span>
+
       </div>
 
     </div>
@@ -601,12 +643,18 @@
 
     <div class="section-head">
 
+      <p class="sec-mark reveal">
+        <span class="sec-mark__no">04</span>
+        <span class="sec-mark__rule" aria-hidden="true"></span>
+        <span class="sec-mark__label" data-i18n="nav_faq">Savollar</span>
+      </p>
+
       <h2
         class="h-display reveal"
         id="faq-title"
-        data-i18n="faq_title"
+        data-i18n-html="faq_title"
       >
-        Ko'p beriladigan savollar
+        Ko'p beriladigan <span class="hl">savollar</span>
       </h2>
 
     </div>
@@ -849,11 +897,23 @@
   <section class="apply" id="apply" aria-labelledby="apply-title">
 
     <div class="apply__head">
+      <p class="sec-mark sec-mark--center reveal">
+        <span class="sec-mark__no">05</span>
+        <span class="sec-mark__rule" aria-hidden="true"></span>
+        <span class="sec-mark__label" data-i18n="eyebrow_apply">Anketa</span>
+      </p>
       <p class="apply__kicker reveal" data-i18n="form_kicker">Sahnaga chiqishga tayyormisiz?</p>
     </div>
 
     <div class="card reveal">
       <div class="card__glow" aria-hidden="true"></div>
+
+      <span class="card__corner card__corner--tl" aria-hidden="true">
+        <svg viewBox="0 0 46 46" fill="none"><path d="M1 45V10L10 1h35" stroke="currentColor" stroke-width="1.5"/><path d="M7 45V13l6-6h32" stroke="currentColor" stroke-width="1" opacity=".5"/><circle cx="10" cy="10" r="2.5" fill="currentColor"/></svg>
+      </span>
+      <span class="card__corner card__corner--tr" aria-hidden="true">
+        <svg viewBox="0 0 46 46" fill="none"><path d="M1 45V10L10 1h35" stroke="currentColor" stroke-width="1.5"/><path d="M7 45V13l6-6h32" stroke="currentColor" stroke-width="1" opacity=".5"/><circle cx="10" cy="10" r="2.5" fill="currentColor"/></svg>
+      </span>
 
       <div class="formwrap" id="formwrap">
 
@@ -1205,65 +1265,40 @@
 
   <div class="foot__inner">
 
-    <!-- LEFT: LOGOS -->
-    <div class="foot__logos">
+    <!-- TOP: brand + partner logos -->
+    <div class="foot__top">
 
-      <img
-        src="white.png"
-        alt="UPOP Trend"
-        class="foot__logo foot__logo--white"
-      />
+      <div class="foot__brand">
+        <span class="foot__tag">#UPopTrend</span>
+        <span
+          class="foot__details"
+          data-i18n-html="footer_details"
+        >
+          Barcha tafsilotlar —
+          <a href="https://upop.uz" target="_blank" rel="noopener">upop.uz</a>
+        </span>
+      </div>
 
-      <img
-        src="gidro.png"
-        alt="Gidro"
-        class="foot__logo foot__logo--gidro"
-      />
-
-      <img
-        src="./blue.png"
-        alt="UPOP Trend"
-        class="foot__logo foot__logo--blue"
-      />
+      <div class="foot__logos">
+        <img src="white.png" alt="UPOP Trend" class="foot__logo" />
+        <span class="foot__sep" aria-hidden="true"></span>
+        <img src="gidro.png" alt="Uzbekgidroenergo" class="foot__logo" />
+        <span class="foot__sep" aria-hidden="true"></span>
+        <img src="blue.png" alt="Bolalar ijodkorligi" class="foot__logo foot__logo--sq" />
+      </div>
 
     </div>
 
-    <!-- RIGHT: CONTENT -->
-    <div class="foot__content">
-
-      <span class="foot__tag">
-        #UPopTrend
-      </span>
-
+    <!-- BOTTOM: legal bar -->
+    <div class="foot__bottom">
+      <span data-i18n="footer_copy">© 2026 UPOP TREND</span>
+      <span class="foot__sep foot__sep--sm" aria-hidden="true"></span>
       <span
-        class="foot__details"
-        data-i18n-html="footer_details"
+        class="foot__credit"
+        data-i18n="footer_credit"
       >
-        Barcha tafsilotlar —
-        <a
-          href="https://upop.uz"
-          target="_blank"
-          rel="noopener"
-        >
-          upop.uz
-        </a>
+        Designed &amp; Developed by teiior
       </span>
-
-      <span class="foot__meta">
-
-        <span data-i18n="footer_copy">
-          © 2026 UPOP TREND
-        </span>
-
-        <span
-          class="foot__credit"
-          data-i18n="footer_credit"
-        >
-          Designed &amp; Developed by teiior
-        </span>
-
-      </span>
-
     </div>
 
   </div>

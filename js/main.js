@@ -21,14 +21,17 @@ const DICT = {
     hero_title: `Qadriyatlarning qayta yaralishi`,
     hero_cta: `Anketani to‘ldiring`,
 
+    marquee: `U POP TREND ✦ Milliy kasting ✦ 5 shahar ✦ 15–21 yosh ✦ Jonli ijro ✦ Ishtirok bepul ✦ `,
+
 chance_title: `Yoshingiz <span class="hl">15 dan 21 gacha!</span><br>Va siz jonli kuylay olasiz!<br>Demak, bu sizning sahnangiz!`,
+    who_lede: `O'zbekiston tarixidagi ilk milliy kasting — tajriba va tayyorgarlikdan qat'i nazar, barcha uchun ochiq.`,
 
     stat1_num: `15–21`,
     stat1_label: `Ishtirokchilar yoshi`,
     stat2_label: `Kasting shaharlari soni`,
     stat3_label: `Milliy loyiha`,
 
-    steps_title: `Sahnagacha uch qadam`,
+    steps_title: `Sahnagacha <span class="hl">uch qadam</span>`,
 
     step1_title: `Anketani to'ldiring`,
     step1_text: `Ma'lumotlaringizni qoldiring va qulay shaharni tanlang. Bu ikki daqiqadan kam vaqt oladi — tasdiq anketada ko'rsatilgan raqamga keladi.`,
@@ -39,7 +42,9 @@ chance_title: `Yoshingiz <span class="hl">15 dan 21 gacha!</span><br>Va siz jonl
     step3_title: `Milliy loyihaning bir qismiga aylaning`,
     step3_text: `Mamlakatning eng iqtidorli ovozlari milliy loyiha doirasida birlashadi. Ishtirokchilar professional prodyuserlar, sahna va ommaviy axborot vositalari e'tiborida bo'lishadi.`,
 
-    cities_title: `Kasting respublika bo'ylab o'tkaziladi`,
+    cities_title: `Kasting <span class="hl">respublika bo'ylab</span> o'tkaziladi`,
+    cities_lede: `Besh shahar — besh sahna. O'zingizga qulayini tanlang.`,
+    final_badge: `Katta final`,
 
     city1_name: `Farg'ona`,
     city1_date: `7-sentabr`,
@@ -56,7 +61,7 @@ chance_title: `Yoshingiz <span class="hl">15 dan 21 gacha!</span><br>Va siz jonl
     city5_name: `Toshkent`,
     city5_date: `19–20-sentabr`,
 
-    faq_title: `Ko'p beriladigan savollar`,
+    faq_title: `Ko'p beriladigan <span class="hl">savollar</span>`,
 
     q1: `Sahna tajribasi kerakmi?`,
     a1: `Yo'q. Kasting 15 yoshdan 21 yoshgacha bo'lganlar uchun ochiq. Musiqa maktabi ham, avvalgi sahna tajribasi ham talab qilinmaydi, hakamlar ovoz va aktyorlik mahoratiga baho beradi.`,
@@ -76,6 +81,7 @@ chance_title: `Yoshingiz <span class="hl">15 dan 21 gacha!</span><br>Va siz jonl
     q6: `Kastingda qanday qo'shiqlarni ijro etish mumkin?`,
     a6: `Kastingning barcha bosqichlarida faqat milliy qo'shiqlar va folklor — maqom, baxshi, ashula, suvora, yalla, lapar va boshqa an'anaviy janrlar — ijro etishga ruxsat beriladi. Xorijiy qo'shiqlar va zamonaviy o'zbek qo'shiqlarini ijro etish taqiqlanadi. Barcha ishtirokchilar a cappella kuylaydi — kasting bosqichida minusovka yoki jo'rnavozlik kerak emas va taqdim etilmaydi.`,
 
+    eyebrow_apply: `Anketa`,
     form_kicker: `Sahnaga chiqishga tayyormisiz?`,
     form_card_title: `Milliy tanlov anketasi`,
     form_sub: `Anketani diqqat bilan to‘ldiring — bu sizni sahnaga chiqishdan avval yaxshiroq bilishimizga yordam beradi.`,
@@ -208,17 +214,20 @@ chance_title: `Yoshingiz <span class="hl">15 dan 21 gacha!</span><br>Va siz jonl
     nav_faq: `Вопросы`,
     nav_apply: `Заполнить анкету`,
 
-    hero_title: `Возрождение ценностей</span>`,
+    hero_title: `Возрождение ценностей`,
     hero_cta: `Заполнить анкету`,
 
-    chance_title: `Вам <span class="hl">от 15 до 21 года!</span> И вы умеете петь вживую? Значит, это ваша сцена!`,
+    marquee: `U POP TREND ✦ Национальный кастинг ✦ 5 городов ✦ 15–21 год ✦ Живой звук ✦ Участие бесплатно ✦ `,
+
+    chance_title: `Вам <span class="hl">от 15 до 21 года!</span><br>И вы умеете петь вживую?<br>Значит, это ваша сцена!`,
+    who_lede: `Первый национальный кастинг в истории Узбекистана — открыт для всех, независимо от опыта и подготовки.`,
 
     stat1_num: `15–21`,
     stat1_label: `Возраст участников`,
     stat2_label: `городов кастинга`,
     stat3_label: `национальный проект`,
 
-    steps_title: `Три шага до сцены`,
+    steps_title: `Три шага <span class="hl">до сцены</span>`,
 
     step1_title: `Заполните анкету`,
     step1_text: `Оставьте свои данные и выберите удобный город. Это займёт меньше двух минут — подтверждение придёт на номер, указанный в анкете.`,
@@ -229,7 +238,9 @@ chance_title: `Yoshingiz <span class="hl">15 dan 21 gacha!</span><br>Va siz jonl
     step3_title: `Станьте частью национального проекта`,
     step3_text: `Самые талантливые голоса страны объединятся в рамках национального проекта. Участники окажутся в поле внимания профессиональных продюсеров, сцены и средств массовой информации.`,
 
-    cities_title: `Кастинг проходит по всей республике`,
+    cities_title: `Кастинг проходит <span class="hl">по всей республике</span>`,
+    cities_lede: `Пять городов — пять сцен. Выбирайте, куда удобнее добраться.`,
+    final_badge: `Большой финал`,
 
     city1_name: `Фергана`,
     city1_date: `7 сентября`,
@@ -246,7 +257,7 @@ chance_title: `Yoshingiz <span class="hl">15 dan 21 gacha!</span><br>Va siz jonl
     city5_name: `Ташкент`,
     city5_date: `19–20 сентября`,
 
-    faq_title: `Частые вопросы`,
+    faq_title: `Частые <span class="hl">вопросы</span>`,
 
     q1: `Нужен ли опыт выступлений?`,
     a1: `Нет. Кастинг открыт для всех в возрасте от 15 до 21 года. Ни музыкальная школа, ни предыдущий сценический опыт не требуются — жюри оценивает вокальные и артистические способности.`,
@@ -266,6 +277,7 @@ chance_title: `Yoshingiz <span class="hl">15 dan 21 gacha!</span><br>Va siz jonl
     q6: `Какие песни можно исполнять на кастинге?`,
     a6: `На всех этапах кастинга к прослушиванию допускаются только национальные песни и фольклор — маком, бахши, ашула, сувора, ялла, лапар и другие традиционные жанры. Зарубежные песни и современные узбекские песни исполнять запрещено. Все участники выступают a cappella — минусовка или аккомпанемент на этапе кастинга не нужны и не предоставляются.`,
 
+    eyebrow_apply: `Анкета`,
     form_kicker: `Готовы выйти на сцену?`,
     form_card_title: `Анкета участника кастинга`,
     form_sub: `Заполни анкету внимательно — она поможет узнать тебя ещё до того, как ты выйдешь на сцену.`,
@@ -401,14 +413,17 @@ chance_title: `Yoshingiz <span class="hl">15 dan 21 gacha!</span><br>Va siz jonl
     hero_title: `The rebirth of values`,
     hero_cta: `Fill in the form`,
 
-    chance_title: `Are you <span class="hl">15 to 21 years old?</span> And can you sing live? Then this is your stage!`,
+    marquee: `U POP TREND ✦ National casting ✦ 5 cities ✦ Ages 15–21 ✦ Live vocals ✦ Free to enter ✦ `,
+
+    chance_title: `Are you <span class="hl">15 to 21 years old?</span><br>And can you sing live?<br>Then this is your stage!`,
+    who_lede: `The first national casting in Uzbekistan's history — open to everyone, regardless of experience or training.`,
 
     stat1_num: `15–21`,
     stat1_label: `Age of participants`,
     stat2_label: `casting cities`,
     stat3_label: `national project`,
 
-    steps_title: `Three steps to the stage`,
+    steps_title: `Three steps <span class="hl">to the stage</span>`,
 
     step1_title: `Fill in the form`,
     step1_text: `Leave your details and choose a convenient city. It takes less than two minutes — confirmation will be sent to the number provided in the form.`,
@@ -419,7 +434,9 @@ chance_title: `Yoshingiz <span class="hl">15 dan 21 gacha!</span><br>Va siz jonl
     step3_title: `Become part of the national project`,
     step3_text: `The country's most talented voices will come together as part of the national project. Participants will be in the spotlight of professional producers, the stage and mass media.`,
 
-    cities_title: `The casting will take place across the republic`,
+    cities_title: `The casting travels <span class="hl">across the republic</span>`,
+    cities_lede: `Five cities — five stages. Pick the one easiest to reach.`,
+    final_badge: `Grand final`,
 
     city1_name: `Fergana`,
     city1_date: `September 7`,
@@ -436,7 +453,7 @@ chance_title: `Yoshingiz <span class="hl">15 dan 21 gacha!</span><br>Va siz jonl
     city5_name: `Tashkent`,
     city5_date: `September 19–20`,
 
-    faq_title: `Frequently asked questions`,
+    faq_title: `Frequently asked <span class="hl">questions</span>`,
 
     q1: `Do I need stage experience?`,
     a1: `No. The casting is open to everyone aged 15–21. Neither music school nor previous stage experience is required — the jury evaluates vocal and performance skills.`,
@@ -456,6 +473,7 @@ chance_title: `Yoshingiz <span class="hl">15 dan 21 gacha!</span><br>Va siz jonl
     q6: `What songs can be performed at the casting?`,
     a6: `At all stages of the casting, only national songs and folklore are allowed — maqom, bakhshi, ashula, suvora, yalla, lapar and other traditional genres. Foreign songs and modern Uzbek songs are prohibited. All participants sing a cappella — backing tracks or accompaniment are not needed and are not provided during the casting stage.`,
 
+    eyebrow_apply: `Application`,
     form_kicker: `Ready to take the stage?`,
     form_card_title: `Casting application form`,
     form_sub: `Fill it in carefully — it helps us get to know you before you step on stage.`,
