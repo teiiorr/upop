@@ -468,7 +468,12 @@ body.sec-faq    .nav__desktop a[href="#faq"] { color: var(--gold-hi); }
   line-height: 1.1;
   letter-spacing: -0.02em;
   margin: 0;
-  color: var(--gold);
+  /* real metallic gold (same leaf as .hl), no glow behind it */
+  background: var(--metal);
+  background-size: 220% auto;
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent; color: transparent;
+  animation: shimmer 8s var(--e-inout) infinite;
   text-wrap: balance;
 }
 

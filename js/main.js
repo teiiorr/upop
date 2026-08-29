@@ -18,7 +18,7 @@ const DICT = {
     nav_faq: `Savollar`,
     nav_apply: `Anketani to‘ldiring`,
 
-    hero_title: `«Qadriyatlarning qayta yaralishi»`,
+    hero_title: `“Qadriyatlarning qayta yaralishi”`,
     hero_cta: `Anketani to‘ldiring`,
 chance_title: `Yoshingiz <span class="hl">15 dan 21 gacha!</span><br>Va siz jonli kuylay olasiz!<br>Demak, bu sizning sahnangiz!`,
     who_lede: `O'zbekiston tarixidagi ilk milliy kasting — tajriba va tayyorgarlikdan qat'i nazar, barcha uchun ochiq.`,
