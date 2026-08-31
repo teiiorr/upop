@@ -992,14 +992,15 @@
               </div>
             </div>
 
-            <div class="field">
-              <label for="f-region" data-i18n="s1_region">Yashash shahri / tumani</label>
-              <input id="f-region" name="region" type="text" placeholder="—" />
-            </div>
-
-            <div class="field">
-              <label for="f-address" data-i18n="s1_address">Ro‘yxatga olingan manzil</label>
-              <input id="f-address" name="address" type="text" placeholder="—" />
+            <div class="field-row">
+              <div class="field">
+                <label for="f-region" data-i18n="s1_region">Yashash shahri / tumani</label>
+                <input id="f-region" name="region" type="text" placeholder="—" />
+              </div>
+              <div class="field">
+                <label for="f-address" data-i18n="s1_address">Ro‘yxatga olingan manzil</label>
+                <input id="f-address" name="address" type="text" placeholder="—" />
+              </div>
             </div>
 
             <div class="field-row">
@@ -1078,21 +1079,25 @@
               <span class="consent__text" data-i18n="s3_agree">Qoidalar bilan tanishdim va asarim talablarga javob berishini kafolatlayman.</span>
             </label>
 
-            <div class="field field--req">
-              <label for="f-piece" data-i18n="s3_piece">Ijro etiladigan asar (nomi, muallifi)</label>
-              <input id="f-piece" name="piece" type="text" placeholder="—" required />
+            <div class="field-row">
+              <div class="field field--req">
+                <label for="f-piece" data-i18n="s3_piece">Ijro etiladigan asar (nomi, muallifi)</label>
+                <input id="f-piece" name="piece" type="text" placeholder="—" required />
+              </div>
+              <div class="field field--req">
+                <label for="f-genre" data-i18n="s3_genre">Janr / yo‘nalish</label>
+                <input id="f-genre" name="genre" type="text" data-i18n-ph="s3_genre_ph" placeholder="maqom, ashula, suvora…" required />
+              </div>
             </div>
-            <div class="field field--req">
-              <label for="f-genre" data-i18n="s3_genre">Janr / yo‘nalish</label>
-              <input id="f-genre" name="genre" type="text" data-i18n-ph="s3_genre_ph" placeholder="maqom, ashula, suvora…" required />
-            </div>
-            <div class="field">
-              <label for="f-edu" data-i18n="s3_edu">Musiqiy ma’lumotingiz bormi? Qayerda?</label>
-              <input id="f-edu" name="education" type="text" placeholder="—" />
-            </div>
-            <div class="field">
-              <label for="f-instr" data-i18n="s3_instr">Musiqa asbobida chalasizmi? Qaysi?</label>
-              <input id="f-instr" name="instruments" type="text" placeholder="—" />
+            <div class="field-row">
+              <div class="field">
+                <label for="f-edu" data-i18n="s3_edu">Musiqiy ma’lumotingiz bormi? Qayerda?</label>
+                <input id="f-edu" name="education" type="text" placeholder="—" />
+              </div>
+              <div class="field">
+                <label for="f-instr" data-i18n="s3_instr">Musiqa asbobida chalasizmi? Qaysi?</label>
+                <input id="f-instr" name="instruments" type="text" placeholder="—" />
+              </div>
             </div>
             <div class="field-row">
               <div class="field">
@@ -1173,13 +1178,15 @@
               <label for="f-chronic" data-i18n="s5_chronic">Surunkali kasalliklar / cheklovlar (agar bo‘lsa)</label>
               <textarea id="f-chronic" name="chronic" rows="2" placeholder="—"></textarea>
             </div>
-            <div class="field">
-              <label for="f-allergy" data-i18n="s5_allergy">Allergiya (agar bo‘lsa)</label>
-              <input id="f-allergy" name="allergy" type="text" placeholder="—" />
-            </div>
-            <div class="field field--req">
-              <label for="f-emerg" data-i18n="s5_emergency">Favqulodda holat uchun kontakt (F.I.Sh., telefon)</label>
-              <input id="f-emerg" name="emergency_contact" type="text" placeholder="—" required />
+            <div class="field-row">
+              <div class="field">
+                <label for="f-allergy" data-i18n="s5_allergy">Allergiya (agar bo‘lsa)</label>
+                <input id="f-allergy" name="allergy" type="text" placeholder="—" />
+              </div>
+              <div class="field field--req">
+                <label for="f-emerg" data-i18n="s5_emergency">Favqulodda holat uchun kontakt (F.I.Sh., telefon)</label>
+                <input id="f-emerg" name="emergency_contact" type="text" placeholder="—" required />
+              </div>
             </div>
           </fieldset>
 

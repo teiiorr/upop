@@ -791,10 +791,10 @@ body.sec-faq    .nav__desktop a[href="#faq"] { color: var(--gold-hi); }
   margin: 0; text-wrap: balance;
 }
 .card {
-  position: relative; max-width: 680px; margin: 0 auto;
+  position: relative; max-width: 900px; margin: 0 auto;
   border: 1px solid var(--line-gold); border-radius: var(--r-card);
   background: linear-gradient(180deg, var(--surface-2), var(--surface));
-  padding: clamp(26px, 4.5vw, 46px);
+  padding: clamp(26px, 4vw, 52px);
   box-shadow: 0 40px 90px -50px rgba(0,0,0,.9), inset 0 1px 0 rgba(255,255,255,.04);
   overflow: hidden;
 }
@@ -819,18 +819,18 @@ body.sec-faq    .nav__desktop a[href="#faq"] { color: var(--gold-hi); }
 .card__sub { color: var(--ink-70); margin: 0 0 clamp(20px, 3vw, 28px); font-size: .98rem; }
 
 .form { display: grid; gap: 16px; }
-.field-row { display: grid; grid-template-columns: 1fr 1.3fr; gap: 16px; }
-.field { display: grid; gap: 7px; }
-.field label { font-size: .84rem; font-weight: 600; color: var(--ink-70); letter-spacing: .01em; transition: color .25s ease; }
+.field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+.field { display: grid; gap: 9px; }
+.field label { font-size: .9rem; font-weight: 600; color: var(--ink-70); letter-spacing: .01em; transition: color .25s ease; }
 .field:focus-within > label { color: var(--gold-hi); }
 .field input, .field select, .field textarea {
-  width: 100%; font-family: var(--font-sans); font-size: 1rem; color: var(--ink);
+  width: 100%; font-family: var(--font-sans); font-size: 1.02rem; color: var(--ink);
   background: rgba(6,20,28,.6); border: 1px solid var(--line);
-  border-radius: var(--r-input); padding: 13px 15px;
+  border-radius: var(--r-input); padding: 15px 17px;
   transition: border-color .25s ease, box-shadow .25s ease, background .25s ease;
   appearance: none;
 }
-.field textarea { resize: vertical; min-height: 46px; line-height: 1.5; }
+.field textarea { resize: vertical; min-height: 58px; line-height: 1.55; }
 .field select {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none'%3E%3Cpath d='M4 6l4 4 4-4' stroke='%23C9A25A' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
   background-repeat: no-repeat; background-position: right 15px center; padding-right: 40px;
@@ -900,7 +900,7 @@ body.sec-faq    .nav__desktop a[href="#faq"] { color: var(--gold-hi); }
 
 /* panels */
 .wiz-form { display: block; }
-.wiz-panel { border: 0; padding: 0; margin: 0; min-inline-size: 0; display: grid; gap: 16px; }
+.wiz-panel { border: 0; padding: 0; margin: 0; min-inline-size: 0; display: grid; gap: 18px; }
 .wiz-panel:not(.is-active) { display: none; }
 .wiz-panel.is-active { animation: wizIn .42s var(--e-quint); }
 @keyframes wizIn { from { opacity: 0; transform: translateY(12px); filter: blur(3px); } to { opacity: 1; transform: none; filter: blur(0); } }
