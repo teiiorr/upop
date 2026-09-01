@@ -926,6 +926,24 @@ body.sec-faq    .nav__desktop a[href="#faq"] { color: var(--gold-hi); }
 .wiz-count b { color: var(--gold-hi); }
 .wiz-next, .wiz-submit { min-width: 148px; }
 
+/* full-width anketa on desktop: fill the page and lay fields in 2 columns
+   so the form spreads out instead of running long */
+@media (min-width: 900px) {
+  .card { max-width: var(--maxw); }
+  .apply__head { max-width: var(--maxw); }
+  .wiz-panel { grid-template-columns: 1fr 1fr; column-gap: clamp(20px, 2.4vw, 34px); row-gap: 20px; }
+  .wiz-panel > .wiz-panel__title,
+  .wiz-panel > .field-row,
+  .wiz-panel > .wiz-sublabel,
+  .wiz-panel > .wiz-note,
+  .wiz-panel > .wiz-rule,
+  .wiz-panel > .consent,
+  .wiz-panel > .field--wide,
+  .wiz-panel > .field:has(textarea) { grid-column: 1 / -1; }
+  /* inside a full-width row the two inputs can breathe wider */
+  .field-row { gap: clamp(20px, 2.4vw, 34px); }
+}
+
 @media (max-width: 560px) {
   .field-row { grid-template-columns: 1fr; }
   .wiz-steps { justify-content: space-between; gap: 2px; }
