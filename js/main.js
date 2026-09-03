@@ -18,7 +18,7 @@ const DICT = {
     nav_faq: `Savollar`,
     nav_apply: `Anketani to‘ldiring`,
 
-    hero_title: `“Qadriyatlarning qayta yaralishi”`,
+    hero_title: `“Qadriyatlarning qayta tirilishi”`,
     hero_cta: `Anketani to‘ldiring`,
     deadline: `Arizalar 2026-yil 17-sentabrgacha qabul qilinadi`,
 chance_title: `Yoshingiz <span class="hl">15 dan 21 gacha!</span><br>Va siz jonli kuylay olasiz!<br>Demak, bu sizning sahnangiz!`,
@@ -412,7 +412,7 @@ chance_title: `Yoshingiz <span class="hl">15 dan 21 gacha!</span><br>Va siz jonl
     nav_faq: `FAQ`,
     nav_apply: `Fill in the form`,
 
-    hero_title: `“The rebirth of values”`,
+    hero_title: `“The revival of values”`,
     hero_cta: `Fill in the form`,
     deadline: `Applications accepted until 17 September 2026`,
     chance_title: `Are you <span class="hl">15 to 21 years old?</span><br>And can you sing live?<br>Then this is your stage!`,
@@ -664,7 +664,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initAccordion();
   initMagnetic();
   initForm();
-  initLogoScroll();
+  initHeroLogoScroll();
 
   // Open at the very top unless the URL points to a section anchor.
   if (!location.hash) window.scrollTo(0, 0);
@@ -1277,65 +1277,41 @@ function submitCasting(data) {
 
 /* ---------- util ---------- */
 
-/* ---------- scroll-morphing logo (hero <-> navbar) ---------- */
-function initLogoScroll() {
-  if (reduceMotion) return;
+/* ---------- hero logo: magnet-smooth recede on scroll ----------
+   The navbar logo is always visible; the big hero logo eases up and fades
+   as you scroll. Only transform + opacity are animated (GPU-composited), so
+   there is no jitter on slow scroll and it works on iOS (no position:fixed). */
+function initHeroLogoScroll() {
+  const scaler = document.querySelector(".hero__logo-scale");
+  if (!scaler || reduceMotion) return;
 
-  const fly = document.querySelector(".fly-logo");
-  const inner = fly && fly.querySelector("img");
-  const placeholder = document.querySelector(".hero-logo-img");
-  const slot = document.querySelector(".nav__brand");
-  const hero = document.querySelector(".hero");
-  if (!fly || !placeholder || !slot || !hero) return;
-
-  const root = document.documentElement;
-  root.classList.add("logo-fx");
-
-  let home = { x: 0, y: 0, h: 1 };
-  let dest = { x: 0, y: 0, h: 1 };
   let range = 1;
-  let navScale = 0.1;
-  let curP = 0;
+  let curP = 0;      // eased progress (the "magnet")
   let running = false;
-  let atTop = null;
 
   function measure() {
-    const pr = placeholder.getBoundingClientRect();
-    home = { x: pr.left + window.scrollX, y: pr.top + window.scrollY, h: pr.height || 1 };
-    fly.style.width = pr.width + "px";
-    fly.style.height = pr.height + "px";
-    const sr = slot.getBoundingClientRect();
-    dest = { x: sr.left, y: sr.top, h: sr.height || 1 };
-    navScale = dest.h / home.h;
-    // dock within ~half a viewport so the logo reaches the navbar quickly
-    // and does not linger over the content while flying
-    range = Math.max(240, Math.min(window.innerHeight * 0.5, 460));
+    range = Math.max(320, window.innerHeight * 0.6);
     curP = target();
     apply(curP);
   }
-
   function target() {
     return Math.min(1, Math.max(0, window.scrollY / range));
   }
-
   function apply(p) {
-    const x = home.x + (dest.x - home.x) * p;
-    const y = home.y + (dest.y - home.y) * p;
-    const sc = 1 + (navScale - 1) * p;
-    fly.style.transform =
-      "translate3d(" + x.toFixed(2) + "px, " + y.toFixed(2) + "px, 0) scale(" + sc.toFixed(4) + ")";
-    // toggle the idle zoom only when the logo is (near) fully in the hero
-    const top = p < 0.015;
-    if (top !== atTop) {
-      atTop = top;
-      root.classList.toggle("is-top", top);
-    }
+    // ease the visual curve a touch so the fade feels soft near the top
+    const e = p * p * (3 - 2 * p); // smoothstep
+    const scale = 1 - 0.34 * e;
+    const ty = -64 * e;
+    const tx = -8 * e;
+    const op = Math.max(0, 1 - e * 1.25);
+    scaler.style.transform =
+      "translate3d(" + tx.toFixed(2) + "px, " + ty.toFixed(2) + "px, 0) scale(" + scale.toFixed(4) + ")";
+    scaler.style.opacity = op.toFixed(3);
   }
-
-  // smooth rAF loop: reads live scroll each frame and eases curP toward it
   function frame() {
     const t = target();
-    curP += (t - curP) * 0.24;
+    // low factor = magnetic, buttery trailing (no step jitter on slow scroll)
+    curP += (t - curP) * 0.14;
     if (Math.abs(t - curP) < 0.0004) {
       curP = t;
       apply(curP);
@@ -1354,9 +1330,6 @@ function initLogoScroll() {
 
   window.addEventListener("scroll", kick, { passive: true });
   window.addEventListener("resize", debounce(measure, 120));
-  if (document.fonts && document.fonts.ready) document.fonts.ready.then(measure);
-  setTimeout(measure, 400);
-
   measure();
 }
 

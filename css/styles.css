@@ -385,7 +385,7 @@ html { scrollbar-width: thin; scrollbar-color: var(--gold-lo) var(--bg); }
   transition: opacity .25s var(--e-quint);
 }
 .nav__brand img {
-  height: 38px;
+  height: 46px;
   width: auto;
   display: block;
 }
@@ -619,30 +619,15 @@ body.sec-faq    .nav__desktop a[href="#faq"] { color: var(--gold-hi); }
 }
 
 /* ============================================================
-   SCROLL-MORPHING LOGO — big in hero, docks into the navbar
+   HERO LOGO — recedes on scroll (nav logo is always present).
+   Uses only transform + opacity (GPU) so it stays magnet-smooth and
+   works on iOS, where position:fixed lags during momentum scrolling.
    ============================================================ */
-.fly-logo { display: none; }
-.logo-fx .fly-logo {
-  display: block;
-  position: fixed; top: 0; left: 0; z-index: 45;
-  transform-origin: 0 0; pointer-events: none;
-  will-change: transform; backface-visibility: hidden;
+.hero__logo-scale {
+  transform-origin: center 46%;
+  will-change: transform, opacity;
+  backface-visibility: hidden;
 }
-.fly-logo img {
-  display: block; width: 100%; height: 100%; object-fit: contain;
-  filter: drop-shadow(0 24px 60px rgba(0,0,0,.55));
-  transition: transform .35s var(--e-inout);
-}
-/* gentle zoom only while the logo sits still in the hero */
-.logo-fx.is-top .fly-logo img { animation: logoZoom 5s var(--e-inout) infinite; }
-/* under the effect: the hero logo only reserves space; the static nav logo
-   and the hero zoom step aside for the flying one */
-.logo-fx .hero-logo-img { visibility: hidden; }
-.logo-fx .hero__logo img { animation: none !important; }
-.logo-fx .hero__logo { animation: none !important; transform: none !important; opacity: 1 !important; }
-.logo-fx .nav__brand > img { display: none; }
-.logo-fx .nav__brand { width: 68px; height: 54px; }
-@media (max-width: 560px) { .logo-fx .nav__brand { width: 58px; height: 46px; } }
 
 .hero__cta { position: relative; z-index: 1; margin-top: clamp(16px, 3vh, 28px); }
 
