@@ -790,6 +790,22 @@ body.sec-faq    .nav__desktop a[href="#faq"] { color: var(--gold-hi); }
   font-size: clamp(1.6rem, 4.4vw, 3rem); line-height: 1.08; letter-spacing: -.02em;
   margin: 0; text-wrap: balance;
 }
+
+/* application deadline — a plain gold line with a drawn calendar icon
+   (no pill / no plaque) */
+.apply__deadline {
+  display: inline-flex; align-items: center; gap: 9px;
+  margin: clamp(14px, 2vw, 20px) 0 0;
+  font-family: var(--font-disp); font-weight: 600;
+  font-size: clamp(.92rem, 1.7vw, 1.12rem); letter-spacing: .01em;
+  color: var(--gold-hi);
+}
+.apply__deadline::before {
+  content: ""; width: 19px; height: 19px; flex: 0 0 auto;
+  background: currentColor;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='5' width='18' height='16' rx='2'/%3E%3Cpath d='M3 10h18M8 3v4M16 3v4'/%3E%3C/svg%3E") center/contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='5' width='18' height='16' rx='2'/%3E%3Cpath d='M3 10h18M8 3v4M16 3v4'/%3E%3C/svg%3E") center/contain no-repeat;
+}
 .card {
   position: relative; max-width: 900px; margin: 0 auto;
   border: 1px solid var(--line-gold); border-radius: var(--r-card);

@@ -9,7 +9,7 @@ const DICT = {
   /* ---------------------------------------------------- UZ */
   uz: {
     meta_title: `U POP TREND — Milliy kasting`,
-    meta_desc:  `15–21 yoshdagi yoshlar uchun milliy kasting. 5 shahar. Jonli ijro. Anketani to‘ldiring.`,
+    meta_desc:  `15–21 yoshdagi yoshlar uchun milliy tanlov. Videongizni #UPOP bilan joylang va anketani to‘ldiring. Arizalar 17-sentabrgacha.`,
     skip: `Kastingga o'tish`,
 
     nav_who: `Kim qatnashadi`,
@@ -20,24 +20,25 @@ const DICT = {
 
     hero_title: `“Qadriyatlarning qayta yaralishi”`,
     hero_cta: `Anketani to‘ldiring`,
+    deadline: `Arizalar 2026-yil 17-sentabrgacha qabul qilinadi`,
 chance_title: `Yoshingiz <span class="hl">15 dan 21 gacha!</span><br>Va siz jonli kuylay olasiz!<br>Demak, bu sizning sahnangiz!`,
     who_lede: `O'zbekiston tarixidagi ilk milliy kasting — tajriba va tayyorgarlikdan qat'i nazar, barcha uchun ochiq.`,
 
     stat1_num: `15–21`,
     stat1_label: `Ishtirokchilar yoshi`,
-    stat2_label: `Kasting shaharlari soni`,
+    stat2_label: `Oxirgi muddat`,
     stat3_label: `Milliy loyiha`,
 
     steps_title: `Sahnagacha <span class="hl">uch qadam</span>`,
 
-    step1_title: `Anketani to'ldiring`,
-    step1_text: `Ma'lumotlaringizni qoldiring va qulay shaharni tanlang. Bu ikki daqiqadan kam vaqt oladi — tasdiq anketada ko'rsatilgan raqamga keladi.`,
+    step1_title: `Video yozing`,
+    step1_text: `O‘zingizga xos uslubda istalgan xalq qo‘shig‘ini ijro eting va videoni ijtimoiy tarmoqdagi shaxsiy sahifangizga joylang. Albatta #UPOP xeshtegini qo‘ying va @upoptrend sahifasini belgilang — aks holda tashkilotchilar arizangizni ko‘rmaydi.`,
 
-    step2_title: `Kastingdan o'ting`,
-    step2_text: `Belgilangan vaqtda kastingda ishtirok eting. Kasting fonogrammasiz, faqat jonli ijroda bo'lib o'tadi. Hakamlar hay'ati ishtirokchining tabiiy vokal imkoniyatlari va ijro mahoratini baholaydi.`,
+    step2_title: `Anketani to‘ldiring`,
+    step2_text: `Ma‘lumotlaringizni qoldiring. Bu ikki daqiqadan kam vaqt oladi — tasdiq anketada ko‘rsatilgan raqamga keladi.`,
 
     step3_title: `Milliy loyihaning bir qismiga aylaning`,
-    step3_text: `Mamlakatning eng iqtidorli ovozlari milliy loyiha doirasida birlashadi. Ishtirokchilar professional prodyuserlar, sahna va ommaviy axborot vositalari e'tiborida bo'lishadi.`,
+    step3_text: `Mamlakatning eng iqtidorli ovozlari milliy loyiha doirasida birlashadi. Ishtirokchilar professional prodyuserlar va ommaviy axborot vositalari e‘tiboriga tushib, katta sahnaga chiqish imkoniyatiga ega bo‘ladi.`,
 
     cities_title: `Kasting <span class="hl">respublika bo'ylab</span> o'tkaziladi`,
     cities_lede: `Besh shahar — besh sahna. O'zingizga qulayini tanlang.`,
@@ -73,10 +74,13 @@ chance_title: `Yoshingiz <span class="hl">15 dan 21 gacha!</span><br>Va siz jonl
     a4: `Ha. Ishtirok doimiy ro'yxatga olingan manzilga bog'liq emas — o'zingizga qulay shaharni tanlang.`,
 
     q5: `Natijalar qachon ma'lum bo'ladi?`,
-    a5: `Tashkilotchilar shahringizdagi kastingdan so'ng, bir necha kun o'tib, anketada ko'rsatilgan telefon raqami orqali kastingdan o'tgan ishtirokchilar bilan bog'lanadi.`,
+    a5: `Tashkilotchilar saralashdan o‘tgan ishtirokchilar bilan anketada ko‘rsatilgan telefon raqami orqali bog‘lanadi.`,
 
-    q6: `Kastingda qanday qo'shiqlarni ijro etish mumkin?`,
-    a6: `Kastingning barcha bosqichlarida faqat milliy qo'shiqlar va folklor — maqom, baxshi, ashula, suvora, yalla, lapar va boshqa an'anaviy janrlar — ijro etishga ruxsat beriladi. Xorijiy qo'shiqlar va zamonaviy o'zbek qo'shiqlarini ijro etish taqiqlanadi. Barcha ishtirokchilar a cappella kuylaydi — kasting bosqichida minusovka yoki jo'rnavozlik kerak emas va taqdim etilmaydi.`,
+    q6: `Qanday qo‘shiqlarni ijro etish mumkin?`,
+    a6: `Tanlovda faqat milliy qo‘shiqlar va folklor — maqom, baxshi, ashula, suvora, yalla, lapar va boshqa an‘anaviy janrlar — qatnashishga qabul qilinadi. Xorijiy hamda zamonaviy o‘zbek qo‘shiqlari ko‘rib chiqilmaydi.`,
+
+    q7: `Videoni joylashning oxirgi muddati qachon?`,
+    a7: `Barcha ishtirokchilarning videolari 2026-yil 17-sentabrdan kechiktirmay joylashtirilishi kerak.`,
 
     eyebrow_apply: `Anketa`,
     form_kicker: `Sahnaga chiqishga tayyormisiz?`,
@@ -189,12 +193,12 @@ chance_title: `Yoshingiz <span class="hl">15 dan 21 gacha!</span><br>Va siz jonl
     submit_loading: `Yuborilmoqda…`,
 
     success_title: `Anketa qabul qilindi`,
-    success_text: `Tanlangan shahardagi kastingdan oldin siz bilan bog'lanamiz. Tafsilotlarni upoptrend.uz saytida kuzating.`,
+    success_text: `Arizangiz uchun rahmat! Saralashdan o‘tsangiz, anketada ko‘rsatilgan raqam orqali siz bilan bog‘lanamiz. Tafsilotlarni upop.uz saytida kuzating.`,
 
     golden_title: `HAQIQIY ISTEDODLARNI QIDIRAMIZ!`,
     golden_subtitle: `Agar siz 15-21 yoshda bo'lsangiz va milliy madaniyatimizni chuqur bilsangiz - bu loyiha siz uchun!`,
 
-    footer_details: `Barcha tafsilotlar — <a href="https://upoptrend.uz" target="_blank" rel="noopener">upoptrend.uz</a>`,
+    footer_details: `Barcha tafsilotlar — <a href="https://upop.uz" target="_blank" rel="noopener">upop.uz</a>`,
     footer_copy: `© 2026 UPOP TREND`,
     footer_credit: `Designed & Developed by <a href="https://teiior.uz" target="_blank" rel="noopener">teiior</a>`,
   },
@@ -202,7 +206,7 @@ chance_title: `Yoshingiz <span class="hl">15 dan 21 gacha!</span><br>Va siz jonl
   /* ---------------------------------------------------- RU */
   ru: {
     meta_title: `U POP TREND — Национальный кастинг`,
-    meta_desc:  `Национальный кастинг для участников от 15 до 21 года. 5 городов. Живое исполнение. Подайте заявку.`,
+    meta_desc:  `Национальный конкурс для молодёжи 15–21 года. Опубликуйте видео с #UPOP и заполните анкету. Приём заявок до 17 сентября.`,
     skip: `Перейти к заявке`,
 
     nav_who: `Кто участвует`,
@@ -213,24 +217,25 @@ chance_title: `Yoshingiz <span class="hl">15 dan 21 gacha!</span><br>Va siz jonl
 
     hero_title: `«Возрождение ценностей»`,
     hero_cta: `Заполнить анкету`,
+    deadline: `Приём заявок до 17 сентября 2026 года`,
     chance_title: `Вам <span class="hl">от 15 до 21 года!</span><br>И вы умеете петь вживую?<br>Значит, это ваша сцена!`,
     who_lede: `Первый национальный кастинг в истории Узбекистана — открыт для всех, независимо от опыта и подготовки.`,
 
     stat1_num: `15–21`,
     stat1_label: `Возраст участников`,
-    stat2_label: `городов кастинга`,
+    stat2_label: `Крайний срок`,
     stat3_label: `национальный проект`,
 
     steps_title: `Три шага <span class="hl">до сцены</span>`,
 
-    step1_title: `Заполните анкету`,
-    step1_text: `Оставьте свои данные и выберите удобный город. Это займёт меньше двух минут — подтверждение придёт на номер, указанный в анкете.`,
+    step1_title: `Запишите видео`,
+    step1_text: `Исполните любую народную песню в своём стиле и опубликуйте видео на личной странице в соцсетях. Обязательно поставьте хэштег #UPOP и отметьте страницу @upoptrend — иначе организаторы не увидят вашу заявку.`,
 
-    step2_title: `Пройдите кастинг`,
-    step2_text: `Придите на кастинг в назначенное время. Кастинг проходит без фонограммы, только в живом исполнении. Жюри оценивает природные вокальные возможности участника и мастерство исполнения.`,
+    step2_title: `Заполните анкету`,
+    step2_text: `Оставьте свои данные. Это займёт меньше двух минут — подтверждение придёт на номер, указанный в анкете.`,
 
     step3_title: `Станьте частью национального проекта`,
-    step3_text: `Самые талантливые голоса страны объединятся в рамках национального проекта. Участники окажутся в поле внимания профессиональных продюсеров, сцены и средств массовой информации.`,
+    step3_text: `Самые талантливые голоса страны объединятся в рамках национального проекта. Участники окажутся в поле внимания профессиональных продюсеров и СМИ и смогут выйти на большую сцену.`,
 
     cities_title: `Кастинг проходит <span class="hl">по всей республике</span>`,
     cities_lede: `Пять городов — пять сцен. Выбирайте, куда удобнее добраться.`,
@@ -266,10 +271,13 @@ chance_title: `Yoshingiz <span class="hl">15 dan 21 gacha!</span><br>Va siz jonl
     a4: `Да. Участие не зависит от места постоянной регистрации — выберите город, который вам удобнее.`,
 
     q5: `Когда будут известны результаты?`,
-    a5: `Через несколько дней после кастинга в вашем городе организаторы свяжутся с участниками, прошедшими отбор, по номеру телефона, указанному в анкете.`,
+    a5: `Организаторы свяжутся с участниками, прошедшими отбор, по номеру телефона, указанному в анкете.`,
 
-    q6: `Какие песни можно исполнять на кастинге?`,
-    a6: `На всех этапах кастинга к прослушиванию допускаются только национальные песни и фольклор — маком, бахши, ашула, сувора, ялла, лапар и другие традиционные жанры. Зарубежные песни и современные узбекские песни исполнять запрещено. Все участники выступают a cappella — минусовка или аккомпанемент на этапе кастинга не нужны и не предоставляются.`,
+    q6: `Какие песни можно исполнять?`,
+    a6: `К участию допускаются только национальные песни и фольклор — маком, бахши, ашула, сувора, ялла, лапар и другие традиционные жанры. Зарубежные и современные узбекские песни рассматриваться не будут.`,
+
+    q7: `Какой крайний срок публикации видео?`,
+    a7: `Все видео участников должны быть опубликованы не позднее 17 сентября 2026 года.`,
 
     eyebrow_apply: `Анкета`,
     form_kicker: `Готовы выйти на сцену?`,
@@ -382,12 +390,12 @@ chance_title: `Yoshingiz <span class="hl">15 dan 21 gacha!</span><br>Va siz jonl
     submit_loading: `Отправка…`,
 
     success_title: `Анкета принята`,
-    success_text: `Мы свяжемся с вами перед кастингом в выбранном городе. Следите за подробностями на upoptrend.uz.`,
+    success_text: `Спасибо за заявку! Если вы пройдёте отбор, мы свяжемся с вами по номеру из анкеты. Следите за деталями на upop.uz.`,
 
     golden_title: `ИЩЕМ НАСТОЯЩИЕ ТАЛАНТЫ!`,
     golden_subtitle: `Если вам от 15 до 21 года и вы глубоко знаете нашу национальную культуру — этот проект для вас!`,
 
-    footer_details: `Все подробности — <a href="https://upoptrend.uz" target="_blank" rel="noopener">upoptrend.uz</a>`,
+    footer_details: `Все подробности — <a href="https://upop.uz" target="_blank" rel="noopener">upop.uz</a>`,
     footer_copy: `© 2026 UPOP TREND`,
     footer_credit: `Designed & Developed by <a href="https://teiior.uz" target="_blank" rel="noopener">teiior</a>`,
   },
@@ -395,7 +403,7 @@ chance_title: `Yoshingiz <span class="hl">15 dan 21 gacha!</span><br>Va siz jonl
   /* ---------------------------------------------------- EN */
   en: {
     meta_title: `U POP TREND — National Casting`,
-    meta_desc:  `National casting for participants aged 15–21. 5 cities. Live performance. Apply now.`,
+    meta_desc:  `A national contest for youth aged 15–21. Post your video with #UPOP and fill in the form. Applications until 17 September.`,
     skip: `Skip to apply`,
 
     nav_who: `Who can join`,
@@ -406,24 +414,25 @@ chance_title: `Yoshingiz <span class="hl">15 dan 21 gacha!</span><br>Va siz jonl
 
     hero_title: `“The rebirth of values”`,
     hero_cta: `Fill in the form`,
+    deadline: `Applications accepted until 17 September 2026`,
     chance_title: `Are you <span class="hl">15 to 21 years old?</span><br>And can you sing live?<br>Then this is your stage!`,
     who_lede: `The first national casting in Uzbekistan's history — open to everyone, regardless of experience or training.`,
 
     stat1_num: `15–21`,
     stat1_label: `Age of participants`,
-    stat2_label: `casting cities`,
+    stat2_label: `Deadline`,
     stat3_label: `national project`,
 
     steps_title: `Three steps <span class="hl">to the stage</span>`,
 
-    step1_title: `Fill in the form`,
-    step1_text: `Leave your details and choose a convenient city. It takes less than two minutes — confirmation will be sent to the number provided in the form.`,
+    step1_title: `Record a video`,
+    step1_text: `Perform any folk song in your own style and post the video on your personal social-media page. Be sure to add the hashtag #UPOP and tag @upoptrend — otherwise the organizers won't see your entry.`,
 
-    step2_title: `Attend the casting`,
-    step2_text: `Attend the casting at the scheduled time. The casting takes place without a backing track, with live vocals only. The jury evaluates the participant's natural vocal abilities and performance skills.`,
+    step2_title: `Fill in the form`,
+    step2_text: `Leave your details. It takes under two minutes — a confirmation is sent to the number you provide in the form.`,
 
     step3_title: `Become part of the national project`,
-    step3_text: `The country's most talented voices will come together as part of the national project. Participants will be in the spotlight of professional producers, the stage and mass media.`,
+    step3_text: `The country's most talented voices come together within a national project. Participants gain the attention of professional producers and the media, and a chance to step onto the big stage.`,
 
     cities_title: `The casting travels <span class="hl">across the republic</span>`,
     cities_lede: `Five cities — five stages. Pick the one easiest to reach.`,
@@ -459,10 +468,13 @@ chance_title: `Yoshingiz <span class="hl">15 dan 21 gacha!</span><br>Va siz jonl
     a4: `Yes. Participation is not tied to your permanent registration address — choose whichever city is most convenient for you.`,
 
     q5: `When will the results be announced?`,
-    a5: `A few days after the casting in your city, the organizers will contact participants who passed the selection using the phone number provided in the application.`,
+    a5: `The organizers will contact the selected participants using the phone number provided in the application.`,
 
-    q6: `What songs can be performed at the casting?`,
-    a6: `At all stages of the casting, only national songs and folklore are allowed — maqom, bakhshi, ashula, suvora, yalla, lapar and other traditional genres. Foreign songs and modern Uzbek songs are prohibited. All participants sing a cappella — backing tracks or accompaniment are not needed and are not provided during the casting stage.`,
+    q6: `What songs can be performed?`,
+    a6: `Only national songs and folklore are accepted — maqom, bakhshi, ashula, suvora, yalla, lapar and other traditional genres. Foreign and modern Uzbek songs will not be considered.`,
+
+    q7: `What is the deadline to publish the video?`,
+    a7: `All participants' videos must be published no later than 17 September 2026.`,
 
     eyebrow_apply: `Application`,
     form_kicker: `Ready to take the stage?`,
@@ -575,12 +587,12 @@ chance_title: `Yoshingiz <span class="hl">15 dan 21 gacha!</span><br>Va siz jonl
     submit_loading: `Sending…`,
 
     success_title: `Application received`,
-    success_text: `We will contact you before the casting in your chosen city. Follow updates at upoptrend.uz.`,
+    success_text: `Thank you for your application! If you pass the selection, we'll contact you using the number from the form. Follow updates at upop.uz.`,
 
     golden_title: `WE ARE LOOKING FOR REAL TALENTS!`,
     golden_subtitle: `If you are between 15 and 21 years old and deeply know our national culture - this project is for you!`,
 
-    footer_details: `All details — <a href="https://upoptrend.uz" target="_blank" rel="noopener">upoptrend.uz</a>`,
+    footer_details: `All details — <a href="https://upop.uz" target="_blank" rel="noopener">upop.uz</a>`,
     footer_copy: `© 2026 UPOP TREND`,
     footer_credit: `Designed & Developed by <a href="https://teiior.uz" target="_blank" rel="noopener">teiior</a>`,
   },
@@ -1050,17 +1062,6 @@ function initForm() {
     });
   });
 
-  // City -> casting date read-out.
-  const citySel = form.querySelector('select[name="city"]');
-  const castDate = document.getElementById("castDate");
-  const updateDate = () => {
-    if (!citySel || !castDate) return;
-    const opt = citySel.selectedOptions[0];
-    const key = opt && opt.dataset.cityDate;
-    castDate.textContent = key ? DICT[getLang()][key] || "—" : "—";
-  };
-  citySel?.addEventListener("change", updateDate);
-
   // Clear a field's error the moment the user fixes it.
   form.querySelectorAll("input, select, textarea").forEach((el) => {
     const clear = () => {
@@ -1193,7 +1194,6 @@ function initForm() {
   });
 
   show(0);
-  updateDate();
 }
 
 /* Gather every named field (plus checkbox booleans + meta) into one payload. */
@@ -1205,9 +1205,6 @@ function collectData(form, lang) {
   form.querySelectorAll('input[type="checkbox"]').forEach((c) => {
     data[c.name] = c.checked;
   });
-  const citySel = form.querySelector('select[name="city"]');
-  const opt = citySel && citySel.selectedOptions[0];
-  data.cityLabel = opt ? opt.textContent.trim() : "";
   data.lang = lang;
   data.submittedAt = new Date().toISOString();
   return data;
