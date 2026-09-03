@@ -618,6 +618,29 @@ body.sec-faq    .nav__desktop a[href="#faq"] { color: var(--gold-hi); }
   50%      { transform: scale(1.06); }
 }
 
+/* ============================================================
+   SCROLL-MORPHING LOGO — big in hero, docks into the navbar
+   ============================================================ */
+.fly-logo { display: none; }
+.logo-fx .fly-logo {
+  display: block;
+  position: fixed; top: 0; left: 0; z-index: 45;
+  transform-origin: 0 0; pointer-events: none;
+  will-change: transform;
+}
+.fly-logo img {
+  display: block; width: 100%; height: 100%; object-fit: contain;
+  filter: drop-shadow(0 24px 60px rgba(0,0,0,.55));
+}
+/* under the effect: the hero logo only reserves space; the static nav logo
+   and the hero zoom step aside for the flying one */
+.logo-fx .hero-logo-img { visibility: hidden; }
+.logo-fx .hero__logo img { animation: none !important; }
+.logo-fx .hero__logo { animation: none !important; transform: none !important; opacity: 1 !important; }
+.logo-fx .nav__brand > img { display: none; }
+.logo-fx .nav__brand { width: 68px; height: 54px; }
+@media (max-width: 560px) { .logo-fx .nav__brand { width: 58px; height: 46px; } }
+
 .hero__cta { position: relative; z-index: 1; margin-top: clamp(16px, 3vh, 28px); }
 
 /* hero entrance choreography (hidden only when JS is present) */

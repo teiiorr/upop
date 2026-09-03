@@ -664,6 +664,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initAccordion();
   initMagnetic();
   initForm();
+  initLogoScroll();
 
   // Open at the very top unless the URL points to a section anchor.
   if (!location.hash) window.scrollTo(0, 0);
@@ -1275,6 +1276,75 @@ function submitCasting(data) {
 }
 
 /* ---------- util ---------- */
+
+/* ---------- scroll-morphing logo (hero <-> navbar) ---------- */
+function initLogoScroll() {
+  if (reduceMotion) return;
+
+  const fly = document.querySelector(".fly-logo");
+  const placeholder = document.querySelector(".hero-logo-img");
+  const slot = document.querySelector(".nav__brand");
+  const hero = document.querySelector(".hero");
+  if (!fly || !placeholder || !slot || !hero) return;
+
+  const root = document.documentElement;
+  root.classList.add("logo-fx");
+
+  let home = { x: 0, y: 0, h: 1 };
+  let dest = { x: 0, y: 0, h: 1 };
+  let range = 1;
+  let navScale = 0.1;
+
+  function measure() {
+    // placeholder still holds its box (visibility:hidden) -> the big-logo size/pos
+    const pr = placeholder.getBoundingClientRect();
+    home = {
+      x: pr.left + window.scrollX,
+      y: pr.top + window.scrollY,
+      h: pr.height || 1,
+    };
+    fly.style.width = pr.width + "px";
+    fly.style.height = pr.height + "px";
+
+    // nav is sticky at the top -> its slot is a constant screen position
+    const sr = slot.getBoundingClientRect();
+    dest = { x: sr.left, y: sr.top, h: sr.height || 1 };
+
+    navScale = dest.h / home.h;
+    range = Math.max(200, hero.offsetHeight * 0.62);
+    update();
+  }
+
+  function update() {
+    const p = Math.min(1, Math.max(0, window.scrollY / range));
+    const x = home.x + (dest.x - home.x) * p;
+    const y = home.y + (dest.y - home.y) * p;
+    const sc = 1 + (navScale - 1) * p;
+    fly.style.transform =
+      "translate(" + x.toFixed(2) + "px, " + y.toFixed(2) + "px) scale(" + sc.toFixed(4) + ")";
+  }
+
+  let ticking = false;
+  window.addEventListener(
+    "scroll",
+    () => {
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(() => {
+          update();
+          ticking = false;
+        });
+      }
+    },
+    { passive: true }
+  );
+  window.addEventListener("resize", debounce(measure, 120));
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(measure);
+  // re-measure once more after layout/images settle
+  setTimeout(measure, 400);
+
+  measure();
+}
 
 function debounce(fn, ms) {
   let t;
