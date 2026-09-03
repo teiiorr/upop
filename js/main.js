@@ -664,7 +664,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initAccordion();
   initMagnetic();
   initForm();
-  initHeroLogoScroll();
+  initLogoScroll();
 
   // Open at the very top unless the URL points to a section anchor.
   if (!location.hash) window.scrollTo(0, 0);
@@ -769,6 +769,11 @@ function initReveal() {
       "reveal",
       stat[i % 3]
     );
+  });
+
+  // steps enter from alternating sides (01 left, 02 right, 03 left)
+  document.querySelectorAll(".steplist .step").forEach((el, i) => {
+    el.classList.add(i % 2 ? "reveal--right" : "reveal--left");
   });
 
   document.querySelectorAll(".accordion .ac").forEach((el) => {
@@ -1277,59 +1282,75 @@ function submitCasting(data) {
 
 /* ---------- util ---------- */
 
-/* ---------- hero logo: magnet-smooth recede on scroll ----------
-   The navbar logo is always visible; the big hero logo eases up and fades
-   as you scroll. Only transform + opacity are animated (GPU-composited), so
-   there is no jitter on slow scroll and it works on iOS (no position:fixed). */
-function initHeroLogoScroll() {
-  const scaler = document.querySelector(".hero__logo-scale");
-  if (!scaler || reduceMotion) return;
+/* ---------- scroll-morphing logo: hero -> navbar, magnet-smooth ----------
+   The navbar logo is always visible; a fixed copy of the logo shrinks from
+   the hero onto it and fades in the last stretch. Only transform + opacity
+   change (GPU); a continuous rAF loop eases toward the live scroll position
+   so it is buttery even on iOS and never jitters on slow scroll. */
+function initLogoScroll() {
+  if (reduceMotion) return;
 
+  const fly = document.querySelector(".fly-logo");
+  const placeholder = document.querySelector(".hero-logo-img");
+  const slot = document.querySelector(".nav__brand img");
+  const hero = document.querySelector(".hero");
+  if (!fly || !placeholder || !slot || !hero) return;
+
+  const root = document.documentElement;
+  root.classList.add("logo-fx");
+
+  let home = { x: 0, y: 0, h: 1 };
+  let dest = { x: 0, y: 0, h: 1 };
   let range = 1;
-  let curP = 0;      // eased progress (the "magnet")
+  let navScale = 0.1;
+  let curP = 0;
   let running = false;
+  let atTop = null;
 
   function measure() {
-    range = Math.max(320, window.innerHeight * 0.6);
+    const pr = placeholder.getBoundingClientRect();
+    home = { x: pr.left + window.scrollX, y: pr.top + window.scrollY, h: pr.height || 1 };
+    fly.style.width = pr.width + "px";
+    fly.style.height = pr.height + "px";
+    // dock exactly onto the always-visible navbar logo (sticky -> constant)
+    const sr = slot.getBoundingClientRect();
+    dest = { x: sr.left, y: sr.top, h: sr.height || 1 };
+    navScale = dest.h / home.h;
+    range = Math.max(260, Math.min(window.innerHeight * 0.52, 460));
     curP = target();
     apply(curP);
   }
+
   function target() {
     return Math.min(1, Math.max(0, window.scrollY / range));
   }
+
   function apply(p) {
-    // ease the visual curve a touch so the fade feels soft near the top
     const e = p * p * (3 - 2 * p); // smoothstep
-    const scale = 1 - 0.34 * e;
-    const ty = -64 * e;
-    const tx = -8 * e;
-    const op = Math.max(0, 1 - e * 1.25);
-    scaler.style.transform =
-      "translate3d(" + tx.toFixed(2) + "px, " + ty.toFixed(2) + "px, 0) scale(" + scale.toFixed(4) + ")";
-    scaler.style.opacity = op.toFixed(3);
+    const x = home.x + (dest.x - home.x) * e;
+    const y = home.y + (dest.y - home.y) * e;
+    const sc = 1 + (navScale - 1) * e;
+    fly.style.transform =
+      "translate3d(" + x.toFixed(2) + "px, " + y.toFixed(2) + "px, 0) scale(" + sc.toFixed(4) + ")";
+    // hand off to the real navbar logo over the last stretch
+    fly.style.opacity = (p < 0.82 ? 1 : Math.max(0, 1 - (p - 0.82) / 0.18)).toFixed(3);
+    const top = p < 0.02;
+    if (top !== atTop) { atTop = top; root.classList.toggle("is-top", top); }
   }
+
   function frame() {
     const t = target();
-    // low factor = magnetic, buttery trailing (no step jitter on slow scroll)
-    curP += (t - curP) * 0.14;
-    if (Math.abs(t - curP) < 0.0004) {
-      curP = t;
-      apply(curP);
-      running = false;
-      return;
-    }
+    curP += (t - curP) * 0.14;   // magnet
+    if (Math.abs(t - curP) < 0.0004) { curP = t; apply(curP); running = false; return; }
     apply(curP);
     requestAnimationFrame(frame);
   }
-  function kick() {
-    if (!running) {
-      running = true;
-      requestAnimationFrame(frame);
-    }
-  }
+  function kick() { if (!running) { running = true; requestAnimationFrame(frame); } }
 
   window.addEventListener("scroll", kick, { passive: true });
   window.addEventListener("resize", debounce(measure, 120));
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(measure);
+  setTimeout(measure, 400);
   measure();
 }
 

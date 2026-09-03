@@ -619,15 +619,28 @@ body.sec-faq    .nav__desktop a[href="#faq"] { color: var(--gold-hi); }
 }
 
 /* ============================================================
-   HERO LOGO — recedes on scroll (nav logo is always present).
-   Uses only transform + opacity (GPU) so it stays magnet-smooth and
-   works on iOS, where position:fixed lags during momentum scrolling.
+   SCROLL-MORPHING LOGO — big in the hero, shrinks onto the navbar logo.
+   The navbar logo stays visible (logo + navbar always active); the flying
+   copy fades onto it at the end. iOS-safe: NO will-change on the fixed
+   element (Safari hides it), GPU via translate3d, driven by a continuous
+   rAF magnet loop rather than throttled scroll events.
    ============================================================ */
-.hero__logo-scale {
-  transform-origin: center 46%;
-  will-change: transform, opacity;
-  backface-visibility: hidden;
+.fly-logo { display: none; }
+.logo-fx .fly-logo {
+  display: block;
+  position: fixed; top: 0; left: 0; z-index: 45;
+  transform-origin: 0 0; pointer-events: none;
+  -webkit-backface-visibility: hidden; backface-visibility: hidden;
 }
+.fly-logo img {
+  display: block; width: 100%; height: 100%; object-fit: contain;
+  filter: drop-shadow(0 24px 60px rgba(0,0,0,.55));
+}
+/* gentle zoom only while the logo sits still at the top */
+.logo-fx.is-top .fly-logo img { animation: logoZoom 5s var(--e-inout) infinite; }
+/* the hero logo only reserves its space; the flying copy shows instead */
+.logo-fx .hero-logo-img { visibility: hidden; }
+.logo-fx .hero__logo { animation: none !important; transform: none !important; opacity: 1 !important; }
 
 .hero__cta { position: relative; z-index: 1; margin-top: clamp(16px, 3vh, 28px); }
 
@@ -692,6 +705,7 @@ body.sec-faq    .nav__desktop a[href="#faq"] { color: var(--gold-hi); }
 }
 .step:last-child { border-bottom: 1px solid var(--line); }
 .step__idx {
+  justify-self: start; min-width: 0;
   font-family: var(--font-disp); font-weight: 700;
   font-size: clamp(2.6rem, 8vw, 5.4rem); line-height: .82; letter-spacing: -.04em;
   background: var(--metal); -webkit-background-clip: text; background-clip: text;
@@ -1105,8 +1119,8 @@ body.sec-faq    .nav__desktop a[href="#faq"] { color: var(--gold-hi); }
 @media (max-width: 620px) {
   .step {
     /* fixed number column so 01 / 02 / 03 and their titles line up */
-    grid-template-columns: 64px 1fr;
-    gap: 18px;
+    grid-template-columns: 74px 1fr;
+    gap: 16px;
   }
   .step__idx { text-align: left; }
 }
