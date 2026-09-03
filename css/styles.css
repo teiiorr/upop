@@ -624,34 +624,29 @@ body.sec-faq    .nav__desktop a[href="#faq"] { color: var(--gold-hi); }
    Everything drives off --dock in CSS (GPU transforms only), which stays
    iOS-smooth during momentum scrolling.
    ============================================================ */
-.hero-pin {
-  position: relative;
-  /* 200 units of scroll room; first half pins & animates, then the page
-     moves on. dvh where supported avoids the iOS address-bar jiggle. */
-  min-height: 200vh;
-  min-height: 200dvh;
-}
-.hero-pin__inner {
-  position: -webkit-sticky; position: sticky; top: 0;
-  height: 100vh; height: 100svh;
-  /* IMPORTANT: no will-change/filter/backdrop-filter on this element — that
-     would create a containing block and break sticky on iOS. */
-}
-/* animated pieces (transform + opacity are written directly by JS) */
+/* Scroll-locked logo dock: the JS captures scroll gestures on the hero and
+   drives progress 0..1 into the logo transforms WITHOUT moving the page.
+   The page unlocks only once the anim completes; scroll up locks again for
+   the reverse. Only transform + opacity animate (GPU, iOS-smooth). */
 .hero__logo-inner {
   display: inline-block; transform-origin: center;
   will-change: transform, opacity;
+  transition: transform .18s linear, opacity .18s linear;
 }
 .js .nav__brand img {
   transform-origin: left center;
-  /* start hidden; JS reveals as the pin progresses */
   opacity: 0; transform: scale(.55);
   will-change: transform, opacity;
+  transition: transform .18s linear, opacity .18s linear;
+}
+/* while locked, kill page scroll (touch + wheel) */
+html.scroll-lock, body.scroll-lock {
+  overflow: hidden !important;
+  overscroll-behavior: none;
+  touch-action: none;
 }
 @media (prefers-reduced-motion: reduce) {
-  .hero-pin { min-height: 0 !important; }
-  .hero-pin__inner { position: static !important; height: auto !important; }
-  .hero__logo-inner { transform: none !important; opacity: 1 !important; }
+  .hero__logo-inner, .js .nav__brand img { transition: none !important; }
   .js .nav__brand img { transform: none !important; opacity: 1 !important; }
 }
 

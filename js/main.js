@@ -1282,92 +1282,148 @@ function submitCasting(data) {
 
 /* ---------- util ---------- */
 
-/* ---------- scroll-pinned logo dock (iOS-smooth, parallax-style) ----------
-   The hero is wrapped in a 200vh .hero-pin whose inner is sticky:top:0 for
-   ~one viewport of scroll. Inside that window we compute progress 0..1 and
-   write transform + opacity DIRECTLY to the two participating elements —
-   never to a CSS variable, so we don't invalidate the sticky subtree. Below
-   ~0 nothing happens, above ~1 nothing happens; between, the hero logo
-   shrinks toward the navbar and the navbar logo grows into it. Fully
-   reversible on scroll-up. */
+/* ---------- gesture-locked logo dock (page stops until animation completes)
+   Behaviour: when the hero is at the top of the viewport, we capture wheel
+   & touch gestures — the page does NOT scroll; instead the gesture pushes a
+   progress 0..1, and the hero logo shrinks toward the always-visible navbar
+   slot. Only when progress reaches 1 do we release the scroll lock — the
+   next gesture starts scrolling the page normally. On scroll-up, the moment
+   the hero touches the top we lock again, and reverse the anim back to 0.
+   Nothing about this depends on position:fixed or a sticky ancestor, so it
+   stays iOS-smooth (no scroll jank). */
 function initLogoScroll() {
   if (reduceMotion) return;
 
-  const pin = document.getElementById("heroPin");
+  const hero = document.getElementById("hero");
   const heroInner = document.querySelector(".hero__logo-inner");
   const heroLogoImg = document.querySelector(".hero-logo-img");
   const navImg = document.querySelector(".nav__brand img");
-  if (!pin || !heroInner || !heroLogoImg || !navImg) return;
+  if (!hero || !heroInner || !heroLogoImg || !navImg) return;
 
-  let pinTop = 0, pinRange = 1, homeH = 1;
-  // pixel offsets to reach the navbar slot exactly, measured per resize
+  // Progress state (0..1). We tween it with a rAF so gestures feel elastic.
+  let progress = 0;
+  let target = 0;
+  let raf = 0;
+  // Gesture budget: how many px of user input equal one full dock.
+  // Bigger = the user has to push harder (like a real parallax pin).
+  const BUDGET = 700;
+
   let dxPx = 0, dyPx = 0, endScale = 0.17;
 
-  function viewportH() {
-    return (window.visualViewport && window.visualViewport.height) || window.innerHeight || 700;
-  }
-
   function measure() {
-    const rect = pin.getBoundingClientRect();
-    pinTop = rect.top + window.scrollY;
-    pinRange = Math.max(1, pin.offsetHeight - viewportH());
-
-    // Where the hero logo's IMG center sits right now vs the nav slot center
     const img = heroLogoImg.getBoundingClientRect();
     const nav = navImg.getBoundingClientRect();
-    homeH = img.height || 1;
-    // We want at progress=1: the shrunken logo center to sit on the nav logo center
-    endScale = Math.max(0.08, (nav.height || 30) / homeH);
-    const imgCX = img.left + img.width / 2;
-    const imgCY = img.top + img.height / 2;
-    const navCX = nav.left + nav.width / 2;
-    const navCY = nav.top + nav.height / 2;
-    dxPx = navCX - imgCX;
-    dyPx = navCY - imgCY;
-    update();
+    endScale = Math.max(0.08, (nav.height || 30) / (img.height || 1));
+    dxPx = (nav.left + nav.width / 2) - (img.left + img.width / 2);
+    dyPx = (nav.top + nav.height / 2) - (img.top + img.height / 2);
+    apply();
   }
 
-  function easeOut(t) { return 1 - Math.pow(1 - t, 2); }
+  function ease(p) { return 1 - Math.pow(1 - p, 2); } // easeOut
 
-  function update() {
-    const y = window.scrollY;
-    const rawP = (y - pinTop) / pinRange;
-    const p = rawP < 0 ? 0 : rawP > 1 ? 1 : rawP;
-    const e = easeOut(p);
-
-    // hero logo shrinks toward the nav slot
+  function apply() {
+    const p = Math.max(0, Math.min(1, progress));
+    const e = ease(p);
     const sc = 1 + (endScale - 1) * e;
-    // pixel translate BEFORE scale (transform-origin is center) — with
-    // origin center, translate happens in local coords, so pixel deltas
-    // that describe the ORIGINAL center-to-center distance still land
-    // on the nav slot regardless of scale.
     const tx = dxPx * e;
     const ty = dyPx * e;
     heroInner.style.transform =
       "translate3d(" + tx.toFixed(1) + "px, " + ty.toFixed(1) + "px, 0) scale(" + sc.toFixed(4) + ")";
-    // fade the big logo as it approaches the dock so the swap is clean
-    heroInner.style.opacity = (1 - Math.max(0, (e - 0.7) / 0.3)).toFixed(3);
-
-    // navbar logo grows into place — mirrors the last half of the curve
+    heroInner.style.opacity = (1 - Math.max(0, (e - 0.72) / 0.28)).toFixed(3);
     const nProg = Math.max(0, (e - 0.5) / 0.5);
     navImg.style.opacity = nProg.toFixed(3);
     navImg.style.transform = "scale(" + (0.6 + nProg * 0.4).toFixed(3) + ")";
   }
 
-  let ticking = false;
+  function tween() {
+    // Ease toward target so single small gestures feel magnetic.
+    const diff = target - progress;
+    if (Math.abs(diff) < 0.001) {
+      progress = target;
+      apply();
+      raf = 0;
+      // If we've fully committed OR fully reversed, release the scroll lock
+      // so the page scrolls normally on the next gesture.
+      updateLock();
+      return;
+    }
+    progress += diff * 0.22;
+    apply();
+    raf = requestAnimationFrame(tween);
+  }
+  function schedule() { if (!raf) raf = requestAnimationFrame(tween); }
+
+  // ----- scroll-lock management -----
+  let locked = false;
+  function lock() {
+    if (locked) return;
+    locked = true;
+    document.documentElement.classList.add("scroll-lock");
+    document.body.classList.add("scroll-lock");
+  }
+  function unlock() {
+    if (!locked) return;
+    locked = false;
+    document.documentElement.classList.remove("scroll-lock");
+    document.body.classList.remove("scroll-lock");
+  }
+  function heroAtTop() {
+    return hero.getBoundingClientRect().top >= -1;
+  }
+  function updateLock() {
+    // We lock while: hero is at the top AND progress is somewhere in (0..1),
+    // OR hero is at the top AND we're about to run the reverse from 1 -> 0.
+    // If progress has settled at 0 or 1, the page scrolls freely again.
+    if (heroAtTop() && progress > 0.001 && progress < 0.999) lock();
+    else unlock();
+  }
+
+  // Feed a gesture delta into progress (dy>0 means user scrolled DOWN).
+  function feed(dy) {
+    // If page is already scrolled past the hero, don't intercept — normal scroll.
+    if (!heroAtTop()) { unlock(); return false; }
+
+    // At top, dy>0 -> advance toward dock; dy<0 -> reverse toward hero.
+    // Intercept ONLY when the anim is not yet settled at the extreme the gesture
+    // would push it to. E.g. dy>0 & progress==1: let the page scroll normally.
+    if (dy > 0 && target >= 0.999) return false;
+    if (dy < 0 && target <= 0.001 && window.scrollY <= 0) return false;
+
+    lock();
+    target = Math.max(0, Math.min(1, target + dy / BUDGET));
+    schedule();
+    return true; // "we ate the gesture"
+  }
+
+  // ----- input listeners (non-passive so we can preventDefault) -----
   window.addEventListener(
-    "scroll",
-    () => {
-      if (!ticking) {
-        ticking = true;
-        requestAnimationFrame(() => { update(); ticking = false; });
-      }
-    },
-    { passive: true }
+    "wheel",
+    (e) => { if (feed(e.deltaY)) e.preventDefault(); },
+    { passive: false }
   );
-  const onResize = debounce(measure, 120);
-  window.addEventListener("resize", onResize);
-  if (window.visualViewport) window.visualViewport.addEventListener("resize", onResize);
+
+  let touchY = 0, touching = false;
+  window.addEventListener("touchstart", (e) => {
+    touching = true;
+    touchY = e.touches[0].clientY;
+  }, { passive: true });
+  window.addEventListener("touchmove", (e) => {
+    if (!touching) return;
+    const y = e.touches[0].clientY;
+    const dy = touchY - y;
+    touchY = y;
+    if (feed(dy)) e.preventDefault();
+  }, { passive: false });
+  window.addEventListener("touchend", () => { touching = false; }, { passive: true });
+
+  // If the user scrolls back up to the very top, arm the reverse.
+  window.addEventListener("scroll", () => {
+    if (window.scrollY <= 1 && progress > 0.001) { /* stays locked+animating on next gesture */ }
+    updateLock();
+  }, { passive: true });
+
+  window.addEventListener("resize", debounce(measure, 120));
+  if (window.visualViewport) window.visualViewport.addEventListener("resize", debounce(measure, 120));
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(measure);
   setTimeout(measure, 350);
   measure();
