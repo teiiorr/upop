@@ -1338,18 +1338,19 @@ function initLogoScroll() {
     const sc = 1 + (endScale - 1) * e;
     heroInner.style.transform =
       "translate3d(" + tx.toFixed(1) + "px, " + ty.toFixed(1) + "px, 0) scale(" + sc.toFixed(4) + ")";
-    // hand off to the navbar logo right at the end (same artwork -> seamless)
-    heroInner.style.opacity = (1 - clamp01((p - 0.80) / 0.16)).toFixed(3);
-    navImg.style.opacity = clamp01((p - 0.74) / 0.16).toFixed(3);
+    // hand off to the navbar logo just before the lock-in so the pop lands
+    // on a clean, fully-formed navbar logo (same artwork -> seamless)
+    heroInner.style.opacity = (1 - clamp01((p - 0.72) / 0.15)).toFixed(3);
+    navImg.style.opacity = clamp01((p - 0.68) / 0.14).toFixed(3);
 
-    // one-shot "click into place" when it locks in; re-arm after backing off
-    if (!popped && p >= 0.9) {
+    // one-shot "click into place" when it locks into the navbar; re-arm
+    // after the user backs off so it fires again next time.
+    if (!popped && p >= 0.87) {
       popped = true;
       brand.classList.remove("dock-pop");
-      // force reflow so the animation can restart
-      void brand.offsetWidth;
+      void brand.offsetWidth; // force reflow so the animation restarts
       brand.classList.add("dock-pop");
-    } else if (popped && p < 0.7) {
+    } else if (popped && p < 0.66) {
       popped = false;
       brand.classList.remove("dock-pop");
     }
