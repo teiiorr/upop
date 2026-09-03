@@ -1282,75 +1282,47 @@ function submitCasting(data) {
 
 /* ---------- util ---------- */
 
-/* ---------- scroll-morphing logo: hero -> navbar, magnet-smooth ----------
-   The navbar logo is always visible; a fixed copy of the logo shrinks from
-   the hero onto it and fades in the last stretch. Only transform + opacity
-   change (GPU); a continuous rAF loop eases toward the live scroll position
-   so it is buttery even on iOS and never jitters on slow scroll. */
+/* ---------- commit-triggered logo dock (iOS-smooth, effort-based) ----------
+   The hero logo only morphs once you scroll past a real threshold (a
+   deliberate ~40% of the viewport) — small scrolls do nothing. Crossing it
+   just toggles html.is-docked, and CSS runs one magnet transition; scrolling
+   back up past a lower threshold reverses it. No fixed positioning and no
+   per-frame transforms, so it is smooth even during iOS momentum. */
 function initLogoScroll() {
   if (reduceMotion) return;
 
-  const fly = document.querySelector(".fly-logo");
-  const placeholder = document.querySelector(".hero-logo-img");
-  const slot = document.querySelector(".nav__brand img");
-  const hero = document.querySelector(".hero");
-  if (!fly || !placeholder || !slot || !hero) return;
-
   const root = document.documentElement;
-  root.classList.add("logo-fx");
-
-  let home = { x: 0, y: 0, h: 1 };
-  let dest = { x: 0, y: 0, h: 1 };
-  let range = 1;
-  let navScale = 0.1;
-  let curP = 0;
-  let running = false;
-  let atTop = null;
+  let commitDown = 1;   // scroll past this -> dock
+  let commitUp = 1;     // scroll back above this -> undock (hysteresis)
+  let docked = false;
+  let ticking = false;
 
   function measure() {
-    const pr = placeholder.getBoundingClientRect();
-    home = { x: pr.left + window.scrollX, y: pr.top + window.scrollY, h: pr.height || 1 };
-    fly.style.width = pr.width + "px";
-    fly.style.height = pr.height + "px";
-    // dock exactly onto the always-visible navbar logo (sticky -> constant)
-    const sr = slot.getBoundingClientRect();
-    dest = { x: sr.left, y: sr.top, h: sr.height || 1 };
-    navScale = dest.h / home.h;
-    range = Math.max(260, Math.min(window.innerHeight * 0.52, 460));
-    curP = target();
-    apply(curP);
+    const vp = window.innerHeight || 700;
+    commitDown = vp * 0.42;   // needs a real, deliberate scroll to trigger
+    commitUp = vp * 0.24;
+    check();
+  }
+  function check() {
+    const y = window.scrollY;
+    const d = docked ? y > commitUp : y > commitDown;
+    if (d !== docked) {
+      docked = d;
+      root.classList.toggle("is-docked", docked);
+    }
   }
 
-  function target() {
-    return Math.min(1, Math.max(0, window.scrollY / range));
-  }
-
-  function apply(p) {
-    const e = p * p * (3 - 2 * p); // smoothstep
-    const x = home.x + (dest.x - home.x) * e;
-    const y = home.y + (dest.y - home.y) * e;
-    const sc = 1 + (navScale - 1) * e;
-    fly.style.transform =
-      "translate3d(" + x.toFixed(2) + "px, " + y.toFixed(2) + "px, 0) scale(" + sc.toFixed(4) + ")";
-    // hand off to the real navbar logo over the last stretch
-    fly.style.opacity = (p < 0.82 ? 1 : Math.max(0, 1 - (p - 0.82) / 0.18)).toFixed(3);
-    const top = p < 0.02;
-    if (top !== atTop) { atTop = top; root.classList.toggle("is-top", top); }
-  }
-
-  function frame() {
-    const t = target();
-    curP += (t - curP) * 0.14;   // magnet
-    if (Math.abs(t - curP) < 0.0004) { curP = t; apply(curP); running = false; return; }
-    apply(curP);
-    requestAnimationFrame(frame);
-  }
-  function kick() { if (!running) { running = true; requestAnimationFrame(frame); } }
-
-  window.addEventListener("scroll", kick, { passive: true });
-  window.addEventListener("resize", debounce(measure, 120));
-  if (document.fonts && document.fonts.ready) document.fonts.ready.then(measure);
-  setTimeout(measure, 400);
+  window.addEventListener(
+    "scroll",
+    () => {
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(() => { check(); ticking = false; });
+      }
+    },
+    { passive: true }
+  );
+  window.addEventListener("resize", debounce(measure, 150));
   measure();
 }
 

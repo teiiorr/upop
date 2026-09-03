@@ -43,6 +43,7 @@
   --e-quint:   cubic-bezier(.23, 1, .32, 1);
   --e-cubic:   cubic-bezier(.33, 1, .68, 1);
   --e-inout:   cubic-bezier(.645, .045, .355, 1);
+  --magnet:    cubic-bezier(.2, 1.28, .38, 1); /* slight overshoot for the dock snap */
 
   /* system */
   --nav-h: 74px;
@@ -619,28 +620,30 @@ body.sec-faq    .nav__desktop a[href="#faq"] { color: var(--gold-hi); }
 }
 
 /* ============================================================
-   SCROLL-MORPHING LOGO — big in the hero, shrinks onto the navbar logo.
-   The navbar logo stays visible (logo + navbar always active); the flying
-   copy fades onto it at the end. iOS-safe: NO will-change on the fixed
-   element (Safari hides it), GPU via translate3d, driven by a continuous
-   rAF magnet loop rather than throttled scroll events.
+   COMMIT-TRIGGERED LOGO MORPH — the hero logo shrinks into the navbar.
+   NOT scroll-linked: nothing happens until you scroll past a real
+   threshold (html.is-docked), then one magnet CSS transition fires. Only
+   transform + opacity animate (GPU), so it is buttery and works on iOS
+   (no position:fixed, no per-frame JS). Scroll back up -> it grows back.
    ============================================================ */
-.fly-logo { display: none; }
-.logo-fx .fly-logo {
-  display: block;
-  position: fixed; top: 0; left: 0; z-index: 45;
-  transform-origin: 0 0; pointer-events: none;
-  -webkit-backface-visibility: hidden; backface-visibility: hidden;
+/* the big hero logo shrinks up-left toward the navbar when docked */
+.hero__logo-inner {
+  display: inline-block; transform-origin: center;
+  transition: transform .9s var(--magnet), opacity .55s var(--e-inout);
 }
-.fly-logo img {
-  display: block; width: 100%; height: 100%; object-fit: contain;
-  filter: drop-shadow(0 24px 60px rgba(0,0,0,.55));
+.is-docked .hero__logo-inner {
+  transform: translate(-22%, -96%) scale(.17);
+  opacity: 0;
 }
-/* gentle zoom only while the logo sits still at the top */
-.logo-fx.is-top .fly-logo img { animation: logoZoom 5s var(--e-inout) infinite; }
-/* the hero logo only reserves its space; the flying copy shows instead */
-.logo-fx .hero-logo-img { visibility: hidden; }
-.logo-fx .hero__logo { animation: none !important; transform: none !important; opacity: 1 !important; }
+/* the navbar logo is hidden at the top and pops in (magnet) once docked,
+   so there is only ever one logo — the shrunk hero one */
+.js .nav__brand img { opacity: 0; transform: scale(.5); transform-origin: left center; }
+.nav__brand img { transition: transform .8s var(--magnet), opacity .5s var(--e-inout) .05s; }
+.is-docked .nav__brand img { opacity: 1; transform: scale(1); }
+@media (prefers-reduced-motion: reduce) {
+  .js .nav__brand img { opacity: 1; transform: none; }
+  .hero__logo-inner { transition: none; }
+}
 
 .hero__cta { position: relative; z-index: 1; margin-top: clamp(16px, 3vh, 28px); }
 
