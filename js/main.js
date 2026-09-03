@@ -1282,47 +1282,94 @@ function submitCasting(data) {
 
 /* ---------- util ---------- */
 
-/* ---------- commit-triggered logo dock (iOS-smooth, effort-based) ----------
-   The hero logo only morphs once you scroll past a real threshold (a
-   deliberate ~40% of the viewport) — small scrolls do nothing. Crossing it
-   just toggles html.is-docked, and CSS runs one magnet transition; scrolling
-   back up past a lower threshold reverses it. No fixed positioning and no
-   per-frame transforms, so it is smooth even during iOS momentum. */
+/* ---------- scroll-pinned logo dock (iOS-smooth, parallax-style) ----------
+   The hero is wrapped in a 200vh .hero-pin whose inner is sticky:top:0 for
+   ~one viewport of scroll. Inside that window we compute progress 0..1 and
+   write transform + opacity DIRECTLY to the two participating elements —
+   never to a CSS variable, so we don't invalidate the sticky subtree. Below
+   ~0 nothing happens, above ~1 nothing happens; between, the hero logo
+   shrinks toward the navbar and the navbar logo grows into it. Fully
+   reversible on scroll-up. */
 function initLogoScroll() {
   if (reduceMotion) return;
 
-  const root = document.documentElement;
-  let commitDown = 1;   // scroll past this -> dock
-  let commitUp = 1;     // scroll back above this -> undock (hysteresis)
-  let docked = false;
-  let ticking = false;
+  const pin = document.getElementById("heroPin");
+  const heroInner = document.querySelector(".hero__logo-inner");
+  const heroLogoImg = document.querySelector(".hero-logo-img");
+  const navImg = document.querySelector(".nav__brand img");
+  if (!pin || !heroInner || !heroLogoImg || !navImg) return;
+
+  let pinTop = 0, pinRange = 1, homeH = 1;
+  // pixel offsets to reach the navbar slot exactly, measured per resize
+  let dxPx = 0, dyPx = 0, endScale = 0.17;
+
+  function viewportH() {
+    return (window.visualViewport && window.visualViewport.height) || window.innerHeight || 700;
+  }
 
   function measure() {
-    const vp = window.innerHeight || 700;
-    commitDown = vp * 0.42;   // needs a real, deliberate scroll to trigger
-    commitUp = vp * 0.24;
-    check();
-  }
-  function check() {
-    const y = window.scrollY;
-    const d = docked ? y > commitUp : y > commitDown;
-    if (d !== docked) {
-      docked = d;
-      root.classList.toggle("is-docked", docked);
-    }
+    const rect = pin.getBoundingClientRect();
+    pinTop = rect.top + window.scrollY;
+    pinRange = Math.max(1, pin.offsetHeight - viewportH());
+
+    // Where the hero logo's IMG center sits right now vs the nav slot center
+    const img = heroLogoImg.getBoundingClientRect();
+    const nav = navImg.getBoundingClientRect();
+    homeH = img.height || 1;
+    // We want at progress=1: the shrunken logo center to sit on the nav logo center
+    endScale = Math.max(0.08, (nav.height || 30) / homeH);
+    const imgCX = img.left + img.width / 2;
+    const imgCY = img.top + img.height / 2;
+    const navCX = nav.left + nav.width / 2;
+    const navCY = nav.top + nav.height / 2;
+    dxPx = navCX - imgCX;
+    dyPx = navCY - imgCY;
+    update();
   }
 
+  function easeOut(t) { return 1 - Math.pow(1 - t, 2); }
+
+  function update() {
+    const y = window.scrollY;
+    const rawP = (y - pinTop) / pinRange;
+    const p = rawP < 0 ? 0 : rawP > 1 ? 1 : rawP;
+    const e = easeOut(p);
+
+    // hero logo shrinks toward the nav slot
+    const sc = 1 + (endScale - 1) * e;
+    // pixel translate BEFORE scale (transform-origin is center) — with
+    // origin center, translate happens in local coords, so pixel deltas
+    // that describe the ORIGINAL center-to-center distance still land
+    // on the nav slot regardless of scale.
+    const tx = dxPx * e;
+    const ty = dyPx * e;
+    heroInner.style.transform =
+      "translate3d(" + tx.toFixed(1) + "px, " + ty.toFixed(1) + "px, 0) scale(" + sc.toFixed(4) + ")";
+    // fade the big logo as it approaches the dock so the swap is clean
+    heroInner.style.opacity = (1 - Math.max(0, (e - 0.7) / 0.3)).toFixed(3);
+
+    // navbar logo grows into place — mirrors the last half of the curve
+    const nProg = Math.max(0, (e - 0.5) / 0.5);
+    navImg.style.opacity = nProg.toFixed(3);
+    navImg.style.transform = "scale(" + (0.6 + nProg * 0.4).toFixed(3) + ")";
+  }
+
+  let ticking = false;
   window.addEventListener(
     "scroll",
     () => {
       if (!ticking) {
         ticking = true;
-        requestAnimationFrame(() => { check(); ticking = false; });
+        requestAnimationFrame(() => { update(); ticking = false; });
       }
     },
     { passive: true }
   );
-  window.addEventListener("resize", debounce(measure, 150));
+  const onResize = debounce(measure, 120);
+  window.addEventListener("resize", onResize);
+  if (window.visualViewport) window.visualViewport.addEventListener("resize", onResize);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(measure);
+  setTimeout(measure, 350);
   measure();
 }
 

@@ -352,16 +352,12 @@ html { scrollbar-width: thin; scrollbar-color: var(--gold-lo) var(--bg); }
    NAV
    ============================================================ */
 .nav {
-  position: sticky; top: 0; z-index: 40;
-  transition: background .4s var(--e-quint), border-color .4s ease, backdrop-filter .4s ease;
+  position: -webkit-sticky; position: sticky; top: 0; z-index: 40;
+  background: rgba(6,20,28,.94);
   border-bottom: 1px solid transparent;
+  transition: border-color .4s ease, box-shadow .4s ease;
 }
-.nav.is-stuck {
-  background: rgba(6,20,28,.72);
-  backdrop-filter: blur(18px) saturate(150%);
-  -webkit-backdrop-filter: blur(18px) saturate(150%);
-  border-bottom-color: var(--line);
-}
+.nav.is-stuck { border-bottom-color: var(--line); box-shadow: 0 8px 30px -20px rgba(0,0,0,.8); }
 /* ============================================================
    NAV (Desktop Navigation)
    ============================================================ */
@@ -620,29 +616,43 @@ body.sec-faq    .nav__desktop a[href="#faq"] { color: var(--gold-hi); }
 }
 
 /* ============================================================
-   COMMIT-TRIGGERED LOGO MORPH — the hero logo shrinks into the navbar.
-   NOT scroll-linked: nothing happens until you scroll past a real
-   threshold (html.is-docked), then one magnet CSS transition fires. Only
-   transform + opacity animate (GPU), so it is buttery and works on iOS
-   (no position:fixed, no per-frame JS). Scroll back up -> it grows back.
+   SCROLL-PINNED HERO — parallax-style logo dock
+   The .hero-pin block is 200vh tall; its inner sticks to the viewport for
+   one screen of scroll (~50%) before the page moves on. During that window
+   the JS writes progress 0..1 into --dock, and the hero logo scales down
+   & slides up-left toward the navbar slot while the navbar logo fades in.
+   Everything drives off --dock in CSS (GPU transforms only), which stays
+   iOS-smooth during momentum scrolling.
    ============================================================ */
-/* the big hero logo shrinks up-left toward the navbar when docked */
+.hero-pin {
+  position: relative;
+  /* 200 units of scroll room; first half pins & animates, then the page
+     moves on. dvh where supported avoids the iOS address-bar jiggle. */
+  min-height: 200vh;
+  min-height: 200dvh;
+}
+.hero-pin__inner {
+  position: -webkit-sticky; position: sticky; top: 0;
+  height: 100vh; height: 100svh;
+  /* IMPORTANT: no will-change/filter/backdrop-filter on this element — that
+     would create a containing block and break sticky on iOS. */
+}
+/* animated pieces (transform + opacity are written directly by JS) */
 .hero__logo-inner {
   display: inline-block; transform-origin: center;
-  transition: transform .9s var(--magnet), opacity .55s var(--e-inout);
+  will-change: transform, opacity;
 }
-.is-docked .hero__logo-inner {
-  transform: translate(-22%, -96%) scale(.17);
-  opacity: 0;
+.js .nav__brand img {
+  transform-origin: left center;
+  /* start hidden; JS reveals as the pin progresses */
+  opacity: 0; transform: scale(.55);
+  will-change: transform, opacity;
 }
-/* the navbar logo is hidden at the top and pops in (magnet) once docked,
-   so there is only ever one logo — the shrunk hero one */
-.js .nav__brand img { opacity: 0; transform: scale(.5); transform-origin: left center; }
-.nav__brand img { transition: transform .8s var(--magnet), opacity .5s var(--e-inout) .05s; }
-.is-docked .nav__brand img { opacity: 1; transform: scale(1); }
 @media (prefers-reduced-motion: reduce) {
-  .js .nav__brand img { opacity: 1; transform: none; }
-  .hero__logo-inner { transition: none; }
+  .hero-pin { min-height: 0 !important; }
+  .hero-pin__inner { position: static !important; height: auto !important; }
+  .hero__logo-inner { transform: none !important; opacity: 1 !important; }
+  .js .nav__brand img { transform: none !important; opacity: 1 !important; }
 }
 
 .hero__cta { position: relative; z-index: 1; margin-top: clamp(16px, 3vh, 28px); }
