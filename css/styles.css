@@ -634,26 +634,33 @@ body.sec-faq    .nav__desktop a[href="#faq"] { color: var(--gold-hi); }
    drives progress 0..1 into the logo transforms WITHOUT moving the page.
    The page unlocks only once the anim completes; scroll up locks again for
    the reverse. Only transform + opacity animate (GPU, iOS-smooth). */
-/* The hero logo is scrubbed DIRECTLY from scrollY (JS writes transform each
-   frame) so it tracks the finger 1:1 while the page scrolls normally — no
-   transition on transform (that would lag the scrub). */
-.hero__logo-inner {
-  display: inline-block; transform-origin: center;
-  will-change: transform, opacity;
-}
-/* the navbar logo is absent at the top and fades in as the hero logo parks
-   into it; JS owns its opacity, a one-shot pop owns the "click into place". */
+/* ============================================================
+   ONE-LOGO DOCK — the navbar logo IS the only logo. JS starts it scaled up
+   to hero size (centred in the hero) and it REALLY shrinks itself down into
+   the navbar slot as you scroll. There is no second logo and no crossfade:
+   the same element travels the whole way and stays, because it lives in the
+   always-visible sticky navbar. The hero <img> is just an invisible
+   placeholder reserving the layout. A smoothing loop (JS) kills micro-scroll
+   jitter; the full dock needs a real, deliberate scroll.
+   ============================================================ */
+.js .hero-logo-img { opacity: 0; }            /* invisible layout placeholder */
+.hero__logo-inner { display: inline-block; }
+
 .js .nav__brand img {
   transform-origin: center;
-  opacity: 0;
+  opacity: 0;                                  /* JS fades the big logo in */
+  pointer-events: none;                        /* never blocks hero clicks */
   will-change: transform, opacity;
-  filter: drop-shadow(0 2px 6px rgba(0,0,0,.45));
+  transition: opacity .6s var(--e-quint);
+  filter: drop-shadow(0 2px 8px rgba(0,0,0,.5));
 }
+/* let the scaled-up logo paint out of the bar into the hero */
+.nav, .nav__inner { overflow: visible; }
 .nav__brand { position: relative; overflow: visible; }
-/* the satisfying dock — boosted: the logo springs into the slot with an
-   overshoot + a gold glow flash, and TWO shockwave rings snap out of the
-   navbar so the "locked into the navbar" moment is unmistakable. */
-.nav__brand.dock-pop img { animation: dockPop .64s var(--magnet) both; }
+
+/* "click into place": a gold glow FLASH on the logo (filter only — transform
+   belongs to the scrub, so no fighting) + two shockwave rings from the slot */
+.nav__brand.dock-pop img { animation: dockGlow .6s ease both; }
 .nav__brand.dock-pop::after {
   content: ""; position: absolute; left: 50%; top: 50%;
   width: 54px; height: 54px; margin: -27px 0 0 -27px;
@@ -668,11 +675,10 @@ body.sec-faq    .nav__desktop a[href="#faq"] { color: var(--gold-hi); }
   border: 2px solid rgba(244,225,160,.9);
   animation: dockRing2 .52s var(--e-quint) both;
 }
-@keyframes dockPop {
-  0%   { transform: scale(.5);  filter: drop-shadow(0 2px 6px rgba(0,0,0,.45)); }
-  45%  { transform: scale(1.22); filter: drop-shadow(0 0 16px rgba(244,225,160,.9)); }
-  70%  { transform: scale(.95); }
-  100% { transform: scale(1);   filter: drop-shadow(0 2px 6px rgba(0,0,0,.45)); }
+@keyframes dockGlow {
+  0%   { filter: drop-shadow(0 2px 8px rgba(0,0,0,.5)); }
+  40%  { filter: drop-shadow(0 0 18px rgba(244,225,160,.95)); }
+  100% { filter: drop-shadow(0 2px 8px rgba(0,0,0,.5)); }
 }
 @keyframes dockRing {
   0%   { opacity: 0; transform: scale(.3); }
@@ -685,9 +691,9 @@ body.sec-faq    .nav__desktop a[href="#faq"] { color: var(--gold-hi); }
   100% { opacity: 0; transform: scale(2.2); }
 }
 @media (prefers-reduced-motion: reduce) {
-  .hero__logo-inner { transform: none !important; opacity: 1 !important; }
+  .js .hero-logo-img { opacity: 1 !important; }               /* static big hero logo */
   .js .nav__brand img { transform: none !important; opacity: 1 !important; animation: none !important; }
-  .nav__brand.dock-pop::after { display: none !important; }
+  .nav__brand.dock-pop::after, .nav__brand.dock-pop::before { display: none !important; }
 }
 
 .hero__cta { position: relative; z-index: 1; margin-top: clamp(16px, 3vh, 28px); }

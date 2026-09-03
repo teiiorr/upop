@@ -1282,98 +1282,95 @@ function submitCasting(data) {
 
 /* ---------- util ---------- */
 
-/* ---------- scroll-scrubbed logo dock (page scrolls normally) ----------
-   No scroll lock: the page and its content move 1:1 with the finger. The
-   hero logo simply LAGS like parallax and parks itself into the navbar slot
-   over the first ~0.6 screens of scroll, so the shrink is clearly visible
-   while everything else scrolls past. At the end the navbar logo (the SAME
-   artwork) takes over with a spring + gold-ring "click into place", and it
-   all reverses on scroll-up. Positions are read with offset math so the
-   hero entrance transform never poisons the measurement; per frame we only
-   read scrollY and write transform/opacity directly (GPU, iOS-smooth). */
+/* ---------- ONE-LOGO dock (self-shrinking, smoothed, effort-gated) --------
+   The navbar logo is the ONLY logo. On load JS scales it up to hero size and
+   parks it in the hero centre; as you scroll it REALLY shrinks itself down
+   and lands in the navbar slot — same element the whole way, so it genuinely
+   "docks" instead of a second logo appearing. A smoothing loop eases the
+   animation toward the scroll target (curP -> target) so micro-scrolls never
+   jitter, and the full dock is spread over a big scroll so it takes a real,
+   deliberate scroll to complete. Fully reversible on scroll-up. iOS-smooth:
+   offset-based measuring (transform-proof), only transform+opacity written,
+   dockDist frozen from innerHeight (not per-frame visualViewport). */
 function initLogoScroll() {
-  if (reduceMotion) return;
-
-  const heroInner = document.querySelector(".hero__logo-inner");
-  const heroLogoImg = document.querySelector(".hero-logo-img");
+  const heroImg = document.querySelector(".hero-logo-img");
   const brand = document.querySelector(".nav__brand");
   const navImg = brand && brand.querySelector("img");
-  if (!heroInner || !heroLogoImg || !navImg) return;
+  if (!heroImg || !navImg) return;
+  if (reduceMotion) return; // CSS shows a static hero logo + static nav logo
 
-  // transform-independent document center of an element
+  // transform-independent document centre of an element
   function docCenter(el) {
     let x = 0, y = 0, n = el;
     while (n) { x += n.offsetLeft; y += n.offsetTop; n = n.offsetParent; }
     return { x: x + el.offsetWidth / 2, y: y + el.offsetHeight / 2 };
   }
 
-  let heroC = { x: 0, y: 0 };   // hero logo center (document coords)
-  let navC = { x: 0, y: 0 };    // nav slot center (≈ constant screen coords; nav is sticky at top)
-  let endScale = 0.17;
-  let dockDist = 500;
+  let heroC = { x: 0, y: 0 };  // hero-placeholder centre (document coords)
+  let navC = { x: 0, y: 0 };   // navbar-slot centre (≈ constant screen coords)
+  let bigScale = 6;            // hero size / nav size
+  let dockDist = 640;          // px of scroll for a full dock (effort)
+  let ready = false;
 
   function measure() {
-    heroC = docCenter(heroLogoImg);
+    if (!heroImg.offsetHeight || !navImg.offsetHeight) return; // not laid out yet
+    heroC = docCenter(heroImg);
     navC = docCenter(navImg);
-    endScale = Math.max(0.06, (navImg.offsetHeight || 30) / (heroLogoImg.offsetHeight || 1));
-    const vh = (window.visualViewport && window.visualViewport.height) || window.innerHeight || 700;
-    // enough scroll room to make the parking clearly visible, but not sluggish
-    dockDist = Math.max(320, Math.min(vh * 0.6, 600));
-    update();
+    bigScale = Math.max(1, heroImg.offsetHeight / navImg.offsetHeight);
+    const vh = window.innerHeight || 700;  // frozen — visualViewport jitters on iOS
+    dockDist = Math.max(460, vh * 0.85);   // a real, deliberate scroll to finish
+    if (!ready) { ready = true; navImg.style.opacity = "1"; } // fade the big logo in
+    apply();
   }
 
   function ease(t) { return t * t * (3 - 2 * t); } // smoothstep
 
-  let popped = false;
-
-  function update() {
+  let curP = 0, popped = false;
+  function apply() {
     const S = window.scrollY;
-    const p = Math.max(0, Math.min(1, S / dockDist));
-    const e = ease(p);
+    const e = ease(curP < 0 ? 0 : curP > 1 ? 1 : curP);
+    // where the logo should sit: hero centre (which scrolls up) -> nav slot
+    const heroScreenY = heroC.y - S;
+    const tx = (1 - e) * (heroC.x - navC.x);
+    const ty = (1 - e) * (heroScreenY - navC.y);
+    const sc = 1 + (bigScale - 1) * (1 - e);
+    navImg.style.transform =
+      "translate3d(" + tx.toFixed(2) + "px, " + ty.toFixed(2) + "px, 0) scale(" + sc.toFixed(4) + ")";
 
-    // hero logo: parallax-lag from its natural (scrolling) position into the slot
-    const naturalY = heroC.y - S;          // screen Y of the logo with no transform
-    const tx = e * (navC.x - heroC.x);     // horizontal doesn't move with scroll
-    const ty = e * (navC.y - naturalY);    // vertical closes the gap to the slot
-    const sc = 1 + (endScale - 1) * e;
-    heroInner.style.transform =
-      "translate3d(" + tx.toFixed(1) + "px, " + ty.toFixed(1) + "px, 0) scale(" + sc.toFixed(4) + ")";
-    // hand off to the navbar logo just before the lock-in so the pop lands
-    // on a clean, fully-formed navbar logo (same artwork -> seamless)
-    heroInner.style.opacity = (1 - clamp01((p - 0.72) / 0.15)).toFixed(3);
-    navImg.style.opacity = clamp01((p - 0.68) / 0.14).toFixed(3);
-
-    // one-shot "click into place" when it locks into the navbar; re-arm
-    // after the user backs off so it fires again next time.
-    if (!popped && p >= 0.87) {
+    // one-shot "click into place" once it locks in; re-arm after backing off
+    if (!popped && curP >= 0.9) {
       popped = true;
       brand.classList.remove("dock-pop");
-      void brand.offsetWidth; // force reflow so the animation restarts
+      void brand.offsetWidth; // restart the animation
       brand.classList.add("dock-pop");
-    } else if (popped && p < 0.66) {
+    } else if (popped && curP < 0.7) {
       popped = false;
       brand.classList.remove("dock-pop");
     }
   }
 
-  function clamp01(v) { return v < 0 ? 0 : v > 1 ? 1 : v; }
-
-  brand.addEventListener("animationend", () => brand.classList.remove("dock-pop"));
-
-  let ticking = false;
-  window.addEventListener("scroll", () => {
-    if (!ticking) {
-      ticking = true;
-      requestAnimationFrame(() => { update(); ticking = false; });
+  // ---- smoothing loop: ease curP toward the scroll target (no micro jitter) ----
+  let raf = 0, running = false;
+  function loop() {
+    const target = Math.max(0, Math.min(1, window.scrollY / dockDist));
+    curP += (target - curP) * 0.12;                 // magnetic follow
+    if (Math.abs(target - curP) < 0.0006) {         // settled
+      curP = target;
+      apply();
+      running = false; raf = 0;
+      return;
     }
-  }, { passive: true });
+    apply();
+    raf = requestAnimationFrame(loop);
+  }
+  function kick() { if (!running && ready) { running = true; raf = requestAnimationFrame(loop); } }
 
-  window.addEventListener("resize", debounce(measure, 120));
-  if (window.visualViewport) window.visualViewport.addEventListener("resize", debounce(measure, 120));
-  if (document.fonts && document.fonts.ready) document.fonts.ready.then(measure);
-  // re-measure after the hero entrance settles so positions are exact
-  setTimeout(measure, 300);
-  setTimeout(measure, 1500);
+  window.addEventListener("scroll", kick, { passive: true });
+  window.addEventListener("resize", debounce(() => { measure(); kick(); }, 150));
+  if (heroImg.complete) measure();
+  else heroImg.addEventListener("load", () => { measure(); kick(); });
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { measure(); kick(); });
+  setTimeout(() => { measure(); kick(); }, 500);
   measure();
 }
 
