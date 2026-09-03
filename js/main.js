@@ -770,14 +770,6 @@ function initReveal() {
     );
   });
 
-  document.querySelectorAll(".steplist .step").forEach((el, i) => {
-    el.classList.add(
-      i % 2
-        ? "reveal--right"
-        : "reveal--left"
-    );
-  });
-
   document.querySelectorAll(".accordion .ac").forEach((el) => {
     el.classList.add("reveal--left");
   });
