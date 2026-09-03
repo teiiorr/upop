@@ -628,26 +628,45 @@ body.sec-faq    .nav__desktop a[href="#faq"] { color: var(--gold-hi); }
    drives progress 0..1 into the logo transforms WITHOUT moving the page.
    The page unlocks only once the anim completes; scroll up locks again for
    the reverse. Only transform + opacity animate (GPU, iOS-smooth). */
+/* The hero logo is scrubbed DIRECTLY from scrollY (JS writes transform each
+   frame) so it tracks the finger 1:1 while the page scrolls normally — no
+   transition on transform (that would lag the scrub). */
 .hero__logo-inner {
   display: inline-block; transform-origin: center;
   will-change: transform, opacity;
-  transition: transform .18s linear, opacity .18s linear;
 }
+/* the navbar logo is absent at the top and fades in as the hero logo parks
+   into it; JS owns its opacity, a one-shot pop owns the "click into place". */
 .js .nav__brand img {
-  transform-origin: left center;
-  opacity: 0; transform: scale(.55);
+  transform-origin: center;
+  opacity: 0;
   will-change: transform, opacity;
-  transition: transform .18s linear, opacity .18s linear;
 }
-/* while locked, kill page scroll (touch + wheel) */
-html.scroll-lock, body.scroll-lock {
-  overflow: hidden !important;
-  overscroll-behavior: none;
-  touch-action: none;
+.nav__brand { position: relative; overflow: visible; }
+/* the satisfying dock: the logo springs into the slot and a soft gold ring
+   pulses out of it — clearly signalling it locked in */
+.nav__brand.dock-pop img { animation: dockPop .52s var(--magnet) both; }
+.nav__brand.dock-pop::after {
+  content: ""; position: absolute; left: 50%; top: 50%;
+  width: 46px; height: 46px; margin: -23px 0 0 -23px;
+  border-radius: 50%; pointer-events: none;
+  background: radial-gradient(circle, rgba(244,225,160,.55) 0%, rgba(211,166,63,.28) 42%, transparent 68%);
+  animation: dockRing .6s var(--e-quint) both;
+}
+@keyframes dockPop {
+  0%   { transform: scale(.72); }
+  55%  { transform: scale(1.13); }
+  100% { transform: scale(1); }
+}
+@keyframes dockRing {
+  0%   { opacity: 0; transform: scale(.35); }
+  30%  { opacity: 1; }
+  100% { opacity: 0; transform: scale(2.6); }
 }
 @media (prefers-reduced-motion: reduce) {
-  .hero__logo-inner, .js .nav__brand img { transition: none !important; }
-  .js .nav__brand img { transform: none !important; opacity: 1 !important; }
+  .hero__logo-inner { transform: none !important; opacity: 1 !important; }
+  .js .nav__brand img { transform: none !important; opacity: 1 !important; animation: none !important; }
+  .nav__brand.dock-pop::after { display: none !important; }
 }
 
 .hero__cta { position: relative; z-index: 1; margin-top: clamp(16px, 3vh, 28px); }
