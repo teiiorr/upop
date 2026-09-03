@@ -1282,6 +1282,7 @@ function initLogoScroll() {
   if (reduceMotion) return;
 
   const fly = document.querySelector(".fly-logo");
+  const inner = fly && fly.querySelector("img");
   const placeholder = document.querySelector(".hero-logo-img");
   const slot = document.querySelector(".nav__brand");
   const hero = document.querySelector(".hero");
@@ -1294,53 +1295,66 @@ function initLogoScroll() {
   let dest = { x: 0, y: 0, h: 1 };
   let range = 1;
   let navScale = 0.1;
+  let curP = 0;
+  let running = false;
+  let atTop = null;
 
   function measure() {
-    // placeholder still holds its box (visibility:hidden) -> the big-logo size/pos
     const pr = placeholder.getBoundingClientRect();
-    home = {
-      x: pr.left + window.scrollX,
-      y: pr.top + window.scrollY,
-      h: pr.height || 1,
-    };
+    home = { x: pr.left + window.scrollX, y: pr.top + window.scrollY, h: pr.height || 1 };
     fly.style.width = pr.width + "px";
     fly.style.height = pr.height + "px";
-
-    // nav is sticky at the top -> its slot is a constant screen position
     const sr = slot.getBoundingClientRect();
     dest = { x: sr.left, y: sr.top, h: sr.height || 1 };
-
     navScale = dest.h / home.h;
-    range = Math.max(200, hero.offsetHeight * 0.62);
-    update();
+    // dock within ~half a viewport so the logo reaches the navbar quickly
+    // and does not linger over the content while flying
+    range = Math.max(240, Math.min(window.innerHeight * 0.5, 460));
+    curP = target();
+    apply(curP);
   }
 
-  function update() {
-    const p = Math.min(1, Math.max(0, window.scrollY / range));
+  function target() {
+    return Math.min(1, Math.max(0, window.scrollY / range));
+  }
+
+  function apply(p) {
     const x = home.x + (dest.x - home.x) * p;
     const y = home.y + (dest.y - home.y) * p;
     const sc = 1 + (navScale - 1) * p;
     fly.style.transform =
-      "translate(" + x.toFixed(2) + "px, " + y.toFixed(2) + "px) scale(" + sc.toFixed(4) + ")";
+      "translate3d(" + x.toFixed(2) + "px, " + y.toFixed(2) + "px, 0) scale(" + sc.toFixed(4) + ")";
+    // toggle the idle zoom only when the logo is (near) fully in the hero
+    const top = p < 0.015;
+    if (top !== atTop) {
+      atTop = top;
+      root.classList.toggle("is-top", top);
+    }
   }
 
-  let ticking = false;
-  window.addEventListener(
-    "scroll",
-    () => {
-      if (!ticking) {
-        ticking = true;
-        requestAnimationFrame(() => {
-          update();
-          ticking = false;
-        });
-      }
-    },
-    { passive: true }
-  );
+  // smooth rAF loop: reads live scroll each frame and eases curP toward it
+  function frame() {
+    const t = target();
+    curP += (t - curP) * 0.24;
+    if (Math.abs(t - curP) < 0.0004) {
+      curP = t;
+      apply(curP);
+      running = false;
+      return;
+    }
+    apply(curP);
+    requestAnimationFrame(frame);
+  }
+  function kick() {
+    if (!running) {
+      running = true;
+      requestAnimationFrame(frame);
+    }
+  }
+
+  window.addEventListener("scroll", kick, { passive: true });
   window.addEventListener("resize", debounce(measure, 120));
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(measure);
-  // re-measure once more after layout/images settle
   setTimeout(measure, 400);
 
   measure();
