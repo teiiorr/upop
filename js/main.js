@@ -603,6 +603,32 @@ const LANGS = ["uz", "ru", "en"];
 const LS_KEY = "upop_lang";
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+/* ============================================================
+   Google Sheet backend (UPOP_casting)
+   Paste the deployed Apps Script Web App URL (…/exec) here.
+   Setup steps: google-apps-script/SETUP.md
+   Leave "" to disable saving (the form still works for previewing).
+   ============================================================ */
+const SHEET_ENDPOINT = "";
+
+/* One stable id per application, so a retry/double-submit can never create a
+   duplicate row (the Apps Script dedupes on it). Kept until a send succeeds. */
+const SUBMISSION_ID_KEY = "upop_submission_id";
+function getSubmissionId() {
+  let id = "";
+  try { id = localStorage.getItem(SUBMISSION_ID_KEY) || ""; } catch (_) {}
+  if (!id) {
+    id =
+      (window.crypto && crypto.randomUUID && crypto.randomUUID()) ||
+      "upop-" + Date.now().toString(36) + "-" + Math.random().toString(36).slice(2, 10);
+    try { localStorage.setItem(SUBMISSION_ID_KEY, id); } catch (_) {}
+  }
+  return id;
+}
+function clearSubmissionId() {
+  try { localStorage.removeItem(SUBMISSION_ID_KEY); } catch (_) {}
+}
+
 function getLang() {
   const saved = localStorage.getItem(LS_KEY);
   return LANGS.includes(saved) ? saved : "uz";
@@ -1176,6 +1202,7 @@ function initForm() {
 
     try {
       await submitCasting(data);
+      clearSubmissionId(); // a fresh fill next time is a new application
       showSuccess();
     } catch (err) {
       console.error("[UPOP] submit failed:", err);
@@ -1201,6 +1228,7 @@ function collectData(form, lang) {
   });
   data.lang = lang;
   data.submittedAt = new Date().toISOString();
+  data.submissionId = getSubmissionId();
   return data;
 }
 
@@ -1234,46 +1262,38 @@ function showSuccess() {
 }
 
 /* ------------------------------------------------------------
-   >>> THE ONE HOOK TO CONNECT A BACKEND <<<
-   Right now this just logs the payload and resolves after a beat
-   so the success screen shows. Replace the body with your call:
+   Send one application to the Google Sheet (UPOP_casting) via the Apps
+   Script Web App in SHEET_ENDPOINT.
 
-   Telegram (via your bot's serverless endpoint — keep the token
-   server-side, never in this file):
+   • Transport: POST as text/plain so it stays a "simple" CORS request (no
+     preflight, which Apps Script can't answer), in no-cors mode. The write
+     lands server-side; the opaque response resolves on delivery and only
+     rejects on a real network failure — so the caller can tell "sent" from
+     "no connection" and let the user retry.
+   • Idempotency: the payload carries submissionId; the Apps Script dedupes
+     on it, so a retry after a flaky network never doubles a row.
+   • Concurrency: the Apps Script serializes appends with a script lock.
 
-     await fetch("/api/casting", {
-       method: "POST",
-       headers: {
-         "Content-Type": "application/json"
-       },
-       body: JSON.stringify(data),
-     }).then(r => {
-       if (!r.ok) throw new Error(r.status);
-     });
-
-   Formspree:
-
-     fetch("https://formspree.io/f/XXXXXXXX", {...})
-
-   Google Sheet (Apps Script web app):
-
-     fetch("<script-url>", {...})
-
+   If SHEET_ENDPOINT is empty the form still completes (for previewing) but
+   nothing is saved — configure it per google-apps-script/SETUP.md.
 ------------------------------------------------------------ */
-
 function submitCasting(data) {
-  console.log(
-    "[UPOP] casting application:",
-    data
-  );
+  if (!SHEET_ENDPOINT) {
+    console.warn(
+      "[UPOP] SHEET_ENDPOINT is not set — the application was NOT saved. " +
+        "See google-apps-script/SETUP.md to connect the UPOP_casting sheet."
+    );
+    console.log("[UPOP] casting application (not saved):", data);
+    return new Promise((resolve) => setTimeout(resolve, 700));
+  }
 
-  return new Promise(
-    (resolve) =>
-      setTimeout(
-        resolve,
-        1100
-      )
-  );
+  return fetch(SHEET_ENDPOINT, {
+    method: "POST",
+    mode: "no-cors",
+    headers: { "Content-Type": "text/plain;charset=utf-8" },
+    body: JSON.stringify(data),
+    keepalive: true,
+  });
 }
 
 /* ---------- util ---------- */
