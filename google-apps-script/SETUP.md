@@ -30,7 +30,7 @@
    ```
 2. Вставь свой URL:
    ```js
-   const SHEET_ENDPOINT = "https://script.google.com/macros/s/AKfy.../exec";
+   const SHEET_ENDPOINT = "https://script.google.com/macros/s/AKfycbxR2mfIEU5kJqkI0jvaD4hED3fYODTr5QtqA3ulEQR1GTpF_S51TiG1mfUIaBxGmo4evg/exec";
    ```
 3. Закоммить и запушь (Vercel задеплоит). Готово — заявки падают в таблицу.
 

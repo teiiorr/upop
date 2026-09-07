@@ -1277,7 +1277,7 @@ function showSuccess() {
    If SHEET_ENDPOINT is empty the form still completes (for previewing) but
    nothing is saved — configure it per google-apps-script/SETUP.md.
 ------------------------------------------------------------ */
-function submitCasting(data) {
+async function submitCasting(data) {
   if (!SHEET_ENDPOINT) {
     console.warn(
       "[UPOP] SHEET_ENDPOINT is not set — the application was NOT saved. " +
@@ -1287,13 +1287,36 @@ function submitCasting(data) {
     return new Promise((resolve) => setTimeout(resolve, 700));
   }
 
-  return fetch(SHEET_ENDPOINT, {
+  const body = JSON.stringify(data);
+  const req = () => ({
     method: "POST",
-    mode: "no-cors",
-    headers: { "Content-Type": "text/plain;charset=utf-8" },
-    body: JSON.stringify(data),
-    keepalive: true,
+    headers: { "Content-Type": "text/plain;charset=utf-8" }, // simple request → no preflight
+    body,
+    redirect: "follow",
   });
+
+  // 1) Readable attempt: an "Anyone" Apps Script deployment returns
+  //    Access-Control-Allow-Origin:* so we can confirm the write really
+  //    persisted (res + {ok:true}) before clearing the id / showing success.
+  let res;
+  try {
+    res = await fetch(SHEET_ENDPOINT, req());
+  } catch (_networkOrCors) {
+    // The response couldn't be read (CORS blocked it, or a network hiccup).
+    // The request itself was still delivered, but to be safe re-send it
+    // opaquely so the row definitely lands — the submissionId dedupe on the
+    // server guarantees this can't create a second row. If THIS also fails,
+    // it's a genuine offline and the error propagates (id kept → retry).
+    await fetch(SHEET_ENDPOINT, { ...req(), mode: "no-cors" });
+    return;
+  }
+
+  // We can read the response — trust the server's verdict.
+  let payload = null;
+  try { payload = await res.json(); } catch (_) {}
+  if (!res.ok || (payload && payload.ok === false)) {
+    throw new Error((payload && payload.error) || "HTTP " + res.status);
+  }
 }
 
 /* ---------- util ---------- */

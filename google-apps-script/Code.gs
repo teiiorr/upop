@@ -149,7 +149,9 @@ function cellValue(f, v) {
 function ensureHeaders(sheet) {
   var headers = FIELDS.map(function (f) { return f.h; });
   var need = false;
-  if (sheet.getLastRow() === 0) {
+  // Also treat "too few columns" as needing setup, so the compare below never
+  // reads past the grid on a fresh 26-column tab.
+  if (sheet.getLastRow() === 0 || sheet.getMaxColumns() < headers.length) {
     need = true;
   } else {
     var first = sheet.getRange(1, 1, 1, headers.length).getValues()[0];
@@ -158,6 +160,14 @@ function ensureHeaders(sheet) {
     }
   }
   if (!need) return;
+
+  // A blank spreadsheet's tab has only 26 columns; grow it to fit all fields
+  // BEFORE any getRange/setColumnWidth, otherwise every write throws
+  // "out of bounds" and (because the client can't read the response) the
+  // application would be lost silently.
+  if (sheet.getMaxColumns() < headers.length) {
+    sheet.insertColumnsAfter(sheet.getMaxColumns(), headers.length - sheet.getMaxColumns());
+  }
 
   var range = sheet.getRange(1, 1, 1, headers.length);
   range.setValues([headers]);
