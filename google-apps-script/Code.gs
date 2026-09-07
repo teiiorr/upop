@@ -6,33 +6,35 @@
  *
  *  • Concurrency  — every write is wrapped in a script lock, so simultaneous
  *                   submissions can never overwrite or interleave rows.
- *  • Idempotency  — each application carries a `submissionId`; if a row with
- *                   that id already exists the script does NOT append again,
- *                   so a retry / double-submit / flaky network is harmless.
- *  • Nice format  — a frozen, styled header row, human-readable column
- *                   titles, real date-times, Ha/— for yes-no fields, wrapped
- *                   text and row banding.
+ *  • Idempotency  — each application carries a `submissionId`; a row with that
+ *                   id is never appended twice (retry / double-submit safe).
+ *  • Nice format  — a frozen, gold, bold, centered header; readable titles;
+ *                   real date-times; Ha/— for yes-no fields; row banding that
+ *                   starts BELOW the header (so it never greys the header).
  *
- * Setup lives in SETUP.md (bind this to a sheet named UPOP_casting, then
- * Deploy ▸ New deployment ▸ Web app ▸ Execute as "Me", access "Anyone").
+ * Setup lives in SETUP.md. After editing this file, redeploy:
+ * Deploy ▸ Manage deployments ▸ ✏️ ▸ Version: New version ▸ Deploy.
  */
 
 var SHEET_NAME = 'Applications';
+var ID_COL = 2;                 // "Submission ID" column — used for dedupe/purge
+var ADMIN_KEY = 'upop-admin-2026-9f3a7c';  // guards the maintenance action
 
 /* Column order + human titles. Keys match the JSON the site sends.
-   Add/rename here and the header row re-syncs on the next submission. */
+   `type:'bool'` → Ha/—, `type:'datetime'` → real date. `wide:true` widens
+   the column for long free-text; `center:true` centre-aligns short values. */
 var FIELDS = [
-  { k: 'submittedAt',       h: 'Vaqt / Timestamp',            type: 'datetime' },
+  { k: 'submittedAt',       h: 'Vaqt / Timestamp',            type: 'datetime', center: true },
   { k: 'submissionId',      h: 'Submission ID' },
-  { k: 'lang',              h: 'Til' },
+  { k: 'lang',              h: 'Til',                          center: true },
 
   { k: 'fullname',          h: 'F.I.Sh. / To‘liq ism' },
-  { k: 'birthdate',         h: 'Tug‘ilgan sana' },
-  { k: 'age',               h: 'Yosh' },
-  { k: 'gender',            h: 'Jins' },
-  { k: 'citizenship',       h: 'Fuqarolik' },
+  { k: 'birthdate',         h: 'Tug‘ilgan sana',               center: true },
+  { k: 'age',               h: 'Yosh',                         center: true },
+  { k: 'gender',            h: 'Jins',                         center: true },
+  { k: 'citizenship',       h: 'Fuqarolik',                    center: true },
   { k: 'region',            h: 'Yashash shahri / tumani' },
-  { k: 'phone',             h: 'Telefon' },
+  { k: 'phone',             h: 'Telefon',                      center: true },
   { k: 'email',             h: 'E-mail' },
   { k: 'instagram',         h: 'Instagram' },
   { k: 'tiktok',            h: 'TikTok' },
@@ -40,42 +42,42 @@ var FIELDS = [
   { k: 'youtube',           h: 'YouTube' },
 
   { k: 'parent_name',       h: 'Ota-ona / vakil F.I.Sh.' },
-  { k: 'parent_relation',   h: 'Ishtirokchiga kim' },
-  { k: 'parent_phone',      h: 'Ota-ona telefon' },
+  { k: 'parent_relation',   h: 'Ishtirokchiga kim',            center: true },
+  { k: 'parent_phone',      h: 'Ota-ona telefon',              center: true },
   { k: 'parent_email',      h: 'Ota-ona e-mail' },
-  { k: 'parent_consent',    h: 'Ota-ona roziligi',            type: 'bool' },
+  { k: 'parent_consent',    h: 'Ota-ona roziligi',             type: 'bool' },
 
-  { k: 'rule_agree',        h: 'Ijro qoidasiga rozilik',      type: 'bool' },
-  { k: 'piece',             h: 'Ijro asari (nomi, muallifi)' },
-  { k: 'genre',             h: 'Janr / yo‘nalish' },
-  { k: 'education',         h: 'Musiqiy ta’lim' },
+  { k: 'rule_agree',        h: 'Ijro qoidasiga rozilik',       type: 'bool' },
+  { k: 'piece',             h: 'Ijro asari (nomi, muallifi)',  wide: true },
+  { k: 'genre',             h: 'Janr / yo‘nalish',             center: true },
+  { k: 'education',         h: 'Musiqiy ta’lim',               wide: true },
   { k: 'instruments',       h: 'Cholg‘u asboblari' },
-  { k: 'years_singing',     h: 'Necha yildan beri kuylaydi' },
+  { k: 'years_singing',     h: 'Necha yildan beri kuylaydi',   center: true },
   { k: 'vocal_teacher',     h: 'Vokal ustoz' },
-  { k: 'contests',          h: 'Tanlov / shou tajribasi' },
-  { k: 'video',             h: 'Ijro video havolasi' },
+  { k: 'contests',          h: 'Tanlov / shou tajribasi',      wide: true },
+  { k: 'video',             h: 'Ijro video havolasi',          wide: true },
 
-  { k: 'why',               h: 'Nega ishtirok etmoqchi' },
-  { k: 'music_means',       h: 'Musiqa nima degani' },
+  { k: 'why',               h: 'Nega ishtirok etmoqchi',       wide: true },
+  { k: 'music_means',       h: 'Musiqa nima degani',           wide: true },
   { k: 'three_words',       h: 'Uch so‘z bilan o‘zi' },
   { k: 'idol',              h: 'Kumir / ilhomlantiruvchi' },
-  { k: 'hobbies',           h: 'Qiziqishlar' },
+  { k: 'hobbies',           h: 'Qiziqishlar',                  wide: true },
   { k: 'free_time',         h: 'Bo‘sh vaqt mashg‘uloti' },
   { k: 'father_name',       h: 'Ota F.I.Sh.' },
   { k: 'father_job',        h: 'Ota ish joyi' },
   { k: 'mother_name',       h: 'Ona F.I.Sh.' },
   { k: 'mother_job',        h: 'Ona ish joyi' },
-  { k: 'siblings',          h: 'Aka-uka / opa-singil' },
+  { k: 'siblings',          h: 'Aka-uka / opa-singil',         wide: true },
   { k: 'live_with',         h: 'Kim bilan yashaydi' },
-  { k: 'support',           h: 'Kim qo‘llab-quvvatlaydi' },
+  { k: 'support',           h: 'Kim qo‘llab-quvvatlaydi',      wide: true },
 
   { k: 'chronic',           h: 'Surunkali kasalliklar' },
   { k: 'allergy',           h: 'Allergiya' },
-  { k: 'emergency_contact', h: 'Favqulodda kontakt' },
+  { k: 'emergency_contact', h: 'Favqulodda kontakt',           wide: true },
 
-  { k: 'log_attend',        h: 'Shaxsan boradi',              type: 'bool' },
-  { k: 'log_stages',        h: 'Keyingi bosqichlarga tayyor', type: 'bool' },
-  { k: 'log_travel',        h: 'Boshqa shaharlarga tayyor',   type: 'bool' },
+  { k: 'log_attend',        h: 'Shaxsan boradi',               type: 'bool' },
+  { k: 'log_stages',        h: 'Keyingi bosqichlarga tayyor',  type: 'bool' },
+  { k: 'log_travel',        h: 'Boshqa shaharlarga tayyor',    type: 'bool' },
 
   { k: 'consent_data',      h: 'Ma’lumot qayta ishlash roziligi', type: 'bool' },
   { k: 'consent_media',     h: 'Media foydalanish roziligi',      type: 'bool' },
@@ -83,13 +85,11 @@ var FIELDS = [
   { k: 'consent_true',      h: 'Ma’lumotlar haqqoniyligi',        type: 'bool' }
 ];
 
-var ID_COL = 2; // "Submission ID" is the 2nd column — used for dedupe.
-
 /* ---------------------------------------------------------------- POST */
 function doPost(e) {
   var lock = LockService.getScriptLock();
   try {
-    lock.waitLock(30000); // serialize with any other in-flight submission
+    lock.waitLock(30000);
   } catch (err) {
     return json({ ok: false, error: 'locked' });
   }
@@ -103,6 +103,15 @@ function doPost(e) {
     var ss = SpreadsheetApp.getActive();
     var sheet = ss.getSheetByName(SHEET_NAME) || ss.insertSheet(SHEET_NAME);
     ensureHeaders(sheet);
+
+    // Maintenance action (purge test rows / re-style) — keyed.
+    if (data && data.action === 'admin') {
+      if (String(data.key) !== ADMIN_KEY) return json({ ok: false, error: 'forbidden' });
+      var res = {};
+      if (data.purgeTests) res.purged = purgeTestRows(sheet);
+      if (data.restyle) { styleHeader(sheet); restyleData(sheet); res.restyled = true; }
+      return json({ ok: true, admin: true, result: res });
+    }
 
     // Idempotency: bail out if this submissionId is already recorded.
     var subId = String(data.submissionId || '').trim();
@@ -130,12 +139,12 @@ function doPost(e) {
   }
 }
 
-/* ---------------------------------------------------------------- GET (health check) */
+/* ---------------------------------------------------------------- GET (health) */
 function doGet() {
   return json({ ok: true, service: 'UPOP_casting', time: new Date() });
 }
 
-/* ---------------------------------------------------------------- helpers */
+/* ---------------------------------------------------------------- values */
 function cellValue(f, v) {
   if (f.type === 'bool') return v === true || v === 'true' ? 'Ha' : '—';
   if (f.type === 'datetime') {
@@ -146,11 +155,10 @@ function cellValue(f, v) {
   return String(v);
 }
 
+/* ---------------------------------------------------------------- headers */
 function ensureHeaders(sheet) {
   var headers = FIELDS.map(function (f) { return f.h; });
   var need = false;
-  // Also treat "too few columns" as needing setup, so the compare below never
-  // reads past the grid on a fresh 26-column tab.
   if (sheet.getLastRow() === 0 || sheet.getMaxColumns() < headers.length) {
     need = true;
   } else {
@@ -159,55 +167,87 @@ function ensureHeaders(sheet) {
       if (String(first[i]) !== headers[i]) { need = true; break; }
     }
   }
-  if (!need) return;
+  if (need) styleHeader(sheet);
+}
 
-  // A blank spreadsheet's tab has only 26 columns; grow it to fit all fields
-  // BEFORE any getRange/setColumnWidth, otherwise every write throws
-  // "out of bounds" and (because the client can't read the response) the
-  // application would be lost silently.
+/* Writes + styles the header row and per-column layout. Safe to call again. */
+function styleHeader(sheet) {
+  var headers = FIELDS.map(function (f) { return f.h; });
+
+  // Grow a blank 26-column tab so all fields fit before any range op.
   if (sheet.getMaxColumns() < headers.length) {
     sheet.insertColumnsAfter(sheet.getMaxColumns(), headers.length - sheet.getMaxColumns());
   }
 
-  var range = sheet.getRange(1, 1, 1, headers.length);
-  range.setValues([headers]);
-  range
-    .setFontColor('#F4E1A0')
+  var header = sheet.getRange(1, 1, 1, headers.length);
+  header.setValues([headers]);
+  header
+    .setFontSize(12)                 // bigger than the default 10
     .setFontWeight('bold')
-    .setBackground('#0B1B24')
+    .setFontColor('#241704')         // dark, on gold
+    .setBackground('#D3A63F')        // brand gold — no more grey
+    .setHorizontalAlignment('center')
     .setVerticalAlignment('middle')
     .setWrap(true);
-  sheet.setRowHeight(1, 40);
+  sheet.setRowHeight(1, 52);
   sheet.setFrozenRows(1);
   sheet.setFrozenColumns(1);
 
-  // Reasonable widths: wide for long free-text answers, tight for flags.
+  // Column widths + per-column horizontal alignment for the data area.
+  var maxRows = sheet.getMaxRows();
   for (var c = 0; c < FIELDS.length; c++) {
     var f = FIELDS[c];
-    var w = f.type === 'bool' ? 90 : 180;
-    if (f.k === 'submissionId') w = 250;
-    if (['piece','why','music_means','contests','support','siblings','education','emergency_contact','video'].indexOf(f.k) >= 0) w = 320;
+    var w = f.type === 'bool' ? 120 : (f.wide ? 320 : 180);
+    if (f.k === 'submissionId') w = 260;
     sheet.setColumnWidth(c + 1, w);
+    if (maxRows >= 2) {
+      var colData = sheet.getRange(2, c + 1, maxRows - 1, 1);
+      colData.setHorizontalAlignment(f.center || f.type === 'bool' ? 'center' : 'left');
+      colData.setVerticalAlignment('middle');
+    }
   }
 
-  applyBanding(sheet, headers.length);
+  // Row banding for the DATA only (row 2 down) — never touches the header,
+  // which is what used to paint it grey.
+  try {
+    var bandings = sheet.getBandings();
+    for (var b = 0; b < bandings.length; b++) bandings[b].remove();
+    if (maxRows >= 2) {
+      sheet.getRange(2, 1, maxRows - 1, FIELDS.length)
+        .applyRowBanding(SpreadsheetApp.BandingTheme.LIGHT_GREY, false, false);
+    }
+  } catch (err) { /* banding is cosmetic */ }
 }
 
+/* Per-appended-row polish (cheap: a couple of range ops). */
 function styleRow(sheet, rowIndex) {
-  var last = FIELDS.length;
-  var range = sheet.getRange(rowIndex, 1, 1, last);
-  range.setVerticalAlignment('top').setWrap(true);
-  // Timestamp column as a real date-time.
+  var range = sheet.getRange(rowIndex, 1, 1, FIELDS.length);
+  range.setVerticalAlignment('middle').setWrap(true);
   sheet.getRange(rowIndex, 1, 1, 1).setNumberFormat('yyyy-mm-dd hh:mm:ss');
 }
 
-function applyBanding(sheet, cols) {
-  try {
-    var existing = sheet.getBandings();
-    for (var i = 0; i < existing.length; i++) existing[i].remove();
-    sheet.getRange(1, 1, sheet.getMaxRows(), cols)
-      .applyRowBanding(SpreadsheetApp.BandingTheme.LIGHT_GREY, true, false);
-  } catch (err) { /* banding is cosmetic — ignore if unsupported */ }
+/* Re-apply vertical centering + timestamp format to all existing data rows. */
+function restyleData(sheet) {
+  var last = sheet.getLastRow();
+  if (last < 2) return;
+  var range = sheet.getRange(2, 1, last - 1, FIELDS.length);
+  range.setVerticalAlignment('middle').setWrap(true);
+  sheet.getRange(2, 1, last - 1, 1).setNumberFormat('yyyy-mm-dd hh:mm:ss');
+}
+
+/* Delete every row whose Submission ID starts with "TEST-" (bottom-up). */
+function purgeTestRows(sheet) {
+  var last = sheet.getLastRow();
+  if (last < 2) return 0;
+  var ids = sheet.getRange(2, ID_COL, last - 1, 1).getValues();
+  var deleted = 0;
+  for (var i = ids.length - 1; i >= 0; i--) {
+    if (String(ids[i][0]).indexOf('TEST-') === 0) {
+      sheet.deleteRow(i + 2);
+      deleted++;
+    }
+  }
+  return deleted;
 }
 
 function json(obj) {
