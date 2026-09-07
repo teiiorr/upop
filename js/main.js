@@ -609,7 +609,7 @@ const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").match
    Setup steps: google-apps-script/SETUP.md
    Leave "" to disable saving (the form still works for previewing).
    ============================================================ */
-const SHEET_ENDPOINT = "";
+const SHEET_ENDPOINT = "https://script.google.com/macros/s/AKfycby7z5nB-DfFxk6tBGVCFkMQNpPCdNbHI9DSURAMYiUt8GKPasqRNULcyG-A3lZzZzEIwQ/exec";
 
 /* One stable id per application, so a retry/double-submit can never create a
    duplicate row (the Apps Script dedupes on it). Kept until a send succeeds. */
