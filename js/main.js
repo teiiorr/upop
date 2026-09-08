@@ -9,7 +9,7 @@ const DICT = {
   /* ---------------------------------------------------- UZ */
   uz: {
     meta_title: `U POP TREND — Milliy kasting`,
-    meta_desc:  `14–18 yoshdagi yoshlar uchun milliy tanlov. Videongizni #UPOPTREND bilan joylang va anketani to‘ldiring. Arizalar 25-sentabrgacha.`,
+    meta_desc:  `14–19 yoshdagi yoshlar uchun milliy tanlov. Videongizni #UPOPTREND bilan joylang va anketani to‘ldiring. Arizalar 25-sentabrgacha.`,
     skip: `Kastingga o'tish`,
 
     nav_who: `Kim qatnashadi`,
@@ -21,10 +21,10 @@ const DICT = {
     hero_title: `“Qadriyatlarning qayta tirilishi”`,
     hero_cta: `Anketani to‘ldiring`,
     deadline: `Arizalar 2026-yil 25-sentabrgacha qabul qilinadi`,
-chance_title: `Yoshingiz <span class="hl">14 dan 18 gacha!</span><br>Va siz jonli kuylay olasiz!<br>Demak, bu sizning sahnangiz!`,
+chance_title: `Yoshingiz <span class="hl">14 dan 19 gacha!</span><br>Va siz jonli kuylay olasiz!<br>Demak, bu sizning sahnangiz!`,
     who_lede: `O'zbekiston tarixidagi ilk milliy kasting — tajriba va tayyorgarlikdan qat'i nazar, barcha uchun ochiq.`,
 
-    stat1_num: `14–18`,
+    stat1_num: `14–19`,
     stat1_label: `Ishtirokchilar yoshi`,
     stat2_label: `Oxirgi muddat`,
     stat3_label: `Milliy loyiha`,
@@ -62,7 +62,7 @@ chance_title: `Yoshingiz <span class="hl">14 dan 18 gacha!</span><br>Va siz jonl
     faq_title: `Ko'p beriladigan <span class="hl">savollar</span>`,
 
     q1: `Sahna tajribasi kerakmi?`,
-    a1: `Yo'q. Kasting 14 yoshdan 18 yoshgacha bo'lganlar uchun ochiq. Musiqa maktabi ham, avvalgi sahna tajribasi ham talab qilinmaydi, hakamlar ovoz va aktyorlik mahoratiga baho beradi.`,
+    a1: `Yo'q. Kasting 14 yoshdan 19 yoshgacha bo'lganlar uchun ochiq. Musiqa maktabi ham, avvalgi sahna tajribasi ham talab qilinmaydi, hakamlar ovoz va aktyorlik mahoratiga baho beradi.`,
 
     q2: `Ishtirok pullikmi?`,
     a2: `Yo'q. Ishtirok barcha besh shaharda bepul. Tashkilotchilar hech bir bosqichda badal yig'maydi.`,
@@ -117,7 +117,7 @@ chance_title: `Yoshingiz <span class="hl">14 dan 18 gacha!</span><br>Va siz jonl
     s1_phone: `Telefon`,
     s1_email: `E-mail`,
     s1_socials: `Ijtimoiy tarmoqlar`,
-    s1_agenote: `Ishtirokchilar anketa topshirish paytida 14 dan 18 yoshgacha bo‘lishi shart.`,
+    s1_agenote: `Ishtirokchilar anketa topshirish paytida 14 dan 19 yoshgacha bo‘lishi shart.`,
 
     s2_note: `Barcha ishtirokchilar uchun to‘ldirilishi shart.`,
     s2_name: `Ota-ona / vakil F.I.Sh.`,
@@ -183,7 +183,7 @@ chance_title: `Yoshingiz <span class="hl">14 dan 18 gacha!</span><br>Va siz jonl
     consent: `Shaxsiy ma'lumotlarim qayta ishlanishiga va UPOP TREND kastingi haqida ma'lumot olishga roziman`,
 
     err_name: `Ismingizni kiriting`,
-    err_age: `Yosh 14–18 oralig'ida bo'lishi kerak`,
+    err_age: `Yosh 14–19 oralig'ida bo'lishi kerak`,
     err_city: `Shaharni tanlang`,
     err_phone: `To'g'ri telefon raqamini kiriting`,
     err_consent: `Davom etish uchun rozilik bering`,
@@ -195,7 +195,7 @@ chance_title: `Yoshingiz <span class="hl">14 dan 18 gacha!</span><br>Va siz jonl
     success_text: `Arizangiz uchun rahmat! Saralashdan o‘tsangiz, anketada ko‘rsatilgan raqam orqali siz bilan bog‘lanamiz. Tafsilotlarni upop.uz saytida kuzating.`,
 
     golden_title: `HAQIQIY ISTEDODLARNI QIDIRAMIZ!`,
-    golden_subtitle: `Agar siz 14-18 yoshda bo'lsangiz va milliy madaniyatimizni chuqur bilsangiz - bu loyiha siz uchun!`,
+    golden_subtitle: `Agar siz 14-19 yoshda bo'lsangiz va milliy madaniyatimizni chuqur bilsangiz - bu loyiha siz uchun!`,
 
     footer_details: `Barcha tafsilotlar — <a href="https://upop.uz" target="_blank" rel="noopener">upop.uz</a>`,
     footer_copy: `© 2026 UPOP TREND`,
@@ -205,7 +205,7 @@ chance_title: `Yoshingiz <span class="hl">14 dan 18 gacha!</span><br>Va siz jonl
   /* ---------------------------------------------------- RU */
   ru: {
     meta_title: `U POP TREND — Национальный кастинг`,
-    meta_desc:  `Национальный конкурс для молодёжи 14–18 года. Опубликуйте видео с #UPOPTREND и заполните анкету. Приём заявок до 25 сентября.`,
+    meta_desc:  `Национальный конкурс для молодёжи 14–19 года. Опубликуйте видео с #UPOPTREND и заполните анкету. Приём заявок до 25 сентября.`,
     skip: `Перейти к заявке`,
 
     nav_who: `Кто участвует`,
@@ -217,10 +217,10 @@ chance_title: `Yoshingiz <span class="hl">14 dan 18 gacha!</span><br>Va siz jonl
     hero_title: `«Возрождение ценностей»`,
     hero_cta: `Заполнить анкету`,
     deadline: `Приём заявок до 25 сентября 2026 года`,
-    chance_title: `Вам <span class="hl">от 14 до 18 года!</span><br>И вы умеете петь вживую?<br>Значит, это ваша сцена!`,
+    chance_title: `Вам <span class="hl">от 14 до 19 года!</span><br>И вы умеете петь вживую?<br>Значит, это ваша сцена!`,
     who_lede: `Первый национальный кастинг в истории Узбекистана — открыт для всех, независимо от опыта и подготовки.`,
 
-    stat1_num: `14–18`,
+    stat1_num: `14–19`,
     stat1_label: `Возраст участников`,
     stat2_label: `Крайний срок`,
     stat3_label: `национальный проект`,
@@ -258,7 +258,7 @@ chance_title: `Yoshingiz <span class="hl">14 dan 18 gacha!</span><br>Va siz jonl
     faq_title: `Частые <span class="hl">вопросы</span>`,
 
     q1: `Нужен ли опыт выступлений?`,
-    a1: `Нет. Кастинг открыт для всех в возрасте от 14 до 18 года. Ни музыкальная школа, ни предыдущий сценический опыт не требуются — жюри оценивает вокальные и артистические способности.`,
+    a1: `Нет. Кастинг открыт для всех в возрасте от 14 до 19 года. Ни музыкальная школа, ни предыдущий сценический опыт не требуются — жюри оценивает вокальные и артистические способности.`,
 
     q2: `Участие платное?`,
     a2: `Нет. Участие бесплатное во всех пяти городах. Организаторы не собирают взносы ни на одном этапе.`,
@@ -313,7 +313,7 @@ chance_title: `Yoshingiz <span class="hl">14 dan 18 gacha!</span><br>Va siz jonl
     s1_phone: `Телефон`,
     s1_email: `E-mail`,
     s1_socials: `Соцсети`,
-    s1_agenote: `На момент подачи анкеты участнику должно быть от 14 до 18 года включительно.`,
+    s1_agenote: `На момент подачи анкеты участнику должно быть от 14 до 19 года включительно.`,
 
     s2_note: `Обязательно к заполнению для всех участников.`,
     s2_name: `ФИО родителя / опекуна`,
@@ -379,7 +379,7 @@ chance_title: `Yoshingiz <span class="hl">14 dan 18 gacha!</span><br>Va siz jonl
     consent: `Я согласен(на) на обработку моих персональных данных и получение информации о кастинге UPOP TREND`,
 
     err_name: `Введите имя`,
-    err_age: `Возраст должен быть от 14 до 18 года`,
+    err_age: `Возраст должен быть от 14 до 19 года`,
     err_city: `Выберите город`,
     err_phone: `Введите корректный номер телефона`,
     err_consent: `Дайте согласие, чтобы продолжить`,
@@ -391,7 +391,7 @@ chance_title: `Yoshingiz <span class="hl">14 dan 18 gacha!</span><br>Va siz jonl
     success_text: `Спасибо за заявку! Если вы пройдёте отбор, мы свяжемся с вами по номеру из анкеты. Следите за деталями на upop.uz.`,
 
     golden_title: `ИЩЕМ НАСТОЯЩИЕ ТАЛАНТЫ!`,
-    golden_subtitle: `Если вам от 14 до 18 года и вы глубоко знаете нашу национальную культуру — этот проект для вас!`,
+    golden_subtitle: `Если вам от 14 до 19 года и вы глубоко знаете нашу национальную культуру — этот проект для вас!`,
 
     footer_details: `Все подробности — <a href="https://upop.uz" target="_blank" rel="noopener">upop.uz</a>`,
     footer_copy: `© 2026 UPOP TREND`,
@@ -401,7 +401,7 @@ chance_title: `Yoshingiz <span class="hl">14 dan 18 gacha!</span><br>Va siz jonl
   /* ---------------------------------------------------- EN */
   en: {
     meta_title: `U POP TREND — National Casting`,
-    meta_desc:  `A national contest for youth aged 14–18. Post your video with #UPOPTREND and fill in the form. Applications until 25 September.`,
+    meta_desc:  `A national contest for youth aged 14–19. Post your video with #UPOPTREND and fill in the form. Applications until 25 September.`,
     skip: `Skip to apply`,
 
     nav_who: `Who can join`,
@@ -413,10 +413,10 @@ chance_title: `Yoshingiz <span class="hl">14 dan 18 gacha!</span><br>Va siz jonl
     hero_title: `“The revival of values”`,
     hero_cta: `Fill in the form`,
     deadline: `Applications accepted until 25 September 2026`,
-    chance_title: `Are you <span class="hl">14 to 18 years old?</span><br>And can you sing live?<br>Then this is your stage!`,
+    chance_title: `Are you <span class="hl">14 to 19 years old?</span><br>And can you sing live?<br>Then this is your stage!`,
     who_lede: `The first national casting in Uzbekistan's history — open to everyone, regardless of experience or training.`,
 
-    stat1_num: `14–18`,
+    stat1_num: `14–19`,
     stat1_label: `Age of participants`,
     stat2_label: `Deadline`,
     stat3_label: `national project`,
@@ -454,7 +454,7 @@ chance_title: `Yoshingiz <span class="hl">14 dan 18 gacha!</span><br>Va siz jonl
     faq_title: `Frequently asked <span class="hl">questions</span>`,
 
     q1: `Do I need stage experience?`,
-    a1: `No. The casting is open to everyone aged 14–18. Neither music school nor previous stage experience is required — the jury evaluates vocal and performance skills.`,
+    a1: `No. The casting is open to everyone aged 14–19. Neither music school nor previous stage experience is required — the jury evaluates vocal and performance skills.`,
 
     q2: `Is participation paid?`,
     a2: `No. Participation is free in all five cities. The organizers do not collect any fees at any stage.`,
@@ -509,7 +509,7 @@ chance_title: `Yoshingiz <span class="hl">14 dan 18 gacha!</span><br>Va siz jonl
     s1_phone: `Phone`,
     s1_email: `E-mail`,
     s1_socials: `Social media`,
-    s1_agenote: `Participants must be between 14 and 18 years old at the time of applying.`,
+    s1_agenote: `Participants must be between 14 and 19 years old at the time of applying.`,
 
     s2_note: `Required for every participant.`,
     s2_name: `Parent / guardian full name`,
@@ -575,7 +575,7 @@ chance_title: `Yoshingiz <span class="hl">14 dan 18 gacha!</span><br>Va siz jonl
     consent: `I consent to the processing of my personal data and to receiving information about the UPOP TREND casting`,
 
     err_name: `Enter your name`,
-    err_age: `Age must be between 14 and 18`,
+    err_age: `Age must be between 14 and 19`,
     err_city: `Choose a city`,
     err_phone: `Enter a valid phone number`,
     err_consent: `Please give your consent to continue`,
@@ -587,7 +587,7 @@ chance_title: `Yoshingiz <span class="hl">14 dan 18 gacha!</span><br>Va siz jonl
     success_text: `Thank you for your application! If you pass the selection, we'll contact you using the number from the form. Follow updates at upop.uz.`,
 
     golden_title: `WE ARE LOOKING FOR REAL TALENTS!`,
-    golden_subtitle: `If you are between 14 and 18 years old and deeply know our national culture - this project is for you!`,
+    golden_subtitle: `If you are between 14 and 19 years old and deeply know our national culture - this project is for you!`,
 
     footer_details: `All details — <a href="https://upop.uz" target="_blank" rel="noopener">upop.uz</a>`,
     footer_copy: `© 2026 UPOP TREND`,
