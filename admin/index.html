@@ -12,21 +12,22 @@
 <!-- reuse the website's own design system (tokens, buttons, fonts, colours) -->
 <link rel="stylesheet" href="/css/styles.css" />
 <style>
-  body{ background:var(--bg); min-height:100vh; }
+  body{ background:var(--bg); min-height:100vh; transition:background .3s ease; }
   a{ color:inherit; }
   .wrap{ max-width:var(--maxw); margin:0 auto; padding:0 clamp(16px,4vw,40px); }
 
   .abar{ position:sticky; top:0; z-index:20; background:rgba(5,12,17,.82);
     backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px); border-bottom:1px solid var(--line-gold); }
-  .abar__in{ display:flex; align-items:center; gap:16px; padding:14px 0; }
-  .abar__brand{ display:flex; align-items:center; gap:11px; font-family:var(--font-disp); font-weight:700; font-size:1.05rem; }
+  .abar__in{ display:flex; align-items:center; gap:14px; padding:14px 0; }
+  .abar__brand{ display:flex; align-items:center; gap:11px; font-family:var(--font-disp); font-weight:700; font-size:1.1rem; }
   .abar__brand img{ height:30px; width:auto; display:block; }
   .abar__sp{ flex:1; }
-  .cnt{ font-size:.9rem; color:var(--ink-70); white-space:nowrap; }
+  .cnt{ font-size:.92rem; color:var(--ink-70); white-space:nowrap; }
   .cnt b{ color:var(--gold-hi); }
-  .ghost{ appearance:none; border:1px solid var(--line-gold); background:var(--surface); color:var(--ink);
-    border-radius:10px; padding:9px 14px; font:inherit; font-size:.85rem; font-weight:700; cursor:pointer; transition:.18s; }
-  .ghost:hover{ border-color:var(--gold); background:var(--surface-2); }
+  .ghost,.tgl{ appearance:none; border:1px solid var(--line-gold); background:var(--surface); color:var(--ink);
+    border-radius:10px; padding:9px 14px; font:inherit; font-size:.86rem; font-weight:700; cursor:pointer; transition:.18s; }
+  .ghost:hover,.tgl:hover{ border-color:var(--gold); background:var(--surface-2); }
+  .tgl{ padding:9px 12px; min-width:44px; }
 
   .tools{ display:flex; flex-wrap:wrap; gap:12px; padding:22px 0 4px; }
   .srch{ position:relative; flex:1 1 300px; min-width:200px; }
@@ -39,7 +40,6 @@
   .tools select{ appearance:none; font-weight:700; padding-right:38px; cursor:pointer; }
   .tools .sel::after{ content:""; position:absolute; right:15px; top:50%; width:7px; height:7px; pointer-events:none;
     border-right:2px solid var(--ink-70); border-bottom:2px solid var(--ink-70); transform:translateY(-70%) rotate(45deg); }
-  .tools select option{ background:#0A1E28; color:var(--ink); }
 
   /* ---- big, solid, easy-to-read cards ---- */
   .grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(min(100%,440px),1fr)); gap:22px; padding:22px 0 80px; align-items:stretch; }
@@ -60,7 +60,6 @@
     display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
   .ac__date{ font-size:.86rem; color:var(--ink-50); white-space:nowrap; padding-top:6px; }
 
-  /* meta line instead of pill badges — cleaner, editorial */
   .meta{ display:flex; flex-wrap:wrap; align-items:baseline; margin-bottom:18px; color:var(--ink-70); font-size:1.02rem; }
   .meta span{ color:var(--ink); font-weight:600; }
   .meta span + span::before{ content:"·"; color:var(--ink-34); margin:0 11px; font-weight:400; }
@@ -92,7 +91,7 @@
   .det .g h4{ margin:0 0 8px; font-size:.78rem; text-transform:uppercase; letter-spacing:.08em; color:var(--gold); font-weight:700; }
   .det dl{ display:grid; grid-template-columns:150px 1fr; gap:7px 14px; font-size:1rem; margin:0; }
   .det dt{ color:var(--ink-50); } .det dd{ margin:0; color:var(--ink); word-break:break-word; }
-  .yes{ color:#7fe0a8; font-weight:700; } .no{ color:var(--ink-50); }
+  .yes{ color:#2e9b63; font-weight:700; } .no{ color:var(--ink-50); }
 
   .state{ text-align:center; padding:80px 20px; color:var(--ink-70); }
   .state h3{ font-family:var(--font-disp); color:var(--ink); margin:0 0 8px; }
@@ -100,7 +99,8 @@
     border-radius:50%; margin:0 auto 18px; animation:spin .8s linear infinite; }
   @keyframes spin{ to{ transform:rotate(360deg); } }
 
-  .login{ min-height:100vh; display:grid; place-items:center; padding:24px; }
+  .login{ min-height:100vh; display:grid; place-items:center; padding:24px; position:relative; }
+  .login__tgl{ position:absolute; top:18px; right:18px; display:flex; gap:8px; }
   .login__card{ width:100%; max-width:390px; background:linear-gradient(180deg,var(--surface),var(--bg-2));
     border:1px solid var(--line-gold); border-radius:var(--r-card); padding:34px 28px; text-align:center;
     box-shadow:0 26px 60px -30px rgba(0,0,0,.85); animation:acIn .5s var(--e-quint) both; }
@@ -110,8 +110,25 @@
   .login__card input{ width:100%; padding:14px 16px; font:inherit; color:var(--ink); text-align:center; letter-spacing:.05em;
     background:var(--bg); border:1px solid var(--line); border-radius:var(--r-input); margin-bottom:14px; }
   .login__card input:focus{ outline:none; border-color:var(--gold); box-shadow:0 0 0 3px rgba(211,166,63,.14); }
-  .err{ color:#ff8fb0; font-size:.86rem; margin-top:12px; min-height:1em; }
+  .err{ color:#e0466f; font-size:.86rem; margin-top:12px; min-height:1em; }
   [hidden]{ display:none!important; }
+
+  /* ================= LIGHT MODE ================= */
+  html.light{
+    --bg:#F4EFE3; --bg-2:#EBE3D3; --surface:#FFFFFF; --surface-2:#F7F1E6;
+    --ink:#241A0C; --ink-70:rgba(36,26,12,.72); --ink-50:rgba(36,26,12,.52); --ink-34:rgba(36,26,12,.32);
+    --line:rgba(36,26,12,.12); --line-gold:rgba(150,110,40,.42);
+  }
+  html.light body{ background:var(--bg); }
+  html.light .abar{ background:rgba(255,255,255,.86); }
+  html.light .hl{ background:none; -webkit-text-fill-color:#8A5F1C; color:#8A5F1C; animation:none; }
+  html.light .tools select option{ background:#fff; color:var(--ink); }
+  html.light .acard{ box-shadow:0 16px 40px -30px rgba(60,40,10,.35); }
+  html.light .acard:hover{ box-shadow:0 26px 54px -32px rgba(60,40,10,.4); }
+  html.light .login__card{ box-shadow:0 26px 60px -34px rgba(60,40,10,.3); }
+  html.light .kvline .v a{ color:#946a16; }         /* darker gold links for contrast on white */
+  html.light .cnt b{ color:#8A5F1C; }
+  html.light .det .g h4{ color:#8A5F1C; }
 
   @media (max-width:560px){
     .abar__in{ flex-wrap:wrap; gap:10px 12px; } .abar__sp{ display:none; } .cnt{ order:5; flex-basis:100%; }
@@ -123,13 +140,17 @@
 
 <!-- ===== LOGIN ===== -->
 <section class="login" id="login">
+  <div class="login__tgl">
+    <button class="tgl" id="langBtn2">UZ</button>
+    <button class="tgl" id="themeBtn2">☀</button>
+  </div>
   <div class="login__card">
     <img src="/logo-hero.png" alt="U POP TREND" />
-    <h1 class="hl">Заявки</h1>
-    <p>Введите пароль администратора</p>
+    <h1 class="hl" id="l_title">Заявки</h1>
+    <p id="l_sub">Введите пароль администратора</p>
     <form id="loginForm">
       <input type="password" id="pw" placeholder="Пароль" autocomplete="current-password" required />
-      <button class="btn btn--pop btn--block" type="submit" id="loginBtn"><span class="btn__label">Войти</span></button>
+      <button class="btn btn--pop btn--block" type="submit" id="loginBtn"><span class="btn__label" id="l_enter">Войти</span></button>
       <div class="err" id="loginErr"></div>
     </form>
   </div>
@@ -139,10 +160,12 @@
 <div id="app" hidden>
   <header class="abar">
     <div class="wrap abar__in">
-      <a class="abar__brand" href="/"><img src="/logo-hero.png" alt="" /> <span class="hl">Заявки</span></a>
+      <a class="abar__brand" href="/"><img src="/logo-hero.png" alt="" /> <span class="hl" id="a_title">Заявки</span></a>
       <div class="abar__sp"></div>
       <span class="cnt" id="count"></span>
-      <button class="ghost" id="refresh">↻ Обновить</button>
+      <button class="tgl" id="langBtn">UZ</button>
+      <button class="tgl" id="themeBtn">☀</button>
+      <button class="ghost" id="refresh">↻</button>
       <button class="ghost" id="logout">Выйти</button>
     </div>
   </header>
@@ -151,17 +174,13 @@
     <div class="tools">
       <label class="srch">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
-        <input id="q" type="search" placeholder="Поиск: имя, телефон, город, произведение…" autocomplete="off" />
+        <input id="q" type="search" autocomplete="off" />
       </label>
       <div class="sel"><select id="fStatus">
-        <option value="">Все заявки</option>
-        <option value="no">Не рассмотренные</option>
-        <option value="any">Рассмотренные</option>
-        <option value="green">🟢 Зелёные</option>
-        <option value="yellow">🟡 Жёлтые</option>
-        <option value="red">🔴 Красные</option>
+        <option value="">—</option><option value="no">—</option><option value="any">—</option>
+        <option value="green">🟢</option><option value="yellow">🟡</option><option value="red">🔴</option>
       </select></div>
-      <div class="sel"><select id="fGenre"><option value="">Жанр: все</option></select></div>
+      <div class="sel"><select id="fGenre"></select></div>
     </div>
     <div id="content"></div>
   </div>
@@ -169,38 +188,84 @@
 
 <script>
   var ENDPOINT = "https://script.google.com/macros/s/AKfycby7z5nB-DfFxk6tBGVCFkMQNpPCdNbHI9DSURAMYiUt8GKPasqRNULcyG-A3lZzZzEIwQ/exec";
-  var KEY_STORE = "upop_admin_key";
+  var KEY_STORE="upop_admin_key", LANG_STORE="upop_admin_lang", THEME_STORE="upop_admin_theme";
   var state = { rows: [], key: "" };
+  var lang, theme;
+  try{ lang = localStorage.getItem(LANG_STORE)||"ru"; }catch(e){ lang="ru"; }
+  try{ theme = localStorage.getItem(THEME_STORE)||"dark"; }catch(e){ theme="dark"; }
 
-  var LABEL = {
-    citizenship:"Гражданство", email:"E-mail", phone:"Телефон",
-    parent_name:"Родитель/представитель", parent_relation:"Кем приходится", parent_phone:"Телефон родителя",
-    parent_email:"E-mail родителя", parent_consent:"Согласие родителя",
-    rule_agree:"Согласен с правилами", piece:"Произведение", genre:"Жанр", education:"Муз. образование",
-    instruments:"Инструменты", years_singing:"Стаж пения", vocal_teacher:"Педагог", contests:"Конкурсы/шоу", video:"Видео",
-    why:"Почему участвует", music_means:"Что для него музыка", three_words:"Три слова о себе",
-    idol:"Кумир", hobbies:"Увлечения", free_time:"Свободное время",
-    father_name:"Отец", father_job:"Работа отца", mother_name:"Мать", mother_job:"Работа матери",
-    siblings:"Братья/сёстры", live_with:"С кем живёт", support:"Кто поддерживает",
-    chronic:"Хрон. болезни", allergy:"Аллергия", emergency_contact:"Экстренный контакт",
-    log_attend:"Придёт лично", log_stages:"Готов к этапам", log_travel:"Готов к поездкам",
-    consent_data:"Согл.: данные", consent_media:"Согл.: медиа", consent_rules:"Согл.: правила",
-    consent_true:"Данные верны", lang:"Язык", submissionId:"ID"
-  };
   var GROUPS = [
-    { t:"Контакты", keys:["phone","email","citizenship"] },
-    { t:"Родитель", keys:["parent_name","parent_relation","parent_phone","parent_email","parent_consent"] },
-    { t:"Творчество", keys:["piece","genre","education","instruments","years_singing","vocal_teacher","contests","video","rule_agree"] },
-    { t:"О себе", keys:["why","music_means","three_words","idol","hobbies","free_time"] },
-    { t:"Семья", keys:["father_name","father_job","mother_name","mother_job","siblings","live_with","support"] },
-    { t:"Здоровье", keys:["chronic","allergy","emergency_contact"] },
-    { t:"Логистика и согласия", keys:["log_attend","log_stages","log_travel","consent_data","consent_media","consent_rules","consent_true","lang","submissionId"] }
+    { id:"contacts", keys:["phone","email","citizenship"] },
+    { id:"parent",   keys:["parent_name","parent_relation","parent_phone","parent_email","parent_consent"] },
+    { id:"creative", keys:["piece","genre","education","instruments","years_singing","vocal_teacher","contests","video","rule_agree"] },
+    { id:"about",    keys:["why","music_means","three_words","idol","hobbies","free_time"] },
+    { id:"family",   keys:["father_name","father_job","mother_name","mother_job","siblings","live_with","support"] },
+    { id:"health",   keys:["chronic","allergy","emergency_contact"] },
+    { id:"consents", keys:["log_attend","log_stages","log_travel","consent_data","consent_media","consent_rules","consent_true","lang","submissionId"] }
   ];
+
+  var T = {
+    ru:{
+      title:"Заявки", sub:"Введите пароль администратора", pw:"Пароль", enter:"Войти",
+      wrongpw:"Неверный пароль", needscript:"Обновите скрипт таблицы (команда list не найдена)",
+      logout:"Выйти", search:"Поиск: имя, телефон, город, произведение…",
+      f_all:"Все заявки", f_no:"Не рассмотренные", f_any:"Рассмотренные", f_green:"🟢 Зелёные", f_yellow:"🟡 Жёлтые", f_red:"🔴 Красные",
+      f_genre:"Жанр: все", loading:"Загрузка…", refreshing:"Обновляю…",
+      empty_h:"Пока нет заявок", empty_p:"Как только кто-то отправит анкету — она появится здесь.",
+      none_h:"Ничего не найдено", none_p:"Измените поиск или фильтр.",
+      rate:"Оценка:", more:"Подробнее ▾", less:"Свернуть ▴", years:"лет", socials:"Соцсети",
+      male:"Мужской", female:"Женский", yes:"✓ Да", no:"— Нет",
+      savefail:"Не удалось сохранить оценку. Попробуйте ещё раз.",
+      count:function(n,d,tt){ return "Показано <b>"+n+"</b> · рассмотрено <b>"+d+"</b> из "+tt; },
+      L:{ citizenship:"Гражданство", email:"E-mail", phone:"Телефон",
+        parent_name:"Родитель/представитель", parent_relation:"Кем приходится", parent_phone:"Телефон родителя",
+        parent_email:"E-mail родителя", parent_consent:"Согласие родителя",
+        rule_agree:"Согласен с правилами", piece:"Произведение", genre:"Жанр", education:"Муз. образование",
+        instruments:"Инструменты", years_singing:"Стаж пения", vocal_teacher:"Педагог", contests:"Конкурсы/шоу", video:"Видео",
+        why:"Почему участвует", music_means:"Что для него музыка", three_words:"Три слова о себе",
+        idol:"Кумир", hobbies:"Увлечения", free_time:"Свободное время",
+        father_name:"Отец", father_job:"Работа отца", mother_name:"Мать", mother_job:"Работа матери",
+        siblings:"Братья/сёстры", live_with:"С кем живёт", support:"Кто поддерживает",
+        chronic:"Хрон. болезни", allergy:"Аллергия", emergency_contact:"Экстренный контакт",
+        log_attend:"Придёт лично", log_stages:"Готов к этапам", log_travel:"Готов к поездкам",
+        consent_data:"Согл.: данные", consent_media:"Согл.: медиа", consent_rules:"Согл.: правила",
+        consent_true:"Данные верны", lang:"Язык", submissionId:"ID" },
+      G:{ contacts:"Контакты", parent:"Родитель", creative:"Творчество", about:"О себе", family:"Семья", health:"Здоровье", consents:"Логистика и согласия" }
+    },
+    uz:{
+      title:"Arizalar", sub:"Administrator parolini kiriting", pw:"Parol", enter:"Kirish",
+      wrongpw:"Parol noto‘g‘ri", needscript:"Jadval skriptini yangilang (list buyrug‘i topilmadi)",
+      logout:"Chiqish", search:"Qidiruv: ism, telefon, shahar, asar…",
+      f_all:"Barcha arizalar", f_no:"Ko‘rilmagan", f_any:"Ko‘rilgan", f_green:"🟢 Yashil", f_yellow:"🟡 Sariq", f_red:"🔴 Qizil",
+      f_genre:"Janr: barchasi", loading:"Yuklanmoqda…", refreshing:"Yangilanmoqda…",
+      empty_h:"Hozircha arizalar yo‘q", empty_p:"Kimdir anketa yuborishi bilan u shu yerda paydo bo‘ladi.",
+      none_h:"Hech narsa topilmadi", none_p:"Qidiruv yoki filtrni o‘zgartiring.",
+      rate:"Baho:", more:"Batafsil ▾", less:"Yig‘ish ▴", years:"yosh", socials:"Ijtimoiy tarmoqlar",
+      male:"Erkak", female:"Ayol", yes:"✓ Ha", no:"— Yo‘q",
+      savefail:"Bahoni saqlab bo‘lmadi. Qayta urinib ko‘ring.",
+      count:function(n,d,tt){ return "Ko‘rsatildi <b>"+n+"</b> · ko‘rilgan <b>"+d+"</b> / "+tt; },
+      L:{ citizenship:"Fuqarolik", email:"E-mail", phone:"Telefon",
+        parent_name:"Ota-ona / vakil", parent_relation:"Kim bo‘ladi", parent_phone:"Ota-ona telefoni",
+        parent_email:"Ota-ona e-mail", parent_consent:"Ota-ona roziligi",
+        rule_agree:"Qoidaga rozi", piece:"Asar", genre:"Janr", education:"Musiqiy ta’lim",
+        instruments:"Cholg‘ular", years_singing:"Kuylash staji", vocal_teacher:"Ustoz", contests:"Tanlov/shou", video:"Video",
+        why:"Nega ishtirok etadi", music_means:"Musiqa nima degani", three_words:"O‘zi haqida uch so‘z",
+        idol:"Kumiri", hobbies:"Qiziqishlari", free_time:"Bo‘sh vaqti",
+        father_name:"Otasi", father_job:"Otasi ishi", mother_name:"Onasi", mother_job:"Onasi ishi",
+        siblings:"Aka-uka / opa-singil", live_with:"Kim bilan yashaydi", support:"Kim qo‘llaydi",
+        chronic:"Surunkali kasalliklar", allergy:"Allergiya", emergency_contact:"Favqulodda kontakt",
+        log_attend:"Shaxsan keladi", log_stages:"Bosqichlarga tayyor", log_travel:"Sayohatga tayyor",
+        consent_data:"Rozilik: ma’lumot", consent_media:"Rozilik: media", consent_rules:"Rozilik: qoidalar",
+        consent_true:"Ma’lumot to‘g‘ri", lang:"Til", submissionId:"ID" },
+      G:{ contacts:"Kontaktlar", parent:"Ota-ona", creative:"Ijod", about:"O‘zi haqida", family:"Oila", health:"Sog‘liq", consents:"Logistika va roziliklar" }
+    }
+  };
+  function tr(){ return T[lang]||T.ru; }
 
   function $(id){ return document.getElementById(id); }
   function esc(s){ return String(s==null?"":s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];}); }
   function isBool(v){ return v==="Ha"||v==="—"; }
-  function genderLabel(v){ return v==="m"?"Мужской":v==="f"?"Женский":(v||""); }
+  function genderLabel(v){ return v==="m"?tr().male:v==="f"?tr().female:(v||""); }
   function fmtDate(iso){ if(!iso) return ""; var d=new Date(iso); if(isNaN(d)) return String(iso);
     var p=function(n){return (n<10?"0":"")+n;}; return p(d.getDate())+"."+p(d.getMonth()+1)+"."+d.getFullYear()+" "+p(d.getHours())+":"+p(d.getMinutes()); }
   function socialUrl(kind,val){ var v=String(val).trim(), h=v.replace(/^@/,"");
@@ -209,16 +274,33 @@
     if(kind==="tiktok") return "https://tiktok.com/@"+h;
     if(kind==="telegram") return "https://t.me/"+h;
     if(kind==="youtube") return "https://youtube.com/@"+h; return v; }
+  function api(payload){ return fetch(ENDPOINT,{ method:"POST", headers:{"Content-Type":"text/plain;charset=utf-8"},
+      body:JSON.stringify(payload), redirect:"follow" }).then(function(r){ return r.json(); }); }
 
-  function api(payload){
-    return fetch(ENDPOINT,{ method:"POST", headers:{"Content-Type":"text/plain;charset=utf-8"},
-      body:JSON.stringify(payload), redirect:"follow" }).then(function(r){ return r.json(); });
+  /* ---- theme + language ---- */
+  function applyTheme(){ document.documentElement.classList.toggle("light", theme==="light");
+    var s=(theme==="light"?"🌙":"☀"); if($("themeBtn")) $("themeBtn").textContent=s; if($("themeBtn2")) $("themeBtn2").textContent=s; }
+  function toggleTheme(){ theme=(theme==="light"?"dark":"light"); try{localStorage.setItem(THEME_STORE,theme);}catch(e){} applyTheme(); }
+  function toggleLang(){ lang=(lang==="ru"?"uz":"ru"); try{localStorage.setItem(LANG_STORE,lang);}catch(e){} applyLang(); }
+  function applyLang(){
+    var x=tr(), other=(lang==="ru"?"UZ":"RU");
+    if($("langBtn")) $("langBtn").textContent=other; if($("langBtn2")) $("langBtn2").textContent=other;
+    // login
+    $("l_title").textContent=x.title; $("a_title").textContent=x.title;
+    $("l_sub").textContent=x.sub; $("pw").placeholder=x.pw; $("l_enter").textContent=x.enter;
+    $("logout").textContent=x.logout;
+    // tools
+    $("q").placeholder=x.search;
+    var st=$("fStatus"); st.options[0].text=x.f_all; st.options[1].text=x.f_no; st.options[2].text=x.f_any;
+    st.options[3].text=x.f_green; st.options[4].text=x.f_yellow; st.options[5].text=x.f_red;
+    if(!$("app").hidden){ buildFilters(); render(false); }
   }
 
+  /* ---- auth ---- */
   function loadList(key){
     return api({ action:"list", key:key }).then(function(res){
-      if(res && res.error==="forbidden") throw new Error("Неверный пароль");
-      if(!res || res.ok!==true || !Array.isArray(res.rows)) throw new Error("Обновите скрипт таблицы (команда list не найдена)");
+      if(res && res.error==="forbidden") throw new Error(tr().wrongpw);
+      if(!res || res.ok!==true || !Array.isArray(res.rows)) throw new Error(tr().needscript);
       state.key=key; state.rows=res.rows||[];
       try{ sessionStorage.setItem(KEY_STORE,key); }catch(e){}
     });
@@ -227,20 +309,22 @@
     e.preventDefault();
     var btn=$("loginBtn"); btn.classList.add("is-loading"); $("loginErr").textContent="";
     loadList($("pw").value.trim()).then(showApp)
-      .catch(function(ex){ $("loginErr").textContent=ex.message||"Ошибка"; })
+      .catch(function(ex){ $("loginErr").textContent=ex.message||"Error"; })
       .then(function(){ btn.classList.remove("is-loading"); });
   });
   $("logout").addEventListener("click", function(){ try{ sessionStorage.removeItem(KEY_STORE); }catch(e){} location.reload(); });
   $("refresh").addEventListener("click", function(){
-    $("content").innerHTML='<div class="state"><div class="spin"></div>Обновляю…</div>';
+    $("content").innerHTML='<div class="state"><div class="spin"></div>'+tr().refreshing+'</div>';
     loadList(state.key).then(function(){ buildFilters(); render(true); });
   });
+  $("langBtn").addEventListener("click",toggleLang); $("langBtn2").addEventListener("click",toggleLang);
+  $("themeBtn").addEventListener("click",toggleTheme); $("themeBtn2").addEventListener("click",toggleTheme);
 
   function showApp(){ $("login").hidden=true; $("app").hidden=false; buildFilters(); render(true); }
   function buildFilters(){
     var g={}; state.rows.forEach(function(r){ if(r.genre) g[String(r.genre).trim()]=1; });
     var el=$("fGenre"), cur=el.value, opts=Object.keys(g).sort();
-    el.innerHTML='<option value="">Жанр: все</option>'+opts.map(function(o){return '<option>'+esc(o)+'</option>';}).join("");
+    el.innerHTML='<option value="">'+esc(tr().f_genre)+'</option>'+opts.map(function(o){return '<option>'+esc(o)+'</option>';}).join("");
     if(opts.indexOf(cur)>=0) el.value=cur;
   }
   ["q","fStatus","fGenre"].forEach(function(id){
@@ -248,59 +332,60 @@
   });
 
   function render(animate){
-    var q=$("q").value.trim().toLowerCase(), st=$("fStatus").value, gn=$("fGenre").value;
+    var q=$("q").value.trim().toLowerCase(), st=$("fStatus").value, gn=$("fGenre").value, x=tr();
     var list=state.rows.filter(function(r){
       if(st==="no" && r.reviewed) return false;
       if(st==="any" && !r.reviewed) return false;
       if((st==="green"||st==="yellow"||st==="red") && r.status!==st) return false;
       if(gn && String(r.genre).trim()!==gn) return false;
       if(q){ var hay=[r.fullname,r.phone,r.region,r.piece,r.genre,r.email,r.instagram,r.tiktok,r.telegram]
-        .map(function(x){return String(x==null?"":x).toLowerCase();}).join(" "); if(hay.indexOf(q)<0) return false; }
+        .map(function(z){return String(z==null?"":z).toLowerCase();}).join(" "); if(hay.indexOf(q)<0) return false; }
       return true;
     });
     var done=state.rows.filter(function(r){return r.reviewed;}).length;
-    $("count").innerHTML="Показано <b>"+list.length+"</b> · рассмотрено <b>"+done+"</b> из "+state.rows.length;
-    if(!state.rows.length){ $("content").innerHTML='<div class="state"><h3>Пока нет заявок</h3><p>Как только кто-то отправит анкету — она появится здесь.</p></div>'; return; }
-    if(!list.length){ $("content").innerHTML='<div class="state"><h3>Ничего не найдено</h3><p>Измените поиск или фильтр.</p></div>'; return; }
+    $("count").innerHTML=x.count(list.length,done,state.rows.length);
+    if(!state.rows.length){ $("content").innerHTML='<div class="state"><h3>'+esc(x.empty_h)+'</h3><p>'+esc(x.empty_p)+'</p></div>'; return; }
+    if(!list.length){ $("content").innerHTML='<div class="state"><h3>'+esc(x.none_h)+'</h3><p>'+esc(x.none_p)+'</p></div>'; return; }
     $("content").innerHTML='<div class="grid'+(animate?'':' no-anim')+'">'+list.map(function(r,i){return card(r,i);}).join("")+'</div>';
   }
 
-  function kv(k,v,link,labelText){ var val=(v==null||v==="")?'<span class="no">—</span>':(link?'<a href="'+esc(link)+'">'+esc(v)+'</a>':esc(v));
-    return '<div class="kvline"><span class="k">'+esc(labelText||LABEL[k]||k)+'</span><span class="v">'+val+'</span></div>'; }
+  function L(k){ return tr().L[k]||k; }
+  function kv(k,v,link){ var val=(v==null||v==="")?'<span class="no">—</span>':(link?'<a href="'+esc(link)+'">'+esc(v)+'</a>':esc(v));
+    return '<div class="kvline"><span class="k">'+esc(L(k))+'</span><span class="v">'+val+'</span></div>'; }
   function metaLine(r){ var p=[];
-    if(r.age) p.push(esc(r.age)+' лет');
+    if(r.age) p.push(esc(r.age)+' '+esc(tr().years));
     if(r.gender) p.push(esc(genderLabel(r.gender)));
     if(r.region) p.push(esc(r.region));
     if(r.lang) p.push(esc(String(r.lang).toUpperCase()));
-    return p.length?'<div class="meta">'+p.map(function(x){return '<span>'+x+'</span>';}).join("")+'</div>':""; }
+    return p.length?'<div class="meta">'+p.map(function(z){return '<span>'+z+'</span>';}).join("")+'</div>':""; }
   function socsRow(r){ var it=[["instagram","Instagram"],["tiktok","TikTok"],["telegram","Telegram"],["youtube","YouTube"]]
     .filter(function(s){return r[s[0]];})
     .map(function(s){ return '<a href="'+esc(socialUrl(s[0],r[s[0]]))+'" target="_blank" rel="noopener">'+s[1]+'</a>'; });
-    return it.length?'<div class="kvline"><span class="k">Соцсети</span><span class="v">'+it.join(' · ')+'</span></div>':""; }
+    return it.length?'<div class="kvline"><span class="k">'+esc(tr().socials)+'</span><span class="v">'+it.join(' · ')+'</span></div>':""; }
   function dval(k,v){ if(v==null||v==="") return '<span class="no">—</span>';
-    if(k==="submissionId") return esc(v); if(isBool(v)) return v==="Ha"?'<span class="yes">✓ Да</span>':'<span class="no">— Нет</span>'; return esc(v); }
-  function grp(r,g){ var rows=g.keys.filter(function(k){return r[k]!=null&&r[k]!=="";}).map(function(k){return '<dt>'+esc(LABEL[k]||k)+'</dt><dd>'+dval(k,r[k])+'</dd>';});
-    return rows.length?'<div class="g"><h4>'+esc(g.t)+'</h4><dl>'+rows.join("")+'</dl></div>':""; }
+    if(k==="submissionId") return esc(v); if(isBool(v)) return v==="Ha"?'<span class="yes">'+esc(tr().yes)+'</span>':'<span class="no">'+esc(tr().no)+'</span>'; return esc(v); }
+  function grp(r,g){ var rows=g.keys.filter(function(k){return r[k]!=null&&r[k]!=="";}).map(function(k){return '<dt>'+esc(L(k))+'</dt><dd>'+dval(k,r[k])+'</dd>';});
+    return rows.length?'<div class="g"><h4>'+esc(tr().G[g.id]||g.id)+'</h4><dl>'+rows.join("")+'</dl></div>':""; }
 
   function card(r,i){
-    var id=esc(r.submissionId||"");
+    var id=esc(r.submissionId||""), x=tr();
     var det=GROUPS.map(function(g){return grp(r,g);}).join("");
     var delay=Math.min(i*0.035,0.5);
     return ''+
       '<article class="acard'+(r.reviewed?' is-reviewed':'')+'" data-id="'+id+'" data-status="'+esc(r.status||"")+'" style="animation-delay:'+delay+'s">'+
-        '<div class="ac__top"><div class="ac__name">'+esc(r.fullname||"Без имени")+'</div>'+
+        '<div class="ac__top"><div class="ac__name">'+esc(r.fullname||"—")+'</div>'+
           '<div class="ac__date">'+esc(fmtDate(r.submittedAt))+'</div></div>'+
         metaLine(r)+
         kv("phone", r.phone, r.phone?("tel:"+String(r.phone).replace(/\s/g,"")):"")+
         kv("genre", r.genre)+ kv("piece", r.piece)+ socsRow(r)+
         '<div class="ac__foot">'+
-          '<span class="foot-label">Оценка:</span>'+
+          '<span class="foot-label">'+esc(x.rate)+'</span>'+
           '<span class="dots">'+
-            '<button class="dot dot--green" data-s="green" title="Зелёный" aria-label="Зелёный"></button>'+
-            '<button class="dot dot--yellow" data-s="yellow" title="Жёлтый" aria-label="Жёлтый"></button>'+
-            '<button class="dot dot--red" data-s="red" title="Красный" aria-label="Красный"></button>'+
+            '<button class="dot dot--green" data-s="green"></button>'+
+            '<button class="dot dot--yellow" data-s="yellow"></button>'+
+            '<button class="dot dot--red" data-s="red"></button>'+
           '</span>'+
-          (det?'<button class="expand" data-act="expand">Подробнее ▾</button>':'')+
+          (det?'<button class="expand" data-act="expand">'+esc(x.more)+'</button>':'')+
         '</div>'+
         (det?'<div class="det" hidden>'+det+'</div>':'')+
       '</article>';
@@ -311,36 +396,33 @@
     var cardEl=e.target.closest(".acard"); if(!cardEl) return;
     var id=cardEl.getAttribute("data-id");
     if(btn.dataset.act==="expand"){
-      var det=cardEl.querySelector(".det"); if(det){ det.hidden=!det.hidden; btn.textContent=det.hidden?"Подробнее ▾":"Свернуть ▴"; }
+      var det=cardEl.querySelector(".det"); if(det){ det.hidden=!det.hidden; btn.textContent=det.hidden?tr().more:tr().less; }
       return;
     }
     if(btn.dataset.s){
       var row=state.rows.filter(function(r){return String(r.submissionId)===id;})[0]; if(!row) return;
-      var color=btn.dataset.s;
-      var next=(row.status===color) ? "" : color;
+      var color=btn.dataset.s, next=(row.status===color)?"":color;
       var dots=cardEl.querySelector(".dots"); dots.classList.add("busy");
       api({ action:"setStatus", key:state.key, submissionId:id, status:next }).then(function(res){
-        if(!res||res.ok!==true) throw new Error(res&&res.error||"error");
+        if(!res||res.ok!==true) throw new Error("error");
         row.status=res.status||""; row.reviewed=row.status!=="";
-        // update this card in place (no full re-render) for a smooth feel…
         cardEl.setAttribute("data-status", row.status);
         cardEl.classList.toggle("is-reviewed", row.reviewed);
         dots.classList.remove("busy");
-        // …unless a status filter would now hide/show it — then refresh the view
-        var f=$("fStatus").value;
-        if(f) render(false);
-        // keep the counter fresh
+        if($("fStatus").value) render(false);
         var done=state.rows.filter(function(r){return r.reviewed;}).length;
-        $("count").innerHTML="Показано <b>"+document.querySelectorAll('.acard').length+"</b> · рассмотрено <b>"+done+"</b> из "+state.rows.length;
-      }).catch(function(){ dots.classList.remove("busy"); alert("Не удалось сохранить оценку. Попробуйте ещё раз."); });
+        $("count").innerHTML=tr().count(document.querySelectorAll('.acard').length,done,state.rows.length);
+      }).catch(function(){ dots.classList.remove("busy"); alert(tr().savefail); });
     }
   });
 
+  /* ---- boot ---- */
+  applyTheme(); applyLang();
   (function(){
     var key=null; try{ key=sessionStorage.getItem(KEY_STORE); }catch(e){}
     if(!key) return;
     $("login").hidden=true;
-    document.body.insertAdjacentHTML("afterbegin",'<div class="state" id="boot"><div class="spin"></div>Загрузка…</div>');
+    document.body.insertAdjacentHTML("afterbegin",'<div class="state" id="boot"><div class="spin"></div>'+tr().loading+'</div>');
     loadList(key).then(function(){ var b=$("boot"); if(b) b.remove(); showApp(); })
       .catch(function(){ var b=$("boot"); if(b) b.remove(); $("login").hidden=false; });
   })();
