@@ -109,6 +109,7 @@ function doPost(e) {
       if (String(data.key) !== ADMIN_KEY) return json({ ok: false, error: 'forbidden' });
       var res = {};
       if (data.purgeTests) res.purged = purgeTestRows(sheet);
+      if (data.repair) res.repaired = repairFormulas(sheet);
       if (data.restyle) { styleHeader(sheet); restyleData(sheet); res.restyled = true; }
       return json({ ok: true, admin: true, result: res });
     }
@@ -128,10 +129,23 @@ function doPost(e) {
     }
 
     var row = FIELDS.map(function (f) { return cellValue(f, data[f.k]); });
-    sheet.appendRow(row);
-    styleRow(sheet, sheet.getLastRow());
+    var targetRow = sheet.getLastRow() + 1;
+    var rowRange = sheet.getRange(targetRow, 1, 1, FIELDS.length);
+    // Format the cells BEFORE writing: text ('@') for everything except the
+    // timestamp. This stops Sheets from reading "+998…" as a formula (#ERROR!)
+    // or mangling long/leading-zero numbers — for every row, any position.
+    rowRange.setNumberFormats([FIELDS.map(function (f) {
+      return f.type === 'datetime' ? 'yyyy-mm-dd hh:mm:ss' : '@';
+    })]);
+    rowRange.setValues([row]);
+    rowRange
+      .setVerticalAlignment('middle')
+      .setWrap(true)
+      .setHorizontalAlignments([FIELDS.map(function (f) {
+        return (f.center || f.type === 'bool') ? 'center' : 'left';
+      })]);
 
-    return json({ ok: true, duplicate: false, row: sheet.getLastRow() });
+    return json({ ok: true, duplicate: false, row: targetRow });
   } catch (err) {
     return json({ ok: false, error: String(err) });
   } finally {
@@ -219,11 +233,26 @@ function styleHeader(sheet) {
   } catch (err) { /* banding is cosmetic */ }
 }
 
-/* Per-appended-row polish (cheap: a couple of range ops). */
-function styleRow(sheet, rowIndex) {
-  var range = sheet.getRange(rowIndex, 1, 1, FIELDS.length);
-  range.setVerticalAlignment('middle').setWrap(true);
-  sheet.getRange(rowIndex, 1, 1, 1).setNumberFormat('yyyy-mm-dd hh:mm:ss');
+/* Recover cells that Sheets already turned into a formula (e.g. "+998…" ->
+   #ERROR!): read the formula, drop the leading "=", re-store it as text. */
+function repairFormulas(sheet) {
+  var last = sheet.getLastRow();
+  if (last < 2) return 0;
+  var n = FIELDS.length;
+  var formulas = sheet.getRange(2, 1, last - 1, n).getFormulas();
+  var fixed = 0;
+  for (var r = 0; r < formulas.length; r++) {
+    for (var c = 0; c < n; c++) {
+      var fla = formulas[r][c];
+      if (fla && fla.charAt(0) === '=') {
+        var cell = sheet.getRange(r + 2, c + 1);
+        cell.setNumberFormat('@');
+        cell.setValue(fla.substring(1)); // "=+998…" -> "+998…" as plain text
+        fixed++;
+      }
+    }
+  }
+  return fixed;
 }
 
 /* Re-apply vertical centering + timestamp format to all existing data rows. */
