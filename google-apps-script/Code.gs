@@ -18,7 +18,18 @@
 
 var SHEET_NAME = 'Applications';
 var ID_COL = 2;                 // "Submission ID" column — used for dedupe/purge
-var ADMIN_KEY = 'upop-admin-2026-9f3a7c';  // guards the maintenance action
+
+/* The admin password is NOT stored in this file (the repo may be public and
+   the sheet holds minors' personal data). Set it once in
+   Project Settings ▸ Script properties ▸ add property  ADMIN_KEY = <password>.
+   It guards both the maintenance actions and the read/list feed. */
+function adminKey() {
+  return PropertiesService.getScriptProperties().getProperty('ADMIN_KEY') || '';
+}
+function authorized(data) {
+  var k = adminKey();
+  return k !== '' && String(data && data.key) === k;
+}
 
 /* Column order + human titles. Keys match the JSON the site sends.
    `type:'bool'` → Ha/—, `type:'datetime'` → real date. `wide:true` widens
@@ -85,6 +96,14 @@ var FIELDS = [
   { k: 'consent_true',      h: 'Ma’lumotlar haqqoniyligi',        type: 'bool' }
 ];
 
+/* Admin-only review status, kept in one extra column after all fields, so it
+   is shared across everyone who opens the admin panel. Three colours:
+   green / yellow / red (meaning is up to the reviewers); empty = not reviewed.
+   Stored as a coloured dot so the sheet itself stays readable. */
+var STATUS_HEADER = 'Ko‘rib chiqildi / Рассмотрено';
+var STATUS_MAP = { green: '🟢', yellow: '🟡', red: '🔴' };
+var STATUS_REV = { '🟢': 'green', '🟡': 'yellow', '🔴': 'red' };
+
 /* ---------------------------------------------------------------- POST */
 function doPost(e) {
   var lock = LockService.getScriptLock();
@@ -104,9 +123,41 @@ function doPost(e) {
     var sheet = ss.getSheetByName(SHEET_NAME) || ss.insertSheet(SHEET_NAME);
     ensureHeaders(sheet);
 
-    // Maintenance action (purge test rows / re-style) — keyed.
+    // Read feed for the admin panel — keyed, returns every application.
+    if (data && data.action === 'list') {
+      if (!authorized(data)) return json({ ok: false, error: 'forbidden' });
+      return json({
+        ok: true,
+        fields: FIELDS.map(function (f) { return { k: f.k, h: f.h, type: f.type || 'text' }; }),
+        rows: readAllRows(sheet)
+      });
+    }
+
+    // Set the review status (green/yellow/red or '' to clear) — keyed.
+    if (data && data.action === 'setStatus') {
+      if (!authorized(data)) return json({ ok: false, error: 'forbidden' });
+      var sid = String(data.submissionId || '').trim();
+      if (!sid) return json({ ok: false, error: 'no id' });
+      var status = String(data.status || '');
+      var dot = STATUS_MAP[status] || '';   // unknown/empty clears the cell
+      var lr = sheet.getLastRow();
+      if (lr > 1) {
+        var idvals = sheet.getRange(2, ID_COL, lr - 1, 1).getValues();
+        for (var j = 0; j < idvals.length; j++) {
+          if (String(idvals[j][0]).trim() === sid) {
+            var scell = sheet.getRange(j + 2, FIELDS.length + 1);
+            scell.setNumberFormat('@');
+            scell.setValue(dot);
+            return json({ ok: true, submissionId: sid, status: dot ? status : '', row: j + 2 });
+          }
+        }
+      }
+      return json({ ok: false, error: 'not found' });
+    }
+
+    // Maintenance action (purge test rows / repair / re-style) — keyed.
     if (data && data.action === 'admin') {
-      if (String(data.key) !== ADMIN_KEY) return json({ ok: false, error: 'forbidden' });
+      if (!authorized(data)) return json({ ok: false, error: 'forbidden' });
       var res = {};
       if (data.purgeTests) res.purged = purgeTestRows(sheet);
       if (data.repair) res.repaired = repairFormulas(sheet);
@@ -171,7 +222,7 @@ function cellValue(f, v) {
 
 /* ---------------------------------------------------------------- headers */
 function ensureHeaders(sheet) {
-  var headers = FIELDS.map(function (f) { return f.h; });
+  var headers = FIELDS.map(function (f) { return f.h; }).concat([STATUS_HEADER]);
   var need = false;
   if (sheet.getLastRow() === 0 || sheet.getMaxColumns() < headers.length) {
     need = true;
@@ -186,14 +237,15 @@ function ensureHeaders(sheet) {
 
 /* Writes + styles the header row and per-column layout. Safe to call again. */
 function styleHeader(sheet) {
-  var headers = FIELDS.map(function (f) { return f.h; });
+  var headers = FIELDS.map(function (f) { return f.h; }).concat([STATUS_HEADER]);
+  var total = headers.length; // FIELDS.length + 1 (status)
 
   // Grow a blank 26-column tab so all fields fit before any range op.
-  if (sheet.getMaxColumns() < headers.length) {
-    sheet.insertColumnsAfter(sheet.getMaxColumns(), headers.length - sheet.getMaxColumns());
+  if (sheet.getMaxColumns() < total) {
+    sheet.insertColumnsAfter(sheet.getMaxColumns(), total - sheet.getMaxColumns());
   }
 
-  var header = sheet.getRange(1, 1, 1, headers.length);
+  var header = sheet.getRange(1, 1, 1, total);
   header.setValues([headers]);
   header
     .setFontSize(12)                 // bigger than the default 10
@@ -220,6 +272,12 @@ function styleHeader(sheet) {
       colData.setVerticalAlignment('middle');
     }
   }
+  // review-status column (last): width + centred
+  sheet.setColumnWidth(total, 160);
+  if (maxRows >= 2) {
+    sheet.getRange(2, total, maxRows - 1, 1)
+      .setHorizontalAlignment('center').setVerticalAlignment('middle');
+  }
 
   // Row banding for the DATA only (row 2 down) — never touches the header,
   // which is what used to paint it grey.
@@ -227,10 +285,34 @@ function styleHeader(sheet) {
     var bandings = sheet.getBandings();
     for (var b = 0; b < bandings.length; b++) bandings[b].remove();
     if (maxRows >= 2) {
-      sheet.getRange(2, 1, maxRows - 1, FIELDS.length)
+      sheet.getRange(2, 1, maxRows - 1, total)
         .applyRowBanding(SpreadsheetApp.BandingTheme.LIGHT_GREY, false, false);
     }
   } catch (err) { /* banding is cosmetic */ }
+}
+
+/* Every application as an array of objects keyed by field, newest first. */
+function readAllRows(sheet) {
+  var last = sheet.getLastRow();
+  if (last < 2) return [];
+  var n = FIELDS.length;
+  var cols = Math.min(n + 1, sheet.getMaxColumns()); // +1 = review status
+  var values = sheet.getRange(2, 1, last - 1, cols).getValues();
+  var out = [];
+  for (var r = 0; r < values.length; r++) {
+    var obj = { _row: r + 2 };
+    for (var c = 0; c < n; c++) {
+      var v = values[r][c];
+      if (v instanceof Date) v = v.toISOString();
+      obj[FIELDS[c].k] = v;
+    }
+    var raw = cols > n ? String(values[r][n]).trim() : '';
+    obj.status = STATUS_REV[raw] || '';   // green/yellow/red or ''
+    obj.reviewed = raw !== '';
+    out.push(obj);
+  }
+  out.reverse(); // newest first
+  return out;
 }
 
 /* Recover cells that Sheets already turned into a formula (e.g. "+998…" ->
