@@ -130,9 +130,34 @@
   html.light .cnt b{ color:#8A5F1C; }
   html.light .det .g h4{ color:#8A5F1C; }
 
-  @media (max-width:560px){
-    .abar__in{ flex-wrap:wrap; gap:10px 12px; } .abar__sp{ display:none; } .cnt{ order:5; flex-basis:100%; }
-    .tools .sel{ flex:1 1 46%; } .det dl{ grid-template-columns:110px 1fr; }
+  @media (max-width:600px){
+    .abar__in{ flex-wrap:wrap; gap:9px 10px; padding:12px 0; }
+    .abar__brand span{ display:none; }            /* keep the logo, drop the word to free space */
+    .abar__brand img{ height:34px; }
+    .cnt{ order:5; flex-basis:100%; font-size:.86rem; }
+    .ghost,.tgl{ padding:8px 11px; font-size:.82rem; min-width:0; }
+    .tools{ gap:10px; padding:16px 0 2px; }
+    .srch{ flex-basis:100%; } .tools .sel{ flex:1 1 46%; }
+    .grid{ gap:14px; padding:14px 0 60px; }
+    .acard{ padding:20px 20px; border-radius:16px; border-left-width:5px; }
+    .ac__top{ margin-bottom:12px; }
+    .ac__name{ font-size:1.3rem; }
+    .ac__date{ font-size:.78rem; padding-top:5px; }
+    .meta{ font-size:.96rem; margin-bottom:14px; }
+    .meta span + span::before{ margin:0 8px; }
+    .kvline{ font-size:1rem; gap:12px; margin:10px 0; }
+    .kvline .k{ flex-basis:94px; font-size:.87rem; }
+    .ac__foot{ gap:11px; padding-top:14px; }
+    .foot-label{ font-size:.85rem; }
+    .dot{ width:28px; height:28px; }
+    .expand{ font-size:.88rem; }
+    .det dl{ grid-template-columns:104px 1fr; font-size:.94rem; }
+    .login__card{ padding:30px 22px; }
+  }
+  @media (max-width:380px){
+    .ac__name{ font-size:1.18rem; }
+    .kvline .k{ flex-basis:82px; }
+    .acard{ padding:17px 16px; }
   }
 </style>
 </head>
