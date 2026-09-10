@@ -222,7 +222,8 @@
 
   function loadList(key){
     return api({ action:"list", key:key }).then(function(res){
-      if(!res || res.ok!==true) throw new Error(res && res.error==="forbidden" ? "Неверный пароль" : "Ошибка сервера");
+      if(res && res.error==="forbidden") throw new Error("Неверный пароль");
+      if(!res || res.ok!==true || !Array.isArray(res.rows)) throw new Error("Обновите скрипт таблицы (команда list не найдена)");
       state.key=key; state.rows=res.rows||[];
       try{ sessionStorage.setItem(KEY_STORE,key); }catch(e){}
     });
