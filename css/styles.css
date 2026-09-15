@@ -639,9 +639,13 @@ body.sec-faq    .nav__desktop a[href="#faq"] { color: var(--gold-hi); }
 }
 .hero-logo-video {
   object-fit: contain; mix-blend-mode: screen;
-  /* deepen the near-black interior + make the logo pop */
-  filter: contrast(1.14) saturate(1.06);
+  /* light touch: keep the logo bright in the quiet frames, just add colour pop */
+  filter: contrast(1.06) saturate(1.08);
 }
+/* Desktop shows the wide 16:9 cut; the portrait 9:16 cut is phone-only.
+   Its edges are already feathered to black in the file, so it just needs a
+   gentle lift to stay vivid on small screens. */
+.hero-logo-video--tall { display: none; filter: brightness(1.05) saturate(1.08); }
 .hero-logo-still {
   object-fit: contain; display: none;   /* static fallback (reduced-motion / data-saver) */
   filter: drop-shadow(0 20px 55px rgba(0,0,0,.55));
@@ -1263,14 +1267,15 @@ body.sec-faq    .nav__desktop a[href="#faq"] { color: var(--gold-hi); }
     padding: 0 var(--pad) clamp(32px, 6vh, 64px);
   }
 
-  /* Mobile: overscan the cosmic scene so the logo reads bigger and the golden
-     pulse-rings bleed off both sides (immersive, no rectangle), contained
-     vertically so the wide logo never crops. The title is lifted right under
-     the mark so nothing floats in dead space. */
-  .hero-logo-video, .hero-logo-still {
-    top: 4%; left: -6%; width: 112%; height: 54%;
+  /* Mobile: use the dedicated portrait (9:16) cut — it fills the phone screen,
+     logo framed in the upper third, rings full-width. `contain` keeps the whole
+     scene (black pads fade via screen + the edge mask), so no rectangle. */
+  .hero-logo-video--wide { display: none; }
+  .hero-logo-video--tall {
+    display: block; top: 0; left: 0; width: 100%; height: 100%;
   }
-  .hero__inner { margin-top: 46vh; }
+  .hero-logo-still { top: 4%; left: -6%; width: 112%; height: 54%; }
+  .hero__inner { margin-top: 54vh; }
 
   .hero-logo-img {
     max-height: min(47vh, 430px);

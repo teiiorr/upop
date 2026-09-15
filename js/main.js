@@ -700,8 +700,13 @@ function initHeroParallax() {
   const hero = document.getElementById("hero");
   if (!hero) return;
 
-  // The animated logo video: on reduced-motion, drop it for the static logo.
-  const vid = hero.querySelector(".hero-logo-video");
+  // Two logo videos: wide (16:9) for desktop, tall (9:16) for phones. Play only
+  // the one that matches the viewport so a single file is fetched. (No live
+  // swap on resize — a landing page rarely crosses the breakpoint mid-session.)
+  const isTall = window.matchMedia("(max-width: 768px)").matches;
+  const vid = hero.querySelector(isTall ? ".hero-logo-video--tall" : ".hero-logo-video--wide");
+  const other = hero.querySelector(isTall ? ".hero-logo-video--wide" : ".hero-logo-video--tall");
+  if (other) { try { other.pause(); } catch (e) {} other.style.display = "none"; other.removeAttribute("data-parallax"); }
   const lowData = !!(navigator.connection && navigator.connection.saveData);
   if (vid) {
     if (reduceMotion || lowData) {

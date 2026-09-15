@@ -132,11 +132,18 @@
 
  <!-- ============ HERO ============ -->
 <section class="hero" id="hero" aria-labelledby="hero-title">
-  <!-- full-bleed animated logo scene (Higgsfield); black frame blends via screen -->
-  <video class="hero-logo-video" autoplay muted loop playsinline preload="metadata"
+  <!-- animated logo scene (Higgsfield); black frame blends via screen.
+       Wide 16:9 on desktop, a dedicated portrait 9:16 cut on phones — JS plays
+       only the one that matches the viewport, so a single file downloads. -->
+  <video class="hero-logo-video hero-logo-video--wide" muted loop playsinline preload="none"
          poster="logo-hero.png" aria-hidden="true" data-parallax="0.05">
     <source src="hero-logo.webm" type="video/webm">
     <source src="hero-logo-h264.mp4" type="video/mp4">
+  </video>
+  <video class="hero-logo-video hero-logo-video--tall" muted loop playsinline preload="none"
+         poster="logo-hero.png" aria-hidden="true" data-parallax="0.05">
+    <source src="hero-logo-9x16.webm" type="video/webm">
+    <source src="hero-logo-9x16-h264.mp4" type="video/mp4">
   </video>
   <img src="logo-hero.png" alt="U-POP TREND Logo" class="hero-logo-still">
   <div class="hero__scrim" aria-hidden="true"></div>
