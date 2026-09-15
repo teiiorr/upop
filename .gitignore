@@ -1,1 +1,7 @@
-(css/styles.css is a source file, and there are no build artifacts, dependencies, or temp files in the changes)
+# Higgsfield source assets — large HEVC master + input stills (keep local)
+hero-logo.mp4
+hero-input-*.png
+
+# System / editor / tooling
+.DS_Store
+.claude/

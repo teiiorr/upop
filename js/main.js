@@ -687,10 +687,88 @@ document.addEventListener("DOMContentLoaded", () => {
   initAccordion();
   initMagnetic();
   initForm();
+  initHeroParallax();
 
   // Open at the very top unless the URL points to a section anchor.
   if (!location.hash) window.scrollTo(0, 0);
 });
+
+/* ---------- hero parallax: layers drift with pointer / scroll / tilt --------
+   Depth comes from each [data-parallax] layer moving by its own factor. Pure
+   transforms on a rAF loop (GPU, iOS-smooth); disabled for reduced-motion. */
+function initHeroParallax() {
+  const hero = document.getElementById("hero");
+  if (!hero) return;
+
+  // The animated logo video: on reduced-motion, drop it for the static logo.
+  const vid = hero.querySelector(".hero-logo-video");
+  const lowData = !!(navigator.connection && navigator.connection.saveData);
+  if (vid) {
+    if (reduceMotion || lowData) {
+      try { vid.pause(); } catch (e) {}
+      vid.style.display = "none";
+      var still0 = hero.querySelector(".hero-logo-still");
+      if (still0) still0.style.display = "block";
+    }
+    else {
+      vid.addEventListener("error", function () {
+        vid.style.display = "none";
+        var still = hero.querySelector(".hero-logo-still");
+        if (still) still.style.display = "block";
+      });
+      // nudge autoplay (some browsers ignore the attribute until asked)
+      var tryPlay = function () { var p = vid.play(); if (p && p.catch) p.catch(function () {}); };
+      tryPlay();
+      vid.addEventListener("canplay", tryPlay, { once: true });
+    }
+  }
+  if (reduceMotion) return;
+
+  const layers = [].slice.call(hero.querySelectorAll("[data-parallax]")).map(function (el) {
+    return { el: el, f: parseFloat(el.getAttribute("data-parallax")) || 0 };
+  });
+  if (!layers.length) return;
+
+  const MAX = 30;          // px of drift at full pointer offset
+  let tx = 0, ty = 0;      // target (pointer/tilt, -1..1)
+  let cx = 0, cy = 0;      // current (eased)
+  let sy = 0;              // scroll offset
+  let raf = 0;
+
+  function frame() {
+    cx += (tx - cx) * 0.08;
+    cy += (ty - cy) * 0.08;
+    for (var i = 0; i < layers.length; i++) {
+      var L = layers[i];
+      var x = cx * L.f * MAX;
+      var y = cy * L.f * MAX + sy * L.f * 0.18;
+      L.el.style.transform = "translate3d(" + x.toFixed(1) + "px," + y.toFixed(1) + "px,0)";
+    }
+    if (Math.abs(tx - cx) > 0.0008 || Math.abs(ty - cy) > 0.0008) raf = requestAnimationFrame(frame);
+    else { raf = 0; }
+  }
+  function kick() { if (!raf) raf = requestAnimationFrame(frame); }
+
+  window.addEventListener("pointermove", function (e) {
+    var r = hero.getBoundingClientRect();
+    if (r.bottom < 0 || r.top > window.innerHeight) return; // hero off-screen
+    tx = ((e.clientX - r.left) / r.width - 0.5) * 2;
+    ty = ((e.clientY - r.top) / r.height - 0.5) * 2;
+    kick();
+  }, { passive: true });
+
+  window.addEventListener("scroll", function () { sy = window.scrollY; kick(); }, { passive: true });
+
+  // Gentle device-tilt parallax on phones that expose it without a prompt.
+  window.addEventListener("deviceorientation", function (e) {
+    if (e.gamma == null || e.beta == null) return;
+    tx = Math.max(-1, Math.min(1, e.gamma / 28));
+    ty = Math.max(-1, Math.min(1, (e.beta - 45) / 28));
+    kick();
+  }, { passive: true });
+
+  kick();
+}
 
 // Also reset on back/forward (bfcache) restores so the page never reopens scrolled.
 window.addEventListener("pageshow", (e) => {

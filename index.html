@@ -132,23 +132,24 @@
 
  <!-- ============ HERO ============ -->
 <section class="hero" id="hero" aria-labelledby="hero-title">
-  <div class="hero__aura" aria-hidden="true"></div>
-  <div class="hero__grain" aria-hidden="true"></div>
+  <!-- full-bleed animated logo scene (Higgsfield); black frame blends via screen -->
+  <video class="hero-logo-video" autoplay muted loop playsinline preload="metadata"
+         poster="logo-hero.png" aria-hidden="true" data-parallax="0.05">
+    <source src="hero-logo.webm" type="video/webm">
+    <source src="hero-logo-h264.mp4" type="video/mp4">
+  </video>
+  <img src="logo-hero.png" alt="U-POP TREND Logo" class="hero-logo-still">
+  <div class="hero__scrim" aria-hidden="true"></div>
 
-  <div class="hero__inner">
-    <div class="hero__logo" data-animate>
-      <span class="hero__logo-inner">
-        <img src="logo-hero.png" alt="U-POP TREND Logo" class="hero-logo-img">
-      </span>
-    </div>
+  <div class="hero__inner" data-parallax="0.02">
     <h1 class="hero-title" data-i18n-html="hero_title">
       “Qadriyatlarning qayta tirilishi”
     </h1>
-  </div>
-  <div class="hero__cta" data-animate>
-    <a href="#apply" class="btn btn--pop btn--lg" data-i18n="hero_cta">
-      Anketani to'ldiring
-    </a>
+    <div class="hero__cta" data-animate>
+      <a href="#apply" class="btn btn--pop btn--lg" data-i18n="hero_cta">
+        Anketani to'ldiring
+      </a>
+    </div>
   </div>
 </section>
 
