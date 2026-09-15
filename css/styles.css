@@ -18,8 +18,7 @@
   --graphite:  #2A2F35;
 
   /* surfaces */
-  --bg:        #000000;   /* pure black — matches the hero video's black so the
-                            animation blends seamlessly into the page (no seam) */
+  --bg:        #050C11;
   --bg-2:      #081A23;
   --surface:   #0A1E28;
   --surface-2: #0D242F;
@@ -572,15 +571,14 @@ body.sec-faq    .nav__desktop a[href="#faq"] { color: var(--gold-hi); }
 .hero {
   position: relative;
   min-height: calc(100dvh - var(--nav-h));
-  display: flex; flex-direction: column; align-items: center; justify-content: flex-end;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
   text-align: center;
-  padding: clamp(8px, 2vh, 24px) var(--pad) clamp(40px, 9vh, 92px);
+  padding: clamp(8px, 2vh, 24px) var(--pad) clamp(48px, 8vh, 84px);
   overflow: hidden;
 }
-.hero__inner { position: relative; z-index: 2; max-width: 1000px; width: 100%; display: flex; flex-direction: column; align-items: center; gap: clamp(1rem, 3vh, 1.7rem); }
+.hero__inner { max-width: 1000px; width: 100%; display: flex; flex-direction: column; align-items: center; gap: clamp(1.3rem, 4vh, 2.8rem); }
 
 .hero__aura {
-  display: none;
   position: absolute; z-index: 0;
   width: min(78vw, 720px); aspect-ratio: 1; top: 32%; left: 50%;
   translate: -50% -50%;
@@ -614,57 +612,7 @@ body.sec-faq    .nav__desktop a[href="#faq"] { color: var(--gold-hi); }
   filter: drop-shadow(0 24px 60px rgba(0,0,0,.55));
 }
 
-/* Animated logo video (Higgsfield): pure-black frame -> the screen blend drops
-   the black entirely, so ONLY the glowing logo + sparks survive and sit right
-   on the page background. Because the black is already invisible we don't need
-   to bleed a rectangle edge-to-edge — instead the logo is `contain`ed in the
-   UPPER portion of the hero, leaving a clean lower band for the title + CTA so
-   nothing overlaps. The scrim just melts the faint frame edges into the bg and
-   darkens the text band. Reads as one full-screen cosmic whole, no rectangle. */
-.hero-logo-video, .hero-logo-still {
-  position: absolute; top: -8%; left: 0; width: 100%; height: 80%;
-  object-position: center center; z-index: 0; pointer-events: none;
-  /* Feather the video's OWN rectangle edges to transparent. The Higgsfield
-     scene's "black" is a lifted near-black (subtle glow/starfield), so `screen`
-     alone can't fully drop it and a faint rectangle shows. Two crossed linear
-     fades intersected = a soft frame that dissolves ALL four edges into the
-     page regardless of screen aspect — no rectangle, ever. */
-  -webkit-mask-image:
-    linear-gradient(to right,  transparent 0%, #000 13%, #000 87%, transparent 100%),
-    linear-gradient(to bottom, transparent 0%, #000 11%, #000 82%, transparent 100%);
-  -webkit-mask-composite: source-in;
-          mask-image:
-    linear-gradient(to right,  transparent 0%, #000 13%, #000 87%, transparent 100%),
-    linear-gradient(to bottom, transparent 0%, #000 11%, #000 82%, transparent 100%);
-          mask-composite: intersect;
-}
-.hero-logo-video {
-  object-fit: contain; mix-blend-mode: screen;
-  /* light touch: keep the logo bright in the quiet frames, just add colour pop */
-  filter: contrast(1.06) saturate(1.08);
-}
-/* Desktop shows the wide 16:9 cut; the portrait 9:16 cut is phone-only.
-   Its edges are already feathered to black in the file, so it just needs a
-   gentle lift to stay vivid on small screens. */
-.hero-logo-video--tall { display: none; filter: brightness(1.05) saturate(1.08); }
-.hero-logo-still {
-  object-fit: contain; display: none;   /* static fallback (reduced-motion / data-saver) */
-  filter: drop-shadow(0 20px 55px rgba(0,0,0,.55));
-}
-.hero__scrim {
-  position: absolute; inset: 0; z-index: 1; pointer-events: none;
-  background:
-    radial-gradient(115% 78% at 50% 31%, transparent 45%, var(--bg) 88%),
-    linear-gradient(to top, var(--bg) 6%, rgba(0,0,0,.80) 24%, transparent 50%);
-}
-[data-parallax] { will-change: transform; }
-@media (prefers-reduced-motion: reduce) {
-  .hero-logo-video { display: none; }
-  .hero-logo-still { display: block; }
-  [data-parallax] { will-change: auto; transform: none !important; }
-}
-
-/* Living logo: a gentle breathing float (applies to the still fallback). */
+/* Living logo: a gentle breathing float. */
 .is-ready .hero__logo img {
   animation: logoZoom 5.5s var(--e-inout) 1.1s infinite;
 }
@@ -1264,19 +1212,8 @@ body.sec-faq    .nav__desktop a[href="#faq"] { color: var(--gold-hi); }
 @media (max-width: 768px) {
   .hero {
     min-height: calc(100dvh - var(--nav-h));
-    justify-content: flex-start;
-    padding: 0 var(--pad) clamp(32px, 6vh, 64px);
+    padding: clamp(16px, 4vh, 32px) var(--pad) clamp(40px, 7vh, 72px);
   }
-
-  /* Mobile: use the dedicated portrait (9:16) cut — it fills the phone screen,
-     logo framed in the upper third, rings full-width. `contain` keeps the whole
-     scene (black pads fade via screen + the edge mask), so no rectangle. */
-  .hero-logo-video--wide { display: none; }
-  .hero-logo-video--tall {
-    display: block; top: 0; left: 0; width: 100%; height: 100%;
-  }
-  .hero-logo-still { top: 4%; left: -6%; width: 112%; height: 54%; }
-  .hero__inner { margin-top: 54vh; }
 
   .hero-logo-img {
     max-height: min(47vh, 430px);
