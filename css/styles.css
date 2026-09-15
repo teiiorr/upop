@@ -18,7 +18,8 @@
   --graphite:  #2A2F35;
 
   /* surfaces */
-  --bg:        #050C11;
+  --bg:        #000000;   /* pure black — matches the hero video's black so the
+                            animation blends seamlessly into the page (no seam) */
   --bg-2:      #081A23;
   --surface:   #0A1E28;
   --surface-2: #0D242F;
@@ -654,7 +655,7 @@ body.sec-faq    .nav__desktop a[href="#faq"] { color: var(--gold-hi); }
   position: absolute; inset: 0; z-index: 1; pointer-events: none;
   background:
     radial-gradient(115% 78% at 50% 31%, transparent 45%, var(--bg) 88%),
-    linear-gradient(to top, var(--bg) 6%, rgba(5,12,17,.80) 24%, transparent 50%);
+    linear-gradient(to top, var(--bg) 6%, rgba(0,0,0,.80) 24%, transparent 50%);
 }
 [data-parallax] { will-change: transform; }
 @media (prefers-reduced-motion: reduce) {
