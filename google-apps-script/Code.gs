@@ -104,6 +104,11 @@ var STATUS_HEADER = 'Ko‘rib chiqildi / Рассмотрено';
 var STATUS_MAP = { green: '🟢', yellow: '🟡', red: '🔴' };
 var STATUS_REV = { '🟢': 'green', '🟡': 'yellow', '🔴': 'red' };
 
+/* Free-text notes the reviewers keep on each participant. Long stories are
+   fine — the column wraps and widens. Lives right after the status column, so
+   one "review" write stamps the colour and the story together. */
+var HISTORY_HEADER = 'Ishtirokchi tarixi / История участника';
+
 /* ---------------------------------------------------------------- POST */
 function doPost(e) {
   var lock = LockService.getScriptLock();
@@ -149,6 +154,37 @@ function doPost(e) {
             scell.setNumberFormat('@');
             scell.setValue(dot);
             return json({ ok: true, submissionId: sid, status: dot ? status : '', row: j + 2 });
+          }
+        }
+      }
+      return json({ ok: false, error: 'not found' });
+    }
+
+    // Save a review in one write: the colour (green/yellow/red or '') AND the
+    // participant story together — the admin's "save" hits this once. Keyed.
+    if (data && data.action === 'review') {
+      if (!authorized(data)) return json({ ok: false, error: 'forbidden' });
+      var rid = String(data.submissionId || '').trim();
+      if (!rid) return json({ ok: false, error: 'no id' });
+      var rstatus = String(data.status || '');
+      var rdot = STATUS_MAP[rstatus] || '';            // unknown/empty clears it
+      var rhist = (data.history == null) ? '' : String(data.history);
+      var rlr = sheet.getLastRow();
+      if (rlr > 1) {
+        var rids = sheet.getRange(2, ID_COL, rlr - 1, 1).getValues();
+        for (var m = 0; m < rids.length; m++) {
+          if (String(rids[m][0]).trim() === rid) {
+            var rr = m + 2;
+            var sc = sheet.getRange(rr, FIELDS.length + 1);  // status column
+            sc.setNumberFormat('@'); sc.setValue(rdot);
+            sc.setHorizontalAlignment('center').setVerticalAlignment('middle');
+            var hc = sheet.getRange(rr, FIELDS.length + 2);  // history column
+            hc.setNumberFormat('@'); hc.setValue(rhist);
+            hc.setWrap(true).setVerticalAlignment('middle').setHorizontalAlignment('left');
+            return json({
+              ok: true, submissionId: rid,
+              status: rdot ? rstatus : '', history: rhist, row: rr
+            });
           }
         }
       }
@@ -222,7 +258,7 @@ function cellValue(f, v) {
 
 /* ---------------------------------------------------------------- headers */
 function ensureHeaders(sheet) {
-  var headers = FIELDS.map(function (f) { return f.h; }).concat([STATUS_HEADER]);
+  var headers = FIELDS.map(function (f) { return f.h; }).concat([STATUS_HEADER, HISTORY_HEADER]);
   var need = false;
   if (sheet.getLastRow() === 0 || sheet.getMaxColumns() < headers.length) {
     need = true;
@@ -237,8 +273,8 @@ function ensureHeaders(sheet) {
 
 /* Writes + styles the header row and per-column layout. Safe to call again. */
 function styleHeader(sheet) {
-  var headers = FIELDS.map(function (f) { return f.h; }).concat([STATUS_HEADER]);
-  var total = headers.length; // FIELDS.length + 1 (status)
+  var headers = FIELDS.map(function (f) { return f.h; }).concat([STATUS_HEADER, HISTORY_HEADER]);
+  var total = headers.length; // FIELDS.length + 2 (status + history)
 
   // Grow a blank 26-column tab so all fields fit before any range op.
   if (sheet.getMaxColumns() < total) {
@@ -272,11 +308,19 @@ function styleHeader(sheet) {
       colData.setVerticalAlignment('middle');
     }
   }
-  // review-status column (last): width + centred
-  sheet.setColumnWidth(total, 160);
+  // review-status column (n+1): narrow + centred (holds the colour dot)
+  var statusCol = FIELDS.length + 1;
+  sheet.setColumnWidth(statusCol, 150);
   if (maxRows >= 2) {
-    sheet.getRange(2, total, maxRows - 1, 1)
+    sheet.getRange(2, statusCol, maxRows - 1, 1)
       .setHorizontalAlignment('center').setVerticalAlignment('middle');
+  }
+  // participant-history column (n+2): wide + left + wrap (long stories)
+  var historyCol = FIELDS.length + 2;
+  sheet.setColumnWidth(historyCol, 460);
+  if (maxRows >= 2) {
+    sheet.getRange(2, historyCol, maxRows - 1, 1)
+      .setHorizontalAlignment('left').setVerticalAlignment('middle').setWrap(true);
   }
 
   // Row banding for the DATA only (row 2 down) — never touches the header,
@@ -296,7 +340,7 @@ function readAllRows(sheet) {
   var last = sheet.getLastRow();
   if (last < 2) return [];
   var n = FIELDS.length;
-  var cols = Math.min(n + 1, sheet.getMaxColumns()); // +1 = review status
+  var cols = Math.min(n + 2, sheet.getMaxColumns()); // +status +history
   var values = sheet.getRange(2, 1, last - 1, cols).getValues();
   var out = [];
   for (var r = 0; r < values.length; r++) {
@@ -309,6 +353,7 @@ function readAllRows(sheet) {
     var raw = cols > n ? String(values[r][n]).trim() : '';
     obj.status = STATUS_REV[raw] || '';   // green/yellow/red or ''
     obj.reviewed = raw !== '';
+    obj.history = cols > n + 1 ? String(values[r][n + 1]) : '';
     out.push(obj);
   }
   out.reverse(); // newest first
