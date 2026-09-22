@@ -104,6 +104,10 @@ chance_title: `Yoshingiz <span class="hl">14 dan 19 gacha!</span><br>Va siz jonl
 
     s1_city: `Kasting shahri`,
     s1_date_label: `Kasting sanasi`,
+    s1_photo: `Suratingiz`,
+    s1_photo_btn: `Rasm tanlash`,
+    s1_photo_hint: `Yuzingiz to‘g‘ridan-to‘g‘ri ko‘rinsin — ko‘zoynak va bosh kiyimsiz, tekis fon, yaxshi yorug‘likda. Yaqinda olingan aniq surat.`,
+    err_photo: `Iltimos, suratingizni qo‘shing.`,
     s1_fullname: `F.I.Sh. (to‘liq)`,
     s1_fullname_ph: `Familiya Ism Sharif`,
     s1_birth: `Tug‘ilgan sana`,
@@ -300,6 +304,10 @@ chance_title: `Yoshingiz <span class="hl">14 dan 19 gacha!</span><br>Va siz jonl
 
     s1_city: `Город кастинга`,
     s1_date_label: `Дата кастинга`,
+    s1_photo: `Ваше фото`,
+    s1_photo_btn: `Выбрать фото`,
+    s1_photo_hint: `Лицо анфас — без очков и головных уборов, ровный фон, хорошее освещение. Недавнее чёткое фото.`,
+    err_photo: `Пожалуйста, добавьте фото.`,
     s1_fullname: `ФИО (полностью)`,
     s1_fullname_ph: `Фамилия Имя Отчество`,
     s1_birth: `Дата рождения`,
@@ -496,6 +504,10 @@ chance_title: `Yoshingiz <span class="hl">14 dan 19 gacha!</span><br>Va siz jonl
 
     s1_city: `Casting city`,
     s1_date_label: `Casting date`,
+    s1_photo: `Your photo`,
+    s1_photo_btn: `Choose photo`,
+    s1_photo_hint: `Face forward — no glasses or headwear, plain background, good lighting. A recent, clear photo.`,
+    err_photo: `Please add your photo.`,
     s1_fullname: `Full name`,
     s1_fullname_ph: `First name, last name`,
     s1_birth: `Date of birth`,
@@ -687,6 +699,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initAccordion();
   initMagnetic();
   initForm();
+  initPhoto();
 
   // Open at the very top unless the URL points to a section anchor.
   if (!location.hash) window.scrollTo(0, 0);
@@ -1059,6 +1072,56 @@ function initMagnetic() {
 /* ============================================================
    Casting anketa — multi-step wizard
    ============================================================ */
+/* Candidate photo: compress client-side to a modest JPEG and stash it as a
+   data URL in the hidden field, so the JSON payload stays small (~100–200 KB). */
+function initPhoto() {
+  const input = document.getElementById("f-photo");
+  const drop = document.getElementById("photoDrop");
+  const img = document.getElementById("photoPreview");
+  const ph = document.getElementById("photoPh");
+  const dataEl = document.getElementById("photoData");
+  const typeEl = document.getElementById("photoType");
+  if (!input || !dataEl) return;
+
+  input.addEventListener("change", () => {
+    const file = input.files && input.files[0];
+    if (!file) return;
+    compressImage(file, 1000, 0.82)
+      .then((dataUrl) => {
+        dataEl.value = dataUrl;
+        if (typeEl) typeEl.value = "image/jpeg";
+        if (img) { img.src = dataUrl; img.hidden = false; }
+        if (ph) ph.hidden = true;
+        if (drop) drop.classList.add("is-set");
+        dataEl.closest(".field")?.classList.remove("has-err");
+        const err = dataEl.closest(".field")?.querySelector(".field__err");
+        if (err) err.hidden = true;
+      })
+      .catch(() => { dataEl.value = ""; }); // validation will prompt for a photo
+  });
+}
+
+/* Downscale + re-encode an image file to a JPEG data URL (longest side ≤ maxDim). */
+function compressImage(file, maxDim, quality) {
+  return new Promise((resolve, reject) => {
+    const url = URL.createObjectURL(file);
+    const image = new Image();
+    image.onload = () => {
+      URL.revokeObjectURL(url);
+      const scale = Math.min(1, maxDim / Math.max(image.naturalWidth, image.naturalHeight));
+      const w = Math.max(1, Math.round(image.naturalWidth * scale));
+      const h = Math.max(1, Math.round(image.naturalHeight * scale));
+      const canvas = document.createElement("canvas");
+      canvas.width = w; canvas.height = h;
+      canvas.getContext("2d").drawImage(image, 0, 0, w, h);
+      try { resolve(canvas.toDataURL("image/jpeg", quality)); }
+      catch (e) { reject(e); }
+    };
+    image.onerror = reject;
+    image.src = url;
+  });
+}
+
 function initForm() {
   const form = document.getElementById("castingForm");
   if (!form) return;

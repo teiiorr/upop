@@ -109,6 +109,12 @@ var STATUS_REV = { '🟢': 'green', '🟡': 'yellow', '🔴': 'red' };
    one "review" write stamps the colour and the story together. */
 var HISTORY_HEADER = 'Ishtirokchi tarixi / История участника';
 
+/* Candidate photo. The site (and the admin) send a base64 image; we save it to
+   a Drive folder, share it view-only, and keep the viewable URL in this column.
+   Storing a URL — not the image — keeps the sheet and the admin feed light. */
+var PHOTO_HEADER = 'Foto / Фото';
+var PHOTO_FOLDER = 'UPOP_casting_photos';
+
 /* ---------------------------------------------------------------- POST */
 function doPost(e) {
   var lock = LockService.getScriptLock();
@@ -181,10 +187,18 @@ function doPost(e) {
             var hc = sheet.getRange(rr, FIELDS.length + 2);  // history column
             hc.setNumberFormat('@'); hc.setValue(rhist);
             hc.setWrap(true).setVerticalAlignment('middle').setHorizontalAlignment('left');
-            return json({
-              ok: true, submissionId: rid,
-              status: rdot ? rstatus : '', history: rhist, row: rr
-            });
+            // Optional: admin uploaded/replaced the candidate photo.
+            var rphoto = null;
+            if (data.photo) {
+              rphoto = savePhoto(data.photo, data.photoType, rid);
+              if (rphoto) {
+                var rpc = sheet.getRange(rr, FIELDS.length + 3);
+                rpc.setNumberFormat('@'); rpc.setValue(rphoto);
+              }
+            }
+            var out = { ok: true, submissionId: rid, status: rdot ? rstatus : '', history: rhist, row: rr };
+            if (rphoto) out.photo = rphoto;
+            return json(out);
           }
         }
       }
@@ -232,7 +246,17 @@ function doPost(e) {
         return (f.center || f.type === 'bool') ? 'center' : 'left';
       })]);
 
-    return json({ ok: true, duplicate: false, row: targetRow });
+    // Candidate photo → Drive → viewable URL in the photo column (n+3).
+    var photoUrl = '';
+    if (data.photo) {
+      photoUrl = savePhoto(data.photo, data.photoType, subId || String(targetRow));
+      if (photoUrl) {
+        var pcell = sheet.getRange(targetRow, FIELDS.length + 3);
+        pcell.setNumberFormat('@'); pcell.setValue(photoUrl);
+      }
+    }
+
+    return json({ ok: true, duplicate: false, row: targetRow, photo: photoUrl });
   } catch (err) {
     return json({ ok: false, error: String(err) });
   } finally {
@@ -243,6 +267,41 @@ function doPost(e) {
 /* ---------------------------------------------------------------- GET (health) */
 function doGet() {
   return json({ ok: true, service: 'UPOP_casting', time: new Date() });
+}
+
+/* ---------------------------------------------------------------- photo (Drive)
+   Decode a base64 image, drop it in a dedicated Drive folder, share it
+   view-only, and return a URL that <img> can render. Returns '' on any failure
+   so a photo problem never blocks saving the application itself. */
+function savePhoto(dataUrl, mime, name) {
+  try {
+    var b64 = String(dataUrl || '');
+    var comma = b64.indexOf(',');
+    if (comma >= 0) b64 = b64.substring(comma + 1);   // strip "data:image/...;base64,"
+    if (!b64) return '';
+    var type = String(mime || 'image/jpeg');
+    var ext = type.indexOf('png') >= 0 ? 'png' : (type.indexOf('webp') >= 0 ? 'webp' : 'jpg');
+    var bytes = Utilities.base64Decode(b64);
+    var blob = Utilities.newBlob(bytes, type, 'upop_' + (name || 'photo') + '.' + ext);
+    var file = getPhotoFolder().createFile(blob);
+    try { file.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW); } catch (e) {}
+    // Thumbnail endpoint renders reliably in <img> for anyone-with-link files.
+    return 'https://drive.google.com/thumbnail?id=' + file.getId() + '&sz=w1000';
+  } catch (err) {
+    return '';
+  }
+}
+
+function getPhotoFolder() {
+  var it = DriveApp.getFoldersByName(PHOTO_FOLDER);
+  return it.hasNext() ? it.next() : DriveApp.createFolder(PHOTO_FOLDER);
+}
+
+/* Run once from the editor after pasting this file so the deployment gains the
+   Drive permission (photos need it). Deploy ▸ New version afterwards. */
+function authorizeDrive() {
+  getPhotoFolder();
+  return 'ok';
 }
 
 /* ---------------------------------------------------------------- values */
@@ -258,7 +317,7 @@ function cellValue(f, v) {
 
 /* ---------------------------------------------------------------- headers */
 function ensureHeaders(sheet) {
-  var headers = FIELDS.map(function (f) { return f.h; }).concat([STATUS_HEADER, HISTORY_HEADER]);
+  var headers = FIELDS.map(function (f) { return f.h; }).concat([STATUS_HEADER, HISTORY_HEADER, PHOTO_HEADER]);
   var need = false;
   if (sheet.getLastRow() === 0 || sheet.getMaxColumns() < headers.length) {
     need = true;
@@ -273,8 +332,8 @@ function ensureHeaders(sheet) {
 
 /* Writes + styles the header row and per-column layout. Safe to call again. */
 function styleHeader(sheet) {
-  var headers = FIELDS.map(function (f) { return f.h; }).concat([STATUS_HEADER, HISTORY_HEADER]);
-  var total = headers.length; // FIELDS.length + 2 (status + history)
+  var headers = FIELDS.map(function (f) { return f.h; }).concat([STATUS_HEADER, HISTORY_HEADER, PHOTO_HEADER]);
+  var total = headers.length; // FIELDS.length + 3 (status + history + photo)
 
   // Grow a blank 26-column tab so all fields fit before any range op.
   if (sheet.getMaxColumns() < total) {
@@ -322,6 +381,13 @@ function styleHeader(sheet) {
     sheet.getRange(2, historyCol, maxRows - 1, 1)
       .setHorizontalAlignment('left').setVerticalAlignment('middle').setWrap(true);
   }
+  // photo column (n+3): holds the Drive URL
+  var photoCol = FIELDS.length + 3;
+  sheet.setColumnWidth(photoCol, 320);
+  if (maxRows >= 2) {
+    sheet.getRange(2, photoCol, maxRows - 1, 1)
+      .setHorizontalAlignment('left').setVerticalAlignment('middle');
+  }
 
   // Row banding for the DATA only (row 2 down) — never touches the header,
   // which is what used to paint it grey.
@@ -340,7 +406,7 @@ function readAllRows(sheet) {
   var last = sheet.getLastRow();
   if (last < 2) return [];
   var n = FIELDS.length;
-  var cols = Math.min(n + 2, sheet.getMaxColumns()); // +status +history
+  var cols = Math.min(n + 3, sheet.getMaxColumns()); // +status +history +photo
   var values = sheet.getRange(2, 1, last - 1, cols).getValues();
   var out = [];
   for (var r = 0; r < values.length; r++) {
@@ -354,6 +420,7 @@ function readAllRows(sheet) {
     obj.status = STATUS_REV[raw] || '';   // green/yellow/red or ''
     obj.reviewed = raw !== '';
     obj.history = cols > n + 1 ? String(values[r][n + 1]) : '';
+    obj.photo = cols > n + 2 ? String(values[r][n + 2]) : '';
     out.push(obj);
   }
   out.reverse(); // newest first

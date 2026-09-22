@@ -920,6 +920,30 @@ body.sec-faq    .nav__desktop a[href="#faq"] { color: var(--gold-hi); }
 .field__err { font-size: .8rem; color: #ff9fc6; font-weight: 500; }
 .field__err--consent { display: block; margin-top: -4px; }
 
+/* ---- candidate photo upload ---- */
+.photoup { display: flex; gap: 18px; align-items: flex-start; flex-wrap: wrap; }
+.photoup__drop {
+  position: relative; width: 138px; height: 176px; flex: 0 0 auto; overflow: hidden; cursor: pointer;
+  border-radius: 16px; border: 1.5px dashed var(--line-gold); background: var(--surface);
+  display: grid; place-items: center; transition: border-color .2s var(--e-quint), background .2s, transform .18s var(--e-quint);
+}
+.photoup__drop:hover { border-color: var(--gold); background: var(--surface-2); transform: translateY(-2px); }
+.photoup__drop:active { transform: translateY(0); }
+.photoup__img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.photoup__ph { display: flex; flex-direction: column; align-items: center; gap: 9px; padding: 12px;
+  text-align: center; color: var(--ink-70); font-family: var(--font-disp); font-weight: 600; font-size: .84rem; letter-spacing: -.01em; }
+.photoup__icn { width: 32px; height: 32px; color: var(--gold); opacity: .85; }
+.photoup__input { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); border: 0; }
+.photoup__input:focus-visible + .photoup__hint { outline: none; }
+.photoup__drop:focus-within { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(211,166,63,.18); }
+.photoup__hint { flex: 1 1 210px; min-width: 180px; margin: 0; align-self: center; }
+.field--photo.has-err .photoup__drop { border-color: #e0466f; border-style: solid; }
+.photoup__drop.is-set { border-style: solid; border-color: var(--line-gold); }
+@media (max-width: 560px) {
+  .photoup__drop { width: 120px; height: 152px; }
+  .photoup__hint { flex-basis: 100%; }
+}
+
 .consent { display: grid; grid-template-columns: auto 1fr; align-items: start; gap: 12px; cursor: pointer; margin-top: 4px; }
 .consent input { position: absolute; opacity: 0; width: 0; height: 0; }
 .consent__box {

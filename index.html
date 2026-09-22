@@ -673,6 +673,24 @@
           <fieldset class="wiz-panel is-active" data-step="1">
             <legend class="wiz-panel__title"><span class="wiz-panel__num">1</span><span data-i18n="sec1">Shaxsiy ma’lumotlar</span></legend>
 
+            <div class="field field--req field--wide field--photo">
+              <label data-i18n="s1_photo">Suratingiz</label>
+              <div class="photoup">
+                <label class="photoup__drop" for="f-photo" id="photoDrop">
+                  <img class="photoup__img" id="photoPreview" alt="" hidden />
+                  <span class="photoup__ph" id="photoPh">
+                    <svg class="photoup__icn" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+                    <span data-i18n="s1_photo_btn">Rasm tanlash</span>
+                  </span>
+                </label>
+                <input id="f-photo" type="file" accept="image/*" class="photoup__input" />
+                <p class="wiz-note photoup__hint" data-i18n="s1_photo_hint">Yuzingiz to‘g‘ridan-to‘g‘ri ko‘rinsin — ko‘zoynak va bosh kiyimsiz, tekis fon, yaxshi yorug‘likda. Yaqinda olingan aniq surat.</p>
+              </div>
+              <input type="hidden" name="photo" id="photoData" required />
+              <input type="hidden" name="photoType" id="photoType" />
+              <span class="field__err" data-i18n="err_photo" hidden>Iltimos, suratingizni qo‘shing.</span>
+            </div>
+
             <div class="field field--req field--wide">
               <label for="f-name" data-i18n="s1_fullname">F.I.Sh. (to‘liq)</label>
               <input id="f-name" name="fullname" type="text" autocomplete="name" data-i18n-ph="s1_fullname_ph" placeholder="Familiya Ism Sharif" required />
