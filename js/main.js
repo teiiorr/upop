@@ -9,7 +9,7 @@ const DICT = {
   /* ---------------------------------------------------- UZ */
   uz: {
     meta_title: `U POP TREND — Milliy kasting`,
-    meta_desc:  `14–19 yoshdagi yoshlar uchun milliy tanlov. Videongizni #UPOPTREND bilan joylang va anketani to‘ldiring. Arizalar 25-sentabrgacha.`,
+    meta_desc:  `14–19 yoshdagi yoshlar uchun milliy tanlov. Videongizni #UPOPTREND bilan joylang va anketani to‘ldiring. Arizalar 1-oktabrgacha.`,
     skip: `Kastingga o'tish`,
 
     nav_who: `Kim qatnashadi`,
@@ -20,7 +20,7 @@ const DICT = {
 
     hero_title: `“Qadriyatlarning qayta tirilishi”`,
     hero_cta: `Anketani to‘ldiring`,
-    deadline: `Arizalar 2026-yil 25-sentabrgacha qabul qilinadi`,
+    deadline: `Arizalar 2026-yil 1-oktabrgacha qabul qilinadi`,
 chance_title: `Yoshingiz <span class="hl">14 dan 19 gacha!</span><br>Va siz jonli kuylay olasiz!<br>Demak, bu sizning sahnangiz!`,
     who_lede: `O'zbekiston tarixidagi ilk milliy kasting — tajriba va tayyorgarlikdan qat'i nazar, barcha uchun ochiq.`,
 
@@ -80,7 +80,7 @@ chance_title: `Yoshingiz <span class="hl">14 dan 19 gacha!</span><br>Va siz jonl
     a6: `Tanlovda faqat milliy qo‘shiqlar va folklor — maqom, baxshi, ashula, suvora, yalla, lapar va boshqa an‘anaviy janrlar — qatnashishga qabul qilinadi. Xorijiy hamda zamonaviy o‘zbek qo‘shiqlari ko‘rib chiqilmaydi.`,
 
     q7: `Videoni joylashning oxirgi muddati qachon?`,
-    a7: `Barcha ishtirokchilarning videolari 2026-yil 25-sentabrdan kechiktirmay joylashtirilishi kerak.`,
+    a7: `Barcha ishtirokchilarning videolari 2026-yil 1-oktabrdan kechiktirmay joylashtirilishi kerak.`,
 
     eyebrow_apply: `Anketa`,
     form_kicker: `Sahnaga chiqishga tayyormisiz?`,
@@ -209,7 +209,7 @@ chance_title: `Yoshingiz <span class="hl">14 dan 19 gacha!</span><br>Va siz jonl
   /* ---------------------------------------------------- RU */
   ru: {
     meta_title: `U POP TREND — Национальный кастинг`,
-    meta_desc:  `Национальный конкурс для молодёжи 14-19 лет. Опубликуйте видео с #UPOPTREND и заполните анкету. Приём заявок до 25 сентября.`,
+    meta_desc:  `Национальный конкурс для молодёжи 14-19 лет. Опубликуйте видео с #UPOPTREND и заполните анкету. Приём заявок до 1 октября.`,
     skip: `Перейти к заявке`,
 
     nav_who: `Кто участвует`,
@@ -220,7 +220,7 @@ chance_title: `Yoshingiz <span class="hl">14 dan 19 gacha!</span><br>Va siz jonl
 
     hero_title: `«Возрождение ценностей»`,
     hero_cta: `Заполнить анкету`,
-    deadline: `Приём заявок до 25 сентября 2026 года`,
+    deadline: `Приём заявок до 1 октября 2026 года`,
     chance_title: `Вам <span class="hl">от 14-19 лет!</span><br>И вы умеете петь вживую?<br>Значит, это ваша сцена!`,
     who_lede: `Первый национальный кастинг в истории Узбекистана — открыт для всех, независимо от опыта и подготовки.`,
 
@@ -280,7 +280,7 @@ chance_title: `Yoshingiz <span class="hl">14 dan 19 gacha!</span><br>Va siz jonl
     a6: `К участию допускаются только национальные песни и фольклор — маком, бахши, ашула, сувора, ялла, лапар и другие традиционные жанры. Зарубежные и современные узбекские песни рассматриваться не будут.`,
 
     q7: `Какой крайний срок публикации видео?`,
-    a7: `Все видео участников должны быть опубликованы не позднее 25 сентября 2026 года.`,
+    a7: `Все видео участников должны быть опубликованы не позднее 1 октября 2026 года.`,
 
     eyebrow_apply: `Анкета`,
     form_kicker: `Готовы выйти на сцену?`,
@@ -409,7 +409,7 @@ chance_title: `Yoshingiz <span class="hl">14 dan 19 gacha!</span><br>Va siz jonl
   /* ---------------------------------------------------- EN */
   en: {
     meta_title: `U POP TREND — National Casting`,
-    meta_desc:  `A national contest for youth aged 14–19. Post your video with #UPOPTREND and fill in the form. Applications until 25 September.`,
+    meta_desc:  `A national contest for youth aged 14–19. Post your video with #UPOPTREND and fill in the form. Applications until 1 October.`,
     skip: `Skip to apply`,
 
     nav_who: `Who can join`,
@@ -420,7 +420,7 @@ chance_title: `Yoshingiz <span class="hl">14 dan 19 gacha!</span><br>Va siz jonl
 
     hero_title: `“The revival of values”`,
     hero_cta: `Fill in the form`,
-    deadline: `Applications accepted until 25 September 2026`,
+    deadline: `Applications accepted until 1 October 2026`,
     chance_title: `Are you <span class="hl">14 to 19 years old?</span><br>And can you sing live?<br>Then this is your stage!`,
     who_lede: `The first national casting in Uzbekistan's history — open to everyone, regardless of experience or training.`,
 
@@ -480,7 +480,7 @@ chance_title: `Yoshingiz <span class="hl">14 dan 19 gacha!</span><br>Va siz jonl
     a6: `Only national songs and folklore are accepted — maqom, bakhshi, ashula, suvora, yalla, lapar and other traditional genres. Foreign and modern Uzbek songs will not be considered.`,
 
     q7: `What is the deadline to publish the video?`,
-    a7: `All participants' videos must be published no later than 25 September 2026.`,
+    a7: `All participants' videos must be published no later than 1 October 2026.`,
 
     eyebrow_apply: `Application`,
     form_kicker: `Ready to take the stage?`,
