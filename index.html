@@ -723,9 +723,25 @@
               </div>
             </div>
 
-            <div class="field field--wide">
+            <div class="field field--wide field--req">
               <label for="f-region" data-i18n="s1_region">Yashash shahri / tumani</label>
-              <input id="f-region" name="region" type="text" placeholder="—" />
+              <select id="f-region" name="region" required>
+                <option value="" data-i18n="gender_ph">Tanlang</option>
+                <option value="Toshkent shahri">Toshkent shahri</option>
+                <option value="Toshkent viloyati">Toshkent viloyati</option>
+                <option value="Andijon">Andijon</option>
+                <option value="Buxoro">Buxoro</option>
+                <option value="Farg‘ona">Farg‘ona</option>
+                <option value="Jizzax">Jizzax</option>
+                <option value="Xorazm">Xorazm</option>
+                <option value="Namangan">Namangan</option>
+                <option value="Navoiy">Navoiy</option>
+                <option value="Qashqadaryo">Qashqadaryo</option>
+                <option value="Qoraqalpog‘iston">Qoraqalpog‘iston</option>
+                <option value="Samarqand">Samarqand</option>
+                <option value="Sirdaryo">Sirdaryo</option>
+                <option value="Surxondaryo">Surxondaryo</option>
+              </select>
             </div>
 
             <div class="field-row">
@@ -811,7 +827,21 @@
               </div>
               <div class="field field--req">
                 <label for="f-genre" data-i18n="s3_genre">Janr / yo‘nalish</label>
-                <input id="f-genre" name="genre" type="text" data-i18n-ph="s3_genre_ph" placeholder="maqom, ashula, suvora…" required />
+                <select id="f-genre" name="genre" required>
+                  <option value="" data-i18n="gender_ph">Tanlang</option>
+                  <option value="Maqom">Maqom</option>
+                  <option value="Ashula">Ashula</option>
+                  <option value="Katta ashula">Katta ashula</option>
+                  <option value="Lapar">Lapar</option>
+                  <option value="Yalla">Yalla</option>
+                  <option value="Suvora">Suvora</option>
+                  <option value="Baxshi">Baxshi</option>
+                  <option value="Doston">Doston</option>
+                  <option value="Terma">Terma</option>
+                  <option value="Alla">Alla</option>
+                  <option value="Yor-yor">Yor-yor</option>
+                  <option value="Boshqa" data-i18n="genre_other">Boshqa</option>
+                </select>
               </div>
             </div>
             <div class="field-row">

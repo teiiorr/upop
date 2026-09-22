@@ -453,18 +453,16 @@
       review:"История и оценка", print:"Распечатать", no_photo:"Нет фото", years:"лет", socials:"Соцсети",
       expand:"Открыть анкету", collapse:"Свернуть анкету",
       nav_list:"Заявки", nav_stats:"Статистика",
-      st_total:"Всего заявок", st_reviewed:"Рассмотрено", st_pending:"Не рассмотрено", st_photo:"С фото",
-      st_byday:"Заявки по дням", st_status:"Оценки", st_genre:"По жанрам", st_region:"По городам",
+      st_total:"Всего заявок", st_cities:"Городов", st_genres:"Жанров", st_avgage:"Средний возраст",
+      st_byday:"Динамика заявок", st_genre:"По жанрам", st_region:"По городам",
       st_age:"Возраст участников", st_gender:"Пол", st_lang:"Язык анкеты",
-      st_green:"Зелёные", st_yellow:"Жёлтые", st_red:"Красные", st_none:"Не рассм.",
       st_male:"Мужской", st_female:"Женский", st_other:"Другое", st_empty:"Нет данных",
-      kind_genre:"жанров", kind_city:"городов",
-      n_status:function(rev,tot,pend){ var p=Math.round(rev/(tot||1)*100); return "Оценено "+rev+" из "+tot+" ("+p+"%). Ждут оценки — "+pend+"."; },
-      n_top:function(name,v,dist,kind){ return "Чаще всего — "+name+" ("+v+"). Всего "+kind+": "+dist+"."; },
-      n_age:function(avg,mode){ return "Средний возраст — "+avg+". Больше всего "+mode+"-летних."; },
-      n_gender:function(m,f){ var t=m+f||1; if(m===f) return "Поровну: юношей "+m+", девушек "+f+"."; return m>f?("Больше юношей — "+m+" ("+Math.round(m/t*100)+"%), девушек "+f+"."):("Больше девушек — "+f+" ("+Math.round(f/t*100)+"%), юношей "+m+"."); },
-      n_lang:function(name,v){ return "Чаще заполняют на "+name+" ("+v+")."; },
-      n_day:function(date,v,avg,days){ return "Пик — "+date+" ("+v+"). В среднем "+avg+" в день, дней с заявками: "+days+"."; },
+      n_genre:function(name,v,dist,total){ var p=Math.round(v/(total||1)*100); return "Наибольший интерес — к жанру «"+name+"»: "+v+" заявок ("+p+"%). Всего охвачено "+dist+" жанров — это показывает широту репертуара участников."; },
+      n_city:function(name,v,dist,total){ var p=Math.round(v/(total||1)*100); return "Больше всего участников из «"+name+"» — "+v+" ("+p+"%). География охватывает "+dist+" городов: проект привлёк кандидатов из разных регионов."; },
+      n_age:function(avg,mode,modeV,total){ var p=Math.round(modeV/(total||1)*100); return "Средний возраст — "+avg+". Основное ядро — "+mode+"-летние ("+modeV+" чел., "+p+"%): это ключевая возрастная группа проекта."; },
+      n_gender:function(m,f){ var t=m+f||1, mp=Math.round(m/t*100), fp=Math.round(f/t*100); if(m===f) return "Баланс полов равный — юношей "+m+", девушек "+f+". Аудитория сбалансирована."; return m>f?("Преобладают юноши — "+m+" ("+mp+"%) против "+f+" девушек ("+fp+"%). Есть смысл усилить привлечение девушек."):("Преобладают девушки — "+f+" ("+fp+"%) против "+m+" юношей ("+mp+"%). Есть смысл усилить привлечение юношей."); },
+      n_lang:function(name,v,total){ var p=Math.round(v/(total||1)*100); return "Большинство заполняют анкету на «"+name+"» ("+v+", "+p+"%) — на этом языке удобнее строить коммуникацию с участниками."; },
+      n_day:function(date,v,avg,days){ return "Пик активности — "+date+" ("+v+" заявок за день). В среднем "+avg+" заявок в день на протяжении "+days+" дней — стабильный интерес к проекту."; },
       male:"Мужской", female:"Женский", yes:"Да", no:"—",
       hist_h:"История участника", hist_ph:"Заметки, наблюдения, впечатления о выступлении — можно длинно.",
       rate:"Оценка", save:"Сохранить", saving:"Сохраняю…", cancel:"Отмена",
@@ -499,18 +497,16 @@
       review:"Tarix va baho", print:"Chop etish", no_photo:"Foto yo‘q", years:"yosh", socials:"Ijtimoiy tarmoqlar",
       expand:"Anketani ochish", collapse:"Yig‘ish",
       nav_list:"Arizalar", nav_stats:"Statistika",
-      st_total:"Jami arizalar", st_reviewed:"Ko‘rilgan", st_pending:"Ko‘rilmagan", st_photo:"Rasm bilan",
-      st_byday:"Kunlar bo‘yicha", st_status:"Baholar", st_genre:"Janrlar bo‘yicha", st_region:"Shaharlar bo‘yicha",
+      st_total:"Jami arizalar", st_cities:"Shaharlar", st_genres:"Janrlar", st_avgage:"O‘rtacha yosh",
+      st_byday:"Arizalar dinamikasi", st_genre:"Janrlar bo‘yicha", st_region:"Shaharlar bo‘yicha",
       st_age:"Ishtirokchilar yoshi", st_gender:"Jinsi", st_lang:"Anketa tili",
-      st_green:"Yashil", st_yellow:"Sariq", st_red:"Qizil", st_none:"Ko‘rilmagan",
       st_male:"Erkak", st_female:"Ayol", st_other:"Boshqa", st_empty:"Ma’lumot yo‘q",
-      kind_genre:"janr", kind_city:"shahar",
-      n_status:function(rev,tot,pend){ var p=Math.round(rev/(tot||1)*100); return "Baholangan "+rev+" / "+tot+" ("+p+"%). Baholanmagan — "+pend+"."; },
-      n_top:function(name,v,dist,kind){ return "Eng ko‘pi — "+name+" ("+v+"). Jami "+kind+": "+dist+"."; },
-      n_age:function(avg,mode){ return "O‘rtacha yosh — "+avg+". Ko‘pchilik "+mode+" yoshda."; },
-      n_gender:function(m,f){ var t=m+f||1; if(m===f) return "Teng: yigitlar "+m+", qizlar "+f+"."; return m>f?("Yigitlar ko‘p — "+m+" ("+Math.round(m/t*100)+"%), qizlar "+f+"."):("Qizlar ko‘p — "+f+" ("+Math.round(f/t*100)+"%), yigitlar "+m+"."); },
-      n_lang:function(name,v){ return "Ko‘pincha "+name+" tilida to‘ldiriladi ("+v+")."; },
-      n_day:function(date,v,avg,days){ return "Eng ko‘p — "+date+" ("+v+"). O‘rtacha kuniga "+avg+", faol kunlar: "+days+"."; },
+      n_genre:function(name,v,dist,total){ var p=Math.round(v/(total||1)*100); return "Eng ko‘p qiziqish — «"+name+"» janriga: "+v+" ta ariza ("+p+"%). Jami "+dist+" ta janr qamrab olingan — bu ishtirokchilar repertuarining kengligini ko‘rsatadi."; },
+      n_city:function(name,v,dist,total){ var p=Math.round(v/(total||1)*100); return "Eng ko‘p ishtirokchi «"+name+"»dan — "+v+" ta ("+p+"%). Geografiya "+dist+" ta shaharni qamrab oladi: loyiha turli hududlardan nomzodlarni jalb qildi."; },
+      n_age:function(avg,mode,modeV,total){ var p=Math.round(modeV/(total||1)*100); return "O‘rtacha yosh — "+avg+". Asosiy yadro — "+mode+" yoshdagilar ("+modeV+" kishi, "+p+"%): bu loyihaning asosiy yosh guruhi."; },
+      n_gender:function(m,f){ var t=m+f||1, mp=Math.round(m/t*100), fp=Math.round(f/t*100); if(m===f) return "Jinslar balansi teng — yigitlar "+m+", qizlar "+f+". Auditoriya muvozanatli."; return m>f?("Yigitlar ko‘p — "+m+" ("+mp+"%), qizlar "+f+" ("+fp+"%). Qizlarni ko‘proq jalb qilish maqsadga muvofiq."):("Qizlar ko‘p — "+f+" ("+fp+"%), yigitlar "+m+" ("+mp+"%). Yigitlarni ko‘proq jalb qilish maqsadga muvofiq."); },
+      n_lang:function(name,v,total){ var p=Math.round(v/(total||1)*100); return "Ko‘pchilik anketani «"+name+"» tilida to‘ldiradi ("+v+", "+p+"%) — ishtirokchilar bilan aloqa shu tilda qulayroq."; },
+      n_day:function(date,v,avg,days){ return "Eng faol kun — "+date+" ("+v+" ta ariza). O‘rtacha kuniga "+avg+" ta, "+days+" kun davomida — loyihaga barqaror qiziqish."; },
       male:"Erkak", female:"Ayol", yes:"Ha", no:"—",
       hist_h:"Ishtirokchi tarixi", hist_ph:"Ishtirokchi haqidagi eslatmalar, kuzatuvlar, taassurotlar — uzoq yozsa ham bo‘ladi.",
       rate:"Baho", save:"Saqlash", saving:"Saqlanmoqda…", cancel:"Bekor qilish",
@@ -869,6 +865,24 @@
   function canonGenre(raw){ var s=lc(raw); if(!s) return null; var best=null,bd=99;
     for(var i=0;i<GENRES.length;i++){ var g=GENRES[i].toLowerCase(); if(g===s) return {key:g,label:GENRES[i].toUpperCase()}; var d=lev(s,g); if(d<bd){bd=d;best=GENRES[i];} }
     var thr=s.length>=6?2:1; if(best&&bd<=thr) return {key:best.toLowerCase(),label:best.toUpperCase()}; return {key:s,label:s.toUpperCase()}; }
+  /* Merge free-text cities to real regions: "Toshkent shahri Olmazor tumani",
+     "Toshkent Shahri", "Toshkent" → one "Toshkent". Match by contained token. */
+  var REGIONS=[
+    {t:["toshkent","tashkent","ташкент","тошкент"],l:"Toshkent"},{t:["andijon","andijan","андижон","андижан"],l:"Andijon"},
+    {t:["buxoro","buxara","бухоро","бухар"],l:"Buxoro"},{t:["farg","fergan","фарг","ферган"],l:"Farg‘ona"},
+    {t:["jizzax","jizzakh","жиззах","джизак"],l:"Jizzax"},{t:["xorazm","urganch","хоразм","хорезм"],l:"Xorazm"},
+    {t:["namangan","наманган"],l:"Namangan"},{t:["navoiy","navoi","навоий","навои"],l:"Navoiy"},
+    {t:["qashqadaryo","qarshi","кашкадар","қашқадар","қарши"],l:"Qashqadaryo"},{t:["qoraqalpog","nukus","коракалпог","каракалпак","нукус"],l:"Qoraqalpog‘iston"},
+    {t:["samarqand","самарканд","самарқанд"],l:"Samarqand"},{t:["sirdaryo","сирдар","сырдар"],l:"Sirdaryo"},
+    {t:["surxondaryo","termiz","сурхондар","сурхандар","термиз"],l:"Surxondaryo"}
+  ];
+  function canonRegion(raw){ var s=lc(raw); if(!s) return null;
+    if(s.indexOf("toshkent")>=0||s.indexOf("tashkent")>=0||s.indexOf("ташкент")>=0||s.indexOf("тошкент")>=0){
+      var vil=(s.indexOf("viloyat")>=0||s.indexOf("область")>=0||s.indexOf("вилоят")>=0);
+      return vil?{key:"toshkent viloyati",label:"Toshkent viloyati"}:{key:"toshkent shahri",label:"Toshkent shahri"};
+    }
+    for(var i=0;i<REGIONS.length;i++){ for(var j=0;j<REGIONS[i].t.length;j++){ if(s.indexOf(REGIONS[i].t[j])>=0) return {key:REGIONS[i].l.toLowerCase(),label:REGIONS[i].l}; } }
+    return {key:s,label:titleCase(s)}; }
   function canonPlain(raw){ var s=lc(raw); if(!s) return null; return {key:s,label:titleCase(s)}; }
   function canonUp(raw){ var s=lc(raw); if(!s) return null; return {key:s,label:s.toUpperCase()}; }
   function tally(rows,valFn,canonFn,n){ var m={},lab={};
@@ -878,12 +892,12 @@
   function fmtDay(k){ var p=String(k).split('-'); return p.length===3?p[2]+'.'+p[1]:String(k); }
 
   function donut(segs){
-    var total=segs.reduce(function(a,s){return a+s.value;},0)||1, r=54, c=2*Math.PI*r, off=0;
+    var total=segs.reduce(function(a,s){return a+s.value;},0)||1, r=46, c=2*Math.PI*r, off=0;
     var arcs=segs.filter(function(s){return s.value>0;}).map(function(s){
-      var len=c*s.value/total, seg=Math.max(0,len-5);
-      var el='<circle cx="60" cy="60" r="'+r+'" fill="none" stroke="'+s.color+'" stroke-width="17" stroke-dasharray="'+seg.toFixed(2)+' '+(c-seg).toFixed(2)+'" stroke-dashoffset="'+(-off).toFixed(2)+'" transform="rotate(-90 60 60)" stroke-linecap="round"/>';
+      var len=c*s.value/total, seg=Math.max(0,len-4);
+      var el='<circle cx="60" cy="60" r="'+r+'" fill="none" stroke="'+s.color+'" stroke-width="14" stroke-dasharray="'+seg.toFixed(2)+' '+(c-seg).toFixed(2)+'" stroke-dashoffset="'+(-off).toFixed(2)+'" transform="rotate(-90 60 60)" stroke-linecap="round"/>';
       off+=len; return el; }).join("");
-    return '<svg viewBox="0 0 120 120" class="donut"><circle cx="60" cy="60" r="'+r+'" fill="none" stroke="var(--line)" stroke-width="17"/>'+arcs+'<text x="60" y="66" text-anchor="middle" class="donut__num">'+total+'</text></svg>'; }
+    return '<svg viewBox="0 0 120 120" class="donut"><circle cx="60" cy="60" r="'+r+'" fill="none" stroke="var(--line)" stroke-width="14"/>'+arcs+'<text x="60" y="66" text-anchor="middle" class="donut__num">'+total+'</text></svg>'; }
   function donutPanel(segs){
     var total=segs.reduce(function(a,s){return a+s.value;},0)||1;
     return '<div class="donutwrap">'+donut(segs)+'<div class="legend">'+segs.map(function(s){
@@ -921,31 +935,24 @@
     var x=tr(), rows=state.rows;
     if(!rows.length){ $("stats").innerHTML='<div class="state"><h3>'+esc(x.empty_h)+'</h3><p>'+esc(x.empty_p)+'</p></div>'; return; }
     var total=rows.length;
-    var green=rows.filter(function(r){return r.status==="green";}).length;
-    var yellow=rows.filter(function(r){return r.status==="yellow";}).length;
-    var red=rows.filter(function(r){return r.status==="red";}).length;
-    var reviewed=green+yellow+red, pending=total-reviewed;
-    var photo=rows.filter(function(r){return String(r.photo||'').trim();}).length;
-    var kpis='<div class="kpis">'+kpiTile(total,x.st_total,"#F4E1A0")+kpiTile(reviewed,x.st_reviewed,"#3fbf6f")+kpiTile(pending,x.st_pending,"#6A39D9")+kpiTile(photo,x.st_photo,"#18B8C9")+'</div>';
-    var statusSegs=[{label:x.st_green,value:green,color:"#3fbf6f"},{label:x.st_yellow,value:yellow,color:"#e6b93e"},{label:x.st_red,value:red,color:"#e56464"},{label:x.st_none,value:pending,color:"#5a6b73"}];
     var m=rows.filter(function(r){return r.gender==="m";}).length, f=rows.filter(function(r){return r.gender==="f";}).length, go=total-m-f;
     var genderSegs=[{label:x.st_male,value:m,color:"#4e8fe6"},{label:x.st_female,value:f,color:"#D63E8C"}]; if(go>0) genderSegs.push({label:x.st_other,value:go,color:"#5a6b73"});
     var genre=tally(rows,function(r){return r.genre;},canonGenre,8);
-    var region=tally(rows,function(r){return r.region;},canonPlain,8);
+    var region=tally(rows,function(r){return r.region;},canonRegion,8);
     var langT=tally(rows,function(r){return r.lang;},canonUp,5);
     var ageItems=[],ageSum=0,ageCnt=0,ageMode={l:'',v:0};
     for(var a=14;a<=19;a++){ (function(a){ var cnt=rows.filter(function(r){return String(r.age).trim()===String(a);}).length;
       ageItems.push({label:String(a),value:cnt}); ageSum+=a*cnt; ageCnt+=cnt; if(cnt>ageMode.v){ageMode={l:String(a),v:cnt};} })(a); }
     var days=byDay(rows), peak={label:'',value:0}; days.forEach(function(d){ if(d.value>peak.value) peak=d; });
     var avgDay=days.length?Math.round(rows.length/days.length*10)/10:0, avgAge=ageCnt?Math.round(ageSum/ageCnt*10)/10:0;
+    var kpis='<div class="kpis">'+kpiTile(total,x.st_total,"#F4E1A0")+kpiTile(region.distinct,x.st_cities,"#18B8C9")+kpiTile(genre.distinct,x.st_genres,"#D63E8C")+kpiTile(avgAge||'—',x.st_avgage,"#6A39D9")+'</div>';
     $("stats").innerHTML=kpis+'<div class="dash">'+
       panel(x.st_byday, areaChart(days), "wide", days.length?x.n_day(fmtDay(peak.label),peak.value,avgDay,days.length):"")+
-      panel(x.st_status, donutPanel(statusSegs), "", x.n_status(reviewed,total,pending))+
-      panel(x.st_genre, hbars(genre.items,total), "", genre.top?x.n_top(genre.top.label,genre.top.value,genre.distinct,x.kind_genre):"")+
-      panel(x.st_region, hbars(region.items,total), "", region.top?x.n_top(region.top.label,region.top.value,region.distinct,x.kind_city):"")+
-      panel(x.st_age, vbars(ageItems), "third", x.n_age(avgAge,ageMode.l||'—'))+
+      panel(x.st_genre, hbars(genre.items,total), "", genre.top?x.n_genre(genre.top.label,genre.top.value,genre.distinct,total):"")+
+      panel(x.st_region, hbars(region.items,total), "", region.top?x.n_city(region.top.label,region.top.value,region.distinct,total):"")+
+      panel(x.st_age, vbars(ageItems), "third", x.n_age(avgAge,ageMode.l||'—',ageMode.v,total))+
       panel(x.st_gender, donutPanel(genderSegs), "third", x.n_gender(m,f))+
-      panel(x.st_lang, hbars(langT.items,total), "third", langT.top?x.n_lang(langT.top.label,langT.top.value):"")+
+      panel(x.st_lang, hbars(langT.items,total), "third", langT.top?x.n_lang(langT.top.label,langT.top.value,total):"")+
     '</div>';
   }
   $("vtabs").addEventListener("click", function(e){ var b=e.target.closest(".vtab"); if(b) switchView(b.getAttribute("data-view")); });
