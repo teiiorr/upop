@@ -13,7 +13,8 @@
 <link rel="stylesheet" href="/css/styles.css" />
 <style>
   body{ background:var(--bg); min-height:100vh; transition:background .3s ease;
-    --st-green:#3fbf6f; --st-yellow:#e6b93e; --st-red:#e56464; }
+    --st-green:#3fbf6f; --st-yellow:#e6b93e; --st-red:#e56464;
+    --tline:rgba(242,228,198,.20); }   /* visible table gridlines */
   a{ color:inherit; }
   .wrap{ max-width:var(--maxw); margin:0 auto; padding:0 clamp(16px,4vw,40px); }
 
@@ -102,11 +103,11 @@
   .ank__reveal-in{ overflow:hidden; min-height:0; }
 
   /* details as an even, bordered table (cells divided by hairlines), all Manrope */
-  .ank__body{ margin-top:18px; border:1px solid var(--line); border-radius:14px; overflow:hidden; background:var(--surface); }
+  .ank__body{ margin-top:18px; border:1.5px solid var(--line-gold); border-radius:12px; overflow:hidden; background:var(--surface); }
   .ank__grid{ display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); margin:-1px 0 0 -1px; }
-  .ank__cell{ border-top:1px solid var(--line); border-left:1px solid var(--line); padding:13px 16px; min-width:0; }
-  .ank__cell--h{ grid-column:1 / -1; background:var(--surface-2); padding:10px 16px;
-    font-family:'Manrope',sans-serif; font-weight:700; font-size:.72rem; letter-spacing:.1em; text-transform:uppercase; color:var(--gold); }
+  .ank__cell{ border-top:1px solid var(--tline); border-left:1px solid var(--tline); padding:13px 16px; min-width:0; }
+  .ank__cell--h{ grid-column:1 / -1; background:var(--surface-2); padding:11px 16px; border-top:1px solid var(--tline);
+    font-family:'Manrope',sans-serif; font-weight:800; font-size:.74rem; letter-spacing:.09em; text-transform:uppercase; color:var(--gold); }
   .ank__fk{ display:block; font-family:'Manrope',sans-serif; font-weight:700; font-size:.68rem; letter-spacing:.05em;
     text-transform:uppercase; color:var(--ink-50); margin-bottom:4px; }
   .ank__fv{ display:block; font-family:'Manrope',sans-serif; color:var(--ink); font-size:1rem; line-height:1.45; word-break:break-word; }
@@ -201,6 +202,7 @@
     --bg:#F4EFE3; --bg-2:#EBE3D3; --surface:#FFFFFF; --surface-2:#F7F1E6;
     --ink:#241A0C; --ink-70:rgba(36,26,12,.72); --ink-50:rgba(36,26,12,.52); --ink-34:rgba(36,26,12,.32);
     --line:rgba(36,26,12,.12); --line-gold:rgba(150,110,40,.42);
+    --tline:rgba(36,26,12,.18);
   }
   html.light body{ background:var(--bg); }
   html.light .abar{ background:rgba(255,255,255,.86); }
@@ -228,9 +230,10 @@
     .ank__photo{ width:88px; height:110px; }
     .ank__name{ font-size:1.34rem; }
     .ank__head-end{ order:-1; flex-direction:row; align-items:center; width:100%; justify-content:space-between; }
-    .ank__grid{ grid-template-columns:1fr; }
-    .ank__cell{ padding:15px 16px; } .ank__cell--h{ padding:12px 16px; }
-    .ank__fv{ font-size:1.02rem; }
+    .ank__grid{ grid-template-columns:repeat(2,minmax(0,1fr)); }   /* stays a table on phones */
+    .ank__cell{ padding:9px 10px; } .ank__cell--h{ padding:8px 11px; font-size:.64rem; }
+    .ank__fk{ font-size:.55rem; letter-spacing:.03em; margin-bottom:2px; }
+    .ank__fv{ font-size:.84rem; line-height:1.35; }
     .ank__foot{ gap:10px; } .ank__foot .rvbtn,.ank__foot .prbtn{ flex:1 1 auto; justify-content:center; }
     .rev__card{ padding:20px 18px 16px; border-radius:18px; }
     .rev__actions{ flex-wrap:wrap; } .rev__actions .btn,.rev__actions .ghost{ flex:1 1 100%; }
@@ -358,7 +361,7 @@
     { id:"about",    keys:["why","music_means","three_words","idol","hobbies","free_time"] },
     { id:"family",   keys:["father_name","father_job","mother_name","mother_job","siblings","live_with","support"] },
     { id:"health",   keys:["chronic","allergy","emergency_contact"] },
-    { id:"consents", keys:["log_attend","log_stages","log_travel","consent_data","consent_media","consent_rules","consent_true","lang","submissionId"] }
+    { id:"consents", keys:["log_attend","log_stages","log_travel","consent_data","consent_media","consent_rules","consent_true"] }
   ];
 
   var T = {
@@ -574,7 +577,8 @@
     if(r.lang) p.push(esc(String(r.lang).toUpperCase()));
     return p.length?'<div class="ank__meta">'+p.map(function(z){return '<span>'+z+'</span>';}).join("")+'</div>':""; }
   function groupCells(r,g){
-    var fs=g.keys.filter(function(k){ return r[k]!=null && r[k]!==""; });
+    // skip empty fields and the yes/no consent boxes ("Да/—") — they're noise here
+    var fs=g.keys.filter(function(k){ return r[k]!=null && r[k]!=="" && !isBool(String(r[k])); });
     if(!fs.length) return "";
     return '<div class="ank__cell ank__cell--h">'+esc(tr().G[g.id]||g.id)+'</div>'+
       fs.map(function(k){ return '<div class="ank__cell"><span class="ank__fk">'+esc(L(k))+'</span><span class="ank__fv">'+dval(k,r[k])+'</span></div>'; }).join("");
@@ -638,21 +642,23 @@
   });
 
   /* ---- print one anketa, clean sheet with the UPOP logo ---- */
-  var PRINT_CSS = "@page{size:A4;margin:18mm 15mm}*{box-sizing:border-box}"+
-    "body{font-family:'Manrope',system-ui,sans-serif;color:#1a1a1a;margin:0;-webkit-print-color-adjust:exact;print-color-adjust:exact}"+
+  var PRINT_CSS = "@page{size:A4;margin:15mm}*{box-sizing:border-box}"+
+    "body{font-family:'Manrope',system-ui,sans-serif;color:#1a1a1a;margin:0;background:#e8e5dc;padding:30px 16px;-webkit-print-color-adjust:exact;print-color-adjust:exact}"+
+    ".sheet{width:100%;max-width:794px;margin:0 auto;background:#fff;border-radius:6px;padding:46px 52px;box-shadow:0 8px 34px rgba(0,0,0,.15)}"+
     ".ph{text-align:center;border-bottom:3px solid #D3A63F;padding-bottom:18px;margin-bottom:24px}"+
     ".ph img{height:88px;width:auto;display:block;margin:0 auto 12px}"+
-    ".ph .t{font-family:'Unbounded',sans-serif;font-weight:700;font-size:28px;letter-spacing:-.02em;margin:0}"+
-    ".ph .s{color:#7a6a45;font-size:14.5px;margin:6px 0 0}.ph .id{color:#9a9a9a;font-size:12px;margin:10px 0 0}"+
+    ".ph .t{font-family:'Manrope',sans-serif;font-weight:800;font-size:28px;letter-spacing:-.02em;margin:0}"+
+    ".ph .s{color:#7a6a45;font-size:16px;margin:7px 0 0}.ph .id{color:#9a9a9a;font-size:13px;margin:10px 0 0}"+
     ".top{text-align:center;margin-bottom:26px}"+
     ".top .photo{width:160px;height:200px;object-fit:cover;border:1px solid #ddd;border-radius:12px;display:block;margin:0 auto 14px;background:#f2f2f2}"+
-    ".top .nm{font-family:'Unbounded',sans-serif;font-weight:700;font-size:28px;letter-spacing:-.02em;margin:0 0 10px}"+
-    ".top .mt{color:#3f3f3f;font-size:15px;margin:0 0 4px}"+
-    ".sec{break-inside:avoid;margin:0 0 18px}.sec h3{font-family:'Unbounded',sans-serif;font-size:14px;text-transform:uppercase;letter-spacing:.05em;color:#8A5F1C;border-bottom:1.5px solid #eadfca;padding-bottom:7px;margin:0 0 12px}"+
+    ".top .nm{font-family:'Manrope',sans-serif;font-weight:800;font-size:30px;letter-spacing:-.02em;margin:0 0 10px}"+
+    ".top .mt{color:#3f3f3f;font-size:16.5px;margin:0 0 5px}"+
+    ".sec{break-inside:avoid;margin:0 0 20px}.sec h3{font-family:'Manrope',sans-serif;font-weight:800;font-size:16px;text-transform:uppercase;letter-spacing:.04em;color:#8A5F1C;border-bottom:1.5px solid #eadfca;padding-bottom:8px;margin:0 0 12px}"+
     ".fs{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid #e7ddc9;border-left:1px solid #e7ddc9;border-radius:8px;overflow:hidden}"+
-    ".f{border-right:1px solid #e7ddc9;border-bottom:1px solid #e7ddc9;padding:11px 15px;font-size:14.5px;line-height:1.5}.f b{display:block;color:#877a5c;font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:.03em;margin-bottom:4px}"+
-    ".hist{white-space:pre-wrap;font-size:14.5px;line-height:1.65}"+
-    ".ft{margin-top:28px;border-top:1px solid #eee;padding-top:12px;color:#aaa;font-size:11.5px;text-align:center}";
+    ".f{border-right:1px solid #e7ddc9;border-bottom:1px solid #e7ddc9;padding:13px 16px;font-size:16.5px;line-height:1.5}.f b{display:block;color:#877a5c;font-weight:700;font-size:12.5px;text-transform:uppercase;letter-spacing:.03em;margin-bottom:5px}"+
+    ".hist{white-space:pre-wrap;font-size:16.5px;line-height:1.6}"+
+    ".ft{margin-top:28px;border-top:1px solid #eee;padding-top:12px;color:#aaa;font-size:11.5px;text-align:center}"+
+    "@media print{body{background:#fff;padding:0}.sheet{max-width:none;margin:0;padding:0;box-shadow:none;border-radius:0}}";
 
   function printVal(k,v){ if(v==null||v==="") return "—"; if(isBool(v)) return v==="Ha"?tr().yes:"—"; return String(v); }
   function socsPlain(r){ return [["instagram","Instagram"],["tiktok","TikTok"],["telegram","Telegram"],["youtube","YouTube"]]
@@ -664,7 +670,7 @@
     var photo=r.photo && String(r.photo).trim();
     var photoTag=photo?'<img class="photo" src="'+esc(photo)+'" referrerpolicy="no-referrer">':'<div class="photo"></div>';
     var secs=GROUPS.map(function(g){
-      var fs=g.keys.filter(function(k){ return r[k]!=null && r[k]!==""; }).map(function(k){
+      var fs=g.keys.filter(function(k){ return r[k]!=null && r[k]!=="" && !isBool(String(r[k])); }).map(function(k){
         return '<div class="f"><b>'+esc(L(k))+'</b>'+esc(printVal(k,r[k]))+'</div>'; });
       if(g.id==="contacts"){ var s=socsPlain(r); if(s) fs.push('<div class="f"><b>'+esc(x.socials)+'</b>'+esc(s)+'</div>'); }
       return fs.length?'<section class="sec"><h3>'+esc(x.G[g.id]||g.id)+'</h3><div class="fs">'+fs.join("")+'</div></section>':"";
@@ -674,12 +680,12 @@
     var contact=[ r.phone, r.email ].filter(Boolean).join("   ·   ");
     var html='<!doctype html><html lang="ru"><head><meta charset="utf-8"><title>'+esc(x.anketa_title)+' — '+esc(r.fullname||"")+'</title>'+
       '<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Unbounded:wght@600;700&display=swap" rel="stylesheet">'+
-      '<style>'+PRINT_CSS+'</style></head><body>'+
+      '<style>'+PRINT_CSS+'</style></head><body><div class="sheet">'+
       '<div class="ph"><img src="'+logo+'"><p class="t">U POP TREND</p><p class="s">'+esc(x.anketa_title)+' · '+esc(x.print_sub)+'</p><p class="id">'+esc(fmtDate(r.submittedAt))+' · '+esc(r.submissionId||"")+'</p></div>'+
       '<div class="top">'+photoTag+'<div class="nm">'+esc(r.fullname||"—")+'</div>'+
         (meta?'<p class="mt">'+esc(meta)+'</p>':'')+(contact?'<p class="mt">'+esc(contact)+'</p>':'')+'</div>'+
       secs+hist+
-      '<div class="ft">Designed &amp; Developed by teiior · U POP TREND</div>'+
+      '<div class="ft">Designed &amp; Developed by teiior · U POP TREND</div></div>'+
       '<scr'+'ipt>window.onload=function(){setTimeout(function(){window.focus();window.print();},400);};<\/scr'+'ipt>'+
       '</body></html>';
     var w=window.open("","_blank"); if(!w){ alert(tr().savefail); return; }
