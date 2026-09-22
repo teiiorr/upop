@@ -205,6 +205,56 @@
   ::selection{ background:var(--gold); color:#0a0a0a; }
   [hidden]{ display:none!important; }
 
+  /* ---------- view tabs ---------- */
+  .vtabs{ display:flex; gap:4px; background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:4px; }
+  .vtab{ appearance:none; border:0; background:transparent; color:var(--ink-70); cursor:pointer; white-space:nowrap;
+    font-family:var(--font-disp); font-weight:600; font-size:.84rem; letter-spacing:-.01em; padding:9px 16px; border-radius:9px; transition:.16s; }
+  .vtab:hover{ color:var(--ink); background:var(--surface-2); }
+  .vtab.is-on{ color:var(--ink); background:var(--surface-2); box-shadow:inset 0 0 0 1.5px var(--line-gold); }
+
+  /* ---------- dashboard ---------- */
+  .kpis{ display:grid; grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); gap:16px; padding:26px 0 4px; }
+  .kpi{ position:relative; background:linear-gradient(180deg,var(--surface-2),var(--surface)); border:1px solid var(--line);
+    border-radius:18px; padding:20px 22px; overflow:hidden; box-shadow:0 20px 50px -38px rgba(0,0,0,.8); }
+  .kpi::after{ content:""; position:absolute; top:0; bottom:0; left:0; width:5px; background:var(--kc,var(--gold)); }
+  .kpi__n{ display:block; font-family:var(--font-disp); font-weight:700; font-size:2.5rem; line-height:1; letter-spacing:-.02em; color:var(--kc,var(--gold-hi)); }
+  .kpi__l{ display:block; margin-top:9px; color:var(--ink-70); font-size:.9rem; font-weight:600; }
+
+  .dash{ display:grid; grid-template-columns:repeat(12,1fr); gap:18px; padding:18px 0 96px; }
+  .panel{ grid-column:span 6; background:var(--surface); border:1px solid var(--line); border-radius:18px; padding:20px 22px;
+    box-shadow:0 20px 50px -38px rgba(0,0,0,.8); min-width:0; }
+  .panel--wide{ grid-column:span 12; } .panel--third{ grid-column:span 4; }
+  .panel__h{ font-family:var(--font-disp); font-weight:600; font-size:.7rem; letter-spacing:.13em; text-transform:uppercase; color:var(--gold); margin:0 0 16px; }
+
+  .donutwrap{ display:flex; align-items:center; gap:22px; flex-wrap:wrap; }
+  .donut{ width:130px; height:130px; flex:0 0 auto; }
+  .donut__num{ font-family:var(--font-disp); font-weight:700; font-size:24px; fill:var(--ink); }
+  .legend{ display:flex; flex-direction:column; gap:10px; flex:1 1 130px; min-width:0; }
+  .legend__i{ display:flex; align-items:center; gap:9px; font-size:.92rem; color:var(--ink-70); }
+  .legend__d{ width:12px; height:12px; border-radius:4px; flex:0 0 auto; }
+  .legend__v{ margin-left:auto; color:var(--ink); font-weight:700; font-family:var(--font-disp); }
+
+  .bars{ display:flex; flex-direction:column; gap:13px; }
+  .bar{ display:grid; grid-template-columns:118px 1fr auto; align-items:center; gap:12px; font-size:.9rem; }
+  .bar__lbl{ color:var(--ink-70); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .bar__track{ height:12px; background:var(--surface-2); border-radius:999px; overflow:hidden; }
+  .bar__fill{ display:block; height:100%; border-radius:999px; min-width:4px; animation:barGrow .6s var(--e-quint) both; transform-origin:left; }
+  @keyframes barGrow{ from{ transform:scaleX(0); } to{ transform:scaleX(1); } }
+  .bar__val{ color:var(--ink); font-weight:700; font-family:var(--font-disp); }
+
+  .vbars{ display:flex; align-items:flex-end; gap:12px; height:158px; }
+  .vbar{ flex:1 1 0; display:flex; flex-direction:column; align-items:center; justify-content:flex-end; gap:7px; height:100%; }
+  .vbar__col{ width:100%; max-width:46px; border-radius:8px 8px 0 0; min-height:4px; animation:barRise .6s var(--e-quint) both; transform-origin:bottom; }
+  @keyframes barRise{ from{ transform:scaleY(0); } to{ transform:scaleY(1); } }
+  .vbar__v{ font-family:var(--font-disp); font-weight:700; font-size:.92rem; color:var(--ink); }
+  .vbar__l{ font-size:.82rem; color:var(--ink-50); }
+
+  .area{ width:100%; height:180px; display:block; }
+  .xlabels{ display:flex; justify-content:space-between; margin-top:8px; color:var(--ink-50); font-size:.78rem; }
+  .dash .empty{ color:var(--ink-50); padding:26px 0; text-align:center; }
+  @media (max-width:900px){ .panel,.panel--third{ grid-column:span 12; } }
+  @media (max-width:640px){ .vtabs{ order:6; flex-basis:100%; } .kpi__n{ font-size:2.1rem; } .bar{ grid-template-columns:96px 1fr auto; } }
+
   /* ================= LIGHT MODE ================= */
   html.light{
     --bg:#F4EFE3; --bg-2:#EBE3D3; --surface:#FFFFFF; --surface-2:#F7F1E6;
@@ -274,6 +324,10 @@
   <header class="abar">
     <div class="wrap abar__in">
       <a class="abar__brand" href="/"><img src="/logo-hero.png" alt="" /> <span class="hl" id="a_title">Заявки</span></a>
+      <nav class="vtabs" id="vtabs">
+        <button class="vtab is-on" type="button" data-view="list" id="vt_list">Заявки</button>
+        <button class="vtab" type="button" data-view="stats" id="vt_stats">Статистика</button>
+      </nav>
       <div class="abar__sp"></div>
       <span class="cnt" id="count"></span>
       <button class="tgl" id="langBtn">UZ</button>
@@ -284,6 +338,7 @@
   </header>
 
   <div class="wrap">
+    <div id="listview">
     <div class="tools">
       <label class="srch">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
@@ -300,6 +355,8 @@
       <div class="sel"><select id="fGenre"></select></div>
     </div>
     <div id="content"></div>
+    </div>
+    <div id="stats" hidden></div>
   </div>
 </div>
 
@@ -343,8 +400,9 @@
 <script>
   var ENDPOINT = "https://script.google.com/macros/s/AKfycby7z5nB-DfFxk6tBGVCFkMQNpPCdNbHI9DSURAMYiUt8GKPasqRNULcyG-A3lZzZzEIwQ/exec";
   var KEY_STORE="upop_admin_key", LANG_STORE="upop_admin_lang", THEME_STORE="upop_admin_theme";
-  var state = { rows: [], key: "", fStatus: "" };
+  var state = { rows: [], key: "", fStatus: "", view: "list" };
   var rev = { id:null, status:"", photo:null };
+  var PAL = ["#D63E8C","#6A39D9","#18B8C9","#D3A63F","#3fbf6f","#e6934e","#4e8fe6","#c74ea0"]; // colourful categorical
   var lang, theme;
   try{ lang = localStorage.getItem(LANG_STORE)||"ru"; }catch(e){ lang="ru"; }
   try{ theme = localStorage.getItem(THEME_STORE)||"dark"; }catch(e){ theme="dark"; }
@@ -389,6 +447,12 @@
       none_h:"Ничего не найдено", none_p:"Измените поиск или фильтр.",
       review:"История и оценка", print:"Распечатать", no_photo:"Нет фото", years:"лет", socials:"Соцсети",
       expand:"Открыть анкету", collapse:"Свернуть анкету",
+      nav_list:"Заявки", nav_stats:"Статистика",
+      st_total:"Всего заявок", st_reviewed:"Рассмотрено", st_pending:"Не рассмотрено", st_photo:"С фото",
+      st_byday:"Заявки по дням", st_status:"Оценки", st_genre:"По жанрам", st_region:"По городам",
+      st_age:"Возраст участников", st_gender:"Пол", st_lang:"Язык анкеты",
+      st_green:"Зелёные", st_yellow:"Жёлтые", st_red:"Красные", st_none:"Не рассм.",
+      st_male:"Мужской", st_female:"Женский", st_other:"Другое", st_empty:"Нет данных",
       male:"Мужской", female:"Женский", yes:"Да", no:"—",
       hist_h:"История участника", hist_ph:"Заметки, наблюдения, впечатления о выступлении — можно длинно.",
       rate:"Оценка", save:"Сохранить", saving:"Сохраняю…", cancel:"Отмена",
@@ -422,6 +486,12 @@
       none_h:"Hech narsa topilmadi", none_p:"Qidiruv yoki filtrni o‘zgartiring.",
       review:"Tarix va baho", print:"Chop etish", no_photo:"Foto yo‘q", years:"yosh", socials:"Ijtimoiy tarmoqlar",
       expand:"Anketani ochish", collapse:"Yig‘ish",
+      nav_list:"Arizalar", nav_stats:"Statistika",
+      st_total:"Jami arizalar", st_reviewed:"Ko‘rilgan", st_pending:"Ko‘rilmagan", st_photo:"Rasm bilan",
+      st_byday:"Kunlar bo‘yicha", st_status:"Baholar", st_genre:"Janrlar bo‘yicha", st_region:"Shaharlar bo‘yicha",
+      st_age:"Ishtirokchilar yoshi", st_gender:"Jinsi", st_lang:"Anketa tili",
+      st_green:"Yashil", st_yellow:"Sariq", st_red:"Qizil", st_none:"Ko‘rilmagan",
+      st_male:"Erkak", st_female:"Ayol", st_other:"Boshqa", st_empty:"Ma’lumot yo‘q",
       male:"Erkak", female:"Ayol", yes:"Ha", no:"—",
       hist_h:"Ishtirokchi tarixi", hist_ph:"Ishtirokchi haqidagi eslatmalar, kuzatuvlar, taassurotlar — uzoq yozsa ham bo‘ladi.",
       rate:"Baho", save:"Saqlash", saving:"Saqlanmoqda…", cancel:"Bekor qilish",
@@ -512,7 +582,9 @@
     $("revRateLabel").textContent=x.rate; $("revCancel").textContent=x.cancel;
     $("revSave").querySelector(".rvlbl").textContent=x.save;
     $("revPhotoHint").textContent=x.photo_hint;
-    if(!$("app").hidden){ buildFilters(); render(false); }
+    if($("vt_list")) $("vt_list").textContent=x.nav_list;
+    if($("vt_stats")) $("vt_stats").textContent=x.nav_stats;
+    if(!$("app").hidden){ buildFilters(); if(state.view==="stats") renderStats(); else render(false); }
   }
 
   /* ---- auth ---- */
@@ -534,7 +606,7 @@
   $("logout").addEventListener("click", function(){ try{ sessionStorage.removeItem(KEY_STORE); }catch(e){} location.reload(); });
   $("refresh").addEventListener("click", function(){
     $("content").innerHTML='<div class="state"><div class="spin"></div>'+esc(tr().refreshing)+'</div>';
-    loadList(state.key).then(function(){ buildFilters(); render(true); });
+    loadList(state.key).then(function(){ buildFilters(); if(state.view==="stats") renderStats(); else render(true); });
   });
   $("langBtn").addEventListener("click",toggleLang); $("langBtn2").addEventListener("click",toggleLang);
   $("themeBtn").addEventListener("click",toggleTheme); $("themeBtn2").addEventListener("click",toggleTheme);
@@ -756,6 +828,84 @@
       closeReview(); buildFilters(); render(false);
     }).catch(function(){ btn.disabled=false; lbl.textContent=old; $("revErr").textContent=tr().savefail; });
   });
+
+  /* ---- statistics dashboard ---- */
+  function switchView(v){
+    state.view=v;
+    document.querySelectorAll(".vtab").forEach(function(b){ b.classList.toggle("is-on", b.getAttribute("data-view")===v); });
+    $("listview").hidden = v!=="list";
+    $("stats").hidden = v!=="stats";
+    if(v==="stats") renderStats(); else { var d=state.rows.filter(function(r){return r.reviewed;}).length; $("count").innerHTML=tr().count(document.querySelectorAll('.anketa').length,d,state.rows.length); }
+  }
+  function kpiTile(n,l,color){ return '<div class="kpi" style="--kc:'+color+'"><span class="kpi__n">'+n+'</span><span class="kpi__l">'+esc(l)+'</span></div>'; }
+  function panel(title,body,mod){ return '<div class="panel'+(mod?' panel--'+mod:'')+'"><p class="panel__h">'+esc(title)+'</p>'+body+'</div>'; }
+  function topCounts(rows,fn,n){ var m={}; rows.forEach(function(r){ var k=fn(r); if(k) m[k]=(m[k]||0)+1; });
+    return Object.keys(m).map(function(k){return {label:k,value:m[k]};}).sort(function(a,b){return b.value-a.value;}).slice(0,n); }
+  function donut(segs){
+    var total=segs.reduce(function(a,s){return a+s.value;},0)||1, r=52, c=2*Math.PI*r, off=0;
+    var arcs=segs.filter(function(s){return s.value>0;}).map(function(s){
+      var len=c*s.value/total;
+      var el='<circle cx="60" cy="60" r="'+r+'" fill="none" stroke="'+s.color+'" stroke-width="15" stroke-dasharray="'+len.toFixed(2)+' '+(c-len).toFixed(2)+'" stroke-dashoffset="'+(-off).toFixed(2)+'" transform="rotate(-90 60 60)"/>';
+      off+=len; return el; }).join("");
+    return '<svg viewBox="0 0 120 120" class="donut"><circle cx="60" cy="60" r="'+r+'" fill="none" stroke="var(--line)" stroke-width="15"/>'+arcs+'<text x="60" y="68" text-anchor="middle" class="donut__num">'+total+'</text></svg>'; }
+  function donutPanel(segs){
+    return '<div class="donutwrap">'+donut(segs)+'<div class="legend">'+segs.map(function(s){
+      return '<div class="legend__i"><span class="legend__d" style="background:'+s.color+'"></span>'+esc(s.label)+'<span class="legend__v">'+s.value+'</span></div>';
+    }).join("")+'</div></div>'; }
+  function hbars(items){ if(!items.length) return '<div class="empty">'+esc(tr().st_empty)+'</div>';
+    var max=Math.max.apply(null,items.map(function(i){return i.value;}).concat([1]));
+    return '<div class="bars">'+items.map(function(it,i){ var w=Math.round(it.value/max*100);
+      return '<div class="bar"><span class="bar__lbl" title="'+esc(it.label)+'">'+esc(it.label)+'</span><span class="bar__track"><span class="bar__fill" style="width:'+w+'%;background:'+PAL[i%PAL.length]+'"></span></span><span class="bar__val">'+it.value+'</span></div>';
+    }).join("")+'</div>'; }
+  function vbars(items){ var max=Math.max.apply(null,items.map(function(i){return i.value;}).concat([1]));
+    return '<div class="vbars">'+items.map(function(it,i){ var hp=Math.round(it.value/max*100);
+      return '<div class="vbar"><span class="vbar__v">'+it.value+'</span><span class="vbar__col" style="height:'+hp+'%;background:'+PAL[i%PAL.length]+'"></span><span class="vbar__l">'+esc(it.label)+'</span></div>';
+    }).join("")+'</div>'; }
+  function byDay(rows){ var m={}; rows.forEach(function(r){ if(!r.submittedAt) return; var d=new Date(r.submittedAt); if(isNaN(d)) return;
+    var k=d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2); m[k]=(m[k]||0)+1; });
+    return Object.keys(m).sort().map(function(k){return {label:k,value:m[k]};}); }
+  function areaChart(pts){ if(!pts.length) return '<div class="empty">'+esc(tr().st_empty)+'</div>';
+    var w=640,h=180,padX=6,baseY=h-26,topY=14, n=pts.length;
+    var max=Math.max.apply(null,pts.map(function(p){return p.value;}).concat([1]));
+    var X=function(i){ return padX+(n<=1?(w-2*padX)/2:(i/(n-1))*(w-2*padX)); };
+    var Y=function(v){ return baseY-(v/max)*(baseY-topY); };
+    var d=pts.map(function(p,i){ return (i?'L':'M')+X(i).toFixed(1)+' '+Y(p.value).toFixed(1); }).join(' ');
+    var ar=d+' L'+X(n-1).toFixed(1)+' '+baseY+' L'+X(0).toFixed(1)+' '+baseY+' Z';
+    function fmt(k){ var p=k.split('-'); return p[2]+'.'+p[1]; }
+    var lbls = n<=1 ? '<span>'+fmt(pts[0].label)+'</span>'
+      : '<span>'+fmt(pts[0].label)+'</span><span>'+fmt(pts[Math.floor(n/2)].label)+'</span><span>'+fmt(pts[n-1].label)+'</span>';
+    return '<svg class="area" viewBox="0 0 '+w+' '+h+'" preserveAspectRatio="none">'+
+      '<defs><linearGradient id="ag" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="rgba(211,166,63,.55)"/><stop offset="1" stop-color="rgba(211,166,63,0)"/></linearGradient></defs>'+
+      '<path d="'+ar+'" fill="url(#ag)"/><path d="'+d+'" fill="none" stroke="#F4E1A0" stroke-width="2" vector-effect="non-scaling-stroke"/></svg>'+
+      '<div class="xlabels">'+lbls+'</div>'; }
+  function renderStats(){
+    var x=tr(), rows=state.rows;
+    if(!rows.length){ $("stats").innerHTML='<div class="state"><h3>'+esc(x.empty_h)+'</h3><p>'+esc(x.empty_p)+'</p></div>'; return; }
+    var total=rows.length;
+    var green=rows.filter(function(r){return r.status==="green";}).length;
+    var yellow=rows.filter(function(r){return r.status==="yellow";}).length;
+    var red=rows.filter(function(r){return r.status==="red";}).length;
+    var reviewed=green+yellow+red, pending=total-reviewed;
+    var photo=rows.filter(function(r){return String(r.photo||'').trim();}).length;
+    var kpis='<div class="kpis">'+kpiTile(total,x.st_total,"#F4E1A0")+kpiTile(reviewed,x.st_reviewed,"#3fbf6f")+kpiTile(pending,x.st_pending,"#6A39D9")+kpiTile(photo,x.st_photo,"#18B8C9")+'</div>';
+    var statusSegs=[{label:x.st_green,value:green,color:"#3fbf6f"},{label:x.st_yellow,value:yellow,color:"#e6b93e"},{label:x.st_red,value:red,color:"#e56464"},{label:x.st_none,value:pending,color:"#5a6b73"}];
+    var m=rows.filter(function(r){return r.gender==="m";}).length, f=rows.filter(function(r){return r.gender==="f";}).length, go=total-m-f;
+    var genderSegs=[{label:x.st_male,value:m,color:"#4e8fe6"},{label:x.st_female,value:f,color:"#D63E8C"}]; if(go>0) genderSegs.push({label:x.st_other,value:go,color:"#5a6b73"});
+    var genre=topCounts(rows,function(r){return String(r.genre||'').trim();},8);
+    var region=topCounts(rows,function(r){return String(r.region||'').trim();},8);
+    var ageItems=[]; for(var a=14;a<=19;a++){ (function(a){ ageItems.push({label:String(a),value:rows.filter(function(r){return String(r.age).trim()===String(a);}).length}); })(a); }
+    var langItems=topCounts(rows,function(r){return String(r.lang||'').trim().toUpperCase();},5);
+    $("stats").innerHTML=kpis+'<div class="dash">'+
+      panel(x.st_byday, areaChart(byDay(rows)), "wide")+
+      panel(x.st_status, donutPanel(statusSegs), "")+
+      panel(x.st_genre, hbars(genre), "")+
+      panel(x.st_region, hbars(region), "")+
+      panel(x.st_age, vbars(ageItems), "third")+
+      panel(x.st_gender, donutPanel(genderSegs), "third")+
+      panel(x.st_lang, hbars(langItems), "third")+
+    '</div>';
+  }
+  $("vtabs").addEventListener("click", function(e){ var b=e.target.closest(".vtab"); if(b) switchView(b.getAttribute("data-view")); });
 
   /* ---- boot ---- */
   applyTheme(); applyLang();
