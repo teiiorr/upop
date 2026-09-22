@@ -430,8 +430,22 @@
     if(kind==="tiktok") return "https://tiktok.com/@"+h;
     if(kind==="telegram") return "https://t.me/"+h;
     if(kind==="youtube") return "https://youtube.com/@"+h; return v; }
-  function api(payload){ return fetch(ENDPOINT,{ method:"POST", headers:{"Content-Type":"text/plain;charset=utf-8"},
-      body:JSON.stringify(payload), redirect:"follow" }).then(function(r){ return r.json(); }); }
+  /* The Apps Script web app occasionally returns an HTML warm-up/redirect page
+     instead of JSON on the first call after a redeploy or a cold start. Read as
+     text and retry a couple of times so sign-in never dies on "Unexpected token '<'". */
+  function api(payload, tries){
+    if(tries==null) tries=2;
+    return fetch(ENDPOINT,{ method:"POST", headers:{"Content-Type":"text/plain;charset=utf-8"},
+      body:JSON.stringify(payload), redirect:"follow" })
+      .then(function(r){ return r.text(); })
+      .then(function(t){
+        try{ return JSON.parse(t); }
+        catch(e){
+          if(tries>0) return new Promise(function(res){ setTimeout(res,1000); }).then(function(){ return api(payload, tries-1); });
+          throw new Error("badjson");
+        }
+      });
+  }
   function rowById(id){ for(var i=0;i<state.rows.length;i++){ if(String(state.rows[i].submissionId)===String(id)) return state.rows[i]; } return null; }
 
   /* Downscale + re-encode a photo (admin upload) to a small JPEG data URL. */
