@@ -84,8 +84,8 @@
   .ank__photo-ph svg{ width:30px; height:30px; opacity:.7; }
   .ank__ident{ flex:1 1 auto; min-width:0; }
   .ank__name{ font-family:var(--font-disp); font-weight:700; font-size:1.6rem; letter-spacing:-.02em; line-height:1.16; margin:0 0 9px; }
-  .ank__meta{ display:flex; flex-wrap:wrap; align-items:baseline; font-family:var(--font-disp); font-weight:500;
-    font-size:.95rem; color:var(--ink-70); letter-spacing:-.01em; margin-bottom:11px; }
+  .ank__meta{ display:flex; flex-wrap:wrap; align-items:baseline; font-family:'Manrope',sans-serif; font-weight:600;
+    font-size:.96rem; color:var(--ink-70); margin-bottom:11px; }
   .ank__meta span{ color:var(--ink); } .ank__meta span + span::before{ content:"·"; color:var(--ink-34); margin:0 9px; }
   .ank__contact{ display:flex; flex-wrap:wrap; gap:6px 20px; font-size:1.02rem; color:var(--ink); font-weight:600; }
   .ank__contact a{ color:var(--gold-hi); text-decoration:none; } .ank__contact a:hover{ text-decoration:underline; }
@@ -96,15 +96,20 @@
   .anketa[data-status="yellow"] .ank__dot{ background:var(--st-yellow); border-color:var(--st-yellow); box-shadow:0 0 0 4px rgba(230,185,62,.2); }
   .anketa[data-status="red"] .ank__dot{ background:var(--st-red); border-color:var(--st-red); box-shadow:0 0 0 4px rgba(229,100,100,.2); }
 
-  /* details as an even, bordered table (cells divided by hairlines) */
-  .ank__body{ margin-top:22px; border:1px solid var(--line); border-radius:14px; overflow:hidden; background:var(--surface); }
+  /* collapsible details (built lazily on open) — smooth 0fr↔1fr reveal */
+  .ank__reveal{ display:grid; grid-template-rows:0fr; transition:grid-template-rows .34s var(--e-quint); }
+  .ank__reveal.open{ grid-template-rows:1fr; }
+  .ank__reveal-in{ overflow:hidden; min-height:0; }
+
+  /* details as an even, bordered table (cells divided by hairlines), all Manrope */
+  .ank__body{ margin-top:18px; border:1px solid var(--line); border-radius:14px; overflow:hidden; background:var(--surface); }
   .ank__grid{ display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); margin:-1px 0 0 -1px; }
-  .ank__cell{ border-top:1px solid var(--line); border-left:1px solid var(--line); padding:12px 15px; min-width:0; }
-  .ank__cell--h{ grid-column:1 / -1; background:var(--surface-2); padding:9px 15px;
-    font-family:var(--font-disp); font-weight:600; font-size:.66rem; letter-spacing:.13em; text-transform:uppercase; color:var(--gold); }
-  .ank__fk{ display:block; font-family:var(--font-disp); font-weight:600; font-size:.6rem; letter-spacing:.1em;
-    text-transform:uppercase; color:var(--ink-50); margin-bottom:3px; }
-  .ank__fv{ display:block; color:var(--ink); font-size:.97rem; line-height:1.4; word-break:break-word; }
+  .ank__cell{ border-top:1px solid var(--line); border-left:1px solid var(--line); padding:13px 16px; min-width:0; }
+  .ank__cell--h{ grid-column:1 / -1; background:var(--surface-2); padding:10px 16px;
+    font-family:'Manrope',sans-serif; font-weight:700; font-size:.72rem; letter-spacing:.1em; text-transform:uppercase; color:var(--gold); }
+  .ank__fk{ display:block; font-family:'Manrope',sans-serif; font-weight:700; font-size:.68rem; letter-spacing:.05em;
+    text-transform:uppercase; color:var(--ink-50); margin-bottom:4px; }
+  .ank__fv{ display:block; font-family:'Manrope',sans-serif; color:var(--ink); font-size:1rem; line-height:1.45; word-break:break-word; }
   .ank__fv a{ color:var(--gold-hi); text-decoration:none; }
   .yes{ color:#4ec27f; font-weight:700; } .no{ color:var(--ink-34); }
 
@@ -121,6 +126,8 @@
   .prbtn:hover{ color:var(--ink); border-color:var(--line-gold); background:var(--surface-2); transform:translateY(-1px); }
   .rvbtn:active,.prbtn:active{ transform:translateY(0); }
   .rvbtn svg,.prbtn svg{ width:16px; height:16px; }
+  .ank__toggle svg{ transition:transform .3s var(--e-quint); }
+  .ank__toggle.is-open svg{ transform:rotate(180deg); }
 
   /* ---------- review dialog ---------- */
   .rev{ border:0; padding:0; background:transparent; width:min(94vw,640px); max-height:calc(100dvh - 40px); color:var(--ink); overflow:visible; }
@@ -222,6 +229,9 @@
     .ank__name{ font-size:1.34rem; }
     .ank__head-end{ order:-1; flex-direction:row; align-items:center; width:100%; justify-content:space-between; }
     .ank__grid{ grid-template-columns:1fr; }
+    .ank__cell{ padding:15px 16px; } .ank__cell--h{ padding:12px 16px; }
+    .ank__fv{ font-size:1.02rem; }
+    .ank__foot{ gap:10px; } .ank__foot .rvbtn,.ank__foot .prbtn{ flex:1 1 auto; justify-content:center; }
     .rev__card{ padding:20px 18px 16px; border-radius:18px; }
     .rev__actions{ flex-wrap:wrap; } .rev__actions .btn,.rev__actions .ghost{ flex:1 1 100%; }
   }
@@ -337,7 +347,8 @@
     check:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg>',
     note:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>',
     print:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9V3h12v6"/><path d="M6 18H4a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8" rx="1"/></svg>',
-    user:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>'
+    user:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>',
+    chevron:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>'
   };
 
   var GROUPS = [
@@ -360,6 +371,7 @@
       empty_h:"Пока нет заявок", empty_p:"Как только кто-то отправит анкету — она появится здесь.",
       none_h:"Ничего не найдено", none_p:"Измените поиск или фильтр.",
       review:"История и оценка", print:"Распечатать", no_photo:"Нет фото", years:"лет", socials:"Соцсети",
+      expand:"Открыть анкету", collapse:"Свернуть анкету",
       male:"Мужской", female:"Женский", yes:"Да", no:"—",
       hist_h:"История участника", hist_ph:"Заметки, наблюдения, впечатления о выступлении — можно длинно.",
       rate:"Оценка", save:"Сохранить", saving:"Сохраняю…", cancel:"Отмена",
@@ -392,6 +404,7 @@
       empty_h:"Hozircha arizalar yo‘q", empty_p:"Kimdir anketa yuborishi bilan u shu yerda paydo bo‘ladi.",
       none_h:"Hech narsa topilmadi", none_p:"Qidiruv yoki filtrni o‘zgartiring.",
       review:"Tarix va baho", print:"Chop etish", no_photo:"Foto yo‘q", years:"yosh", socials:"Ijtimoiy tarmoqlar",
+      expand:"Anketani ochish", collapse:"Yig‘ish",
       male:"Erkak", female:"Ayol", yes:"Ha", no:"—",
       hist_h:"Ishtirokchi tarixi", hist_ph:"Ishtirokchi haqidagi eslatmalar, kuzatuvlar, taassurotlar — uzoq yozsa ham bo‘ladi.",
       rate:"Baho", save:"Saqlash", saving:"Saqlanmoqda…", cancel:"Bekor qilish",
@@ -577,11 +590,9 @@
     if(r.phone) contact.push('<a href="tel:'+esc(String(r.phone).replace(/\s/g,""))+'">'+esc(r.phone)+'</a>');
     if(r.email) contact.push('<a href="mailto:'+esc(r.email)+'">'+esc(r.email)+'</a>');
     var socs=socsInline(r); if(socs) contact.push('<span>'+socs+'</span>');
-    var cells=GROUPS.filter(function(g){return g.id!=="contacts";}).map(function(g){return groupCells(r,g);}).join("");
-    var body='<div class="ank__body"><div class="ank__grid">'+cells+'</div></div>';
     var hist=(r.history && String(r.history).trim())
       ? '<div class="ank__hist"><h4>'+esc(x.hist_h)+'</h4><p>'+esc(r.history)+'</p></div>' : '';
-    var delay=Math.min(i*0.04,0.5);
+    var delay=Math.min(i*0.04,0.4);
     return ''+
       '<article class="anketa'+(r.reviewed?' is-reviewed':'')+'" data-id="'+id+'" data-status="'+esc(r.status||"")+'" style="animation-delay:'+delay+'s">'+
         '<div class="ank__head">'+
@@ -593,37 +604,55 @@
           '</div>'+
           '<div class="ank__head-end"><span class="ank__date">'+esc(fmtDate(r.submittedAt))+'</span><span class="ank__dot" aria-hidden="true"></span></div>'+
         '</div>'+
-        body+
         hist+
+        '<div class="ank__reveal"><div class="ank__reveal-in"></div></div>'+
         '<div class="ank__foot">'+
+          '<button class="rvbtn ank__toggle" data-act="toggle" type="button">'+ICN.chevron+'<span>'+esc(x.expand)+'</span></button>'+
           '<button class="rvbtn" data-act="review" type="button">'+ICN.note+'<span>'+esc(x.review)+'</span></button>'+
           '<button class="prbtn" data-act="print" type="button">'+ICN.print+'<span>'+esc(x.print)+'</span></button>'+
         '</div>'+
       '</article>';
+  }
+  function buildDetails(r){
+    var cells=GROUPS.filter(function(g){return g.id!=="contacts";}).map(function(g){return groupCells(r,g);}).join("");
+    return '<div class="ank__body"><div class="ank__grid">'+cells+'</div></div>';
   }
 
   $("content").addEventListener("click", function(e){
     var btn=e.target.closest("button"); if(!btn) return;
     var cardEl=e.target.closest(".anketa"); if(!cardEl) return;
     var id=cardEl.getAttribute("data-id");
-    if(btn.dataset.act==="review"){ openReview(id); }
+    if(btn.dataset.act==="toggle"){
+      var rv=cardEl.querySelector(".ank__reveal"), inr=rv.querySelector(".ank__reveal-in"), lbl=btn.querySelector("span");
+      if(rv.classList.contains("open")){
+        rv.classList.remove("open"); btn.classList.remove("is-open"); lbl.textContent=tr().expand;
+      } else {
+        if(!inr.getAttribute("data-built")){ inr.innerHTML=buildDetails(rowById(id)); inr.setAttribute("data-built","1"); }
+        void rv.offsetHeight;                 // register the 0fr start so it animates (rAF is throttled when hidden)
+        rv.classList.add("open");
+        btn.classList.add("is-open"); lbl.textContent=tr().collapse;
+      }
+    }
+    else if(btn.dataset.act==="review"){ openReview(id); }
     else if(btn.dataset.act==="print"){ printAnketa(id); }
   });
 
   /* ---- print one anketa, clean sheet with the UPOP logo ---- */
-  var PRINT_CSS = "@page{size:A4;margin:14mm 13mm}*{box-sizing:border-box}"+
-    "body{font-family:'Manrope',system-ui,sans-serif;color:#1c1c1c;margin:0;-webkit-print-color-adjust:exact;print-color-adjust:exact}"+
-    ".ph{display:flex;align-items:center;gap:15px;border-bottom:2.5px solid #D3A63F;padding-bottom:13px;margin-bottom:18px}"+
-    ".ph img{height:46px;width:auto}.ph .t{font-family:'Unbounded',sans-serif;font-weight:700;font-size:17px;letter-spacing:-.02em;margin:0}"+
-    ".ph .s{color:#7a6a45;font-size:11px;margin:3px 0 0}.ph .id{margin-left:auto;text-align:right;color:#8a8a8a;font-size:10.5px;line-height:1.5}"+
-    ".top{display:flex;gap:18px;margin-bottom:18px}.top .photo{width:118px;height:148px;object-fit:cover;border:1px solid #ddd;border-radius:9px;flex:0 0 auto;background:#f2f2f2}"+
-    ".top .nm{font-family:'Unbounded',sans-serif;font-weight:700;font-size:21px;letter-spacing:-.02em;margin:2px 0 8px}"+
-    ".top .mt{color:#444;font-size:13px;margin:0 0 4px}"+
-    ".sec{break-inside:avoid;margin:0 0 14px}.sec h3{font-family:'Unbounded',sans-serif;font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:#8A5F1C;border-bottom:1px solid #eee;padding-bottom:5px;margin:0 0 9px}"+
-    ".fs{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid #ece4d5;border-left:1px solid #ece4d5;border-radius:8px;overflow:hidden}"+
-    ".f{border-right:1px solid #ece4d5;border-bottom:1px solid #ece4d5;padding:8px 12px;font-size:12px;line-height:1.4}.f b{display:block;color:#9a9a9a;font-weight:600;font-size:9.5px;text-transform:uppercase;letter-spacing:.04em;margin-bottom:2px}"+
-    ".hist{white-space:pre-wrap;font-size:12.5px;line-height:1.6}"+
-    ".ft{margin-top:22px;border-top:1px solid #eee;padding-top:9px;color:#b0b0b0;font-size:10px;display:flex;justify-content:space-between}";
+  var PRINT_CSS = "@page{size:A4;margin:18mm 15mm}*{box-sizing:border-box}"+
+    "body{font-family:'Manrope',system-ui,sans-serif;color:#1a1a1a;margin:0;-webkit-print-color-adjust:exact;print-color-adjust:exact}"+
+    ".ph{text-align:center;border-bottom:3px solid #D3A63F;padding-bottom:18px;margin-bottom:24px}"+
+    ".ph img{height:88px;width:auto;display:block;margin:0 auto 12px}"+
+    ".ph .t{font-family:'Unbounded',sans-serif;font-weight:700;font-size:28px;letter-spacing:-.02em;margin:0}"+
+    ".ph .s{color:#7a6a45;font-size:14.5px;margin:6px 0 0}.ph .id{color:#9a9a9a;font-size:12px;margin:10px 0 0}"+
+    ".top{text-align:center;margin-bottom:26px}"+
+    ".top .photo{width:160px;height:200px;object-fit:cover;border:1px solid #ddd;border-radius:12px;display:block;margin:0 auto 14px;background:#f2f2f2}"+
+    ".top .nm{font-family:'Unbounded',sans-serif;font-weight:700;font-size:28px;letter-spacing:-.02em;margin:0 0 10px}"+
+    ".top .mt{color:#3f3f3f;font-size:15px;margin:0 0 4px}"+
+    ".sec{break-inside:avoid;margin:0 0 18px}.sec h3{font-family:'Unbounded',sans-serif;font-size:14px;text-transform:uppercase;letter-spacing:.05em;color:#8A5F1C;border-bottom:1.5px solid #eadfca;padding-bottom:7px;margin:0 0 12px}"+
+    ".fs{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid #e7ddc9;border-left:1px solid #e7ddc9;border-radius:8px;overflow:hidden}"+
+    ".f{border-right:1px solid #e7ddc9;border-bottom:1px solid #e7ddc9;padding:11px 15px;font-size:14.5px;line-height:1.5}.f b{display:block;color:#877a5c;font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:.03em;margin-bottom:4px}"+
+    ".hist{white-space:pre-wrap;font-size:14.5px;line-height:1.65}"+
+    ".ft{margin-top:28px;border-top:1px solid #eee;padding-top:12px;color:#aaa;font-size:11.5px;text-align:center}";
 
   function printVal(k,v){ if(v==null||v==="") return "—"; if(isBool(v)) return v==="Ha"?tr().yes:"—"; return String(v); }
   function socsPlain(r){ return [["instagram","Instagram"],["tiktok","TikTok"],["telegram","Telegram"],["youtube","YouTube"]]
@@ -646,12 +675,11 @@
     var html='<!doctype html><html lang="ru"><head><meta charset="utf-8"><title>'+esc(x.anketa_title)+' — '+esc(r.fullname||"")+'</title>'+
       '<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Unbounded:wght@600;700&display=swap" rel="stylesheet">'+
       '<style>'+PRINT_CSS+'</style></head><body>'+
-      '<div class="ph"><img src="'+logo+'"><div><p class="t">U POP TREND — '+esc(x.anketa_title)+'</p><p class="s">'+esc(x.print_sub)+'</p></div>'+
-        '<div class="id">'+esc(fmtDate(r.submittedAt))+'<br>'+esc(r.submissionId||"")+'</div></div>'+
-      '<div class="top">'+photoTag+'<div><div class="nm">'+esc(r.fullname||"—")+'</div>'+
-        (meta?'<p class="mt">'+esc(meta)+'</p>':'')+(contact?'<p class="mt">'+esc(contact)+'</p>':'')+'</div></div>'+
+      '<div class="ph"><img src="'+logo+'"><p class="t">U POP TREND</p><p class="s">'+esc(x.anketa_title)+' · '+esc(x.print_sub)+'</p><p class="id">'+esc(fmtDate(r.submittedAt))+' · '+esc(r.submissionId||"")+'</p></div>'+
+      '<div class="top">'+photoTag+'<div class="nm">'+esc(r.fullname||"—")+'</div>'+
+        (meta?'<p class="mt">'+esc(meta)+'</p>':'')+(contact?'<p class="mt">'+esc(contact)+'</p>':'')+'</div>'+
       secs+hist+
-      '<div class="ft"><span>Designed &amp; Developed by teiior</span><span>U POP TREND · '+esc(x.anketa_title)+'</span></div>'+
+      '<div class="ft">Designed &amp; Developed by teiior · U POP TREND</div>'+
       '<scr'+'ipt>window.onload=function(){setTimeout(function(){window.focus();window.print();},400);};<\/scr'+'ipt>'+
       '</body></html>';
     var w=window.open("","_blank"); if(!w){ alert(tr().savefail); return; }
