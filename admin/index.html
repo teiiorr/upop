@@ -9,10 +9,48 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-<!-- reuse the website's own design system (tokens, buttons, fonts, colours) -->
-<link rel="stylesheet" href="/css/styles.css" />
 <style>
-  body{ background:var(--bg); min-height:100vh; transition:background .3s ease;
+  /* Critical tokens + borrowed components inlined from the site's design system.
+     The admin no longer render-blocks on the 56KB public styles.css — it uses only
+     these ~18 tokens and the .btn / .hl rules below. */
+  *{ box-sizing:border-box; }
+  :root{
+    --gold:#D3A63F; --gold-hi:#F4E1A0;
+    --bg:#050C11; --bg-2:#081A23; --surface:#0A1E28; --surface-2:#0D242F;
+    --ink:#F2E4C6; --ink-70:rgba(242,228,198,.72); --ink-50:rgba(242,228,198,.52); --ink-34:rgba(242,228,198,.34);
+    --line:rgba(242,228,198,.10); --line-gold:rgba(201,162,90,.24);
+    --metal:linear-gradient(160deg,#FCEEB0 0%,#F1D275 18%,#E0B143 40%,#C6922B 56%,#F0CE6C 74%,#A0721E 100%);
+    --pop-btn:linear-gradient(135deg,#7457C9 0%,#4E36A8 55%,#372777 100%);
+    --e-quint:cubic-bezier(.23,1,.32,1); --e-inout:cubic-bezier(.645,.045,.355,1); --e-cubic:cubic-bezier(.33,1,.68,1);
+    --maxw:1200px; --r-card:18px; --r-input:12px;
+    --font-sans:"Manrope",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  }
+  html{ -webkit-text-size-adjust:100%; }
+  .hl{ background:var(--metal); background-size:220% auto; -webkit-background-clip:text; background-clip:text;
+    -webkit-text-fill-color:transparent; color:transparent; animation:shimmer 8s var(--e-inout) infinite; }
+  @keyframes shimmer{ 0%,100%{ background-position:0% 50%; } 50%{ background-position:100% 50%; } }
+  .btn{ position:relative; display:inline-flex; align-items:center; justify-content:center; gap:.55em;
+    font-family:var(--font-sans); font-weight:700; font-size:.95rem; letter-spacing:.01em; padding:.7em 1.4em;
+    border:0; border-radius:10px; color:var(--ink); background:transparent; cursor:pointer; white-space:nowrap;
+    transition:transform .18s var(--e-quint), box-shadow .3s var(--e-quint), filter .3s ease; -webkit-tap-highlight-color:transparent; }
+  .btn--block{ width:100%; }
+  .btn--pop{ color:#fff; font-weight:800; background:var(--pop-btn); background-size:220% 220%; overflow:hidden;
+    box-shadow:0 6px 18px -6px rgba(92,58,178,.55), inset 0 1px 0 rgba(255,255,255,.22); animation:popShift 7s var(--e-inout) infinite; }
+  @keyframes popShift{ 0%,100%{ background-position:0% 50%; } 50%{ background-position:100% 50%; } }
+  .btn--pop:hover{ transform:translateY(-2px); scale:1.02;
+    box-shadow:0 12px 26px -8px rgba(92,58,178,.6), 0 4px 12px -6px rgba(70,45,140,.5), inset 0 1px 0 rgba(255,255,255,.3); }
+  .btn--pop::after{ content:""; position:absolute; inset:0; border-radius:inherit;
+    background:linear-gradient(115deg,transparent 20%,rgba(255,255,255,.4) 50%,transparent 80%);
+    background-size:200% 100%; background-position:200% 0; opacity:0; transition:opacity .3s ease; }
+  .btn--pop:hover::after{ opacity:1; animation:sheen 1.5s var(--e-cubic) infinite; }
+  .btn--pop:active{ transform:translateY(-1px); scale:.985; }
+  @keyframes sheen{ from{ background-position:200% 0; } to{ background-position:-200% 0; } }
+  .btn.is-loading{ pointer-events:none; }
+  .btn.is-loading .btn__label{ opacity:.55; }
+
+  body{ background:var(--bg); min-height:100vh; margin:0; color:var(--ink); font-family:var(--font-sans);
+    font-size:clamp(15px,1.05vw,17px); line-height:1.62; letter-spacing:.006em;
+    -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility; transition:background .3s ease;
     --st-green:#3fbf6f; --st-yellow:#e6b93e; --st-red:#e56464;
     --tline:rgba(242,228,198,.20); }   /* visible table gridlines */
   a{ color:inherit; }
@@ -69,7 +107,9 @@
   .grid.no-anim .anketa{ animation:none; }
   .anketa{ width:100%; max-width:1060px; background:var(--surface); border:1px solid var(--line); border-radius:22px;
     padding:28px 30px; box-shadow:0 24px 60px -36px rgba(0,0,0,.85);
-    transition:border-color .2s, transform .2s var(--e-quint), box-shadow .2s; animation:acIn .55s var(--e-quint) both; }
+    transition:border-color .2s, transform .2s var(--e-quint), box-shadow .2s; animation:acIn .4s var(--e-quint) both; }
+  @media (prefers-reduced-motion:reduce){ .anketa{ animation:none; } }
+  .iconbtn.is-spin svg{ animation:spin .8s linear infinite; }
   @keyframes acIn{ from{ opacity:0; transform:translateY(18px); } to{ opacity:1; transform:none; } }
   .anketa:hover{ border-color:var(--line-gold); transform:translateY(-2px); box-shadow:0 34px 74px -38px rgba(0,0,0,.95); }
   .anketa[data-status="green"]{ border-color:color-mix(in srgb, var(--st-green) 52%, var(--line)); }
@@ -404,7 +444,12 @@
 
 <script>
   var ENDPOINT = "https://script.google.com/macros/s/AKfycby7z5nB-DfFxk6tBGVCFkMQNpPCdNbHI9DSURAMYiUt8GKPasqRNULcyG-A3lZzZzEIwQ/exec";
-  var KEY_STORE="upop_admin_key", LANG_STORE="upop_admin_lang", THEME_STORE="upop_admin_theme";
+  var KEY_STORE="upop_admin_key", LANG_STORE="upop_admin_lang", THEME_STORE="upop_admin_theme", ROWS_STORE="upop_admin_rows";
+  /* stale-while-revalidate cache of rows in sessionStorage (per-tab, cleared on tab close —
+     the same trust boundary as the admin key; NEVER localStorage: this is minors' PII). */
+  function writeCache(){ try{ sessionStorage.setItem(ROWS_STORE, JSON.stringify(state.rows)); }catch(e){} }
+  function readCache(){ try{ var s=sessionStorage.getItem(ROWS_STORE); if(!s) return null; var a=JSON.parse(s); return Array.isArray(a)?a:null; }catch(e){ return null; } }
+  function clearCache(){ try{ sessionStorage.removeItem(ROWS_STORE); }catch(e){} }
   var state = { rows: [], key: "", fStatus: "", view: "list" };
   var rev = { id:null, status:"", photo:null };
   var PAL = ["#D63E8C","#6A39D9","#18B8C9","#D3A63F","#3fbf6f","#e6934e","#4e8fe6","#c74ea0"]; // colourful categorical
@@ -549,16 +594,25 @@
      instead of JSON on the first call after a redeploy or a cold start. Read as
      text and retry a couple of times so sign-in never dies on "Unexpected token '<'". */
   function api(payload, tries){
-    if(tries==null) tries=2;
-    return fetch(ENDPOINT,{ method:"POST", headers:{"Content-Type":"text/plain;charset=utf-8"},
-      body:JSON.stringify(payload), redirect:"follow" })
+    if(tries==null) tries=3;
+    var ac=(typeof AbortController!=="undefined")?new AbortController():null;
+    var to=ac?setTimeout(function(){ try{ ac.abort(); }catch(e){} },15000):null;
+    var opt={ method:"POST", headers:{"Content-Type":"text/plain;charset=utf-8"}, body:JSON.stringify(payload), redirect:"follow" };
+    if(ac) opt.signal=ac.signal;
+    return fetch(ENDPOINT,opt)
       .then(function(r){ return r.text(); })
-      .then(function(t){
+      .then(function(t){ if(to) clearTimeout(to);
         try{ return JSON.parse(t); }
         catch(e){
-          if(tries>0) return new Promise(function(res){ setTimeout(res,1000); }).then(function(){ return api(payload, tries-1); });
+          // Cold start returns an HTML warmup page — retry with a short backoff (300/600/1200ms).
+          if(tries>0 && /^\s*</.test(t)){ var d=300*Math.pow(2,3-tries);
+            return new Promise(function(res){ setTimeout(res,d); }).then(function(){ return api(payload, tries-1); }); }
           throw new Error("badjson");
         }
+      })
+      .catch(function(err){ if(to) clearTimeout(to);
+        if(err && err.name==="AbortError" && tries>0) return api(payload, tries-1);
+        throw err;
       });
   }
   function rowById(id){ for(var i=0;i<state.rows.length;i++){ if(String(state.rows[i].submissionId)===String(id)) return state.rows[i]; } return null; }
@@ -605,10 +659,14 @@
   /* ---- auth ---- */
   function loadList(key){
     return api({ action:"list", key:key }).then(function(res){
-      if(res && res.error==="forbidden") throw new Error(tr().wrongpw);
+      if(res && res.error==="forbidden"){ clearCache(); var ef=new Error(tr().wrongpw); ef.forbidden=true; throw ef; }
       if(!res || res.ok!==true || !Array.isArray(res.rows)) throw new Error(tr().needscript);
+      var fresh=JSON.stringify(res.rows), prev=null;
+      try{ prev=sessionStorage.getItem(ROWS_STORE); }catch(e){}
+      var changed=(fresh!==prev);
       state.key=key; state.rows=res.rows||[];
-      try{ sessionStorage.setItem(KEY_STORE,key); }catch(e){}
+      try{ sessionStorage.setItem(KEY_STORE,key); sessionStorage.setItem(ROWS_STORE,fresh); }catch(e){}
+      return changed;
     });
   }
   $("loginForm").addEventListener("submit", function(e){
@@ -618,10 +676,12 @@
       .catch(function(ex){ $("loginErr").textContent=ex.message||"Error"; })
       .then(function(){ btn.classList.remove("is-loading"); });
   });
-  $("logout").addEventListener("click", function(){ try{ sessionStorage.removeItem(KEY_STORE); }catch(e){} location.reload(); });
+  $("logout").addEventListener("click", function(){ try{ sessionStorage.removeItem(KEY_STORE); }catch(e){} clearCache(); location.reload(); });
   $("refresh").addEventListener("click", function(){
-    $("content").innerHTML='<div class="state"><div class="spin"></div>'+esc(tr().refreshing)+'</div>';
-    loadList(state.key).then(function(){ buildFilters(); if(state.view==="stats") renderStats(); else render(true); });
+    var btn=$("refresh"); btn.classList.add("is-spin");
+    loadList(state.key).then(function(changed){ if(changed){ buildFilters(); if(state.view==="stats") renderStats(); else render(true); } })
+      .catch(function(){})
+      .then(function(){ btn.classList.remove("is-spin"); });
   });
   $("langBtn").addEventListener("click",toggleLang); $("langBtn2").addEventListener("click",toggleLang);
   $("themeBtn").addEventListener("click",toggleTheme); $("themeBtn2").addEventListener("click",toggleTheme);
@@ -639,7 +699,7 @@
     $("fStatus").querySelectorAll(".segf__b").forEach(function(x){ x.classList.toggle("is-on", x===b); });
     render(false);
   });
-  $("q").addEventListener("input",function(){render(false);});
+  var qTimer; $("q").addEventListener("input",function(){ clearTimeout(qTimer); qTimer=setTimeout(function(){ render(false); },160); });
   $("fGenre").addEventListener("change",function(){render(false);});
 
   function render(animate){
@@ -693,8 +753,9 @@
   function card(r,i){
     var id=esc(r.submissionId||""), x=tr();
     var photo=r.photo && String(r.photo).trim();
+    var thumb=photo?String(photo).replace(/([?&]sz=w)\d+/,'$1300'):"";  // list shows ~112px; fetch ~300px not 1000px
     var photoHtml=photo
-      ? '<img src="'+esc(photo)+'" alt="" loading="lazy" referrerpolicy="no-referrer">'
+      ? '<img src="'+esc(thumb)+'" alt="" width="112" height="140" decoding="async" loading="lazy" referrerpolicy="no-referrer">'
       : '<span class="ank__photo-ph">'+ICN.user+'<span>'+esc(x.no_photo)+'</span></span>';
     var lines=[];
     if(r.phone) lines.push('<a class="ank__ci" href="tel:'+esc(String(r.phone).replace(/\s/g,""))+'">'+ICN.phone+'<span>'+esc(r.phone)+'</span></a>');
@@ -703,7 +764,7 @@
     var contactHtml=(lines.length||socHtml) ? '<div class="ank__contact">'+(lines.length?'<div class="ank__lines">'+lines.join("")+'</div>':'')+socHtml+'</div>' : '';
     var hist=(r.history && String(r.history).trim())
       ? '<div class="ank__hist"><h4>'+esc(x.hist_h)+'</h4><p>'+esc(r.history)+'</p></div>' : '';
-    var delay=Math.min(i*0.04,0.4);
+    var delay=(i<10?i*0.03:0);
     return ''+
       '<article class="anketa'+(r.reviewed?' is-reviewed':'')+'" data-id="'+id+'" data-status="'+esc(r.status||"")+'" style="animation-delay:'+delay+'s">'+
         '<div class="ank__head">'+
@@ -839,6 +900,7 @@
       var row=rowById(id);
       if(row){ row.status=res.status||""; row.history=(res.history!=null?res.history:hist); row.reviewed=row.status!=="";
         if(res.photo) row.photo=res.photo; }
+      writeCache();
       btn.disabled=false; lbl.textContent=old;
       closeReview(); buildFilters(); render(false);
     }).catch(function(){ btn.disabled=false; lbl.textContent=old; $("revErr").textContent=tr().savefail; });
@@ -962,6 +1024,21 @@
   (function(){
     var key=null; try{ key=sessionStorage.getItem(KEY_STORE); }catch(e){}
     if(!key) return;
+    var cached=readCache();
+    if(cached && cached.length){
+      // instant paint from cache, then revalidate in the background
+      state.key=key; state.rows=cached; showApp();
+      loadList(key).then(function(changed){
+        var rev=$("rev");
+        if(changed && !(rev && rev.open)){ buildFilters(); if(state.view==="stats") renderStats(); else render(false); }
+      }).catch(function(ex){
+        if(ex && ex.forbidden){ // key rotated/revoked — wipe cached PII and show login
+          clearCache(); try{ sessionStorage.removeItem(KEY_STORE); }catch(e){}
+          state.rows=[]; $("content").innerHTML=""; $("stats").innerHTML=""; $("app").hidden=true; $("login").hidden=false;
+        } /* transient (cold-start/network) errors: keep showing cached data */
+      });
+      return;
+    }
     $("login").hidden=true;
     document.body.insertAdjacentHTML("afterbegin",'<div class="state" id="boot"><div class="spin"></div>'+esc(tr().loading)+'</div>');
     loadList(key).then(function(){ var b=$("boot"); if(b) b.remove(); showApp(); })

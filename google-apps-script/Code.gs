@@ -117,6 +117,32 @@ var PHOTO_FOLDER = 'UPOP_casting_photos';
 
 /* ---------------------------------------------------------------- POST */
 function doPost(e) {
+  // Parse the body up front so read-only actions can skip the write lock.
+  var data = {};
+  try {
+    if (e && e.postData && e.postData.contents) {
+      data = JSON.parse(e.postData.contents);
+    }
+  } catch (err) {
+    return json({ ok: false, error: 'bad json' });
+  }
+
+  var ss = SpreadsheetApp.getActive();
+  var sheet = ss.getSheetByName(SHEET_NAME) || ss.insertSheet(SHEET_NAME);
+
+  // Read feed for the admin panel — a pure read: no write-lock and no header
+  // rewrite, so the admin's list never serializes behind an in-flight photo
+  // upload / status write (which is what made it occasionally stall). Keyed.
+  if (data && data.action === 'list') {
+    if (!authorized(data)) return json({ ok: false, error: 'forbidden' });
+    return json({
+      ok: true,
+      fields: FIELDS.map(function (f) { return { k: f.k, h: f.h, type: f.type || 'text' }; }),
+      rows: readAllRows(sheet)
+    });
+  }
+
+  // Everything below this point mutates the sheet — take the write lock.
   var lock = LockService.getScriptLock();
   try {
     lock.waitLock(30000);
@@ -125,24 +151,7 @@ function doPost(e) {
   }
 
   try {
-    var data = {};
-    if (e && e.postData && e.postData.contents) {
-      data = JSON.parse(e.postData.contents);
-    }
-
-    var ss = SpreadsheetApp.getActive();
-    var sheet = ss.getSheetByName(SHEET_NAME) || ss.insertSheet(SHEET_NAME);
     ensureHeaders(sheet);
-
-    // Read feed for the admin panel — keyed, returns every application.
-    if (data && data.action === 'list') {
-      if (!authorized(data)) return json({ ok: false, error: 'forbidden' });
-      return json({
-        ok: true,
-        fields: FIELDS.map(function (f) { return { k: f.k, h: f.h, type: f.type || 'text' }; }),
-        rows: readAllRows(sheet)
-      });
-    }
 
     // Set the review status (green/yellow/red or '' to clear) — keyed.
     if (data && data.action === 'setStatus') {
