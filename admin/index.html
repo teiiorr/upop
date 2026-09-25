@@ -175,6 +175,12 @@
   .prbtn:hover{ color:var(--ink); border-color:var(--line-gold); background:var(--surface-2); transform:translateY(-1px); }
   .rvbtn:active,.prbtn:active{ transform:translateY(0); }
   .rvbtn svg,.prbtn svg{ width:16px; height:16px; }
+  .ank__sheet{ text-decoration:none; }
+  .ank__sheet svg{ color:#129d5f; }   /* sheets-green accent */
+  .ank__row{ font-family:'Manrope',sans-serif; font-weight:700; font-size:.76rem; letter-spacing:.02em;
+    color:var(--ink-70); background:var(--surface-2); border:1px solid var(--line-gold); padding:2px 9px;
+    border-radius:999px; text-decoration:none; white-space:nowrap; transition:.16s; }
+  a.ank__row:hover{ color:var(--gold-hi); border-color:var(--gold); }
   .ank__toggle svg{ transition:transform .3s var(--e-quint); }
   .ank__toggle.is-open svg{ transform:rotate(180deg); }
 
@@ -444,6 +450,16 @@
 
 <script>
   var ENDPOINT = "https://script.google.com/macros/s/AKfycby7z5nB-DfFxk6tBGVCFkMQNpPCdNbHI9DSURAMYiUt8GKPasqRNULcyG-A3lZzZzEIwQ/exec";
+  /* Google Sheet deep-link target (the "Applications" tab). Used to jump straight
+     to a participant's row. If the backend later returns sheetUrl/gid in the list
+     response, those override these constants automatically. */
+  var SHEET_URL = "https://docs.google.com/spreadsheets/d/1y9zi8SMU7ppr_bxAH6d6Pb5Sp4WFqiock8_3iy7JkBE/edit";
+  var SHEET_GID = "1303875505";
+  function sheetLink(row){
+    var base=(state.sheetUrl||SHEET_URL||"").replace(/[#?].*$/,""), gid=(state.gid||SHEET_GID||"");
+    if(!base||!row) return "";
+    return base + "#gid=" + encodeURIComponent(gid) + "&range=A" + row;
+  }
   var KEY_STORE="upop_admin_key", LANG_STORE="upop_admin_lang", THEME_STORE="upop_admin_theme", ROWS_STORE="upop_admin_rows";
   /* stale-while-revalidate cache of rows in sessionStorage (per-tab, cleared on tab close —
      the same trust boundary as the admin key; NEVER localStorage: this is minors' PII). */
@@ -466,6 +482,7 @@
     check:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg>',
     note:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>',
     print:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9V3h12v6"/><path d="M6 18H4a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8" rx="1"/></svg>',
+    sheet:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M3 15h18M9 3v18M15 3v18"/></svg>',
     user:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>',
     chevron:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>',
     phone:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v2.5a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3-8.6A2 2 0 0 1 4.1 2h2.5a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.6a2 2 0 0 1-.5 2.1L7.6 9.6a16 16 0 0 0 6 6l1.2-1.1a2 2 0 0 1 2.1-.5c.8.3 1.7.5 2.6.6a2 2 0 0 1 1.7 2Z"/></svg>',
@@ -497,6 +514,7 @@
       none_h:"Ничего не найдено", none_p:"Измените поиск или фильтр.",
       review:"История и оценка", print:"Распечатать", no_photo:"Нет фото", years:"лет", socials:"Соцсети",
       expand:"Открыть анкету", collapse:"Свернуть анкету",
+      sheet:"Открыть в таблице", sheet_row:"Строка в Google-таблице",
       nav_list:"Заявки", nav_stats:"Статистика",
       st_total:"Всего заявок", st_cities:"Городов", st_genres:"Жанров", st_avgage:"Средний возраст",
       st_byday:"Динамика заявок", st_genre:"По жанрам", st_region:"По городам",
@@ -541,6 +559,7 @@
       none_h:"Hech narsa topilmadi", none_p:"Qidiruv yoki filtrni o‘zgartiring.",
       review:"Tarix va baho", print:"Chop etish", no_photo:"Foto yo‘q", years:"yosh", socials:"Ijtimoiy tarmoqlar",
       expand:"Anketani ochish", collapse:"Yig‘ish",
+      sheet:"Jadvalda ochish", sheet_row:"Google jadvaldagi qator",
       nav_list:"Arizalar", nav_stats:"Statistika",
       st_total:"Jami arizalar", st_cities:"Shaharlar", st_genres:"Janrlar", st_avgage:"O‘rtacha yosh",
       st_byday:"Arizalar dinamikasi", st_genre:"Janrlar bo‘yicha", st_region:"Shaharlar bo‘yicha",
@@ -661,6 +680,7 @@
     return api({ action:"list", key:key }).then(function(res){
       if(res && res.error==="forbidden"){ clearCache(); var ef=new Error(tr().wrongpw); ef.forbidden=true; throw ef; }
       if(!res || res.ok!==true || !Array.isArray(res.rows)) throw new Error(tr().needscript);
+      if(res.sheetUrl) state.sheetUrl=res.sheetUrl; if(res.gid) state.gid=String(res.gid);
       var fresh=JSON.stringify(res.rows), prev=null;
       try{ prev=sessionStorage.getItem(ROWS_STORE); }catch(e){}
       var changed=(fresh!==prev);
@@ -765,6 +785,11 @@
     var hist=(r.history && String(r.history).trim())
       ? '<div class="ank__hist"><h4>'+esc(x.hist_h)+'</h4><p>'+esc(r.history)+'</p></div>' : '';
     var delay=(i<10?i*0.03:0);
+    var sl = r._row ? sheetLink(r._row) : "";
+    var rowBadge = r._row
+      ? (sl ? '<a class="ank__row" href="'+esc(sl)+'" target="_blank" rel="noopener" title="'+esc(x.sheet)+'">#'+esc(r._row)+'</a>'
+            : '<span class="ank__row" title="'+esc(x.sheet_row)+'">#'+esc(r._row)+'</span>')
+      : '';
     return ''+
       '<article class="anketa'+(r.reviewed?' is-reviewed':'')+'" data-id="'+id+'" data-status="'+esc(r.status||"")+'" style="animation-delay:'+delay+'s">'+
         '<div class="ank__head">'+
@@ -774,7 +799,7 @@
             metaLine(r)+
             contactHtml+
           '</div>'+
-          '<div class="ank__head-end"><span class="ank__date">'+esc(fmtDate(r.submittedAt))+'</span><span class="ank__dot" aria-hidden="true"></span></div>'+
+          '<div class="ank__head-end">'+rowBadge+'<span class="ank__date">'+esc(fmtDate(r.submittedAt))+'</span><span class="ank__dot" aria-hidden="true"></span></div>'+
         '</div>'+
         hist+
         '<div class="ank__reveal"><div class="ank__reveal-in"></div></div>'+
@@ -782,6 +807,7 @@
           '<button class="rvbtn ank__toggle" data-act="toggle" type="button">'+ICN.chevron+'<span>'+esc(x.expand)+'</span></button>'+
           '<button class="rvbtn" data-act="review" type="button">'+ICN.note+'<span>'+esc(x.review)+'</span></button>'+
           '<button class="prbtn" data-act="print" type="button">'+ICN.print+'<span>'+esc(x.print)+'</span></button>'+
+          (sl ? '<a class="prbtn ank__sheet" href="'+esc(sl)+'" target="_blank" rel="noopener">'+ICN.sheet+'<span>'+esc(x.sheet)+'</span></a>' : '')+
         '</div>'+
       '</article>';
   }

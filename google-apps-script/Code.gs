@@ -137,6 +137,8 @@ function doPost(e) {
     if (!authorized(data)) return json({ ok: false, error: 'forbidden' });
     return json({
       ok: true,
+      sheetUrl: ss.getUrl(),          // lets the admin deep-link to a participant's row
+      gid: String(sheet.getSheetId()),
       fields: FIELDS.map(function (f) { return { k: f.k, h: f.h, type: f.type || 'text' }; }),
       rows: readAllRows(sheet)
     });
