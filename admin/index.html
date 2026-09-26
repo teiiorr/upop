@@ -836,23 +836,42 @@
   });
 
   /* ---- print one anketa, clean sheet with the UPOP logo ---- */
-  var PRINT_CSS = "@page{size:A4;margin:15mm}*{box-sizing:border-box}"+
-    "body{font-family:'Manrope',system-ui,sans-serif;color:#1a1a1a;margin:0;background:#e8e5dc;padding:30px 16px;-webkit-print-color-adjust:exact;print-color-adjust:exact}"+
-    ".sheet{width:100%;max-width:794px;margin:0 auto;background:#fff;border-radius:6px;padding:46px 52px;box-shadow:0 8px 34px rgba(0,0,0,.15)}"+
-    ".ph{text-align:center;border-bottom:3px solid #D3A63F;padding-bottom:18px;margin-bottom:24px}"+
-    ".ph img{height:88px;width:auto;display:block;margin:0 auto 12px}"+
-    ".ph .t{font-family:'Manrope',sans-serif;font-weight:800;font-size:28px;letter-spacing:-.02em;margin:0}"+
-    ".ph .s{color:#7a6a45;font-size:16px;margin:7px 0 0}.ph .id{color:#9a9a9a;font-size:13px;margin:10px 0 0}"+
-    ".top{text-align:center;margin-bottom:26px}"+
-    ".top .photo{width:160px;height:200px;object-fit:cover;border:1px solid #ddd;border-radius:12px;display:block;margin:0 auto 14px;background:#f2f2f2}"+
-    ".top .nm{font-family:'Manrope',sans-serif;font-weight:800;font-size:30px;letter-spacing:-.02em;margin:0 0 10px}"+
-    ".top .mt{color:#3f3f3f;font-size:16.5px;margin:0 0 5px}"+
-    ".sec{break-inside:avoid;margin:0 0 20px}.sec h3{font-family:'Manrope',sans-serif;font-weight:800;font-size:16px;text-transform:uppercase;letter-spacing:.04em;color:#8A5F1C;border-bottom:1.5px solid #eadfca;padding-bottom:8px;margin:0 0 12px}"+
-    ".fs{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid #e7ddc9;border-left:1px solid #e7ddc9;border-radius:8px;overflow:hidden}"+
-    ".f{border-right:1px solid #e7ddc9;border-bottom:1px solid #e7ddc9;padding:13px 16px;font-size:16.5px;line-height:1.5}.f b{display:block;color:#877a5c;font-weight:700;font-size:12.5px;text-transform:uppercase;letter-spacing:.03em;margin-bottom:5px}"+
-    ".hist{white-space:pre-wrap;font-size:16.5px;line-height:1.6}"+
-    ".ft{margin-top:28px;border-top:1px solid #eee;padding-top:12px;color:#aaa;font-size:11.5px;text-align:center}"+
-    "@media print{body{background:#fff;padding:0}.sheet{max-width:none;margin:0;padding:0;box-shadow:none;border-radius:0}}";
+  var PRINT_CSS = "@page{size:A4;margin:8mm}*{box-sizing:border-box}html,body{margin:0}"+
+    "body{font-family:'Manrope',system-ui,sans-serif;color:#1b1b1b;background:#d9d5cc;padding:16px 12px;-webkit-print-color-adjust:exact;print-color-adjust:exact}"+
+    ".sheet{width:100%;max-width:794px;margin:0 auto;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 12px 44px rgba(0,0,0,.2)}"+
+    ".wrap{padding:13px 24px 16px}"+
+    /* gradient brand band with BIG logo + decorative glows */
+    ".band{position:relative;overflow:hidden;display:flex;align-items:center;gap:20px;padding:15px 24px;"+
+      "background:linear-gradient(130deg,#0A1E28 0%,#0b0b1a 54%,#1d1033 100%)}"+
+    ".band::after{content:'';position:absolute;right:-70px;top:-80px;width:260px;height:260px;border-radius:50%;background:radial-gradient(circle,rgba(214,62,140,.6),rgba(106,57,217,.28) 46%,transparent 72%)}"+
+    ".band::before{content:'';position:absolute;left:120px;bottom:-90px;width:220px;height:220px;border-radius:50%;background:radial-gradient(circle,rgba(24,184,201,.42),transparent 70%)}"+
+    ".band img.logo{height:66px;width:auto;position:relative;z-index:1;filter:drop-shadow(0 4px 14px rgba(0,0,0,.5))}"+
+    ".band .htxt{position:relative;z-index:1}"+
+    ".band .k{margin:0;font-weight:800;font-size:21px;letter-spacing:.06em;text-transform:uppercase;"+
+      "background:linear-gradient(90deg,#FCEEB0,#E0B143 45%,#F4E1A0);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent}"+
+    ".band .s{margin:6px 0 0;color:#dcc9a2;font-size:12.5px;letter-spacing:.04em}"+
+    /* hero: photo top-left (gold ring) + name + colourful chips */
+    ".hero{display:flex;gap:18px;align-items:flex-start;padding:13px 0 11px;margin-bottom:12px;"+
+      "border-bottom:3px solid;border-image:linear-gradient(90deg,#D63E8C,#6A39D9,#18B8C9) 1}"+
+    ".hero .photo{width:104px;height:130px;object-fit:cover;border-radius:12px;background:#f2f2f2;flex:0 0 auto;"+
+      "border:3px solid #D3A63F;box-shadow:0 6px 18px rgba(211,166,63,.4)}"+
+    ".hero .who{flex:1;min-width:0}"+
+    ".hero .nm{font-weight:800;font-size:24px;letter-spacing:-.02em;line-height:1.05;margin:0 0 8px}"+
+    ".chips{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 8px}"+
+    ".chip{font-size:11.5px;font-weight:700;padding:4px 11px;border-radius:999px;color:#fff}"+
+    ".ct{display:flex;flex-wrap:wrap;gap:3px 16px;color:#2c2c2c;font-size:12.5px;font-weight:600}.ct .d{color:#9a9a9a;font-weight:500}"+
+    /* colour-accented sections */
+    ".sec{break-inside:avoid;margin:0 0 9px}"+
+    ".sec h3{display:flex;align-items:center;gap:8px;font-weight:800;font-size:12.5px;text-transform:uppercase;letter-spacing:.05em;"+
+      "color:var(--sc,#8A5F1C);margin:0 0 7px;padding-bottom:4px;border-bottom:2px solid var(--sc,#eadfca)}"+
+    ".sec h3 .dot{width:10px;height:10px;border-radius:3px;background:var(--sc,#D3A63F);transform:rotate(45deg);flex:0 0 auto}"+
+    ".fs{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px}"+
+    ".f{background:#faf7f0;border:1px solid #ece2cf;border-left:3px solid var(--sc,#D3A63F);border-radius:8px;padding:6px 11px;font-size:12px;line-height:1.38}"+
+    ".f.full{grid-column:1 / -1}.f.half{grid-column:span 2}"+
+    ".f b{display:block;color:#8a7a58;font-weight:700;font-size:9px;text-transform:uppercase;letter-spacing:.04em;margin-bottom:2px}"+
+    ".hist{background:#fbf3f8;border:1px solid #f0d8e6;border-left:4px solid #D63E8C;border-radius:9px;padding:9px 13px;font-size:12px;line-height:1.45;white-space:pre-wrap}"+
+    ".ft{margin-top:11px;padding-top:8px;border-top:2px solid;border-image:linear-gradient(90deg,#D3A63F,#D63E8C,#6A39D9,#18B8C9) 1;color:#9a9a9a;font-size:9.5px;text-align:center;letter-spacing:.04em}"+
+    "@media print{body{background:#fff;padding:0}.sheet{max-width:none;border-radius:0;box-shadow:none}}";
 
   function printVal(k,v){ if(v==null||v==="") return "—"; if(isBool(v)) return v==="Ha"?tr().yes:"—"; return String(v); }
   function socsPlain(r){ return [["instagram","Instagram"],["tiktok","TikTok"],["telegram","Telegram"],["youtube","YouTube"]]
@@ -863,27 +882,54 @@
     var logo=location.origin+"/logo-hero.png";
     var photo=r.photo && String(r.photo).trim();
     var photoTag=photo?'<img class="photo" src="'+esc(photo)+'" referrerpolicy="no-referrer">':'<div class="photo"></div>';
+    var SECPAL=["#D63E8C","#6A39D9","#18B8C9","#D3A63F","#3fbf6f","#e6934e","#4e8fe6"];
+    var ci=0;
     var secs=GROUPS.map(function(g){
       var fs=g.keys.filter(function(k){ return r[k]!=null && r[k]!=="" && !isBool(String(r[k])); }).map(function(k){
-        return '<div class="f"><b>'+esc(L(k))+'</b>'+esc(printVal(k,r[k]))+'</div>'; });
-      if(g.id==="contacts"){ var s=socsPlain(r); if(s) fs.push('<div class="f"><b>'+esc(x.socials)+'</b>'+esc(s)+'</div>'); }
-      return fs.length?'<section class="sec"><h3>'+esc(x.G[g.id]||g.id)+'</h3><div class="fs">'+fs.join("")+'</div></section>':"";
+        var val=printVal(k,r[k]), n=String(val).length; var cls=n>72?'f full':(n>34?'f half':'f');
+        return '<div class="'+cls+'"><b>'+esc(L(k))+'</b>'+esc(val)+'</div>'; });
+      if(g.id==="contacts"){ var s=socsPlain(r); if(s) fs.push('<div class="f half"><b>'+esc(x.socials)+'</b>'+esc(s)+'</div>'); }
+      if(!fs.length) return "";
+      var c=SECPAL[ci++ % SECPAL.length];
+      return '<section class="sec" style="--sc:'+c+'"><h3><span class="dot"></span>'+esc(x.G[g.id]||g.id)+'</h3><div class="fs">'+fs.join("")+'</div></section>';
     }).join("");
-    var hist=(r.history && String(r.history).trim())?'<section class="sec"><h3>'+esc(x.hist_h)+'</h3><div class="hist">'+esc(r.history)+'</div></section>':"";
-    var meta=[ (r.age?r.age+" "+x.years:""), genderLabel(r.gender), r.region, r.citizenship, (r.lang?String(r.lang).toUpperCase():"") ].filter(Boolean).join(" · ");
-    var contact=[ r.phone, r.email ].filter(Boolean).join("   ·   ");
+    var hist=(r.history && String(r.history).trim())?'<section class="sec" style="--sc:#D63E8C"><h3><span class="dot"></span>'+esc(x.hist_h)+'</h3><div class="hist">'+esc(r.history)+'</div></section>':"";
+    function chip(t,c){ return '<span class="chip" style="background:'+c+'">'+esc(t)+'</span>'; }
+    var chips=[];
+    if(r.age) chips.push(chip(r.age+" "+x.years,"#D3A63F"));
+    if(r.gender) chips.push(chip(genderLabel(r.gender), r.gender==="f"?"#D63E8C":"#4e8fe6"));
+    if(r.region) chips.push(chip(r.region,"#18B8C9"));
+    if(r.citizenship) chips.push(chip(r.citizenship,"#3fbf6f"));
+    if(r.lang) chips.push(chip(String(r.lang).toUpperCase(),"#6A39D9"));
+    var contact=[ r.phone, r.email ].filter(Boolean).map(function(z){return '<span>'+esc(z)+'</span>';}).join("");
+    var band='<div class="band"><img class="logo" src="'+logo+'"><div class="htxt">'+
+      '<p class="k">'+esc(x.anketa_title)+'</p><p class="s">U POP TREND · '+esc(x.print_sub||"Milliy kasting")+'</p></div></div>';
+    var hero='<div class="hero">'+photoTag+'<div class="who">'+
+      '<div class="nm">'+esc(r.fullname||"—")+'</div>'+
+      (chips.length?'<div class="chips">'+chips.join("")+'</div>':'')+
+      '<div class="ct">'+contact+'<span class="d">'+esc(fmtDate(r.submittedAt))+'</span></div>'+
+      '</div></div>';
     var html='<!doctype html><html lang="ru"><head><meta charset="utf-8"><title>'+esc(x.anketa_title)+' — '+esc(r.fullname||"")+'</title>'+
       '<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">'+
-      '<style>'+PRINT_CSS+'</style></head><body><div class="sheet">'+
-      '<div class="ph"><img src="'+logo+'"><p class="t">U POP TREND</p><p class="s">'+esc(x.anketa_title)+' · '+esc(x.print_sub)+'</p><p class="id">'+esc(fmtDate(r.submittedAt))+' · '+esc(r.submissionId||"")+'</p></div>'+
-      '<div class="top">'+photoTag+'<div class="nm">'+esc(r.fullname||"—")+'</div>'+
-        (meta?'<p class="mt">'+esc(meta)+'</p>':'')+(contact?'<p class="mt">'+esc(contact)+'</p>':'')+'</div>'+
-      secs+hist+
-      '<div class="ft">Designed &amp; Developed by teiior · U POP TREND</div></div>'+
-      '<scr'+'ipt>window.onload=function(){setTimeout(function(){window.focus();window.print();},400);};<\/scr'+'ipt>'+
-      '</body></html>';
-    var w=window.open("","_blank"); if(!w){ alert(tr().savefail); return; }
-    w.document.open(); w.document.write(html); w.document.close();
+      '<style>'+PRINT_CSS+'</style></head><body><div class="sheet">'+band+
+      '<div class="wrap">'+hero+secs+hist+
+      '<div class="ft">U POP TREND · Designed &amp; Developed by teiior</div></div></div></body></html>';
+    // Print via a hidden same-page iframe — no blank ("about:blank") tab pops up.
+    var ifr=document.createElement("iframe");
+    ifr.setAttribute("aria-hidden","true");
+    ifr.style.cssText="position:fixed;right:0;bottom:0;width:0;height:0;border:0;visibility:hidden";
+    document.body.appendChild(ifr);
+    var cleaned=false;
+    function cleanup(){ if(cleaned) return; cleaned=true; setTimeout(function(){ if(ifr.parentNode) ifr.parentNode.removeChild(ifr); },300); }
+    var doc=ifr.contentWindow.document; doc.open(); doc.write(html); doc.close();
+    var printed=false;
+    function go(){ if(printed) return; printed=true;
+      try{ ifr.contentWindow.focus(); ifr.contentWindow.onafterprint=cleanup; ifr.contentWindow.print(); }
+      catch(e){ cleanup(); }
+      setTimeout(cleanup, 60000); // fallback if afterprint never fires
+    }
+    ifr.onload=function(){ setTimeout(go, 450); };
+    setTimeout(go, 1600); // fallback if onload doesn't fire (cached iframe)
   }
 
   /* ---- review dialog: photo + history + colour saved together ---- */
