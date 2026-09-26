@@ -514,7 +514,7 @@
       none_h:"Ничего не найдено", none_p:"Измените поиск или фильтр.",
       review:"История и оценка", print:"Распечатать", no_photo:"Нет фото", years:"лет", socials:"Соцсети",
       expand:"Открыть анкету", collapse:"Свернуть анкету",
-      sheet:"Открыть в таблице", sheet_row:"Строка в Google-таблице",
+      sheet:"Открыть в таблице", sheet_row:"Строка в Google-таблице", num_lab:"Участник",
       nav_list:"Заявки", nav_stats:"Статистика",
       st_total:"Всего заявок", st_cities:"Городов", st_genres:"Жанров", st_avgage:"Средний возраст",
       st_byday:"Динамика заявок", st_genre:"По жанрам", st_region:"По городам",
@@ -559,7 +559,7 @@
       none_h:"Hech narsa topilmadi", none_p:"Qidiruv yoki filtrni o‘zgartiring.",
       review:"Tarix va baho", print:"Chop etish", no_photo:"Foto yo‘q", years:"yosh", socials:"Ijtimoiy tarmoqlar",
       expand:"Anketani ochish", collapse:"Yig‘ish",
-      sheet:"Jadvalda ochish", sheet_row:"Google jadvaldagi qator",
+      sheet:"Jadvalda ochish", sheet_row:"Google jadvaldagi qator", num_lab:"Ishtirokchi",
       nav_list:"Arizalar", nav_stats:"Statistika",
       st_total:"Jami arizalar", st_cities:"Shaharlar", st_genres:"Janrlar", st_avgage:"O‘rtacha yosh",
       st_byday:"Arizalar dinamikasi", st_genre:"Janrlar bo‘yicha", st_region:"Shaharlar bo‘yicha",
@@ -836,84 +836,103 @@
   });
 
   /* ---- print one anketa, clean sheet with the UPOP logo ---- */
-  var PRINT_CSS = "@page{size:A4;margin:8mm}*{box-sizing:border-box}html,body{margin:0}"+
-    "body{font-family:'Manrope',system-ui,sans-serif;color:#1b1b1b;background:#d9d5cc;padding:16px 12px;-webkit-print-color-adjust:exact;print-color-adjust:exact}"+
-    ".sheet{width:100%;max-width:794px;margin:0 auto;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 12px 44px rgba(0,0,0,.2)}"+
-    ".wrap{padding:13px 24px 16px}"+
-    /* gradient brand band with BIG logo + decorative glows */
-    ".band{position:relative;overflow:hidden;display:flex;align-items:center;gap:20px;padding:15px 24px;"+
-      "background:linear-gradient(130deg,#0A1E28 0%,#0b0b1a 54%,#1d1033 100%)}"+
-    ".band::after{content:'';position:absolute;right:-70px;top:-80px;width:260px;height:260px;border-radius:50%;background:radial-gradient(circle,rgba(214,62,140,.6),rgba(106,57,217,.28) 46%,transparent 72%)}"+
-    ".band::before{content:'';position:absolute;left:120px;bottom:-90px;width:220px;height:220px;border-radius:50%;background:radial-gradient(circle,rgba(24,184,201,.42),transparent 70%)}"+
-    ".band img.logo{height:66px;width:auto;position:relative;z-index:1;filter:drop-shadow(0 4px 14px rgba(0,0,0,.5))}"+
-    ".band .htxt{position:relative;z-index:1}"+
-    ".band .k{margin:0;font-weight:800;font-size:21px;letter-spacing:.06em;text-transform:uppercase;"+
-      "background:linear-gradient(90deg,#FCEEB0,#E0B143 45%,#F4E1A0);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent}"+
-    ".band .s{margin:6px 0 0;color:#dcc9a2;font-size:12.5px;letter-spacing:.04em}"+
-    /* hero: photo top-left (gold ring) + name + colourful chips */
-    ".hero{display:flex;gap:18px;align-items:flex-start;padding:13px 0 11px;margin-bottom:12px;"+
-      "border-bottom:3px solid;border-image:linear-gradient(90deg,#D63E8C,#6A39D9,#18B8C9) 1}"+
-    ".hero .photo{width:104px;height:130px;object-fit:cover;border-radius:12px;background:#f2f2f2;flex:0 0 auto;"+
-      "border:3px solid #D3A63F;box-shadow:0 6px 18px rgba(211,166,63,.4)}"+
-    ".hero .who{flex:1;min-width:0}"+
-    ".hero .nm{font-weight:800;font-size:24px;letter-spacing:-.02em;line-height:1.05;margin:0 0 8px}"+
-    ".chips{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 8px}"+
-    ".chip{font-size:11.5px;font-weight:700;padding:4px 11px;border-radius:999px;color:#fff}"+
-    ".ct{display:flex;flex-wrap:wrap;gap:3px 16px;color:#2c2c2c;font-size:12.5px;font-weight:600}.ct .d{color:#9a9a9a;font-weight:500}"+
-    /* colour-accented sections */
-    ".sec{break-inside:avoid;margin:0 0 9px}"+
-    ".sec h3{display:flex;align-items:center;gap:8px;font-weight:800;font-size:12.5px;text-transform:uppercase;letter-spacing:.05em;"+
-      "color:var(--sc,#8A5F1C);margin:0 0 7px;padding-bottom:4px;border-bottom:2px solid var(--sc,#eadfca)}"+
-    ".sec h3 .dot{width:10px;height:10px;border-radius:3px;background:var(--sc,#D3A63F);transform:rotate(45deg);flex:0 0 auto}"+
-    ".fs{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px}"+
-    ".f{background:#faf7f0;border:1px solid #ece2cf;border-left:3px solid var(--sc,#D3A63F);border-radius:8px;padding:6px 11px;font-size:12px;line-height:1.38}"+
-    ".f.full{grid-column:1 / -1}.f.half{grid-column:span 2}"+
-    ".f b{display:block;color:#8a7a58;font-weight:700;font-size:9px;text-transform:uppercase;letter-spacing:.04em;margin-bottom:2px}"+
-    ".hist{background:#fbf3f8;border:1px solid #f0d8e6;border-left:4px solid #D63E8C;border-radius:9px;padding:9px 13px;font-size:12px;line-height:1.45;white-space:pre-wrap}"+
-    ".ft{margin-top:11px;padding-top:8px;border-top:2px solid;border-image:linear-gradient(90deg,#D3A63F,#D63E8C,#6A39D9,#18B8C9) 1;color:#9a9a9a;font-size:9.5px;text-align:center;letter-spacing:.04em}"+
-    "@media print{body{background:#fff;padding:0}.sheet{max-width:none;border-radius:0;box-shadow:none}}";
+  /* Printed U POP TREND casting card — luxe gold-on-black, clean solid hairlines
+     (no dots), fixed A4; only the data region (.fit) is scaled by JS so ANY
+     amount of text always lands on exactly one page. */
+  var PRINT_CSS = "@page{size:A4;margin:0}*{box-sizing:border-box}html,body{margin:0;padding:0}"+
+    "body{background:#b7b3a7;font-family:'Manrope',system-ui,sans-serif;-webkit-print-color-adjust:exact;print-color-adjust:exact}"+
+    ".page{position:relative;width:794px;height:1123px;margin:0 auto;overflow:hidden;background:#0c0c11;color:#EFE2C4;display:flex;flex-direction:column}"+
+    ".page::before{content:'';position:absolute;inset:15px;border:1px solid rgba(211,166,63,.42);pointer-events:none;z-index:6}"+
+    ".page::after{content:'';position:absolute;left:0;top:0;width:100%;height:300px;background:radial-gradient(130% 100% at 50% -30%,rgba(211,166,63,.12),transparent 62%);z-index:0}"+
+    /* header: big logo, wide gold caps title, contestant № */
+    ".band{position:relative;z-index:2;display:flex;align-items:center;gap:22px;padding:34px 44px 16px}"+
+    ".band .logo{height:58px;width:auto;filter:drop-shadow(0 2px 8px rgba(0,0,0,.6))}"+
+    ".band .bt{flex:1;min-width:0}"+
+    ".band .k{margin:0;font-weight:700;font-size:13px;letter-spacing:.44em;text-transform:uppercase;color:#F4E1A0}"+
+    ".band .s{margin:7px 0 0;font-weight:500;font-size:9px;letter-spacing:.34em;text-transform:uppercase;color:#9a875b}"+
+    ".num{text-align:right;flex:0 0 auto}"+
+    ".num .lab{font-size:7.5px;letter-spacing:.3em;text-transform:uppercase;color:#9a875b}"+
+    ".num .val{font-weight:700;font-size:25px;line-height:1;letter-spacing:.05em;color:#F4E1A0;margin-top:3px}"+
+    ".hr{height:1px;margin:0 44px;background:linear-gradient(90deg,transparent,rgba(211,166,63,.55) 8%,rgba(211,166,63,.55) 92%,transparent)}"+
+    /* body: photo + id sidebar, form main */
+    ".body{position:relative;z-index:2;flex:1;display:flex;min-height:0;gap:30px;padding:20px 44px 6px}"+
+    ".side{flex:0 0 186px;display:flex;flex-direction:column;gap:14px}"+
+    ".pf{width:186px;height:232px;border:1px solid rgba(211,166,63,.55);padding:6px;background:#000;flex:0 0 auto}"+
+    ".pf .photo{width:100%;height:100%;object-fit:cover;background:#17140e;display:block}"+
+    ".idcard{display:flex;flex-direction:column}"+
+    ".idrow{display:flex;flex-direction:column;gap:2px;padding:7px 0;border-bottom:1px solid rgba(211,166,63,.16)}"+
+    ".idrow .k{color:#9a875b;font-weight:700;font-size:7px;text-transform:uppercase;letter-spacing:.18em}"+
+    ".idrow .v{font-weight:600;font-size:12px;color:#EFE2C4}"+
+    ".seal{margin-top:auto;align-self:center;width:92px;height:92px;border-radius:50%;border:1px solid rgba(211,166,63,.5);display:grid;place-items:center;text-align:center}"+
+    ".seal .st{font-weight:800;font-size:14px;letter-spacing:.12em;color:#D3A63F}.seal .sx{font-size:6px;letter-spacing:.24em;text-transform:uppercase;color:#8a7c5c;margin-top:4px}"+
+    ".main{flex:1;min-width:0;display:flex;flex-direction:column}"+
+    ".name{font-weight:700;font-size:29px;line-height:1.05;letter-spacing:.015em;text-transform:uppercase;color:#F6EBCB;margin:0}"+
+    ".tagl{margin:9px 0 15px;font-weight:600;font-size:10.5px;letter-spacing:.26em;text-transform:uppercase;color:#C6A24E}"+
+    ".fitwrap{flex:1;min-height:0;overflow:hidden}"+
+    ".fit{transform-origin:top left}"+
+    /* clean sections: gold caps label + thin rule, solid hairline fields */
+    ".sec{margin:0 0 15px;break-inside:avoid}"+
+    ".sec .h{font-weight:700;font-size:10.5px;letter-spacing:.3em;text-transform:uppercase;color:#D3A63F;margin:0 0 9px;padding-bottom:7px;border-bottom:1px solid rgba(211,166,63,.32)}"+
+    ".grid{display:grid;grid-template-columns:1fr 1fr;gap:0 34px}"+
+    ".fl{display:flex;flex-direction:column;gap:2px;padding:6px 0;border-bottom:1px solid rgba(211,166,63,.13);font-size:12px;line-height:1.4;break-inside:avoid}"+
+    ".fl.full{grid-column:1 / -1}"+
+    ".fl .k{color:#9a875b;font-weight:700;font-size:7px;text-transform:uppercase;letter-spacing:.18em}"+
+    ".fl .v{font-weight:500;color:#EFE2C4}"+
+    ".hist{border:1px solid rgba(211,166,63,.3);border-left:2px solid #D3A63F;padding:11px 14px;font-size:12px;line-height:1.55;white-space:pre-wrap;color:#e7d8b6;background:rgba(211,166,63,.045)}"+
+    ".foot{position:relative;z-index:2;display:flex;align-items:center;justify-content:space-between;padding:14px 44px 22px;font-size:8px;letter-spacing:.24em;text-transform:uppercase;color:#8a7c5c}"+
+    ".foot b{color:#C6A24E;font-weight:700}"+
+    "@media print{body{background:#fff}.page{margin:0}}";
 
   function printVal(k,v){ if(v==null||v==="") return "—"; if(isBool(v)) return v==="Ha"?tr().yes:"—"; return String(v); }
   function socsPlain(r){ return [["instagram","Instagram"],["tiktok","TikTok"],["telegram","Telegram"],["youtube","YouTube"]]
     .filter(function(s){return r[s[0]];}).map(function(s){ return s[1]+": "+r[s[0]]; }).join("  ·  "); }
+
+  var FIT_JS = "(function(){function fit(){var w=document.querySelector('.fitwrap'),c=document.querySelector('.fit');"+
+    "if(!w||!c)return;c.style.transform='';c.style.width='';var a=w.clientHeight,n=c.scrollHeight;"+
+    "if(n>a&&n>0){var s=a/n;c.style.width=(100/s)+'%';c.style.transform='scale('+s+')';}}"+
+    "if(document.fonts&&document.fonts.ready){document.fonts.ready.then(fit);}fit();setTimeout(fit,250);window.__fit=fit;})();";
 
   function printAnketa(id){
     var r=rowById(id); if(!r) return; var x=tr();
     var logo=location.origin+"/logo-hero.png";
     var photo=r.photo && String(r.photo).trim();
     var photoTag=photo?'<img class="photo" src="'+esc(photo)+'" referrerpolicy="no-referrer">':'<div class="photo"></div>';
-    var SECPAL=["#D63E8C","#6A39D9","#18B8C9","#D3A63F","#3fbf6f","#e6934e","#4e8fe6"];
-    var ci=0;
+    // sections rendered as clean form-lines (gold caps label + ivory value)
     var secs=GROUPS.map(function(g){
       var fs=g.keys.filter(function(k){ return r[k]!=null && r[k]!=="" && !isBool(String(r[k])); }).map(function(k){
-        var val=printVal(k,r[k]), n=String(val).length; var cls=n>72?'f full':(n>34?'f half':'f');
-        return '<div class="'+cls+'"><b>'+esc(L(k))+'</b>'+esc(val)+'</div>'; });
-      if(g.id==="contacts"){ var s=socsPlain(r); if(s) fs.push('<div class="f half"><b>'+esc(x.socials)+'</b>'+esc(s)+'</div>'); }
+        var val=printVal(k,r[k]); var cls=String(val).length>40?'fl full':'fl';
+        return '<div class="'+cls+'"><span class="k">'+esc(L(k))+'</span><span class="v">'+esc(val)+'</span></div>'; });
+      if(g.id==="contacts"){ var s=socsPlain(r); if(s) fs.push('<div class="fl full"><span class="k">'+esc(x.socials)+'</span><span class="v">'+esc(s)+'</span></div>'); }
       if(!fs.length) return "";
-      var c=SECPAL[ci++ % SECPAL.length];
-      return '<section class="sec" style="--sc:'+c+'"><h3><span class="dot"></span>'+esc(x.G[g.id]||g.id)+'</h3><div class="fs">'+fs.join("")+'</div></section>';
+      return '<section class="sec"><div class="h">'+esc(x.G[g.id]||g.id)+'</div><div class="grid">'+fs.join("")+'</div></section>';
     }).join("");
-    var hist=(r.history && String(r.history).trim())?'<section class="sec" style="--sc:#D63E8C"><h3><span class="dot"></span>'+esc(x.hist_h)+'</h3><div class="hist">'+esc(r.history)+'</div></section>':"";
-    function chip(t,c){ return '<span class="chip" style="background:'+c+'">'+esc(t)+'</span>'; }
-    var chips=[];
-    if(r.age) chips.push(chip(r.age+" "+x.years,"#D3A63F"));
-    if(r.gender) chips.push(chip(genderLabel(r.gender), r.gender==="f"?"#D63E8C":"#4e8fe6"));
-    if(r.region) chips.push(chip(r.region,"#18B8C9"));
-    if(r.citizenship) chips.push(chip(r.citizenship,"#3fbf6f"));
-    if(r.lang) chips.push(chip(String(r.lang).toUpperCase(),"#6A39D9"));
-    var contact=[ r.phone, r.email ].filter(Boolean).map(function(z){return '<span>'+esc(z)+'</span>';}).join("");
-    var band='<div class="band"><img class="logo" src="'+logo+'"><div class="htxt">'+
-      '<p class="k">'+esc(x.anketa_title)+'</p><p class="s">U POP TREND · '+esc(x.print_sub||"Milliy kasting")+'</p></div></div>';
-    var hero='<div class="hero">'+photoTag+'<div class="who">'+
-      '<div class="nm">'+esc(r.fullname||"—")+'</div>'+
-      (chips.length?'<div class="chips">'+chips.join("")+'</div>':'')+
-      '<div class="ct">'+contact+'<span class="d">'+esc(fmtDate(r.submittedAt))+'</span></div>'+
-      '</div></div>';
+    var hist=(r.history && String(r.history).trim())?'<section class="sec"><div class="h">'+esc(x.hist_h)+'</div><div class="hist">'+esc(r.history)+'</div></section>':"";
+    // sidebar ID rows
+    function idrow(k,v){ return '<div class="idrow"><span class="k">'+esc(k)+'</span><span class="v">'+esc(v)+'</span></div>'; }
+    var idrows="";
+    if(r.age) idrows+=idrow(L("age"), r.age+" "+x.years);
+    if(r.gender) idrows+=idrow(L("gender"), genderLabel(r.gender));
+    if(r.region) idrows+=idrow(L("region"), r.region);
+    if(r.citizenship) idrows+=idrow(L("citizenship"), r.citizenship);
+    if(r.lang) idrows+=idrow(x.st_lang, String(r.lang).toUpperCase());
+    if(r.phone) idrows+=idrow(L("phone"), r.phone);
+    var num=r._row?('<div class="num"><div class="lab">'+esc(x.num_lab)+'</div><div class="val">№'+esc(r._row)+'</div></div>'):"";
+    var tagl=[ (r.genre?'<b>'+esc(r.genre)+'</b>':''), (r.piece?esc(r.piece):'') ].filter(Boolean).join(" · ");
+    var band='<div class="band"><img class="logo" src="'+logo+'"><div class="bt">'+
+      '<p class="k">'+esc(x.anketa_title)+'</p><p class="s">U POP TREND SHOW · '+esc(x.print_sub||"Milliy kasting")+'</p></div>'+num+'</div>';
+    var side='<div class="side"><div class="pf">'+photoTag+'</div>'+
+      (idrows?'<div class="idcard">'+idrows+'</div>':'')+
+      '<div class="seal"><div><div class="st">UPOP</div><div class="sx">Casting 2026</div></div></div></div>';
+    var main='<div class="main"><div class="name">'+esc(r.fullname||"—")+'</div>'+
+      (tagl?'<div class="tagl">'+tagl+'</div>':'<div class="tagl">'+esc(x.print_sub||"")+'</div>')+
+      '<div class="fitwrap"><div class="fit">'+secs+hist+'</div></div></div>';
+    var foot='<div class="foot"><span><b>U POP TREND SHOW</b> · 2026</span>'+
+      '<span>'+esc(fmtDate(r.submittedAt))+'</span><span>Milliy kasting</span></div>';
     var html='<!doctype html><html lang="ru"><head><meta charset="utf-8"><title>'+esc(x.anketa_title)+' — '+esc(r.fullname||"")+'</title>'+
       '<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">'+
-      '<style>'+PRINT_CSS+'</style></head><body><div class="sheet">'+band+
-      '<div class="wrap">'+hero+secs+hist+
-      '<div class="ft">U POP TREND · Designed &amp; Developed by teiior</div></div></div></body></html>';
+      '<style>'+PRINT_CSS+'</style></head><body><div class="page">'+band+'<div class="hr"></div>'+
+      '<div class="body">'+side+main+'</div>'+foot+
+      '</div><scr'+'ipt>'+FIT_JS+'</scr'+'ipt></body></html>';
     // Print via a hidden same-page iframe — no blank ("about:blank") tab pops up.
     var ifr=document.createElement("iframe");
     ifr.setAttribute("aria-hidden","true");
@@ -924,12 +943,14 @@
     var doc=ifr.contentWindow.document; doc.open(); doc.write(html); doc.close();
     var printed=false;
     function go(){ if(printed) return; printed=true;
-      try{ ifr.contentWindow.focus(); ifr.contentWindow.onafterprint=cleanup; ifr.contentWindow.print(); }
+      var iw=ifr.contentWindow;
+      try{ if(iw.__fit) iw.__fit(); }catch(e){}          // ensure one-page fit before printing
+      try{ iw.focus(); iw.onafterprint=cleanup; iw.print(); }
       catch(e){ cleanup(); }
       setTimeout(cleanup, 60000); // fallback if afterprint never fires
     }
-    ifr.onload=function(){ setTimeout(go, 450); };
-    setTimeout(go, 1600); // fallback if onload doesn't fire (cached iframe)
+    ifr.onload=function(){ setTimeout(go, 500); };
+    setTimeout(go, 1700); // fallback if onload doesn't fire (cached iframe)
   }
 
   /* ---- review dialog: photo + history + colour saved together ---- */
