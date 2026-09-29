@@ -836,60 +836,70 @@
   });
 
   /* ---- print one anketa, clean sheet with the UPOP logo ---- */
-  /* Printed U POP TREND casting card — luxe gold-on-black, clean solid hairlines
-     (no dots), fixed A4; only the data region (.fit) is scaled by JS so ANY
-     amount of text always lands on exactly one page. */
+  /* Printed U POP TREND casting card — WHITE, Liquid-Glass iOS tiles, big fonts,
+     portfolio photo top-left, round UPOP stamp. Field tiles stay big regardless
+     of history length: the history tile scales its OWN text; fields don't shrink. */
   var PRINT_CSS = "@page{size:A4;margin:0}*{box-sizing:border-box}html,body{margin:0;padding:0}"+
-    "body{background:#b7b3a7;font-family:'Manrope',system-ui,sans-serif;-webkit-print-color-adjust:exact;print-color-adjust:exact}"+
-    ".page{position:relative;width:794px;height:1123px;margin:0 auto;overflow:hidden;background:#0c0c11;color:#EFE2C4;display:flex;flex-direction:column}"+
-    ".page::before{content:'';position:absolute;inset:15px;border:1px solid rgba(211,166,63,.42);pointer-events:none;z-index:6}"+
-    ".page::after{content:'';position:absolute;left:0;top:0;width:100%;height:300px;background:radial-gradient(130% 100% at 50% -30%,rgba(211,166,63,.12),transparent 62%);z-index:0}"+
-    /* header: big logo, wide gold caps title, contestant № */
-    ".band{position:relative;z-index:2;display:flex;align-items:center;gap:22px;padding:34px 44px 16px}"+
-    ".band .logo{height:58px;width:auto;filter:drop-shadow(0 2px 8px rgba(0,0,0,.6))}"+
-    ".band .bt{flex:1;min-width:0}"+
-    ".band .k{margin:0;font-weight:700;font-size:13px;letter-spacing:.44em;text-transform:uppercase;color:#F4E1A0}"+
-    ".band .s{margin:7px 0 0;font-weight:500;font-size:9px;letter-spacing:.34em;text-transform:uppercase;color:#9a875b}"+
-    ".num{text-align:right;flex:0 0 auto}"+
-    ".num .lab{font-size:7.5px;letter-spacing:.3em;text-transform:uppercase;color:#9a875b}"+
-    ".num .val{font-weight:700;font-size:25px;line-height:1;letter-spacing:.05em;color:#F4E1A0;margin-top:3px}"+
-    ".hr{height:1px;margin:0 44px;background:linear-gradient(90deg,transparent,rgba(211,166,63,.55) 8%,rgba(211,166,63,.55) 92%,transparent)}"+
-    /* body: photo + id sidebar, form main */
-    ".body{position:relative;z-index:2;flex:1;display:flex;min-height:0;gap:30px;padding:20px 44px 6px}"+
-    ".side{flex:0 0 186px;display:flex;flex-direction:column;gap:14px}"+
-    ".pf{width:186px;height:232px;border:1px solid rgba(211,166,63,.55);padding:6px;background:#000;flex:0 0 auto}"+
-    ".pf .photo{width:100%;height:100%;object-fit:cover;background:#17140e;display:block}"+
-    ".idcard{display:flex;flex-direction:column}"+
-    ".idrow{display:flex;flex-direction:column;gap:2px;padding:7px 0;border-bottom:1px solid rgba(211,166,63,.16)}"+
-    ".idrow .k{color:#9a875b;font-weight:700;font-size:7px;text-transform:uppercase;letter-spacing:.18em}"+
-    ".idrow .v{font-weight:600;font-size:12px;color:#EFE2C4}"+
-    ".seal{margin-top:auto;align-self:center;width:92px;height:92px;border-radius:50%;border:1px solid rgba(211,166,63,.5);display:grid;place-items:center;text-align:center}"+
-    ".seal .st{font-weight:800;font-size:14px;letter-spacing:.12em;color:#D3A63F}.seal .sx{font-size:6px;letter-spacing:.24em;text-transform:uppercase;color:#8a7c5c;margin-top:4px}"+
-    ".main{flex:1;min-width:0;display:flex;flex-direction:column}"+
-    ".name{font-weight:700;font-size:29px;line-height:1.05;letter-spacing:.015em;text-transform:uppercase;color:#F6EBCB;margin:0}"+
-    ".tagl{margin:9px 0 15px;font-weight:600;font-size:10.5px;letter-spacing:.26em;text-transform:uppercase;color:#C6A24E}"+
-    ".fitwrap{flex:1;min-height:0;overflow:hidden}"+
-    ".fit{transform-origin:top left}"+
-    /* clean sections: gold caps label + thin rule, solid hairline fields */
-    ".sec{margin:0 0 15px;break-inside:avoid}"+
-    ".sec .h{font-weight:700;font-size:10.5px;letter-spacing:.3em;text-transform:uppercase;color:#D3A63F;margin:0 0 9px;padding-bottom:7px;border-bottom:1px solid rgba(211,166,63,.32)}"+
-    ".grid{display:grid;grid-template-columns:1fr 1fr;gap:0 34px}"+
-    ".fl{display:flex;flex-direction:column;gap:2px;padding:6px 0;border-bottom:1px solid rgba(211,166,63,.13);font-size:12px;line-height:1.4;break-inside:avoid}"+
-    ".fl.full{grid-column:1 / -1}"+
-    ".fl .k{color:#9a875b;font-weight:700;font-size:7px;text-transform:uppercase;letter-spacing:.18em}"+
-    ".fl .v{font-weight:500;color:#EFE2C4}"+
-    ".hist{border:1px solid rgba(211,166,63,.3);border-left:2px solid #D3A63F;padding:11px 14px;font-size:12px;line-height:1.55;white-space:pre-wrap;color:#e7d8b6;background:rgba(211,166,63,.045)}"+
-    ".foot{position:relative;z-index:2;display:flex;align-items:center;justify-content:space-between;padding:14px 44px 22px;font-size:8px;letter-spacing:.24em;text-transform:uppercase;color:#8a7c5c}"+
-    ".foot b{color:#C6A24E;font-weight:700}"+
+    "body{background:#e7e8ee;font-family:'Manrope',system-ui,sans-serif;-webkit-print-color-adjust:exact;print-color-adjust:exact}"+
+    ".page{position:relative;width:794px;height:1123px;margin:0 auto;overflow:hidden;background:#ffffff;color:#171922;display:flex;flex-direction:column;padding:30px 30px 20px}"+
+    /* soft coloured ground so the glass tiles read as glass */
+    ".page::before{content:'';position:absolute;inset:0;z-index:0;background:"+
+      "radial-gradient(38% 26% at 10% 6%,rgba(211,166,63,.13),transparent 62%),"+
+      "radial-gradient(40% 28% at 95% 10%,rgba(106,57,217,.10),transparent 62%),"+
+      "radial-gradient(46% 30% at 88% 96%,rgba(24,184,201,.09),transparent 62%),"+
+      "radial-gradient(40% 26% at 6% 92%,rgba(214,62,140,.08),transparent 62%)}"+
+    ".page>*{position:relative;z-index:1}"+
+    /* glass tile base */
+    ".tile{position:relative;border-radius:22px;background:linear-gradient(180deg,rgba(255,255,255,.94),rgba(255,255,255,.64));"+
+      "border:1.5px solid rgba(60,66,96,.18);box-shadow:0 10px 26px rgba(28,32,64,.09),inset 0 1px 0 rgba(255,255,255,.95)}"+
+    /* header: portfolio photo top-left, titles, round stamp */
+    ".top{display:flex;gap:18px;align-items:stretch;margin-bottom:16px}"+
+    ".pf{position:relative;flex:0 0 auto;width:168px;padding:9px;overflow:hidden;box-shadow:0 12px 30px rgba(106,57,217,.16),0 6px 16px rgba(214,62,140,.12),inset 0 1px 0 rgba(255,255,255,.95)}"+
+    ".pf::before{content:'';position:absolute;left:0;top:0;width:100%;height:5px;background:linear-gradient(90deg,#D3A63F,#D63E8C,#6A39D9,#18B8C9)}"+
+    ".pf .photo{width:100%;height:172px;object-fit:cover;border-radius:12px;background:#eceef4;display:block;margin-top:3px}"+
+    ".titles{flex:1;min-width:0;display:flex;flex-direction:column;justify-content:center;padding:4px 2px}"+
+    ".titles .logo{height:40px;width:auto;margin:0 0 12px;align-self:flex-start}"+
+    ".name{font-weight:800;font-size:33px;line-height:1;letter-spacing:-.015em;color:#12131a;margin:0}"+
+    ".tagl{margin:11px 0 0;font-weight:800;font-size:14px;letter-spacing:.14em;text-transform:uppercase;background:linear-gradient(90deg,#D63E8C,#6A39D9 55%,#18B8C9);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent}"+
+    ".metaline{margin:12px 0 0;display:flex;flex-wrap:wrap;gap:7px}"+
+    ".metaline .chip{font-size:12px;font-weight:700;color:#3a3f4d;background:linear-gradient(180deg,rgba(255,255,255,.9),rgba(255,255,255,.55));border:1.5px solid rgba(60,66,96,.16);border-radius:999px;padding:4px 12px;box-shadow:0 3px 8px rgba(28,32,64,.06)}"+
+    ".metaline .chip b{font-weight:800;color:var(--tc,#B58A2E)}"+
+    ".brandbar{height:5px;border-radius:4px;margin:2px 0 14px;background:linear-gradient(90deg,#D3A63F,#D63E8C,#6A39D9,#18B8C9)}"+
+    ".stamp{flex:0 0 auto;width:132px;height:132px;align-self:center}"+
+    /* field tiles region — big fonts, airy; scales only if it ever overflows */
+    ".midbox{flex:1;min-height:0;overflow:hidden}"+
+    ".midfit{transform-origin:top left;height:100%}"+
+    /* tiles stretch to fill the sheet — no empty voids; fields spread inside */
+    ".grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;height:100%;grid-auto-rows:minmax(min-content,1fr)}"+
+    ".tile.grp{padding:16px 18px;break-inside:avoid;display:flex;flex-direction:column;min-height:0}"+
+    ".th{font-weight:800;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--tc,#B58A2E);margin:0 0 6px;display:flex;align-items:center;gap:9px}"+
+    ".th::before{content:'';width:9px;height:9px;border-radius:50%;flex:0 0 auto;background:currentColor;box-shadow:0 0 0 3px color-mix(in srgb,currentColor 22%,transparent)}"+
+    ".th::after{content:'';flex:1;height:2px;border-radius:2px;background:linear-gradient(90deg,currentColor,transparent);opacity:.55}"+
+    ".flds{flex:1;display:flex;flex-direction:column;justify-content:space-around;gap:2px}"+
+    ".fl{padding:5px 0;border-top:1px solid rgba(60,66,96,.1);font-size:14px;line-height:1.3}"+
+    ".fl:first-child{border-top:0}"+
+    ".fl .k{display:block;font-weight:700;font-size:9.5px;letter-spacing:.09em;text-transform:uppercase;color:#8b90a0;margin-bottom:2px}"+
+    ".fl .v{font-weight:600;color:#171922}"+
+    /* history tile — sized to content up to a cap; its own text auto-fits so fields stay big */
+    ".histbox{flex:0 0 auto;max-height:196px;margin-top:14px;overflow:hidden;padding:15px 20px;display:flex;flex-direction:column}"+
+    ".th.hh{color:#D63E8C}.th.hh::after{background:linear-gradient(90deg,rgba(214,62,140,.5),transparent)}"+
+    ".histfit{transform-origin:top left}"+
+    ".histtext{font-size:15px;line-height:1.5;font-weight:500;color:#2a2d38;white-space:pre-wrap}"+
+    /* footer */
+    ".foot{margin-top:14px;display:flex;align-items:center;justify-content:space-between;font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:#9298a8}"+
+    ".foot b{color:#B58A2E;font-weight:800}"+
     "@media print{body{background:#fff}.page{margin:0}}";
 
   function printVal(k,v){ if(v==null||v==="") return "—"; if(isBool(v)) return v==="Ha"?tr().yes:"—"; return String(v); }
   function socsPlain(r){ return [["instagram","Instagram"],["tiktok","TikTok"],["telegram","Telegram"],["youtube","YouTube"]]
     .filter(function(s){return r[s[0]];}).map(function(s){ return s[1]+": "+r[s[0]]; }).join("  ·  "); }
 
-  var FIT_JS = "(function(){function fit(){var w=document.querySelector('.fitwrap'),c=document.querySelector('.fit');"+
+  // Two independent fit boxes: field tiles (.midbox) stay big; the history text
+  // (.histbox) scales inside its own tile so its length never shrinks the fields.
+  var FIT_JS = "(function(){function box(ws,cs){var w=document.querySelector(ws),c=document.querySelector(cs);"+
     "if(!w||!c)return;c.style.transform='';c.style.width='';var a=w.clientHeight,n=c.scrollHeight;"+
-    "if(n>a&&n>0){var s=a/n;c.style.width=(100/s)+'%';c.style.transform='scale('+s+')';}}"+
+    "if(n>a&&n>0){var s=a/n;c.style.transformOrigin='top left';c.style.width=(100/s)+'%';c.style.transform='scale('+s+')';}}"+
+    "function fit(){box('.histbox','.histfit');box('.midbox','.midfit');}"+
     "if(document.fonts&&document.fonts.ready){document.fonts.ready.then(fit);}fit();setTimeout(fit,250);window.__fit=fit;})();";
 
   function printAnketa(id){
@@ -897,41 +907,53 @@
     var logo=location.origin+"/logo-hero.png";
     var photo=r.photo && String(r.photo).trim();
     var photoTag=photo?'<img class="photo" src="'+esc(photo)+'" referrerpolicy="no-referrer">':'<div class="photo"></div>';
-    // sections rendered as clean form-lines (gold caps label + ivory value)
-    var secs=GROUPS.map(function(g){
+    // each group = a Liquid-Glass tile, subtly tinted in a UPOP brand colour
+    var TINTS=[{c:"#C13B84",b:"rgba(214,62,140,.30)",g:"rgba(214,62,140,.07)"},
+      {c:"#6A39D9",b:"rgba(106,57,217,.28)",g:"rgba(106,57,217,.06)"},
+      {c:"#0E93A2",b:"rgba(24,184,201,.30)",g:"rgba(24,184,201,.07)"},
+      {c:"#B58A2E",b:"rgba(211,166,63,.36)",g:"rgba(211,166,63,.09)"},
+      {c:"#2FA35B",b:"rgba(63,191,111,.28)",g:"rgba(63,191,111,.07)"},
+      {c:"#3B6FD6",b:"rgba(78,143,230,.28)",g:"rgba(78,143,230,.06)"}];
+    var ti=0;
+    var tiles=GROUPS.map(function(g){
       var fs=g.keys.filter(function(k){ return r[k]!=null && r[k]!=="" && !isBool(String(r[k])); }).map(function(k){
-        var val=printVal(k,r[k]); var cls=String(val).length>40?'fl full':'fl';
-        return '<div class="'+cls+'"><span class="k">'+esc(L(k))+'</span><span class="v">'+esc(val)+'</span></div>'; });
-      if(g.id==="contacts"){ var s=socsPlain(r); if(s) fs.push('<div class="fl full"><span class="k">'+esc(x.socials)+'</span><span class="v">'+esc(s)+'</span></div>'); }
+        return '<div class="fl"><span class="k">'+esc(L(k))+'</span><span class="v">'+esc(printVal(k,r[k]))+'</span></div>'; });
+      if(g.id==="contacts"){ var s=socsPlain(r); if(s) fs.push('<div class="fl"><span class="k">'+esc(x.socials)+'</span><span class="v">'+esc(s)+'</span></div>'); }
       if(!fs.length) return "";
-      return '<section class="sec"><div class="h">'+esc(x.G[g.id]||g.id)+'</div><div class="grid">'+fs.join("")+'</div></section>';
+      var t=TINTS[ti++ % TINTS.length];
+      var st="--tc:"+t.c+";background:linear-gradient(180deg,rgba(255,255,255,.9),rgba(255,255,255,.62)),"+t.g+";border-color:"+t.b;
+      return '<div class="tile grp" style="'+st+'"><div class="th">'+esc(x.G[g.id]||g.id)+'</div><div class="flds">'+fs.join("")+'</div></div>';
     }).join("");
-    var hist=(r.history && String(r.history).trim())?'<section class="sec"><div class="h">'+esc(x.hist_h)+'</div><div class="hist">'+esc(r.history)+'</div></section>':"";
-    // sidebar ID rows
-    function idrow(k,v){ return '<div class="idrow"><span class="k">'+esc(k)+'</span><span class="v">'+esc(v)+'</span></div>'; }
-    var idrows="";
-    if(r.age) idrows+=idrow(L("age"), r.age+" "+x.years);
-    if(r.gender) idrows+=idrow(L("gender"), genderLabel(r.gender));
-    if(r.region) idrows+=idrow(L("region"), r.region);
-    if(r.citizenship) idrows+=idrow(L("citizenship"), r.citizenship);
-    if(r.lang) idrows+=idrow(x.st_lang, String(r.lang).toUpperCase());
-    if(r.phone) idrows+=idrow(L("phone"), r.phone);
-    var num=r._row?('<div class="num"><div class="lab">'+esc(x.num_lab)+'</div><div class="val">№'+esc(r._row)+'</div></div>'):"";
-    var tagl=[ (r.genre?'<b>'+esc(r.genre)+'</b>':''), (r.piece?esc(r.piece):'') ].filter(Boolean).join(" · ");
-    var band='<div class="band"><img class="logo" src="'+logo+'"><div class="bt">'+
-      '<p class="k">'+esc(x.anketa_title)+'</p><p class="s">U POP TREND SHOW · '+esc(x.print_sub||"Milliy kasting")+'</p></div>'+num+'</div>';
-    var side='<div class="side"><div class="pf">'+photoTag+'</div>'+
-      (idrows?'<div class="idcard">'+idrows+'</div>':'')+
-      '<div class="seal"><div><div class="st">UPOP</div><div class="sx">Casting 2026</div></div></div></div>';
-    var main='<div class="main"><div class="name">'+esc(r.fullname||"—")+'</div>'+
-      (tagl?'<div class="tagl">'+tagl+'</div>':'<div class="tagl">'+esc(x.print_sub||"")+'</div>')+
-      '<div class="fitwrap"><div class="fit">'+secs+hist+'</div></div></div>';
+    // portfolio header: photo top-left, titles, round UPOP stamp
+    function chip(t){ return '<span class="chip">'+esc(t)+'</span>'; }
+    var chips=[ (r.age?r.age+" "+x.years:""), genderLabel(r.gender), r.region, r.citizenship, (r.lang?String(r.lang).toUpperCase():"") ]
+      .filter(Boolean).map(chip).join("");
+    if(r._row) chips+='<span class="chip"><b>'+esc(x.num_lab)+' №'+esc(r._row)+'</b></span>';
+    var tagl=[ (r.genre?esc(r.genre):''), (r.piece?esc(r.piece):'') ].filter(Boolean).join("  ·  ");
+    var stamp='<svg class="stamp" viewBox="0 0 132 132" xmlns="http://www.w3.org/2000/svg">'+
+      '<defs><path id="stampring" d="M66,66 m-51,0 a51,51 0 1,1 102,0 a51,51 0 1,1 -102,0"/></defs>'+
+      '<circle cx="66" cy="66" r="63" fill="none" stroke="#B58A2E" stroke-width="1.5"/>'+
+      '<circle cx="66" cy="66" r="44" fill="none" stroke="#C9A24E" stroke-width="1"/>'+
+      '<text font-family="Manrope,sans-serif" font-size="7.3" font-weight="700" letter-spacing="1.35" fill="#9A6E1E">'+
+        '<textPath href="#stampring" startOffset="1%">DESIGNED &amp; DEVELOPED BY TEIIOR • U POP TREND •</textPath></text>'+
+      '<text x="66" y="61" text-anchor="middle" font-family="Manrope,sans-serif" font-weight="800" font-size="18" letter-spacing="1" fill="#B58A2E">U POP</text>'+
+      '<text x="66" y="79" text-anchor="middle" font-family="Manrope,sans-serif" font-weight="700" font-size="10" letter-spacing="4" fill="#9A6E1E">TREND</text>'+
+      '<text x="66" y="95" text-anchor="middle" font-family="Manrope,sans-serif" font-weight="700" font-size="7" letter-spacing="2" fill="#B58A2E">2026</text></svg>';
+    var top='<div class="top"><div class="tile pf">'+photoTag+'</div>'+
+      '<div class="titles"><img class="logo" src="'+logo+'">'+
+        '<div class="name">'+esc(r.fullname||"—")+'</div>'+
+        (tagl?'<div class="tagl">'+tagl+'</div>':'')+
+        (chips?'<div class="metaline">'+chips+'</div>':'')+
+      '</div>'+stamp+'</div>';
+    var mid='<div class="midbox"><div class="midfit"><div class="grid">'+tiles+'</div></div></div>';
+    var hist=(r.history && String(r.history).trim())
+      ? '<div class="tile histbox"><div class="histfit"><div class="th hh">'+esc(x.hist_h)+'</div><div class="histtext">'+esc(r.history)+'</div></div></div>'
+      : "";
     var foot='<div class="foot"><span><b>U POP TREND SHOW</b> · 2026</span>'+
       '<span>'+esc(fmtDate(r.submittedAt))+'</span><span>Milliy kasting</span></div>';
     var html='<!doctype html><html lang="ru"><head><meta charset="utf-8"><title>'+esc(x.anketa_title)+' — '+esc(r.fullname||"")+'</title>'+
       '<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">'+
-      '<style>'+PRINT_CSS+'</style></head><body><div class="page">'+band+'<div class="hr"></div>'+
-      '<div class="body">'+side+main+'</div>'+foot+
+      '<style>'+PRINT_CSS+'</style></head><body><div class="page">'+top+'<div class="brandbar"></div>'+mid+hist+foot+
       '</div><scr'+'ipt>'+FIT_JS+'</scr'+'ipt></body></html>';
     // Print via a hidden same-page iframe — no blank ("about:blank") tab pops up.
     var ifr=document.createElement("iframe");
@@ -944,12 +966,18 @@
     var printed=false;
     function go(){ if(printed) return; printed=true;
       var iw=ifr.contentWindow;
-      try{ if(iw.__fit) iw.__fit(); }catch(e){}          // ensure one-page fit before printing
-      try{ iw.focus(); iw.onafterprint=cleanup; iw.print(); }
-      catch(e){ cleanup(); }
-      setTimeout(cleanup, 60000); // fallback if afterprint never fires
+      function doPrint(){
+        try{ if(iw.__fit) iw.__fit(); }catch(e){}        // fit to one page (after fonts load)
+        try{ iw.focus(); iw.onafterprint=cleanup; iw.print(); }
+        catch(e){ cleanup(); }
+        setTimeout(cleanup, 60000);
+      }
+      // wait for Manrope to actually load so the print isn't a system-font fallback
+      var idoc=iw.document, done=false, once=function(){ if(done) return; done=true; doPrint(); };
+      if(idoc.fonts && idoc.fonts.ready){ idoc.fonts.ready.then(once); setTimeout(once, 1200); }
+      else once();
     }
-    ifr.onload=function(){ setTimeout(go, 500); };
+    ifr.onload=function(){ setTimeout(go, 350); };
     setTimeout(go, 1700); // fallback if onload doesn't fire (cached iframe)
   }
 
