@@ -836,43 +836,34 @@
   });
 
   /* ---- print one anketa, clean sheet with the UPOP logo ---- */
-  /* Printed U POP TREND casting card — WHITE, Liquid-Glass iOS tiles, big fonts,
-     portfolio photo top-left, round UPOP stamp. Field tiles stay big regardless
-     of history length: the history tile scales its OWN text; fields don't shrink. */
+  /* Printed U POP TREND anketa — minimal, flat, dense. White sheet, no cards /
+     stamp / chips / colour. Content scales to FILL the page (no empty space). */
   var PRINT_CSS = "@page{size:A4;margin:0}*{box-sizing:border-box}html,body{margin:0;padding:0}"+
-    "body{background:#e7e8ee;font-family:'Manrope',system-ui,sans-serif;-webkit-print-color-adjust:exact;print-color-adjust:exact}"+
-    ".page{position:relative;width:794px;height:1123px;margin:0 auto;overflow:hidden;background:#ffffff;color:#171922;display:flex;flex-direction:column;padding:32px 34px 22px}"+
-    /* clean neutral tile — thin border, faint shadow, no colour */
-    ".tile{position:relative;border-radius:16px;background:#ffffff;border:1px solid #e2e4ea;box-shadow:0 2px 6px rgba(28,32,64,.05)}"+
-    /* header: portfolio photo top-left, titles, round stamp */
-    ".top{display:flex;gap:20px;align-items:stretch;margin-bottom:18px}"+
-    ".pf{position:relative;flex:0 0 auto;width:168px;padding:8px;border-radius:16px}"+
-    ".pf .photo{width:100%;height:184px;object-fit:cover;border-radius:11px;background:#eceef4;display:block}"+
-    ".titles{flex:1;min-width:0;display:flex;flex-direction:column;justify-content:center;padding:2px}"+
-    ".titles .logo{height:40px;width:auto;margin:0 0 12px;align-self:flex-start}"+
-    ".name{font-weight:800;font-size:33px;line-height:1.02;letter-spacing:-.015em;color:#12131a;margin:0}"+
-    ".tagl{margin:10px 0 0;font-weight:800;font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:#B58A2E}"+
-    ".metaline{margin:13px 0 0;display:flex;flex-wrap:wrap;gap:7px}"+
-    ".metaline .chip{font-size:12px;font-weight:600;color:#3a3f4d;background:#ffffff;border:1px solid #e2e4ea;border-radius:999px;padding:4px 13px}"+
-    ".metaline .chip b{font-weight:800;color:#B58A2E}"+
-    ".stamp{flex:0 0 auto;width:126px;height:126px;align-self:center}"+
-    /* field tiles region — big fonts, fills the sheet */
-    ".midbox{flex:1;min-height:0;overflow:hidden}"+
-    ".midfit{transform-origin:top left;height:100%}"+
-    ".grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;height:100%;grid-auto-rows:minmax(min-content,1fr)}"+
-    ".tile.grp{padding:15px 17px;break-inside:avoid;display:flex;flex-direction:column;min-height:0}"+
-    ".th{font-weight:800;font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;color:#B58A2E;margin:0 0 9px;padding-bottom:7px;border-bottom:1px solid rgba(211,166,63,.34)}"+
-    ".flds{flex:1;display:flex;flex-direction:column;justify-content:space-around;gap:2px}"+
-    ".fl{padding:5px 0;font-size:14px;line-height:1.3}"+
-    ".fl .k{display:block;font-weight:700;font-size:9.5px;letter-spacing:.09em;text-transform:uppercase;color:#9298a8;margin-bottom:2px}"+
-    ".fl .v{font-weight:600;color:#171922}"+
-    /* history tile — sized to content up to a cap; its own text auto-fits so fields stay big */
-    ".histbox{flex:0 0 auto;max-height:196px;margin-top:14px;overflow:hidden;padding:15px 20px;display:flex;flex-direction:column}"+
-    ".histfit{transform-origin:top left}"+
-    ".histtext{font-size:15px;line-height:1.5;font-weight:500;color:#2a2d38;white-space:pre-wrap}"+
+    "body{background:#e9e9ee;font-family:'Manrope',system-ui,sans-serif;-webkit-print-color-adjust:exact;print-color-adjust:exact}"+
+    ".page{position:relative;width:794px;height:1123px;margin:0 auto;overflow:hidden;background:#fff;color:#14151a;display:flex;flex-direction:column;padding:40px 44px 30px}"+
+    /* header: portfolio photo top-left, name, plain meta */
+    ".top{display:flex;gap:24px;align-items:flex-start}"+
+    ".pf{flex:0 0 auto;width:150px}"+
+    ".pf .photo{width:150px;height:190px;object-fit:cover;display:block;border:1px solid #d7d9e0;background:#eef0f4}"+
+    ".titles{flex:1;min-width:0;padding-top:2px}"+
+    ".titles .logo{height:42px;width:auto;display:block;margin:0 0 14px}"+
+    ".klabel{font-size:15px;font-weight:600;color:#9aa0af;margin:0 0 7px}"+
+    ".name{font-weight:800;font-size:39px;line-height:1.02;letter-spacing:-.02em;color:#0f1015;margin:0}"+
+    ".meta{margin:13px 0 0;font-size:17px;font-weight:600;color:#3d424f}"+
+    ".rule{height:1px;background:#e0e2e9;margin:22px 0 18px}"+
+    /* dense two-column field flow that scales to fill the sheet */
+    ".fitwrap{flex:1;min-height:0;overflow:hidden}"+
+    ".fit{transform-origin:top left;column-count:2;column-gap:42px}"+
+    ".sec{break-inside:avoid;-webkit-column-break-inside:avoid;margin:0 0 19px}"+
+    ".sec.wide{column-span:all}"+
+    ".h{font-size:19px;font-weight:800;color:#0f1015;margin:0 0 9px;padding-bottom:8px;border-bottom:1.5px solid #d9dbe3}"+
+    ".row{display:flex;gap:12px;font-size:17px;line-height:1.4;padding:4px 0;align-items:baseline}"+
+    ".row .k{flex:0 0 36%;font-weight:600;font-size:14.5px;color:#9aa0af}"+
+    ".row .v{flex:1;font-weight:600;color:#14151a}"+
+    ".htext{font-size:17px;line-height:1.55;font-weight:500;color:#22242c;white-space:pre-wrap}"+
     /* footer */
-    ".foot{margin-top:14px;padding-top:12px;border-top:1px solid #e2e4ea;display:flex;align-items:center;justify-content:space-between;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:#9298a8}"+
-    ".foot b{color:#B58A2E;font-weight:800}"+
+    ".foot{margin-top:18px;padding-top:12px;border-top:1px solid #e0e2e9;display:flex;align-items:center;justify-content:space-between;font-size:12px;font-weight:600;color:#9aa0af}"+
+    ".foot b{color:#14151a;font-weight:700}"+
     "@media print{body{background:#fff}.page{margin:0}}";
 
   function printVal(k,v){ if(v==null||v==="") return "—"; if(isBool(v)) return v==="Ha"?tr().yes:"—"; return String(v); }
@@ -881,10 +872,12 @@
 
   // Two independent fit boxes: field tiles (.midbox) stay big; the history text
   // (.histbox) scales inside its own tile so its length never shrinks the fields.
-  var FIT_JS = "(function(){function box(ws,cs){var w=document.querySelector(ws),c=document.querySelector(cs);"+
-    "if(!w||!c)return;c.style.transform='';c.style.width='';var a=w.clientHeight,n=c.scrollHeight;"+
-    "if(n>a&&n>0){var s=a/n;c.style.transformOrigin='top left';c.style.width=(100/s)+'%';c.style.transform='scale('+s+')';}}"+
-    "function fit(){box('.histbox','.histfit');box('.midbox','.midfit');}"+
+  // Scale the dense content to FILL the page height (up or down) so there is no
+  // empty space; run twice so the reflow from the width change converges.
+  var FIT_JS = "(function(){function fit(){var w=document.querySelector('.fitwrap'),c=document.querySelector('.fit');"+
+    "if(!w||!c)return;c.style.transform='';c.style.width='';"+
+    "for(var i=0;i<2;i++){var a=w.clientHeight,n=c.scrollHeight;if(!n)break;var s=a/n;if(s>1.5)s=1.5;"+
+    "c.style.transformOrigin='top left';c.style.width=(100/s)+'%';c.style.transform='scale('+s+')';}}"+
     "if(document.fonts&&document.fonts.ready){document.fonts.ready.then(fit);}fit();setTimeout(fit,250);window.__fit=fit;})();";
 
   function printAnketa(id){
@@ -892,44 +885,30 @@
     var logo=location.origin+"/logo-hero.png";
     var photo=r.photo && String(r.photo).trim();
     var photoTag=photo?'<img class="photo" src="'+esc(photo)+'" referrerpolicy="no-referrer">':'<div class="photo"></div>';
-    // each group = a Liquid-Glass tile, subtly tinted in a UPOP brand colour
-    var tiles=GROUPS.map(function(g){
-      var fs=g.keys.filter(function(k){ return r[k]!=null && r[k]!=="" && !isBool(String(r[k])); }).map(function(k){
-        return '<div class="fl"><span class="k">'+esc(L(k))+'</span><span class="v">'+esc(printVal(k,r[k]))+'</span></div>'; });
-      if(g.id==="contacts"){ var s=socsPlain(r); if(s) fs.push('<div class="fl"><span class="k">'+esc(x.socials)+'</span><span class="v">'+esc(s)+'</span></div>'); }
-      if(!fs.length) return "";
-      return '<div class="tile grp"><div class="th">'+esc(x.G[g.id]||g.id)+'</div><div class="flds">'+fs.join("")+'</div></div>';
+    // groups = plain sections with dense label/value rows (no cards, no colour)
+    var secs=GROUPS.map(function(g){
+      var rows=g.keys.filter(function(k){ return r[k]!=null && r[k]!=="" && !isBool(String(r[k])); }).map(function(k){
+        return '<div class="row"><span class="k">'+esc(L(k))+'</span><span class="v">'+esc(printVal(k,r[k]))+'</span></div>'; });
+      if(g.id==="contacts"){ var s=socsPlain(r); if(s) rows.push('<div class="row"><span class="k">'+esc(x.socials)+'</span><span class="v">'+esc(s)+'</span></div>'); }
+      if(!rows.length) return "";
+      return '<section class="sec"><div class="h">'+esc(x.G[g.id]||g.id)+'</div>'+rows.join("")+'</section>';
     }).join("");
-    // portfolio header: photo top-left, titles, round UPOP stamp
-    function chip(t){ return '<span class="chip">'+esc(t)+'</span>'; }
-    var chips=[ (r.age?r.age+" "+x.years:""), genderLabel(r.gender), r.region, r.citizenship, (r.lang?String(r.lang).toUpperCase():"") ]
-      .filter(Boolean).map(chip).join("");
-    if(r._row) chips+='<span class="chip"><b>'+esc(x.num_lab)+' №'+esc(r._row)+'</b></span>';
-    var tagl=[ (r.genre?esc(r.genre):''), (r.piece?esc(r.piece):'') ].filter(Boolean).join(" — ");
-    var stamp='<svg class="stamp" viewBox="0 0 132 132" xmlns="http://www.w3.org/2000/svg">'+
-      '<defs><path id="stampring" d="M66,66 m-51,0 a51,51 0 1,1 102,0 a51,51 0 1,1 -102,0"/></defs>'+
-      '<circle cx="66" cy="66" r="63" fill="none" stroke="#B58A2E" stroke-width="1.5"/>'+
-      '<circle cx="66" cy="66" r="44" fill="none" stroke="#C9A24E" stroke-width="1"/>'+
-      '<text font-family="Manrope,sans-serif" font-size="7" font-weight="700" letter-spacing="2.2" fill="#9A6E1E">'+
-        '<textPath href="#stampring" startOffset="2%">DESIGNED &amp; DEVELOPED BY TEIIOR      U POP TREND</textPath></text>'+
-      '<text x="66" y="61" text-anchor="middle" font-family="Manrope,sans-serif" font-weight="800" font-size="18" letter-spacing="1" fill="#B58A2E">U POP</text>'+
-      '<text x="66" y="79" text-anchor="middle" font-family="Manrope,sans-serif" font-weight="700" font-size="10" letter-spacing="4" fill="#9A6E1E">TREND</text>'+
-      '<text x="66" y="95" text-anchor="middle" font-family="Manrope,sans-serif" font-weight="700" font-size="7" letter-spacing="2" fill="#B58A2E">2026</text></svg>';
-    var top='<div class="top"><div class="tile pf">'+photoTag+'</div>'+
-      '<div class="titles"><img class="logo" src="'+logo+'">'+
-        '<div class="name">'+esc(r.fullname||"—")+'</div>'+
-        (tagl?'<div class="tagl">'+tagl+'</div>':'')+
-        (chips?'<div class="metaline">'+chips+'</div>':'')+
-      '</div>'+stamp+'</div>';
-    var mid='<div class="midbox"><div class="midfit"><div class="grid">'+tiles+'</div></div></div>';
     var hist=(r.history && String(r.history).trim())
-      ? '<div class="tile histbox"><div class="histfit"><div class="th">'+esc(x.hist_h)+'</div><div class="histtext">'+esc(r.history)+'</div></div></div>'
-      : "";
-    var foot='<div class="foot"><span><b>U POP TREND SHOW 2026</b></span>'+
-      '<span>'+esc(fmtDate(r.submittedAt))+'</span><span>Milliy kasting</span></div>';
+      ? '<section class="sec wide"><div class="h">'+esc(x.hist_h)+'</div><div class="htext">'+esc(r.history)+'</div></section>' : "";
+    // header: portfolio photo top-left, name, one plain meta line
+    var meta=[ (r.age?r.age+" "+x.years:""), genderLabel(r.gender), r.region, r.citizenship, (r.lang?String(r.lang).toUpperCase():""), (r._row?(x.num_lab+" №"+r._row):"") ].filter(Boolean).join("   /   ");
+    var top='<div class="top"><div class="pf">'+photoTag+'</div>'+
+      '<div class="titles"><img class="logo" src="'+logo+'">'+
+        '<div class="klabel">'+esc(x.anketa_title)+'</div>'+
+        '<div class="name">'+esc(r.fullname||"—")+'</div>'+
+        '<div class="meta">'+esc(meta)+'</div>'+
+      '</div></div>';
+    var foot='<div class="foot"><span><b>U POP TREND</b> — '+esc(x.anketa_title)+'</span>'+
+      '<span>'+esc(fmtDate(r.submittedAt))+'</span><span>Designed &amp; Developed by teiior</span></div>';
     var html='<!doctype html><html lang="ru"><head><meta charset="utf-8"><title>'+esc(x.anketa_title)+' — '+esc(r.fullname||"")+'</title>'+
       '<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">'+
-      '<style>'+PRINT_CSS+'</style></head><body><div class="page">'+top+mid+hist+foot+
+      '<style>'+PRINT_CSS+'</style></head><body><div class="page">'+top+'<div class="rule"></div>'+
+      '<div class="fitwrap"><div class="fit">'+secs+hist+'</div></div>'+foot+
       '</div><scr'+'ipt>'+FIT_JS+'</scr'+'ipt></body></html>';
     // Print via a hidden same-page iframe — no blank ("about:blank") tab pops up.
     var ifr=document.createElement("iframe");
