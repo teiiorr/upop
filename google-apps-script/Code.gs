@@ -39,8 +39,8 @@ var FIELDS = [
   { k: 'submissionId',      h: 'Submission ID' },
   { k: 'lang',              h: 'Til',                          center: true },
 
-  { k: 'fullname',          h: 'F.I.Sh. / To‘liq ism' },
-  { k: 'birthdate',         h: 'Tug‘ilgan sana',               center: true },
+  { k: 'fullname',          h: 'F.I.Sh. / Toʻliq ism' },
+  { k: 'birthdate',         h: 'Tugʻilgan sana',               center: true },
   { k: 'age',               h: 'Yosh',                         center: true },
   { k: 'gender',            h: 'Jins',                         center: true },
   { k: 'citizenship',       h: 'Fuqarolik',                    center: true },
@@ -60,9 +60,9 @@ var FIELDS = [
 
   { k: 'rule_agree',        h: 'Ijro qoidasiga rozilik',       type: 'bool' },
   { k: 'piece',             h: 'Ijro asari (nomi, muallifi)',  wide: true },
-  { k: 'genre',             h: 'Janr / yo‘nalish',             center: true },
-  { k: 'education',         h: 'Musiqiy ta’lim',               wide: true },
-  { k: 'instruments',       h: 'Cholg‘u asboblari' },
+  { k: 'genre',             h: 'Janr / yoʻnalish',             center: true },
+  { k: 'education',         h: 'Musiqiy taʼlim',               wide: true },
+  { k: 'instruments',       h: 'Cholgʻu asboblari' },
   { k: 'years_singing',     h: 'Necha yildan beri kuylaydi',   center: true },
   { k: 'vocal_teacher',     h: 'Vokal ustoz' },
   { k: 'contests',          h: 'Tanlov / shou tajribasi',      wide: true },
@@ -70,17 +70,17 @@ var FIELDS = [
 
   { k: 'why',               h: 'Nega ishtirok etmoqchi',       wide: true },
   { k: 'music_means',       h: 'Musiqa nima degani',           wide: true },
-  { k: 'three_words',       h: 'Uch so‘z bilan o‘zi' },
+  { k: 'three_words',       h: 'Uch soʻz bilan oʻzi' },
   { k: 'idol',              h: 'Kumir / ilhomlantiruvchi' },
   { k: 'hobbies',           h: 'Qiziqishlar',                  wide: true },
-  { k: 'free_time',         h: 'Bo‘sh vaqt mashg‘uloti' },
+  { k: 'free_time',         h: 'Boʻsh vaqt mashgʻuloti' },
   { k: 'father_name',       h: 'Ota F.I.Sh.' },
   { k: 'father_job',        h: 'Ota ish joyi' },
   { k: 'mother_name',       h: 'Ona F.I.Sh.' },
   { k: 'mother_job',        h: 'Ona ish joyi' },
   { k: 'siblings',          h: 'Aka-uka / opa-singil',         wide: true },
   { k: 'live_with',         h: 'Kim bilan yashaydi' },
-  { k: 'support',           h: 'Kim qo‘llab-quvvatlaydi',      wide: true },
+  { k: 'support',           h: 'Kim qoʻllab-quvvatlaydi',      wide: true },
 
   { k: 'chronic',           h: 'Surunkali kasalliklar' },
   { k: 'allergy',           h: 'Allergiya' },
@@ -90,17 +90,17 @@ var FIELDS = [
   { k: 'log_stages',        h: 'Keyingi bosqichlarga tayyor',  type: 'bool' },
   { k: 'log_travel',        h: 'Boshqa shaharlarga tayyor',    type: 'bool' },
 
-  { k: 'consent_data',      h: 'Ma’lumot qayta ishlash roziligi', type: 'bool' },
+  { k: 'consent_data',      h: 'Maʼlumot qayta ishlash roziligi', type: 'bool' },
   { k: 'consent_media',     h: 'Media foydalanish roziligi',      type: 'bool' },
   { k: 'consent_rules',     h: 'Qoidalarga rozilik',              type: 'bool' },
-  { k: 'consent_true',      h: 'Ma’lumotlar haqqoniyligi',        type: 'bool' }
+  { k: 'consent_true',      h: 'Maʼlumotlar haqqoniyligi',        type: 'bool' }
 ];
 
 /* Admin-only review status, kept in one extra column after all fields, so it
    is shared across everyone who opens the admin panel. Three colours:
    green / yellow / red (meaning is up to the reviewers); empty = not reviewed.
    Stored as a coloured dot so the sheet itself stays readable. */
-var STATUS_HEADER = 'Ko‘rib chiqildi / Рассмотрено';
+var STATUS_HEADER = 'Koʻrib chiqildi / Рассмотрено';
 var STATUS_MAP = { green: '🟢', yellow: '🟡', red: '🔴' };
 var STATUS_REV = { '🟢': 'green', '🟡': 'yellow', '🔴': 'red' };
 

@@ -9,20 +9,20 @@ const DICT = {
   /* ---------------------------------------------------- UZ */
   uz: {
     meta_title: `U POP TREND — Milliy kasting`,
-    meta_desc:  `14–19 yoshdagi yoshlar uchun milliy tanlov. Videongizni #UPOPTREND bilan joylang va anketani to‘ldiring. Arizalar 1-oktabrgacha.`,
-    skip: `Kastingga o'tish`,
+    meta_desc:  `14–19 yoshdagi yoshlar uchun milliy tanlov. Videongizni #UPOPTREND bilan joylang va anketani toʻldiring. Arizalar 1-oktabrgacha.`,
+    skip: `Kastingga oʻtish`,
 
     nav_who: `Kim qatnashadi`,
     nav_how: `Bu qanday ishlaydi`,
     nav_cities: `Shaharlar va sanalar`,
     nav_faq: `Savollar`,
-    nav_apply: `Anketani to‘ldiring`,
+    nav_apply: `Anketani toʻldiring`,
 
     hero_title: `“Qadriyatlarning qayta tirilishi”`,
-    hero_cta: `Anketani to‘ldiring`,
+    hero_cta: `Anketani toʻldiring`,
     deadline: `Arizalar 2026-yil 1-oktabrgacha qabul qilinadi`,
 chance_title: `Yoshingiz <span class="hl">14 dan 19 gacha!</span><br>Va siz jonli kuylay olasiz!<br>Demak, bu sizning sahnangiz!`,
-    who_lede: `O'zbekiston tarixidagi ilk milliy kasting — tajriba va tayyorgarlikdan qat'i nazar, barcha uchun ochiq.`,
+    who_lede: `Oʻzbekiston tarixidagi ilk milliy kasting — tajriba va tayyorgarlikdan qat'i nazar, barcha uchun ochiq.`,
 
     stat1_num: `14–19`,
     stat1_label: `Ishtirokchilar yoshi`,
@@ -32,19 +32,19 @@ chance_title: `Yoshingiz <span class="hl">14 dan 19 gacha!</span><br>Va siz jonl
     steps_title: `Sahnagacha <span class="hl">uch qadam</span>`,
 
     step1_title: `Video yozing`,
-    step1_text: `O‘zingizga xos uslubda istalgan xalq qo‘shig‘ini ijro eting va videoni ijtimoiy tarmoqdagi shaxsiy sahifangizga joylang. Albatta #UPOPTREND xeshtegini qo‘ying va @upoptrend sahifasini belgilang — aks holda tashkilotchilar arizangizni ko‘rmaydi.`,
+    step1_text: `Oʻzingizga xos uslubda istalgan xalq qoʻshigʻini ijro eting va videoni ijtimoiy tarmoqdagi shaxsiy sahifangizga joylang. Albatta #UPOPTREND xeshtegini qoʻying va @upoptrend sahifasini belgilang — aks holda tashkilotchilar arizangizni koʻrmaydi.`,
 
-    step2_title: `Anketani to‘ldiring`,
-    step2_text: `Ma‘lumotlaringizni qoldiring. Bu ikki daqiqadan kam vaqt oladi — tasdiq anketada ko‘rsatilgan raqamga keladi.`,
+    step2_title: `Anketani toʻldiring`,
+    step2_text: `Maʼlumotlaringizni qoldiring. Bu ikki daqiqadan kam vaqt oladi — tasdiq anketada koʻrsatilgan raqamga keladi.`,
 
     step3_title: `Milliy loyihaning bir qismiga aylaning`,
-    step3_text: `Mamlakatning eng iqtidorli ovozlari milliy loyiha doirasida birlashadi. Ishtirokchilar professional prodyuserlar va ommaviy axborot vositalari e‘tiboriga tushib, katta sahnaga chiqish imkoniyatiga ega bo‘ladi.`,
+    step3_text: `Mamlakatning eng iqtidorli ovozlari milliy loyiha doirasida birlashadi. Ishtirokchilar professional prodyuserlar va ommaviy axborot vositalari eʼtiboriga tushib, katta sahnaga chiqish imkoniyatiga ega boʻladi.`,
 
-    cities_title: `Kasting <span class="hl">respublika bo'ylab</span> o'tkaziladi`,
-    cities_lede: `Besh shahar — besh sahna. O'zingizga qulayini tanlang.`,
+    cities_title: `Kasting <span class="hl">respublika boʻylab</span> oʻtkaziladi`,
+    cities_lede: `Besh shahar — besh sahna. Oʻzingizga qulayini tanlang.`,
     final_badge: `Katta final`,
 
-    city1_name: `Farg'ona`,
+    city1_name: `Fargʻona`,
     city1_date: `7-sentabr`,
 
     city2_name: `Xorazm`,
@@ -59,25 +59,25 @@ chance_title: `Yoshingiz <span class="hl">14 dan 19 gacha!</span><br>Va siz jonl
     city5_name: `Toshkent`,
     city5_date: `19–20-sentabr`,
 
-    faq_title: `Ko'p beriladigan <span class="hl">savollar</span>`,
+    faq_title: `Koʻp beriladigan <span class="hl">savollar</span>`,
 
     q1: `Sahna tajribasi kerakmi?`,
-    a1: `Yo'q. Kasting 14 yoshdan 19 yoshgacha bo'lganlar uchun ochiq. Musiqa maktabi ham, avvalgi sahna tajribasi ham talab qilinmaydi, hakamlar ovoz va aktyorlik mahoratiga baho beradi.`,
+    a1: `Yoʻq. Kasting 14 yoshdan 19 yoshgacha boʻlganlar uchun ochiq. Musiqa maktabi ham, avvalgi sahna tajribasi ham talab qilinmaydi, hakamlar ovoz va aktyorlik mahoratiga baho beradi.`,
 
     q2: `Ishtirok pullikmi?`,
-    a2: `Yo'q. Ishtirok barcha besh shaharda bepul. Tashkilotchilar hech bir bosqichda badal yig'maydi.`,
+    a2: `Yoʻq. Ishtirok barcha besh shaharda bepul. Tashkilotchilar hech bir bosqichda badal yigʻmaydi.`,
 
-    q3: `O'zim bilan nima olib borishim kerak?`,
-    a3: `Shaxsni tasdiqlovchi hujjat. Milliy yo'nalishdagi asar ijrosiga tayyorgarlik ko'rish va a cappella kuylash.`,
+    q3: `Oʻzim bilan nima olib borishim kerak?`,
+    a3: `Shaxsni tasdiqlovchi hujjat. Milliy yoʻnalishdagi asar ijrosiga tayyorgarlik koʻrish va a cappella kuylash.`,
 
-    q4: `Istalgan shaharni tanlasa bo'ladimi?`,
-    a4: `Ha. Ishtirok doimiy ro'yxatga olingan manzilga bog'liq emas — o'zingizga qulay shaharni tanlang.`,
+    q4: `Istalgan shaharni tanlasa boʻladimi?`,
+    a4: `Ha. Ishtirok doimiy roʻyxatga olingan manzilga bogʻliq emas — oʻzingizga qulay shaharni tanlang.`,
 
-    q5: `Natijalar qachon ma'lum bo'ladi?`,
-    a5: `Tashkilotchilar saralashdan o‘tgan ishtirokchilar bilan anketada ko‘rsatilgan telefon raqami orqali bog‘lanadi.`,
+    q5: `Natijalar qachon maʼlum boʻladi?`,
+    a5: `Tashkilotchilar saralashdan oʻtgan ishtirokchilar bilan anketada koʻrsatilgan telefon raqami orqali bogʻlanadi.`,
 
-    q6: `Qanday qo‘shiqlarni ijro etish mumkin?`,
-    a6: `Tanlovda faqat milliy qo‘shiqlar va folklor — maqom, baxshi, ashula, suvora, yalla, lapar va boshqa an‘anaviy janrlar — qatnashishga qabul qilinadi. Xorijiy hamda zamonaviy o‘zbek qo‘shiqlari ko‘rib chiqilmaydi.`,
+    q6: `Qanday qoʻshiqlarni ijro etish mumkin?`,
+    a6: `Tanlovda faqat milliy qoʻshiqlar va folklor — maqom, baxshi, ashula, suvora, yalla, lapar va boshqa anʼanaviy janrlar — qatnashishga qabul qilinadi. Xorijiy hamda zamonaviy oʻzbek qoʻshiqlari koʻrib chiqilmaydi.`,
 
     q7: `Videoni joylashning oxirgi muddati qachon?`,
     a7: `Barcha ishtirokchilarning videolari 2026-yil 1-oktabrdan kechiktirmay joylashtirilishi kerak.`,
@@ -85,20 +85,20 @@ chance_title: `Yoshingiz <span class="hl">14 dan 19 gacha!</span><br>Va siz jonl
     eyebrow_apply: `Anketa`,
     form_kicker: `Sahnaga chiqishga tayyormisiz?`,
     form_card_title: `Milliy tanlov anketasi`,
-    form_sub: `Anketani diqqat bilan to‘ldiring — bu sizni sahnaga chiqishdan avval yaxshiroq bilishimizga yordam beradi.`,
+    form_sub: `Anketani diqqat bilan toʻldiring — bu sizni sahnaga chiqishdan avval yaxshiroq bilishimizga yordam beradi.`,
 
     /* ---- anketa wizard ---- */
     wiz_back: `Orqaga`,
     wiz_next: `Keyingi`,
-    err_fill: `Belgilangan (*) majburiy maydonlarni to‘ldiring.`,
-    err_email: `To‘g‘ri e-mail kiriting`,
+    err_fill: `Belgilangan (*) majburiy maydonlarni toʻldiring.`,
+    err_email: `Toʻgʻri e-mail kiriting`,
 
-    st1: `Shaxsiy`, st2: `Ota-ona`, st3: `Ijod`, st4: `O‘zingiz`, st5: `Sog‘liq`, st6: `Logistika`, st7: `Rozilik`,
-    sec1: `Shaxsiy ma’lumotlar`,
+    st1: `Shaxsiy`, st2: `Ota-ona`, st3: `Ijod`, st4: `Oʻzingiz`, st5: `Sogʻliq`, st6: `Logistika`, st7: `Rozilik`,
+    sec1: `Shaxsiy maʼlumotlar`,
     sec2: `Ota-ona / qonuniy vakil`,
-    sec3: `Ijodiy ma’lumot`,
-    sec4: `O‘zingiz haqingizda`,
-    sec5: `Tibbiy ma’lumot`,
+    sec3: `Ijodiy maʼlumot`,
+    sec4: `Oʻzingiz haqingizda`,
+    sec5: `Tibbiy maʼlumot`,
     sec6: `Logistika`,
     sec7: `Rozilik va tasdiqlash`,
 
@@ -106,11 +106,11 @@ chance_title: `Yoshingiz <span class="hl">14 dan 19 gacha!</span><br>Va siz jonl
     s1_date_label: `Kasting sanasi`,
     s1_photo: `Suratingiz`,
     s1_photo_btn: `Rasm tanlash`,
-    s1_photo_hint: `Yuzingiz to‘g‘ridan-to‘g‘ri ko‘rinsin — ko‘zoynak va bosh kiyimsiz, tekis fon, yaxshi yorug‘likda. Yaqinda olingan aniq surat.`,
-    err_photo: `Iltimos, suratingizni qo‘shing.`,
-    s1_fullname: `F.I.Sh. (to‘liq)`,
+    s1_photo_hint: `Yuzingiz toʻgʻridan-toʻgʻri koʻrinsin — koʻzoynak va bosh kiyimsiz, tekis fon, yaxshi yorugʻlikda. Yaqinda olingan aniq surat.`,
+    err_photo: `Iltimos, suratingizni qoʻshing.`,
+    s1_fullname: `F.I.Sh. (toʻliq)`,
     s1_fullname_ph: `Familiya Ism Sharif`,
-    s1_birth: `Tug‘ilgan sana`,
+    s1_birth: `Tugʻilgan sana`,
     s1_age: `Yosh`,
     s1_gender: `Jins`,
     gender_ph: `Tanlang`,
@@ -121,9 +121,9 @@ chance_title: `Yoshingiz <span class="hl">14 dan 19 gacha!</span><br>Va siz jonl
     s1_phone: `Telefon`,
     s1_email: `E-mail`,
     s1_socials: `Ijtimoiy tarmoqlar`,
-    s1_agenote: `Ishtirokchilar anketa topshirish paytida 14 dan 19 yoshgacha bo‘lishi shart.`,
+    s1_agenote: `Ishtirokchilar anketa topshirish paytida 14 dan 19 yoshgacha boʻlishi shart.`,
 
-    s2_note: `Barcha ishtirokchilar uchun to‘ldirilishi shart.`,
+    s2_note: `Barcha ishtirokchilar uchun toʻldirilishi shart.`,
     s2_name: `Ota-ona / vakil F.I.Sh.`,
     s2_relation: `Ishtirokchiga kimsiz?`,
     s2_relation_ph: `masalan, otasi`,
@@ -132,25 +132,25 @@ chance_title: `Yoshingiz <span class="hl">14 dan 19 gacha!</span><br>Va siz jonl
     s2_consent: `Men ishtirokchining ota-onasi / qonuniy vakili ekanligimni tasdiqlayman va uning U-POP TREND kastingida ishtirok etishiga hamda materiallardan loyiha doirasida foydalanishga rozilik beraman.`,
 
     s3_rule_title: `Ijro qoidasi`,
-    s3_rule: `Kastingning barcha bosqichlarida faqat milliy va folklor yo‘nalishidagi asarlar ijro etiladi (maqom, ashula, suvora, yalla, lapar, baxshi va boshqalar). Xorijiy hamda zamonaviy estrada qo‘shiqlari taqiqlanadi. Minusovka kerak emas — barcha ishtirokchilar a cappella kuylaydi.`,
-    s3_agree: `Qoidalar bilan tanishdim va tayyorlagan asarim talablarga to‘liq javob berishini kafolatlayman.`,
+    s3_rule: `Kastingning barcha bosqichlarida faqat milliy va folklor yoʻnalishidagi asarlar ijro etiladi (maqom, ashula, suvora, yalla, lapar, baxshi va boshqalar). Xorijiy hamda zamonaviy estrada qoʻshiqlari taqiqlanadi. Minusovka kerak emas — barcha ishtirokchilar a cappella kuylaydi.`,
+    s3_agree: `Qoidalar bilan tanishdim va tayyorlagan asarim talablarga toʻliq javob berishini kafolatlayman.`,
     s3_piece: `Ijro etiladigan asar (nomi, muallifi)`,
-    s3_genre: `Janr / yo‘nalish`,
+    s3_genre: `Janr / yoʻnalish`,
     s3_genre_ph: `maqom, ashula, suvora, yalla, lapar, baxshi…`,
     genre_other: `Boshqa`,
-    s3_edu: `Musiqiy ma’lumotingiz bormi? Qayerda?`,
+    s3_edu: `Musiqiy maʼlumotingiz bormi? Qayerda?`,
     s3_instr: `Musiqa asbobida chalasizmi? Qaysi?`,
     s3_years: `Necha yildan beri kuylaysiz?`,
     s3_teacher: `Vokal ustozingiz bormi?`,
     s3_contests: `Tanlov / shoularda qatnashganmisiz? Natijangiz?`,
-    s3_video: `Ijro videosiga havola (agar bo‘lsa)`,
+    s3_video: `Ijro videosiga havola (agar boʻlsa)`,
 
     s4_why: `Nega U-POP TREND’da ishtirok etmoqchisiz?`,
     s4_music: `Musiqa siz uchun nima?`,
-    s4_words: `Uch so‘z bilan o‘zingizni ta’riflang`,
+    s4_words: `Uch soʻz bilan oʻzingizni taʼriflang`,
     s4_idol: `Kumiringiz / ilhomlantiruvchi`,
     s4_hobby: `Qiziqishlaringiz (musiqadan tashqari)`,
-    s4_free: `Bo‘sh vaqtdagi sevimli mashg‘ulot`,
+    s4_free: `Boʻsh vaqtdagi sevimli mashgʻulot`,
     s4_family: `Mening oilam`,
     s4_father: `Otam — F.I.Sh.`,
     s4_father_job: `Otamning ish joyi`,
@@ -158,21 +158,21 @@ chance_title: `Yoshingiz <span class="hl">14 dan 19 gacha!</span><br>Va siz jonl
     s4_mother_job: `Onamning ish joyi`,
     s4_siblings: `Aka-uka / opa-singillar (ism, yosh)`,
     s4_livewith: `Kim bilan istiqomat qilasiz?`,
-    s4_support: `Sizni kim ko‘proq qo‘llaydi va nega?`,
+    s4_support: `Sizni kim koʻproq qoʻllaydi va nega?`,
 
-    s5_chronic: `Surunkali kasalliklar / cheklovlar (agar bo‘lsa)`,
-    s5_allergy: `Allergiya (agar bo‘lsa)`,
+    s5_chronic: `Surunkali kasalliklar / cheklovlar (agar boʻlsa)`,
+    s5_allergy: `Allergiya (agar boʻlsa)`,
     s5_emergency: `Favqulodda holat uchun kontakt (F.I.Sh., telefon)`,
 
     s6_1: `Belgilangan shahar va vaqtda kastingga shaxsan boraman.`,
-    s6_2: `Kastingdan o‘tsam, loyihaning keyingi barcha bosqichlarida qatnashishga tayyorman.`,
-    s6_3: `Loyiha jadvaliga ko‘ra boshqa shaharlarga borish kerak bo‘lishi mumkinligini tushunaman.`,
+    s6_2: `Kastingdan oʻtsam, loyihaning keyingi barcha bosqichlarida qatnashishga tayyorman.`,
+    s6_3: `Loyiha jadvaliga koʻra boshqa shaharlarga borish kerak boʻlishi mumkinligini tushunaman.`,
 
-    s7_1: `Shaxsiy ma’lumotlarimni (anketadagi va boshqa) kasting va shou uchun qayta ishlashga rozilik beraman.`,
-    s7_2: `Foto-, video-, audioyozuv hamda tasvir, ovoz va ijodiy materiallarimdan efir, promo va ijtimoiy tarmoqlarda qo‘shimcha to‘lovsiz foydalanishga rozilik beraman.`,
+    s7_1: `Shaxsiy maʼlumotlarimni (anketadagi va boshqa) kasting va shou uchun qayta ishlashga rozilik beraman.`,
+    s7_2: `Foto-, video-, audioyozuv hamda tasvir, ovoz va ijodiy materiallarimdan efir, promo va ijtimoiy tarmoqlarda qoʻshimcha toʻlovsiz foydalanishga rozilik beraman.`,
     s7_3: `U-POP TREND kastingi va loyihasining qoidalari bilan tanishdim va roziman.`,
-    s7_4: `Anketadagi barcha ma’lumotlar haqqoniy ekanligini tasdiqlayman.`,
-    s7_final: `Yuborishdan oldin ma’lumotlarni tekshiring. Kerak bo‘lsa, «Orqaga» tugmasi orqali qayting.`,
+    s7_4: `Anketadagi barcha maʼlumotlar haqqoniy ekanligini tasdiqlayman.`,
+    s7_final: `Yuborishdan oldin maʼlumotlarni tekshiring. Kerak boʻlsa, «Orqaga» tugmasi orqali qayting.`,
 
     label_name: `Ism va familiya`,
     ph_name: `Ismingiz nima?`,
@@ -185,22 +185,22 @@ chance_title: `Yoshingiz <span class="hl">14 dan 19 gacha!</span><br>Va siz jonl
 
     label_phone: `Telefon`,
 
-    consent: `Shaxsiy ma'lumotlarim qayta ishlanishiga va UPOP TREND kastingi haqida ma'lumot olishga roziman`,
+    consent: `Shaxsiy maʼlumotlarim qayta ishlanishiga va UPOP TREND kastingi haqida maʼlumot olishga roziman`,
 
     err_name: `Ismingizni kiriting`,
-    err_age: `Yosh 14–19 oralig'ida bo'lishi kerak`,
+    err_age: `Yosh 14–19 oraligʻida boʻlishi kerak`,
     err_city: `Shaharni tanlang`,
-    err_phone: `To'g'ri telefon raqamini kiriting`,
+    err_phone: `Toʻgʻri telefon raqamini kiriting`,
     err_consent: `Davom etish uchun rozilik bering`,
 
     submit: `Anketani yuborish`,
     submit_loading: `Yuborilmoqda…`,
 
     success_title: `Anketa qabul qilindi`,
-    success_text: `Arizangiz uchun rahmat! Saralashdan o‘tsangiz, anketada ko‘rsatilgan raqam orqali siz bilan bog‘lanamiz. Tafsilotlarni upop.uz saytida kuzating.`,
+    success_text: `Arizangiz uchun rahmat! Saralashdan oʻtsangiz, anketada koʻrsatilgan raqam orqali siz bilan bogʻlanamiz. Tafsilotlarni upop.uz saytida kuzating.`,
 
     golden_title: `HAQIQIY ISTEDODLARNI QIDIRAMIZ!`,
-    golden_subtitle: `Agar siz 14-19 yoshda bo'lsangiz va milliy madaniyatimizni chuqur bilsangiz - bu loyiha siz uchun!`,
+    golden_subtitle: `Agar siz 14-19 yoshda boʻlsangiz va milliy madaniyatimizni chuqur bilsangiz - bu loyiha siz uchun!`,
 
     footer_details: `Barcha tafsilotlar — <a href="https://upop.uz" target="_blank" rel="noopener">upop.uz</a>`,
     footer_copy: `© 2026 UPOP TREND`,
@@ -1275,7 +1275,7 @@ function initForm() {
       submitBtn.classList.remove("is-loading");
       submitBtn.querySelector(".btn__label").textContent = DICT[lang].submit;
       alert(
-        "Xatolik yuz berdi. Qayta urinib ko'ring / Произошла ошибка. Попробуйте ещё раз / Something went wrong, please try again."
+        "Xatolik yuz berdi. Qayta urinib koʻring / Произошла ошибка. Попробуйте ещё раз / Something went wrong, please try again."
       );
     }
   });
