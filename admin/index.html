@@ -744,6 +744,7 @@
   function L(k){ return tr().L[k]||k; }
   function dval(k,v){ if(v==null||v==="") return '<span class="no">—</span>';
     if(k==="submissionId") return esc(v);
+    if(k==="birthdate") return esc(fmtLongDate(v));
     if(isBool(v)) return v==="Ha"?'<span class="yes">'+esc(tr().yes)+'</span>':'<span class="no">—</span>';
     if(k==="video"&&/^https?:/i.test(String(v))) return '<a href="'+esc(v)+'" target="_blank" rel="noopener">'+esc(v)+'</a>';
     return esc(v); }
@@ -896,6 +897,17 @@
     "window.__s=s;}"+
     "if(document.fonts&&document.fonts.ready){document.fonts.ready.then(fit);}fit();setTimeout(fit,250);window.__fit=fit;})();";
 
+  // "YYYY-MM-DD" / "DD.MM.YYYY" -> "2 ноября 2009" (ru, genitive) or "2-noyabr 2009" (uz)
+  var MONTHS={ ru:["января","февраля","марта","апреля","мая","июня","июля","августа","сентября","октября","ноября","декабря"],
+               uz:["yanvar","fevral","mart","aprel","may","iyun","iyul","avgust","sentabr","oktabr","noyabr","dekabr"] };
+  function fmtLongDate(v){ var t=String(v==null?"":v).trim(); if(!t) return t; var d,mo,y,m;
+    if((m=t.match(/^(\d{4})-(\d{2})-(\d{2})/))){ y=+m[1]; mo=+m[2]; d=+m[3]; }
+    else if((m=t.match(/^(\d{1,2})\.(\d{1,2})\.(\d{4})/))){ d=+m[1]; mo=+m[2]; y=+m[3]; }
+    else return t;
+    if(!(mo>=1&&mo<=12&&d>=1&&d<=31)) return t;
+    var names=MONTHS[lang]||MONTHS.ru;
+    return lang==="uz" ? (d+"-"+names[mo-1]+" "+y) : (d+" "+names[mo-1]+" "+y); }
+
   function printAnketa(id){
     var r=rowById(id); if(!r) return; var x=tr();
     var logo=location.origin+"/logo-hero.png";
@@ -911,7 +923,7 @@
       ? '<div class="hist"><div class="hh">'+esc(x.hist_h)+'</div><div class="ht">'+esc(r.history)+'</div></div>' : "";
     var creative=keys(x.G.creative,["genre","piece","education","instruments","years_singing","vocal_teacher","contests","video"]);
     var contacts=tbl(x.G.contacts,[ prow(L("phone"),r.phone), prow(L("email"),r.email), prow(x.socials,socsPlain(r)) ]);
-    var personal=tbl(x.p_title,[ prow(x.p_age, r.age?r.age+" "+x.years:""), prow(x.p_gender, genderLabel(r.gender)), prow(x.p_birth, r.birthdate),
+    var personal=tbl(x.p_title,[ prow(x.p_age, r.age?r.age+" "+x.years:""), prow(x.p_gender, genderLabel(r.gender)), prow(x.p_birth, fmtLongDate(r.birthdate)),
       prow(x.p_region, r.region), prow(L("citizenship"), r.citizenship), prow(L("lang"), r.lang?String(r.lang).toUpperCase():"") ]);
     var parent=keys(x.G.parent,["parent_name","parent_relation","parent_phone","parent_email"]);
     var about=keys(x.G.about,["why","music_means","three_words","idol","hobbies","free_time"]);
