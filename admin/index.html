@@ -461,11 +461,14 @@
     return base + "#gid=" + encodeURIComponent(gid) + "&range=A" + row;
   }
   var KEY_STORE="upop_admin_key", LANG_STORE="upop_admin_lang", THEME_STORE="upop_admin_theme", ROWS_STORE="upop_admin_rows";
-  /* stale-while-revalidate cache of rows in sessionStorage (per-tab, cleared on tab close —
-     the same trust boundary as the admin key; NEVER localStorage: this is minors' PII). */
-  function writeCache(){ try{ sessionStorage.setItem(ROWS_STORE, JSON.stringify(state.rows)); }catch(e){} }
-  function readCache(){ try{ var s=sessionStorage.getItem(ROWS_STORE); if(!s) return null; var a=JSON.parse(s); return Array.isArray(a)?a:null; }catch(e){ return null; } }
-  function clearCache(){ try{ sessionStorage.removeItem(ROWS_STORE); }catch(e){} }
+  /* Persistent store so the admin login is REMEMBERED across tab/browser restarts
+     (localStorage), falling back to sessionStorage in private mode. The row cache
+     lets the panel open instantly (stale-while-revalidate) instead of waiting on
+     the slow backend. Admin device holds minors' data — "Выйти" clears it. */
+  var PS; try{ localStorage.setItem("__upop_t","1"); localStorage.removeItem("__upop_t"); PS=localStorage; }catch(e){ PS=sessionStorage; }
+  function writeCache(){ try{ PS.setItem(ROWS_STORE, JSON.stringify(state.rows)); }catch(e){} }
+  function readCache(){ try{ var s=PS.getItem(ROWS_STORE); if(!s) return null; var a=JSON.parse(s); return Array.isArray(a)?a:null; }catch(e){ return null; } }
+  function clearCache(){ try{ PS.removeItem(ROWS_STORE); }catch(e){} }
   var state = { rows: [], key: "", fStatus: "", view: "list" };
   var rev = { id:null, status:"", photo:null };
   var PAL = ["#D63E8C","#6A39D9","#18B8C9","#D3A63F","#3fbf6f","#e6934e","#4e8fe6","#c74ea0"]; // colourful categorical
@@ -682,10 +685,10 @@
       if(!res || res.ok!==true || !Array.isArray(res.rows)) throw new Error(tr().needscript);
       if(res.sheetUrl) state.sheetUrl=res.sheetUrl; if(res.gid) state.gid=String(res.gid);
       var fresh=JSON.stringify(res.rows), prev=null;
-      try{ prev=sessionStorage.getItem(ROWS_STORE); }catch(e){}
+      try{ prev=PS.getItem(ROWS_STORE); }catch(e){}
       var changed=(fresh!==prev);
       state.key=key; state.rows=res.rows||[];
-      try{ sessionStorage.setItem(KEY_STORE,key); sessionStorage.setItem(ROWS_STORE,fresh); }catch(e){}
+      try{ PS.setItem(KEY_STORE,key); PS.setItem(ROWS_STORE,fresh); }catch(e){}
       return changed;
     });
   }
@@ -696,7 +699,7 @@
       .catch(function(ex){ $("loginErr").textContent=ex.message||"Error"; })
       .then(function(){ btn.classList.remove("is-loading"); });
   });
-  $("logout").addEventListener("click", function(){ try{ sessionStorage.removeItem(KEY_STORE); }catch(e){} clearCache(); location.reload(); });
+  $("logout").addEventListener("click", function(){ try{ PS.removeItem(KEY_STORE); }catch(e){} clearCache(); location.reload(); });
   $("refresh").addEventListener("click", function(){
     var btn=$("refresh"); btn.classList.add("is-spin");
     loadList(state.key).then(function(changed){ if(changed){ buildFilters(); if(state.view==="stats") renderStats(); else render(true); } })
@@ -966,20 +969,28 @@
   $("rev").addEventListener("click", function(e){ if(e.target===this) closeReview(); });
   $("revSave").addEventListener("click", function(){
     var id=rev.id; if(!id) return;
-    var hist=$("revTa").value, status=rev.status||"";
-    var btn=$("revSave"), lbl=btn.querySelector(".rvlbl"), old=lbl.textContent;
-    btn.disabled=true; lbl.textContent=tr().saving; $("revErr").textContent="";
+    var hist=$("revTa").value, status=rev.status||"", photo=rev.photo;
+    var row=rowById(id); if(!row){ closeReview(); return; }
+    // Optimistic save: apply the change + close INSTANTLY, then sync in the background.
+    var prev={ status:row.status, history:row.history, reviewed:row.reviewed, photo:row.photo };
+    row.status=status; row.history=hist; row.reviewed=(status!=="");
+    if(photo) row.photo=photo;                 // show the new photo right away (local preview)
+    writeCache(); closeReview(); buildFilters(); render(false);
+    function rerender(){ if($("rev")&&$("rev").open) return; buildFilters(); if(state.view==="stats") renderStats(); else render(false); }
     var payload={ action:"review", key:state.key, submissionId:id, status:status, history:hist };
-    if(rev.photo){ payload.photo=rev.photo; payload.photoType="image/jpeg"; }
+    if(photo){ payload.photo=photo; payload.photoType="image/jpeg"; }
     api(payload).then(function(res){
       if(!res||res.ok!==true) throw new Error((res&&res.error)||"error");
-      var row=rowById(id);
-      if(row){ row.status=res.status||""; row.history=(res.history!=null?res.history:hist); row.reviewed=row.status!=="";
-        if(res.photo) row.photo=res.photo; }
-      writeCache();
-      btn.disabled=false; lbl.textContent=old;
-      closeReview(); buildFilters(); render(false);
-    }).catch(function(){ btn.disabled=false; lbl.textContent=old; $("revErr").textContent=tr().savefail; });
+      var r2=rowById(id);                       // reconcile with the server (real Drive photo URL etc.)
+      if(r2){ r2.status=res.status||""; r2.history=(res.history!=null?res.history:hist); r2.reviewed=(r2.status!=="");
+        if(res.photo) r2.photo=res.photo; }
+      writeCache(); rerender();
+    }).catch(function(){
+      var r2=rowById(id);                       // sync failed — roll back the optimistic change
+      if(r2){ r2.status=prev.status; r2.history=prev.history; r2.reviewed=prev.reviewed; r2.photo=prev.photo; }
+      writeCache(); rerender();
+      alert(tr().savefail);
+    });
   });
 
   /* ---- statistics dashboard ---- */
@@ -1098,7 +1109,7 @@
   /* ---- boot ---- */
   applyTheme(); applyLang();
   (function(){
-    var key=null; try{ key=sessionStorage.getItem(KEY_STORE); }catch(e){}
+    var key=null; try{ key=PS.getItem(KEY_STORE); }catch(e){}
     if(!key) return;
     var cached=readCache();
     if(cached && cached.length){
@@ -1109,7 +1120,7 @@
         if(changed && !(rev && rev.open)){ buildFilters(); if(state.view==="stats") renderStats(); else render(false); }
       }).catch(function(ex){
         if(ex && ex.forbidden){ // key rotated/revoked — wipe cached PII and show login
-          clearCache(); try{ sessionStorage.removeItem(KEY_STORE); }catch(e){}
+          clearCache(); try{ PS.removeItem(KEY_STORE); }catch(e){}
           state.rows=[]; $("content").innerHTML=""; $("stats").innerHTML=""; $("app").hidden=true; $("login").hidden=false;
         } /* transient (cold-start/network) errors: keep showing cached data */
       });
