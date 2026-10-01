@@ -106,44 +106,42 @@
   .grid{ display:flex; flex-direction:column; align-items:center; gap:26px; padding:24px 0 96px; }
   .grid.no-anim .anketa{ animation:none; }
   .anketa{ width:100%; max-width:1060px; background:var(--surface); border:1px solid var(--line); border-radius:22px;
-    padding:28px 30px; box-shadow:0 24px 60px -36px rgba(0,0,0,.85);
+    padding:26px 28px; box-shadow:0 10px 30px -22px rgba(0,0,0,.55);
     transition:border-color .2s, transform .2s var(--e-quint), box-shadow .2s; animation:acIn .4s var(--e-quint) both; }
   @media (prefers-reduced-motion:reduce){ .anketa{ animation:none; } }
   .iconbtn.is-spin svg{ animation:spin .8s linear infinite; }
   @keyframes acIn{ from{ opacity:0; transform:translateY(18px); } to{ opacity:1; transform:none; } }
-  .anketa:hover{ border-color:var(--line-gold); transform:translateY(-2px); box-shadow:0 34px 74px -38px rgba(0,0,0,.95); }
+  .anketa:hover{ border-color:var(--line-gold); transform:translateY(-1px); box-shadow:0 14px 36px -24px rgba(0,0,0,.6); }
   .anketa[data-status="green"]{ border-color:color-mix(in srgb, var(--st-green) 52%, var(--line)); }
   .anketa[data-status="yellow"]{ border-color:color-mix(in srgb, var(--st-yellow) 52%, var(--line)); }
   .anketa[data-status="red"]{ border-color:color-mix(in srgb, var(--st-red) 52%, var(--line)); }
 
-  .ank__head{ display:flex; gap:24px; align-items:flex-start; padding-bottom:22px; border-bottom:1px solid var(--line); }
+  .ank__head{ display:flex; gap:22px; align-items:flex-start; padding-bottom:20px; border-bottom:1px solid var(--line); }
   .ank__photo{ width:112px; height:140px; flex:0 0 auto; border-radius:14px; overflow:hidden; background:var(--surface-2);
     border:1px solid var(--line-gold); display:grid; place-items:center; }
   .ank__photo img{ width:100%; height:100%; object-fit:cover; }
   .ank__photo-ph{ display:flex; flex-direction:column; align-items:center; gap:8px; color:var(--ink-34);
-    font-family:'Manrope',sans-serif; font-size:.66rem; letter-spacing:.06em; text-transform:uppercase; text-align:center; padding:8px; }
+    font-family:'Manrope',sans-serif; font-size:.78rem; font-weight:600; text-align:center; padding:8px; }
   .ank__photo-ph svg{ width:30px; height:30px; opacity:.7; }
-  .ank__ident{ flex:1 1 auto; min-width:0; padding-top:5px; }
-  .ank__name{ font-family:'Manrope',sans-serif; font-weight:700; font-size:1.48rem; letter-spacing:-.02em; line-height:1.05; margin:0 0 12px; }
-  .ank__meta{ display:flex; flex-wrap:wrap; align-items:baseline; font-family:'Manrope',sans-serif; font-weight:600;
-    font-size:.94rem; color:var(--ink-70); margin-bottom:14px; }
-  .ank__meta span{ color:var(--ink); } .ank__meta span + span::before{ content:"·"; color:var(--ink-34); margin:0 9px; }
-  .ank__contact{ display:flex; flex-direction:column; gap:12px; }
-  .ank__lines{ display:flex; flex-wrap:wrap; gap:9px 24px; }
+  .ank__ident{ flex:1 1 auto; min-width:0; padding-top:4px; }
+  .ank__name{ font-family:'Manrope',sans-serif; font-weight:700; font-size:1.5rem; letter-spacing:-.02em; line-height:1.05; margin:0 0 12px; }
+  /* key facts: small label over bold value — no separators, no pills */
+  .ank__facts{ display:flex; flex-wrap:wrap; gap:10px 28px; margin:0 0 14px; }
+  .ank__fact{ display:flex; flex-direction:column; gap:2px; min-width:0; }
+  .ank__fact .k{ font-family:'Manrope',sans-serif; font-size:.74rem; font-weight:600; color:var(--ink-50); }
+  .ank__fact .v{ font-family:'Manrope',sans-serif; font-size:1rem; font-weight:700; color:var(--ink); }
+  .ank__contact{ display:flex; flex-wrap:wrap; align-items:center; gap:8px 24px; }
   .ank__ci{ display:inline-flex; align-items:center; gap:8px; color:var(--ink); font-weight:600; font-size:1rem; text-decoration:none; }
   .ank__ci svg{ width:16px; height:16px; color:var(--gold); flex:0 0 auto; }
   .ank__ci:hover{ color:var(--gold-hi); }
-  .ank__socs{ display:flex; gap:9px; }
-  .ank__soc{ width:36px; height:36px; border-radius:10px; display:grid; place-items:center; color:var(--ink-70);
-    border:1px solid var(--line-gold); transition:.16s; }
-  .ank__soc:hover{ border-color:var(--gold); color:var(--gold-hi); background:var(--surface-2); transform:translateY(-1px); }
-  .ank__soc svg{ width:18px; height:18px; }
-  .ank__head-end{ display:flex; flex-direction:column; align-items:flex-end; gap:10px; flex:0 0 auto; }
+  .ank__soc{ color:var(--ink-70); font-weight:600; font-size:.96rem; text-decoration:none; transition:.16s; }
+  .ank__soc:hover{ color:var(--gold-hi); }
+  .ank__head-end{ display:flex; flex-direction:column; align-items:flex-end; gap:6px; flex:0 0 auto; }
   .ank__date{ font-size:.82rem; color:var(--ink-50); white-space:nowrap; }
-  .ank__dot{ width:16px; height:16px; border-radius:50%; border:2px solid var(--line); }
-  .anketa[data-status="green"] .ank__dot{ background:var(--st-green); border-color:var(--st-green); box-shadow:0 0 0 4px rgba(63,191,111,.2); }
-  .anketa[data-status="yellow"] .ank__dot{ background:var(--st-yellow); border-color:var(--st-yellow); box-shadow:0 0 0 4px rgba(230,185,62,.2); }
-  .anketa[data-status="red"] .ank__dot{ background:var(--st-red); border-color:var(--st-red); box-shadow:0 0 0 4px rgba(229,100,100,.2); }
+  .ank__status{ font-family:'Manrope',sans-serif; font-size:.82rem; font-weight:700; }
+  .anketa[data-status="green"] .ank__status{ color:var(--st-green); }
+  .anketa[data-status="yellow"] .ank__status{ color:var(--st-yellow); }
+  .anketa[data-status="red"] .ank__status{ color:var(--st-red); }
 
   /* collapsible details (built lazily on open) — smooth 0fr↔1fr reveal */
   .ank__reveal{ display:grid; grid-template-rows:0fr; transition:grid-template-rows .34s var(--e-quint); }
@@ -155,16 +153,16 @@
   .ank__grid{ display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); margin:-1px 0 0 -1px; }
   .ank__cell{ border-top:1px solid var(--tline); border-left:1px solid var(--tline); padding:13px 16px; min-width:0; }
   .ank__cell--h{ grid-column:1 / -1; background:var(--surface-2); padding:11px 16px; border-top:1px solid var(--tline);
-    font-family:'Manrope',sans-serif; font-weight:800; font-size:.74rem; letter-spacing:.09em; text-transform:uppercase; color:var(--gold); }
-  .ank__fk{ display:block; font-family:'Manrope',sans-serif; font-weight:700; font-size:.68rem; letter-spacing:.05em;
-    text-transform:uppercase; color:var(--ink-50); margin-bottom:4px; }
+    font-family:'Manrope',sans-serif; font-weight:800; font-size:.9rem; letter-spacing:0; text-transform:none; color:var(--gold); }
+  .ank__fk{ display:block; font-family:'Manrope',sans-serif; font-weight:600; font-size:.76rem; letter-spacing:0;
+    text-transform:none; color:var(--ink-50); margin-bottom:4px; }
   .ank__fv{ display:block; font-family:'Manrope',sans-serif; color:var(--ink); font-size:1rem; line-height:1.45; word-break:break-word; }
   .ank__fv a{ color:var(--gold-hi); text-decoration:none; }
   .yes{ color:#4ec27f; font-weight:700; } .no{ color:var(--ink-34); }
 
-  .ank__hist{ margin-top:8px; padding:17px 20px; background:var(--surface-2); border:1px solid var(--line); border-radius:16px; }
-  .ank__hist h4{ margin:0 0 8px; font-family:'Manrope',sans-serif; font-weight:600; font-size:.68rem; letter-spacing:.13em; text-transform:uppercase; color:var(--gold); }
-  .ank__hist p{ margin:0; white-space:pre-wrap; word-break:break-word; color:var(--ink); font-size:1.02rem; line-height:1.62; }
+  .ank__hist{ margin-top:18px; padding:0; background:none; border:0; }
+  .ank__hist h4{ margin:0 0 6px; font-family:'Manrope',sans-serif; font-weight:800; font-size:1rem; letter-spacing:0; text-transform:none; color:var(--gold); }
+  .ank__hist p{ margin:0; white-space:pre-wrap; word-break:break-word; color:var(--ink); font-size:1.04rem; line-height:1.6; }
 
   .ank__foot{ display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin-top:22px; padding-top:20px; border-top:1px solid var(--line); }
   .rvbtn,.prbtn{ appearance:none; font:inherit; font-family:'Manrope',sans-serif; font-weight:600; letter-spacing:-.01em; font-size:.9rem;
@@ -177,10 +175,8 @@
   .rvbtn svg,.prbtn svg{ width:16px; height:16px; }
   .ank__sheet{ text-decoration:none; }
   .ank__sheet svg{ color:#129d5f; }   /* sheets-green accent */
-  .ank__row{ font-family:'Manrope',sans-serif; font-weight:700; font-size:.76rem; letter-spacing:.02em;
-    color:var(--ink-70); background:var(--surface-2); border:1px solid var(--line-gold); padding:2px 9px;
-    border-radius:999px; text-decoration:none; white-space:nowrap; transition:.16s; }
-  a.ank__row:hover{ color:var(--gold-hi); border-color:var(--gold); }
+  .ank__row{ font-family:'Manrope',sans-serif; font-weight:700; font-size:.8rem; color:var(--ink-50); text-decoration:none; white-space:nowrap; transition:.16s; }
+  a.ank__row:hover{ color:var(--gold-hi); }
   .ank__toggle svg{ transition:transform .3s var(--e-quint); }
   .ank__toggle.is-open svg{ transform:rotate(180deg); }
 
@@ -518,7 +514,7 @@
       review:"История и оценка", print:"Распечатать", no_photo:"Нет фото", years:"лет", socials:"Соцсети",
       expand:"Открыть анкету", collapse:"Свернуть анкету",
       sheet:"Открыть в таблице", sheet_row:"Строка в Google-таблице", num_lab:"Участник",
-      p_title:"Личные данные", p_age:"Возраст", p_gender:"Пол", p_birth:"Дата рождения", p_region:"Город / регион",
+      p_title:"Личные данные", p_age:"Возраст", p_gender:"Пол", p_birth:"Дата рождения", p_region:"Город / регион", lbl_green:"Зелёный", lbl_yellow:"Жёлтый", lbl_red:"Красный",
       nav_list:"Заявки", nav_stats:"Статистика",
       st_total:"Всего заявок", st_cities:"Городов", st_genres:"Жанров", st_avgage:"Средний возраст",
       st_byday:"Динамика заявок", st_genre:"По жанрам", st_region:"По городам",
@@ -564,7 +560,7 @@
       review:"Tarix va baho", print:"Chop etish", no_photo:"Foto yoʻq", years:"yosh", socials:"Ijtimoiy tarmoqlar",
       expand:"Anketani ochish", collapse:"Yigʻish",
       sheet:"Jadvalda ochish", sheet_row:"Google jadvaldagi qator", num_lab:"Ishtirokchi",
-      p_title:"Shaxsiy maʼlumotlar", p_age:"Yosh", p_gender:"Jinsi", p_birth:"Tugʻilgan sana", p_region:"Shahar / viloyat",
+      p_title:"Shaxsiy maʼlumotlar", p_age:"Yosh", p_gender:"Jinsi", p_birth:"Tugʻilgan sana", p_region:"Shahar / viloyat", lbl_green:"Yashil", lbl_yellow:"Sariq", lbl_red:"Qizil",
       nav_list:"Arizalar", nav_stats:"Statistika",
       st_total:"Jami arizalar", st_cities:"Shaharlar", st_genres:"Janrlar", st_avgage:"Oʻrtacha yosh",
       st_byday:"Arizalar dinamikasi", st_genre:"Janrlar boʻyicha", st_region:"Shaharlar boʻyicha",
@@ -760,13 +756,15 @@
     var it=map.filter(function(s){return r[s[0]];}).map(function(s){
       return '<a class="ank__soc" href="'+esc(socialUrl(s[0],r[s[0]]))+'" target="_blank" rel="noopener" aria-label="'+s[0]+'" title="'+esc(r[s[0]])+'">'+s[1]+'</a>'; });
     return it.length ? '<div class="ank__socs">'+it.join("")+'</div>' : ''; }
-  function metaLine(r){ var p=[];
-    if(r.age) p.push(esc(r.age)+' '+esc(tr().years));
-    if(r.gender) p.push(esc(genderLabel(r.gender)));
-    if(r.region) p.push(esc(r.region));
-    if(r.citizenship) p.push(esc(r.citizenship));
-    if(r.lang) p.push(esc(String(r.lang).toUpperCase()));
-    return p.length?'<div class="ank__meta">'+p.map(function(z){return '<span>'+z+'</span>';}).join("")+'</div>':""; }
+  // Key facts for the card header (most important first): age, gender, city, genre, piece.
+  function factsBlock(r){ var x=tr(), f=[];
+    function add(k,v){ if(v!=null && String(v).trim()!=="") f.push('<div class="ank__fact"><span class="k">'+esc(k)+'</span><span class="v">'+esc(String(v))+'</span></div>'); }
+    add(x.p_age, r.age?r.age+" "+x.years:""); add(x.p_gender, r.gender?genderLabel(r.gender):""); add(x.p_region, r.region);
+    add(L("genre"), r.genre); add(L("piece"), r.piece);
+    return f.length?'<div class="ank__facts">'+f.join("")+'</div>':""; }
+  function socsText(r){ var map=[["instagram","Instagram"],["telegram","Telegram"],["tiktok","TikTok"],["youtube","YouTube"]];
+    return map.filter(function(s){return r[s[0]];}).map(function(s){
+      return '<a class="ank__soc" href="'+esc(socialUrl(s[0],r[s[0]]))+'" target="_blank" rel="noopener" title="'+esc(r[s[0]])+'">'+s[1]+'</a>'; }).join(""); }
   function groupCells(r,g){
     // skip empty fields and the yes/no consent boxes ("Да/—") — they're noise here
     var fs=g.keys.filter(function(k){ return r[k]!=null && r[k]!=="" && !isBool(String(r[k])); });
@@ -785,26 +783,27 @@
     var lines=[];
     if(r.phone) lines.push('<a class="ank__ci" href="tel:'+esc(String(r.phone).replace(/\s/g,""))+'">'+ICN.phone+'<span>'+esc(r.phone)+'</span></a>');
     if(r.email) lines.push('<a class="ank__ci" href="mailto:'+esc(r.email)+'">'+ICN.mail+'<span>'+esc(r.email)+'</span></a>');
-    var socHtml=socsIcons(r);
-    var contactHtml=(lines.length||socHtml) ? '<div class="ank__contact">'+(lines.length?'<div class="ank__lines">'+lines.join("")+'</div>':'')+socHtml+'</div>' : '';
+    var socHtml=socsText(r);
+    var contactHtml=(lines.length||socHtml) ? '<div class="ank__contact">'+lines.join("")+socHtml+'</div>' : '';
     var hist=(r.history && String(r.history).trim())
       ? '<div class="ank__hist"><h4>'+esc(x.hist_h)+'</h4><p>'+esc(r.history)+'</p></div>' : '';
     var delay=(i<10?i*0.03:0);
     var sl = r._row ? sheetLink(r._row) : "";
     var rowBadge = r._row
-      ? (sl ? '<a class="ank__row" href="'+esc(sl)+'" target="_blank" rel="noopener" title="'+esc(x.sheet)+'">#'+esc(r._row)+'</a>'
-            : '<span class="ank__row" title="'+esc(x.sheet_row)+'">#'+esc(r._row)+'</span>')
+      ? (sl ? '<a class="ank__row" href="'+esc(sl)+'" target="_blank" rel="noopener" title="'+esc(x.sheet)+'">№ '+esc(r._row)+'</a>'
+            : '<span class="ank__row" title="'+esc(x.sheet_row)+'">№ '+esc(r._row)+'</span>')
       : '';
+    var stWord = r.status ? (x["lbl_"+r.status]||"") : "";
     return ''+
       '<article class="anketa'+(r.reviewed?' is-reviewed':'')+'" data-id="'+id+'" data-status="'+esc(r.status||"")+'" style="animation-delay:'+delay+'s">'+
         '<div class="ank__head">'+
           '<div class="ank__photo">'+photoHtml+'</div>'+
           '<div class="ank__ident">'+
             '<h3 class="ank__name">'+esc(r.fullname||"—")+'</h3>'+
-            metaLine(r)+
+            factsBlock(r)+
             contactHtml+
           '</div>'+
-          '<div class="ank__head-end">'+rowBadge+'<span class="ank__date">'+esc(fmtDate(r.submittedAt))+'</span><span class="ank__dot" aria-hidden="true"></span></div>'+
+          '<div class="ank__head-end">'+rowBadge+'<span class="ank__date">'+esc(fmtDate(r.submittedAt))+'</span>'+(stWord?'<span class="ank__status">'+esc(stWord)+'</span>':'')+'</div>'+
         '</div>'+
         hist+
         '<div class="ank__reveal"><div class="ank__reveal-in"></div></div>'+
