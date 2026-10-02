@@ -1,8 +1,9 @@
 /* ============================================================
-   U POP TREND — casting landing
-   All site copy lives in DICT below (uz / ru / en).
-   Edit any string here and it updates everywhere on the page.
-   Default language: UZ.
+   U POP TREND — kasting sayti
+   Saytdagi barcha matnlar quyidagi DICT ichida (uz / ru / en).
+   Bu yerda oʻzgartirsangiz, sahifaning hamma joyida yangilanadi.
+   Standart til: UZ.
+   teiior
    ============================================================ */
 
 const DICT = {
@@ -87,7 +88,7 @@ chance_title: `Yoshingiz <span class="hl">14 dan 19 gacha!</span><br>Va siz jonl
     form_card_title: `Milliy tanlov anketasi`,
     form_sub: `Anketani diqqat bilan toʻldiring — bu sizni sahnaga chiqishdan avval yaxshiroq bilishimizga yordam beradi.`,
 
-    /* ---- anketa wizard ---- */
+    /* ---- anketa qadamlari ---- */
     wiz_back: `Orqaga`,
     wiz_next: `Keyingi`,
     err_fill: `Belgilangan (*) majburiy maydonlarni toʻldiring.`,
@@ -288,7 +289,7 @@ chance_title: `Yoshingiz <span class="hl">14 dan 19 gacha!</span><br>Va siz jonl
     form_card_title: `Анкета участника кастинга`,
     form_sub: `Заполни анкету внимательно — она поможет узнать тебя ещё до того, как ты выйдешь на сцену.`,
 
-    /* ---- anketa wizard ---- */
+    /* ---- anketa qadamlari ---- */
     wiz_back: `Назад`,
     wiz_next: `Далее`,
     err_fill: `Заполните обязательные поля, отмеченные *.`,
@@ -489,7 +490,7 @@ chance_title: `Yoshingiz <span class="hl">14 dan 19 gacha!</span><br>Va siz jonl
     form_card_title: `Casting application form`,
     form_sub: `Fill it in carefully — it helps us get to know you before you step on stage.`,
 
-    /* ---- anketa wizard ---- */
+    /* ---- anketa qadamlari ---- */
     wiz_back: `Back`,
     wiz_next: `Next`,
     err_fill: `Please complete the required fields marked *.`,
@@ -611,7 +612,7 @@ chance_title: `Yoshingiz <span class="hl">14 dan 19 gacha!</span><br>Va siz jonl
 };
 
 /* ============================================================
-   i18n engine
+   Tarjima mexanizmi
    ============================================================ */
 
 const LANGS = ["uz", "ru", "en"];
@@ -619,15 +620,16 @@ const LS_KEY = "upop_lang";
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 /* ============================================================
-   Google Sheet backend (UPOP_casting)
-   Paste the deployed Apps Script Web App URL (…/exec) here.
-   Setup steps: google-apps-script/SETUP.md
-   Leave "" to disable saving (the form still works for previewing).
+   Google Sheets backend (UPOP_casting)
+   Joylangan Apps Script Web App manzilini (…/exec) shu yerga qoʻying.
+   Oʻrnatish: google-apps-script/SETUP.md
+   "" qoldirilsa saqlash oʻchadi (forma koʻrib chiqish uchun ishlayveradi).
    ============================================================ */
 const SHEET_ENDPOINT = "https://script.google.com/macros/s/AKfycby7z5nB-DfFxk6tBGVCFkMQNpPCdNbHI9DSURAMYiUt8GKPasqRNULcyG-A3lZzZzEIwQ/exec";
 
-/* One stable id per application, so a retry/double-submit can never create a
-   duplicate row (the Apps Script dedupes on it). Kept until a send succeeds. */
+/* Har ariza uchun bitta barqaror id — qayta yuborilsa ham takror qator paydo
+   boʻlmaydi (Apps Script shu id boʻyicha tekshiradi). Yuborish muvaffaqiyatli
+   boʻlguncha saqlanib turadi. */
 const SUBMISSION_ID_KEY = "upop_submission_id";
 function getSubmissionId() {
   let id = "";
@@ -674,7 +676,7 @@ function applyLang(lang) {
     if (v != null) el.setAttribute("placeholder", v);
   });
 
-  // Sync the language select dropdowns
+  // Til tanlash roʻyxatlarini sinxronlaymiz
   document.querySelectorAll(".langswitch-select").forEach((select) => {
     select.value = lang;
   });
@@ -683,15 +685,14 @@ function applyLang(lang) {
 }
 
 /* ============================================================
-   Boot
+   Ishga tushirish
    ============================================================ */
 
 document.addEventListener("DOMContentLoaded", () => {
   applyLang(getLang());
 
-  // Play hero entrance.
-  // Added synchronously so it fires even on a backgrounded tab,
-  // where requestAnimationFrame would be paused.
+  // Hero kirish animatsiyasi. Sinxron qoʻshiladi — orqa fondagi brauzer
+  // varagʻida ham ishlasin (u yerda requestAnimationFrame toʻxtab turadi).
   document.body.classList.add("is-ready");
 
   initLangSwitch();
@@ -704,16 +705,16 @@ document.addEventListener("DOMContentLoaded", () => {
   initForm();
   initPhoto();
 
-  // Open at the very top unless the URL points to a section anchor.
+  // URL biror boʻlimga ishora qilmasa, sahifani eng yuqoridan ochamiz.
   if (!location.hash) window.scrollTo(0, 0);
 });
 
-// Also reset on back/forward (bfcache) restores so the page never reopens scrolled.
+// Orqaga/oldinga (bfcache) qaytganda ham tiklaymiz — sahifa aylantirilgan holda ochilmasin.
 window.addEventListener("pageshow", (e) => {
   if (e.persisted && !location.hash) window.scrollTo(0, 0);
 });
 
-/* ---------- language switch ---------- */
+/* ---------- til almashtirish ---------- */
 
 function initLangSwitch() {
   document.querySelectorAll(".langswitch-select").forEach((select) => {
@@ -723,7 +724,7 @@ function initLangSwitch() {
   });
 }
 
-/* ---------- nav: glass background after scroll ---------- */
+/* ---------- nav: aylantirilgach shisha fon ---------- */
 
 function initNavStuck() {
   const nav = document.getElementById("nav");
@@ -747,7 +748,7 @@ function initNavStuck() {
   ).observe(sentinel);
 }
 
-/* ---------- mobile menu ---------- */
+/* ---------- mobil menyu ---------- */
 
 function initMobileMenu() {
   const burger = document.querySelector(".nav__burger");
@@ -774,10 +775,10 @@ function initMobileMenu() {
   });
 }
 
-/* ---------- scroll reveal + staggering + count-up + caravan line ---------- */
+/* ---------- aylantirganda paydo boʻlish, ketma-ketlik, sanash, karvon chizigʻi ---------- */
 
 function initReveal() {
-  // Pre-index grouped items for CSS stagger.
+  // Guruhlangan elementlarni CSS ketma-ketligi uchun raqamlaymiz.
   document
     .querySelectorAll(
       ".caravan .stop, .steplist .step, .stats .stat, .accordion .ac"
@@ -795,7 +796,7 @@ function initReveal() {
       el.style.setProperty("--i", siblings.indexOf(el));
     });
 
-  // Assign varied entrance flavours so no two neighbours animate alike.
+  // Qoʻshni elementlar bir xil kirmasin deb turli yoʻnalishlar beramiz.
   const stat = [
     "reveal--left",
     "reveal--scale",
@@ -809,7 +810,7 @@ function initReveal() {
     );
   });
 
-  // steps enter from alternating sides (01 left, 02 right, 03 left)
+  // qadamlar navbatma-navbat ikki tomondan kiradi (01 chapdan, 02 oʻngdan, 03 chapdan)
   document.querySelectorAll(".steplist .step").forEach((el, i) => {
     el.classList.add(i % 2 ? "reveal--right" : "reveal--left");
   });
@@ -848,16 +849,15 @@ function initReveal() {
     return;
   }
 
-  // Bidirectional:
-  // toggle is-in as elements enter/leave,
-  // so they replay on scroll up and down.
+  // Ikki yoʻnalishli: element koʻringanda is-in qoʻshiladi, yoʻqolganda olinadi —
+  // yuqoriga ham, pastga ham aylantirganda qayta oʻynaydi.
   const io = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
         const el = entry.target;
 
         if (entry.isIntersecting) {
-          // Direction-aware only for plain reveals.
+          // Yoʻnalish faqat oddiy paydo boʻlishlarda hisobga olinadi.
           if (!/reveal--/.test(el.className)) {
             const top = entry.rootBounds
               ? entry.rootBounds.top
@@ -889,8 +889,7 @@ function initReveal() {
     .querySelectorAll(".reveal")
     .forEach((el) => io.observe(el));
 
-  // Caravan line draws in/out both directions.
-  // It is not a .reveal wrapper.
+  // Karvon chizigʻi ikki yoʻnalishda chiziladi va oʻchadi; u .reveal emas.
   const caravan = document.querySelector(".caravan");
 
   if (caravan) {
@@ -938,7 +937,7 @@ function runCountUps(instant) {
   });
 }
 
-/* ---------- scroll colour journey: tag body with the active section ---------- */
+/* ---------- rang sayohati: body ga faol boʻlim belgisi ---------- */
 
 function initSectionFx() {
   const map = [
@@ -966,7 +965,7 @@ function initSectionFx() {
       "sec-" + k
     );
 
-    // Mirror the visual gold highlight for assistive tech.
+    // Oltin ajratishni yordamchi texnologiyalar uchun ham takrorlaymiz.
     document.querySelectorAll(".nav__desktop a").forEach((a) => {
       if (a.getAttribute("href") === "#" + k) {
         a.setAttribute("aria-current", "true");
@@ -1000,7 +999,7 @@ function initSectionFx() {
   secs.forEach(([el]) => io.observe(el));
 }
 
-/* ---------- FAQ accordion ---------- */
+/* ---------- savol-javob akkordeoni ---------- */
 
 function initAccordion() {
   document
@@ -1018,7 +1017,7 @@ function initAccordion() {
     });
 }
 
-/* ---------- magnetic CTA (fine pointer, motion-on only) ---------- */
+/* ---------- magnit tugma (faqat sichqoncha va animatsiya yoqilganda) ---------- */
 
 function initMagnetic() {
   if (
@@ -1071,12 +1070,11 @@ function initMagnetic() {
 }
 
 /* ============================================================
-   Casting form: validation, states, and the submit hook
-/* ============================================================
-   Casting anketa — multi-step wizard
+   Kasting anketasi — koʻp qadamli forma
    ============================================================ */
-/* Candidate photo: compress client-side to a modest JPEG and stash it as a
-   data URL in the hidden field, so the JSON payload stays small (~100–200 KB). */
+
+/* Nomzod surati: brauzerda kichik JPEG ga siqib, yashirin maydonga data URL
+   sifatida qoʻyamiz — JSON yengil qoladi (~100–200 KB). */
 function initPhoto() {
   const input = document.getElementById("f-photo");
   const drop = document.getElementById("photoDrop");
@@ -1100,11 +1098,11 @@ function initPhoto() {
         const err = dataEl.closest(".field")?.querySelector(".field__err");
         if (err) err.hidden = true;
       })
-      .catch(() => { dataEl.value = ""; }); // validation will prompt for a photo
+      .catch(() => { dataEl.value = ""; }); // tekshiruv suratni soʻraydi
   });
 }
 
-/* Downscale + re-encode an image file to a JPEG data URL (longest side ≤ maxDim). */
+/* Rasmni kichraytirib JPEG data URL ga aylantiradi (uzun tomoni ≤ maxDim). */
 function compressImage(file, maxDim, quality) {
   return new Promise((resolve, reject) => {
     const url = URL.createObjectURL(file);
@@ -1138,17 +1136,17 @@ function initForm() {
   const curEl = document.getElementById("wizCur");
   const errBar = document.getElementById("wizErr");
   const total = panels.length;
-  let current = 0; // 0-indexed active step
-  let reached = 0; // furthest step visited (for stepper jumps)
+  let current = 0; // faol qadam (0 dan)
+  let reached = 0; // yetib borilgan eng uzoq qadam (qadamlar orasida sakrash uchun)
 
-  // Gentle +998 prefill on every phone field.
+  // Har bir telefon maydoniga +998 ni oldindan qoʻyamiz.
   form.querySelectorAll('input[type="tel"]').forEach((ph) => {
     ph.addEventListener("focus", () => {
       if (!ph.value.trim()) ph.value = "+998 ";
     });
   });
 
-  // Clear a field's error the moment the user fixes it.
+  // Foydalanuvchi tuzatishi bilan xatoni olib tashlaymiz.
   form.querySelectorAll("input, select, textarea").forEach((el) => {
     const clear = () => {
       el.closest(".field")?.classList.remove("has-err");
@@ -1235,7 +1233,7 @@ function initForm() {
     scrollToForm();
   });
 
-  // Stepper dots: jump freely to any step already reached.
+  // Qadam nuqtalari: yetib borilgan istalgan qadamga oʻtish mumkin.
   steps.forEach((s, idx) => {
     s.addEventListener("click", () => {
       if (idx <= reached) {
@@ -1248,7 +1246,7 @@ function initForm() {
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    // Validate every panel; jump to the first that fails.
+    // Barcha panellarni tekshiramiz; birinchi xatoliga oʻtamiz.
     for (let i = 0; i < total; i++) {
       const bad = validatePanel(panels[i]);
       if (bad.length) {
@@ -1268,7 +1266,7 @@ function initForm() {
 
     try {
       await submitCasting(data);
-      clearSubmissionId(); // a fresh fill next time is a new application
+      clearSubmissionId(); // keyingi toʻldirish — yangi ariza
       showSuccess();
     } catch (err) {
       console.error("[UPOP] submit failed:", err);
@@ -1283,7 +1281,7 @@ function initForm() {
   show(0);
 }
 
-/* Gather every named field (plus checkbox booleans + meta) into one payload. */
+/* Barcha nomli maydonlarni (checkbox lar va meta bilan) bitta obyektga yigʻadi. */
 function collectData(form, lang) {
   const data = {};
   new FormData(form).forEach((v, k) => {
@@ -1328,21 +1326,19 @@ function showSuccess() {
 }
 
 /* ------------------------------------------------------------
-   Send one application to the Google Sheet (UPOP_casting) via the Apps
-   Script Web App in SHEET_ENDPOINT.
+   Bitta arizani SHEET_ENDPOINT dagi Apps Script orqali Google Sheets ga yuboradi.
 
-   • Transport: POST as text/plain so it stays a "simple" CORS request (no
-     preflight, which Apps Script can't answer), in no-cors mode. The write
-     lands server-side; the opaque response resolves on delivery and only
-     rejects on a real network failure — so the caller can tell "sent" from
-     "no connection" and let the user retry.
-   • Idempotency: the payload carries submissionId; the Apps Script dedupes
-     on it, so a retry after a flaky network never doubles a row.
-   • Concurrency: the Apps Script serializes appends with a script lock.
+   • Transport: text/plain POST — "oddiy" CORS soʻrovi (preflight yoʻq, Apps
+     Script unga javob bera olmaydi), no-cors rejimida. Yozuv serverda saqlanadi;
+     javob oʻqilmasa ham yetkazilgani aniq, faqat haqiqiy tarmoq xatosida rad
+     etiladi — shunda foydalanuvchi qayta urinishi mumkin.
+   • Takrorlanmaslik: payload da submissionId bor, Apps Script shu boʻyicha
+     tekshiradi — qayta yuborish takror qator yaratmaydi.
+   • Navbat: Apps Script yozishlarni qulf bilan tartibga soladi.
 
-   If SHEET_ENDPOINT is empty the form still completes (for previewing) but
-   nothing is saved — configure it per google-apps-script/SETUP.md.
------------------------------------------------------------- */
+   SHEET_ENDPOINT boʻsh boʻlsa forma ishlayveradi, lekin hech narsa saqlanmaydi —
+   google-apps-script/SETUP.md boʻyicha sozlang.
+   ------------------------------------------------------------ */
 async function submitCasting(data) {
   if (!SHEET_ENDPOINT) {
     console.warn(
@@ -1356,28 +1352,27 @@ async function submitCasting(data) {
   const body = JSON.stringify(data);
   const req = () => ({
     method: "POST",
-    headers: { "Content-Type": "text/plain;charset=utf-8" }, // simple request → no preflight
+    headers: { "Content-Type": "text/plain;charset=utf-8" }, // oddiy soʻrov → preflight yoʻq
     body,
     redirect: "follow",
   });
 
-  // 1) Readable attempt: an "Anyone" Apps Script deployment returns
-  //    Access-Control-Allow-Origin:* so we can confirm the write really
-  //    persisted (res + {ok:true}) before clearing the id / showing success.
+  // 1) Oʻqiladigan urinish: "Anyone" uchun joylangan Apps Script
+  //    Access-Control-Allow-Origin:* qaytaradi — id ni tozalashdan oldin
+  //    yozuv haqiqatan saqlanganini ({ok:true}) tekshirib olamiz.
   let res;
   try {
     res = await fetch(SHEET_ENDPOINT, req());
   } catch (_networkOrCors) {
-    // The response couldn't be read (CORS blocked it, or a network hiccup).
-    // The request itself was still delivered, but to be safe re-send it
-    // opaquely so the row definitely lands — the submissionId dedupe on the
-    // server guarantees this can't create a second row. If THIS also fails,
-    // it's a genuine offline and the error propagates (id kept → retry).
+    // Javobni oʻqib boʻlmadi (CORS yopdi yoki tarmoq uzildi). Soʻrov yetib borgan
+    // boʻlishi mumkin, lekin ishonch uchun opaque rejimda qayta yuboramiz —
+    // serverdagi submissionId tekshiruvi ikkinchi qator yaratilishiga yoʻl qoʻymaydi.
+    // Bu ham oʻtmasa, demak haqiqatan oflayn: xato yuqoriga uzatiladi (id saqlanadi).
     await fetch(SHEET_ENDPOINT, { ...req(), mode: "no-cors" });
     return;
   }
 
-  // We can read the response — trust the server's verdict.
+  // Javob oʻqildi — serverning hukmiga ishonamiz.
   let payload = null;
   try { payload = await res.json(); } catch (_) {}
   if (!res.ok || (payload && payload.ok === false)) {
@@ -1385,5 +1380,5 @@ async function submitCasting(data) {
   }
 }
 
-/* ---------- util ---------- */
+/* ---------- yordamchi ---------- */
 

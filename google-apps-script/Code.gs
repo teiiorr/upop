@@ -1,28 +1,27 @@
 /**
- * UPOP_casting — Google Sheet backend for the U POP TREND application form.
+ * UPOP_casting — U POP TREND anketasi uchun Google Sheets backend.
+ * Saytdan kelgan har bir ariza POST orqali qabul qilinib, jadvalga alohida
+ * qator sifatida yoziladi.
  *
- * Receives one application per POST from the website and appends it as a
- * neatly formatted row.
+ *  • Bir vaqtda kelgan arizalar qulf (LockService) orqali navbatga qoʻyiladi.
+ *  • Har arizaning oʻz submissionId qiymati bor — qayta yuborilsa ham ikki
+ *    marta yozilmaydi.
+ *  • Sarlavha qatori muzlatilgan va oltin rangda; sana-vaqt haqiqiy formatda,
+ *    ha/yoʻq maydonlari Ha/— koʻrinishida; qatorlar navbatma-navbat boʻyaladi.
  *
- *  • Concurrency  — every write is wrapped in a script lock, so simultaneous
- *                   submissions can never overwrite or interleave rows.
- *  • Idempotency  — each application carries a `submissionId`; a row with that
- *                   id is never appended twice (retry / double-submit safe).
- *  • Nice format  — a frozen, gold, bold, centered header; readable titles;
- *                   real date-times; Ha/— for yes-no fields; row banding that
- *                   starts BELOW the header (so it never greys the header).
- *
- * Setup lives in SETUP.md. After editing this file, redeploy:
+ * Oʻrnatish — SETUP.md. Faylni oʻzgartirgach qayta joylang:
  * Deploy ▸ Manage deployments ▸ ✏️ ▸ Version: New version ▸ Deploy.
+ *
+ * teiior
  */
 
 var SHEET_NAME = 'Applications';
-var ID_COL = 2;                 // "Submission ID" column — used for dedupe/purge
+var ID_COL = 2;                 // "Submission ID" ustuni — takrorlarni aniqlash va tozalash uchun
 
-/* The admin password is NOT stored in this file (the repo may be public and
-   the sheet holds minors' personal data). Set it once in
-   Project Settings ▸ Script properties ▸ add property  ADMIN_KEY = <password>.
-   It guards both the maintenance actions and the read/list feed. */
+/* Admin paroli bu faylda saqlanmaydi (repo ochiq boʻlishi mumkin, jadvalda esa
+   voyaga yetmaganlarning maʼlumotlari bor). Uni bir marta Project Settings ▸
+   Script properties boʻlimida ADMIN_KEY = <parol> koʻrinishida kiriting.
+   Parol xizmat amallarini ham, roʻyxatni oʻqishni ham himoya qiladi. */
 function adminKey() {
   return PropertiesService.getScriptProperties().getProperty('ADMIN_KEY') || '';
 }
@@ -31,9 +30,9 @@ function authorized(data) {
   return k !== '' && String(data && data.key) === k;
 }
 
-/* Column order + human titles. Keys match the JSON the site sends.
-   `type:'bool'` → Ha/—, `type:'datetime'` → real date. `wide:true` widens
-   the column for long free-text; `center:true` centre-aligns short values. */
+/* Ustunlar tartibi va sarlavhalari. Kalitlar sayt yuboradigan JSON bilan bir xil.
+   type:'bool' → Ha/—, type:'datetime' → haqiqiy sana. wide — uzun matn uchun
+   keng ustun, center — qisqa qiymatlarni markazga tekislash. */
 var FIELDS = [
   { k: 'submittedAt',       h: 'Vaqt / Timestamp',            type: 'datetime', center: true },
   { k: 'submissionId',      h: 'Submission ID' },
@@ -96,28 +95,28 @@ var FIELDS = [
   { k: 'consent_true',      h: 'Maʼlumotlar haqqoniyligi',        type: 'bool' }
 ];
 
-/* Admin-only review status, kept in one extra column after all fields, so it
-   is shared across everyone who opens the admin panel. Three colours:
-   green / yellow / red (meaning is up to the reviewers); empty = not reviewed.
-   Stored as a coloured dot so the sheet itself stays readable. */
+/* Baholash holati — barcha maydonlardan keyingi alohida ustun, admin panelni
+   ochgan har bir kishi uchun umumiy. Uch rang: yashil / sariq / qizil (maʼnosini
+   baholovchilar belgilaydi); boʻsh — hali koʻrilmagan. Jadval oʻqilishi oson
+   boʻlsin deb rangli nuqta sifatida saqlanadi. */
 var STATUS_HEADER = 'Koʻrib chiqildi / Рассмотрено';
 var STATUS_MAP = { green: '🟢', yellow: '🟡', red: '🔴' };
 var STATUS_REV = { '🟢': 'green', '🟡': 'yellow', '🔴': 'red' };
 
-/* Free-text notes the reviewers keep on each participant. Long stories are
-   fine — the column wraps and widens. Lives right after the status column, so
-   one "review" write stamps the colour and the story together. */
+/* Baholovchilarning har bir ishtirokchi haqidagi erkin izohlari. Uzun boʻlsa ham
+   mayli — ustun kengayib, matn oʻraladi. Holat ustunidan keyin turadi, shuning
+   uchun bitta "review" yozuvi rang bilan izohni birga saqlaydi. */
 var HISTORY_HEADER = 'Ishtirokchi tarixi / История участника';
 
-/* Candidate photo. The site (and the admin) send a base64 image; we save it to
-   a Drive folder, share it view-only, and keep the viewable URL in this column.
-   Storing a URL — not the image — keeps the sheet and the admin feed light. */
+/* Nomzod surati. Sayt (va admin) base64 rasm yuboradi; uni Drive papkasiga
+   saqlab, havola orqali koʻrishga ochamiz va shu ustunda URL ni saqlaymiz.
+   Rasm emas, URL saqlanadi — jadval ham, admin roʻyxati ham yengil qoladi. */
 var PHOTO_HEADER = 'Foto / Фото';
 var PHOTO_FOLDER = 'UPOP_casting_photos';
 
 /* ---------------------------------------------------------------- POST */
 function doPost(e) {
-  // Parse the body up front so read-only actions can skip the write lock.
+  // Tanani oldindan oʻqiymiz — faqat oʻqiydigan amallar yozish qulfini kutmasin.
   var data = {};
   try {
     if (e && e.postData && e.postData.contents) {
@@ -130,21 +129,20 @@ function doPost(e) {
   var ss = SpreadsheetApp.getActive();
   var sheet = ss.getSheetByName(SHEET_NAME) || ss.insertSheet(SHEET_NAME);
 
-  // Read feed for the admin panel — a pure read: no write-lock and no header
-  // rewrite, so the admin's list never serializes behind an in-flight photo
-  // upload / status write (which is what made it occasionally stall). Keyed.
+  // Admin paneli uchun roʻyxat — faqat oʻqish: qulf ham, sarlavha qayta yozish ham yoʻq.
+  // Shunda roʻyxat surat yuklash yoki holat yozish tugashini kutib qolmaydi. Parol bilan.
   if (data && data.action === 'list') {
     if (!authorized(data)) return json({ ok: false, error: 'forbidden' });
     return json({
       ok: true,
-      sheetUrl: ss.getUrl(),          // lets the admin deep-link to a participant's row
+      sheetUrl: ss.getUrl(),          // admin ishtirokchi qatoriga toʻgʻridan-toʻgʻri oʻta olishi uchun
       gid: String(sheet.getSheetId()),
       fields: FIELDS.map(function (f) { return { k: f.k, h: f.h, type: f.type || 'text' }; }),
       rows: readAllRows(sheet)
     });
   }
 
-  // Everything below this point mutates the sheet — take the write lock.
+  // Bundan keyingi amallar jadvalni oʻzgartiradi — yozish qulfini olamiz.
   var lock = LockService.getScriptLock();
   try {
     lock.waitLock(30000);
@@ -155,13 +153,13 @@ function doPost(e) {
   try {
     ensureHeaders(sheet);
 
-    // Set the review status (green/yellow/red or '' to clear) — keyed.
+    // Baho holatini oʻrnatish (green/yellow/red yoki '' — tozalash). Parol bilan.
     if (data && data.action === 'setStatus') {
       if (!authorized(data)) return json({ ok: false, error: 'forbidden' });
       var sid = String(data.submissionId || '').trim();
       if (!sid) return json({ ok: false, error: 'no id' });
       var status = String(data.status || '');
-      var dot = STATUS_MAP[status] || '';   // unknown/empty clears the cell
+      var dot = STATUS_MAP[status] || '';   // nomaʼlum/boʻsh qiymat katakni tozalaydi
       var lr = sheet.getLastRow();
       if (lr > 1) {
         var idvals = sheet.getRange(2, ID_COL, lr - 1, 1).getValues();
@@ -177,14 +175,14 @@ function doPost(e) {
       return json({ ok: false, error: 'not found' });
     }
 
-    // Save a review in one write: the colour (green/yellow/red or '') AND the
-    // participant story together — the admin's "save" hits this once. Keyed.
+    // Bahoni bitta yozuvda saqlash: rang (green/yellow/red yoki '') va ishtirokchi
+    // tarixi birga — admindagi "Saqlash" aynan shu amalni chaqiradi. Parol bilan.
     if (data && data.action === 'review') {
       if (!authorized(data)) return json({ ok: false, error: 'forbidden' });
       var rid = String(data.submissionId || '').trim();
       if (!rid) return json({ ok: false, error: 'no id' });
       var rstatus = String(data.status || '');
-      var rdot = STATUS_MAP[rstatus] || '';            // unknown/empty clears it
+      var rdot = STATUS_MAP[rstatus] || '';            // nomaʼlum/boʻsh qiymat katakni tozalaydi
       var rhist = (data.history == null) ? '' : String(data.history);
       var rlr = sheet.getLastRow();
       if (rlr > 1) {
@@ -192,13 +190,13 @@ function doPost(e) {
         for (var m = 0; m < rids.length; m++) {
           if (String(rids[m][0]).trim() === rid) {
             var rr = m + 2;
-            var sc = sheet.getRange(rr, FIELDS.length + 1);  // status column
+            var sc = sheet.getRange(rr, FIELDS.length + 1);  // holat ustuni
             sc.setNumberFormat('@'); sc.setValue(rdot);
             sc.setHorizontalAlignment('center').setVerticalAlignment('middle');
-            var hc = sheet.getRange(rr, FIELDS.length + 2);  // history column
+            var hc = sheet.getRange(rr, FIELDS.length + 2);  // tarix ustuni
             hc.setNumberFormat('@'); hc.setValue(rhist);
             hc.setWrap(true).setVerticalAlignment('middle').setHorizontalAlignment('left');
-            // Optional: admin uploaded/replaced the candidate photo.
+            // Ixtiyoriy: admin nomzod suratini yuklagan yoki almashtirgan boʻlsa.
             var rphoto = null;
             if (data.photo) {
               rphoto = savePhoto(data.photo, data.photoType, rid);
@@ -216,7 +214,7 @@ function doPost(e) {
       return json({ ok: false, error: 'not found' });
     }
 
-    // Maintenance action (purge test rows / repair / re-style) — keyed.
+    // Xizmat amallari (test qatorlarini oʻchirish / tuzatish / qayta bezash). Parol bilan.
     if (data && data.action === 'admin') {
       if (!authorized(data)) return json({ ok: false, error: 'forbidden' });
       var res = {};
@@ -226,7 +224,7 @@ function doPost(e) {
       return json({ ok: true, admin: true, result: res });
     }
 
-    // Idempotency: bail out if this submissionId is already recorded.
+    // Takror yuborilgan boʻlsa (bu submissionId allaqachon bor) — qayta yozmaymiz.
     var subId = String(data.submissionId || '').trim();
     if (subId) {
       var lastRow = sheet.getLastRow();
@@ -243,9 +241,9 @@ function doPost(e) {
     var row = FIELDS.map(function (f) { return cellValue(f, data[f.k]); });
     var targetRow = sheet.getLastRow() + 1;
     var rowRange = sheet.getRange(targetRow, 1, 1, FIELDS.length);
-    // Format the cells BEFORE writing: text ('@') for everything except the
-    // timestamp. This stops Sheets from reading "+998…" as a formula (#ERROR!)
-    // or mangling long/leading-zero numbers — for every row, any position.
+    // Kataklarni yozishdan OLDIN formatlaymiz: vaqtdan boshqa hammasi matn ('@').
+    // Shunda Sheets "+998…" ni formula deb oʻqimaydi (#ERROR!) va uzun yoki nol
+    // bilan boshlanadigan raqamlarni buzmaydi — har qanday qator va ustunda.
     rowRange.setNumberFormats([FIELDS.map(function (f) {
       return f.type === 'datetime' ? 'yyyy-mm-dd hh:mm:ss' : '@';
     })]);
@@ -257,7 +255,7 @@ function doPost(e) {
         return (f.center || f.type === 'bool') ? 'center' : 'left';
       })]);
 
-    // Candidate photo → Drive → viewable URL in the photo column (n+3).
+    // Nomzod surati → Drive → surat ustunida (n+3) koʻrish havolasi.
     var photoUrl = '';
     if (data.photo) {
       photoUrl = savePhoto(data.photo, data.photoType, subId || String(targetRow));
@@ -275,20 +273,20 @@ function doPost(e) {
   }
 }
 
-/* ---------------------------------------------------------------- GET (health) */
+/* ---------------------------------------------------------------- GET (holat) */
 function doGet() {
   return json({ ok: true, service: 'UPOP_casting', time: new Date() });
 }
 
-/* ---------------------------------------------------------------- photo (Drive)
-   Decode a base64 image, drop it in a dedicated Drive folder, share it
-   view-only, and return a URL that <img> can render. Returns '' on any failure
-   so a photo problem never blocks saving the application itself. */
+/* ---------------------------------------------------------------- surat (Drive)
+   base64 rasmni dekodlab, alohida Drive papkasiga saqlaymiz, havola orqali
+   koʻrishga ochamiz va <img> koʻrsata oladigan URL qaytaramiz. Xato boʻlsa ''
+   qaytadi — surat muammosi arizaning oʻzini saqlashga toʻsqinlik qilmasin. */
 function savePhoto(dataUrl, mime, name) {
   try {
     var b64 = String(dataUrl || '');
     var comma = b64.indexOf(',');
-    if (comma >= 0) b64 = b64.substring(comma + 1);   // strip "data:image/...;base64,"
+    if (comma >= 0) b64 = b64.substring(comma + 1);   // "data:image/...;base64," qismini olib tashlaymiz
     if (!b64) return '';
     var type = String(mime || 'image/jpeg');
     var ext = type.indexOf('png') >= 0 ? 'png' : (type.indexOf('webp') >= 0 ? 'webp' : 'jpg');
@@ -296,7 +294,7 @@ function savePhoto(dataUrl, mime, name) {
     var blob = Utilities.newBlob(bytes, type, 'upop_' + (name || 'photo') + '.' + ext);
     var file = getPhotoFolder().createFile(blob);
     try { file.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW); } catch (e) {}
-    // Thumbnail endpoint renders reliably in <img> for anyone-with-link files.
+    // Thumbnail manzili "havolaga ega har kim" fayllar uchun <img> da ishonchli ochiladi.
     return 'https://drive.google.com/thumbnail?id=' + file.getId() + '&sz=w1000';
   } catch (err) {
     return '';
@@ -308,14 +306,14 @@ function getPhotoFolder() {
   return it.hasNext() ? it.next() : DriveApp.createFolder(PHOTO_FOLDER);
 }
 
-/* Run once from the editor after pasting this file so the deployment gains the
-   Drive permission (photos need it). Deploy ▸ New version afterwards. */
+/* Faylni joylagach muharrirdan bir marta ishga tushiring — joylashuv Drive
+   ruxsatini olsin (suratlar uchun kerak). Keyin Deploy ▸ New version. */
 function authorizeDrive() {
   getPhotoFolder();
   return 'ok';
 }
 
-/* ---------------------------------------------------------------- values */
+/* ---------------------------------------------------------------- qiymatlar */
 function cellValue(f, v) {
   if (f.type === 'bool') return v === true || v === 'true' ? 'Ha' : '—';
   if (f.type === 'datetime') {
@@ -326,7 +324,7 @@ function cellValue(f, v) {
   return String(v);
 }
 
-/* ---------------------------------------------------------------- headers */
+/* ---------------------------------------------------------------- sarlavhalar */
 function ensureHeaders(sheet) {
   var headers = FIELDS.map(function (f) { return f.h; }).concat([STATUS_HEADER, HISTORY_HEADER, PHOTO_HEADER]);
   var need = false;
@@ -341,12 +339,12 @@ function ensureHeaders(sheet) {
   if (need) styleHeader(sheet);
 }
 
-/* Writes + styles the header row and per-column layout. Safe to call again. */
+/* Sarlavha qatorini yozadi va bezaydi, ustunlar joylashuvini oʻrnatadi. Qayta chaqirish xavfsiz. */
 function styleHeader(sheet) {
   var headers = FIELDS.map(function (f) { return f.h; }).concat([STATUS_HEADER, HISTORY_HEADER, PHOTO_HEADER]);
-  var total = headers.length; // FIELDS.length + 3 (status + history + photo)
+  var total = headers.length; // FIELDS.length + 3 (holat + tarix + surat)
 
-  // Grow a blank 26-column tab so all fields fit before any range op.
+  // Boʻsh 26 ustunli varaqni kengaytiramiz — barcha maydonlar sigʻsin.
   if (sheet.getMaxColumns() < total) {
     sheet.insertColumnsAfter(sheet.getMaxColumns(), total - sheet.getMaxColumns());
   }
@@ -354,10 +352,10 @@ function styleHeader(sheet) {
   var header = sheet.getRange(1, 1, 1, total);
   header.setValues([headers]);
   header
-    .setFontSize(12)                 // bigger than the default 10
+    .setFontSize(12)                 // odatdagi 10 dan kattaroq
     .setFontWeight('bold')
-    .setFontColor('#241704')         // dark, on gold
-    .setBackground('#D3A63F')        // brand gold — no more grey
+    .setFontColor('#241704')         // oltin ustida toʻq rang
+    .setBackground('#D3A63F')        // brend oltini
     .setHorizontalAlignment('center')
     .setVerticalAlignment('middle')
     .setWrap(true);
@@ -365,7 +363,7 @@ function styleHeader(sheet) {
   sheet.setFrozenRows(1);
   sheet.setFrozenColumns(1);
 
-  // Column widths + per-column horizontal alignment for the data area.
+  // Maʼlumotlar qismi uchun ustun kengliklari va gorizontal tekislash.
   var maxRows = sheet.getMaxRows();
   for (var c = 0; c < FIELDS.length; c++) {
     var f = FIELDS[c];
@@ -378,21 +376,21 @@ function styleHeader(sheet) {
       colData.setVerticalAlignment('middle');
     }
   }
-  // review-status column (n+1): narrow + centred (holds the colour dot)
+  // baho ustuni (n+1): tor, markazda (rangli nuqta turadi)
   var statusCol = FIELDS.length + 1;
   sheet.setColumnWidth(statusCol, 150);
   if (maxRows >= 2) {
     sheet.getRange(2, statusCol, maxRows - 1, 1)
       .setHorizontalAlignment('center').setVerticalAlignment('middle');
   }
-  // participant-history column (n+2): wide + left + wrap (long stories)
+  // tarix ustuni (n+2): keng, chapga, oʻraladi (uzun matnlar)
   var historyCol = FIELDS.length + 2;
   sheet.setColumnWidth(historyCol, 460);
   if (maxRows >= 2) {
     sheet.getRange(2, historyCol, maxRows - 1, 1)
       .setHorizontalAlignment('left').setVerticalAlignment('middle').setWrap(true);
   }
-  // photo column (n+3): holds the Drive URL
+  // surat ustuni (n+3): Drive havolasi
   var photoCol = FIELDS.length + 3;
   sheet.setColumnWidth(photoCol, 320);
   if (maxRows >= 2) {
@@ -400,8 +398,8 @@ function styleHeader(sheet) {
       .setHorizontalAlignment('left').setVerticalAlignment('middle');
   }
 
-  // Row banding for the DATA only (row 2 down) — never touches the header,
-  // which is what used to paint it grey.
+  // Qatorlarni navbatma-navbat boʻyash faqat maʼlumotlar uchun (2-qatordan) —
+  // sarlavhaga tegmaydi, aks holda u kulrang boʻlib qolar edi.
   try {
     var bandings = sheet.getBandings();
     for (var b = 0; b < bandings.length; b++) bandings[b].remove();
@@ -409,15 +407,15 @@ function styleHeader(sheet) {
       sheet.getRange(2, 1, maxRows - 1, total)
         .applyRowBanding(SpreadsheetApp.BandingTheme.LIGHT_GREY, false, false);
     }
-  } catch (err) { /* banding is cosmetic */ }
+  } catch (err) { /* boʻyash faqat bezak */ }
 }
 
-/* Every application as an array of objects keyed by field, newest first. */
+/* Barcha arizalar — maydon kalitlari boʻyicha obyektlar roʻyxati, yangilari oldinda. */
 function readAllRows(sheet) {
   var last = sheet.getLastRow();
   if (last < 2) return [];
   var n = FIELDS.length;
-  var cols = Math.min(n + 3, sheet.getMaxColumns()); // +status +history +photo
+  var cols = Math.min(n + 3, sheet.getMaxColumns()); // +holat +tarix +surat
   var values = sheet.getRange(2, 1, last - 1, cols).getValues();
   var out = [];
   for (var r = 0; r < values.length; r++) {
@@ -428,18 +426,18 @@ function readAllRows(sheet) {
       obj[FIELDS[c].k] = v;
     }
     var raw = cols > n ? String(values[r][n]).trim() : '';
-    obj.status = STATUS_REV[raw] || '';   // green/yellow/red or ''
+    obj.status = STATUS_REV[raw] || '';   // green/yellow/red yoki ''
     obj.reviewed = raw !== '';
     obj.history = cols > n + 1 ? String(values[r][n + 1]) : '';
     obj.photo = cols > n + 2 ? String(values[r][n + 2]) : '';
     out.push(obj);
   }
-  out.reverse(); // newest first
+  out.reverse(); // yangilari oldinda
   return out;
 }
 
-/* Recover cells that Sheets already turned into a formula (e.g. "+998…" ->
-   #ERROR!): read the formula, drop the leading "=", re-store it as text. */
+/* Sheets formulaga aylantirib yuborgan kataklarni tiklash ("+998…" → #ERROR!):
+   formulani oʻqib, boshidagi "=" ni olib tashlab, matn sifatida qayta yozamiz. */
 function repairFormulas(sheet) {
   var last = sheet.getLastRow();
   if (last < 2) return 0;
@@ -452,7 +450,7 @@ function repairFormulas(sheet) {
       if (fla && fla.charAt(0) === '=') {
         var cell = sheet.getRange(r + 2, c + 1);
         cell.setNumberFormat('@');
-        cell.setValue(fla.substring(1)); // "=+998…" -> "+998…" as plain text
+        cell.setValue(fla.substring(1)); // "=+998…" → "+998…" oddiy matn sifatida
         fixed++;
       }
     }
@@ -460,7 +458,7 @@ function repairFormulas(sheet) {
   return fixed;
 }
 
-/* Re-apply vertical centering + timestamp format to all existing data rows. */
+/* Mavjud barcha qatorlarga vertikal tekislash va vaqt formatini qayta qoʻllaydi. */
 function restyleData(sheet) {
   var last = sheet.getLastRow();
   if (last < 2) return;
@@ -469,7 +467,7 @@ function restyleData(sheet) {
   sheet.getRange(2, 1, last - 1, 1).setNumberFormat('yyyy-mm-dd hh:mm:ss');
 }
 
-/* Delete every row whose Submission ID starts with "TEST-" (bottom-up). */
+/* Submission ID si "TEST-" bilan boshlanadigan barcha qatorlarni oʻchiradi (pastdan yuqoriga). */
 function purgeTestRows(sheet) {
   var last = sheet.getLastRow();
   if (last < 2) return 0;

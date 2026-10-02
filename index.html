@@ -2,8 +2,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <script>
   document.documentElement.classList.add("js");
-  // Always open the landing page at the very top: stop the browser from
-  // restoring the previous scroll position on reload / reopen.
+  // Sahifani doim eng yuqoridan ochamiz: brauzer qayta yuklaganda
+  // oldingi aylantirish holatini tiklamasin.
   if ("scrollRestoration" in history) history.scrollRestoration = "manual";
   if (!location.hash) window.scrollTo(0, 0);
 </script>
@@ -38,7 +38,7 @@
   Kastingga oʻtish
 </a>
 
-<!-- scroll-driven colour journey -->
+<!-- aylantirishga bogʻliq rang sayohati -->
 <div class="bgfx" aria-hidden="true">
   <b class="g"></b>
   <b class="v"></b>
@@ -46,24 +46,24 @@
   <b class="m"></b>
 </div>
 
-<!-- ============ HEADER / NAV ============ -->
+<!-- ============ SARLAVHA / NAV ============ -->
 
 <header class="nav" id="nav">
   <div class="nav__inner">
 
-    <!-- Brand -->
+    <!-- Brend -->
     <a class="nav__brand" href="#top" aria-label="U POP TREND">
       <img src="logo-hero.png" alt="U POP TREND" width="58" height="46" />
     </a>
 
-    <!-- Desktop Navigation -->
+    <!-- Ish stoli navigatsiyasi -->
     <nav class="nav__desktop" aria-label="Primary">
       <a href="#who" data-i18n="nav_who">Kim qatnashadi</a>
       <a href="#how" data-i18n="nav_how">Bu qanday ishlaydi</a>
       <a href="#faq" data-i18n="nav_faq">Savollar</a>
     </nav>
 
-    <!-- Language Selector & CTA -->
+    <!-- Til tanlash va CTA -->
     <div class="nav__actions">
       <select class="langswitch-select" role="group" aria-label="Language">
         <option value="uz" selected>🇺🇿 UZ</option>
@@ -80,7 +80,7 @@
       </a>
     </div>
 
-    <!-- Mobile Burger -->
+    <!-- Mobil menyu tugmasi -->
     <button
       type="button"
       class="nav__burger"
@@ -153,7 +153,7 @@
 </section>
 
 
-  <!-- ============ WHO / CHANCE + STATS ============ -->
+  <!-- ============ KIMLAR UCHUN / IMKONIYAT + STATISTIKA ============ -->
 
   <section
     class="who"
@@ -265,7 +265,7 @@
   </section>
 
 
-  <!-- ============ HOW / STEPS ============ -->
+  <!-- ============ QANDAY / QADAMLAR ============ -->
 
   <section
     class="steps"
@@ -298,7 +298,7 @@
 
     <ol class="steplist">
 
-      <!-- STEP 01 -->
+      <!-- 1-QADAM -->
 
       <li class="step reveal">
 
@@ -326,7 +326,7 @@
       </li>
 
 
-      <!-- STEP 02 -->
+      <!-- 2-QADAM -->
 
       <li class="step reveal">
 
@@ -355,7 +355,7 @@
       </li>
 
 
-      <!-- STEP 03 -->
+      <!-- 3-QADAM -->
 
       <li class="step reveal">
 
@@ -388,7 +388,7 @@
   </section>
 
 
-  <!-- ============ FAQ ============ -->
+  <!-- ============ SAVOL-JAVOB ============ -->
 
   <section
     class="faq"
@@ -418,7 +418,7 @@
     <div class="accordion">
 
 
-      <!-- FAQ 01 -->
+      <!-- 1-SAVOL -->
 
       <div class="ac reveal">
 
@@ -457,7 +457,7 @@
       </div>
 
 
-      <!-- FAQ 02 -->
+      <!-- 2-SAVOL -->
 
       <div class="ac reveal">
 
@@ -494,7 +494,7 @@
       </div>
 
 
-      <!-- FAQ 05 -->
+      <!-- 3-SAVOL -->
 
       <div class="ac reveal">
 
@@ -533,7 +533,7 @@
       </div>
 
 
-      <!-- FAQ 06 — NEW -->
+      <!-- 4-SAVOL -->
 
       <div class="ac reveal">
 
@@ -578,7 +578,7 @@
 
       </div>
 
-      <!-- FAQ 05 — NEW (video deadline) -->
+      <!-- 5-SAVOL (video muddati) -->
 
       <div class="ac reveal">
 
@@ -619,9 +619,8 @@
   </section>
 
 
-  <!-- ============ APPLY / FORM ============ -->
+  <!-- ============ ARIZA / ANKETA ============ -->
 
-  <!-- ============ APPLY / ANKETA WIZARD ============ -->
   <section class="apply" id="apply" aria-labelledby="apply-title">
 
     <div class="girih" aria-hidden="true">
@@ -653,7 +652,7 @@
         <h2 class="card__title" id="apply-title" data-i18n="form_card_title">Milliy tanlov anketasi</h2>
         <p class="card__sub" data-i18n="form_sub">Anketani diqqat bilan toʻldiring.</p>
 
-        <!-- progress stepper -->
+        <!-- qadamlar koʻrsatkichi -->
         <div class="wiz-progress" aria-hidden="true">
           <ol class="wiz-steps" id="wizSteps">
             <li class="wiz-steps__item is-active" data-goto="1"><span class="wiz-steps__num">1</span><span class="wiz-steps__label" data-i18n="st1">Shaxsiy</span></li>
@@ -669,7 +668,7 @@
 
         <form class="form wiz-form" id="castingForm" novalidate>
 
-          <!-- ===== STEP 1 · Personal ===== -->
+          <!-- ===== 1-QADAM — Shaxsiy ===== -->
           <fieldset class="wiz-panel is-active" data-step="1">
             <legend class="wiz-panel__title"><span class="wiz-panel__num">1</span><span data-i18n="sec1">Shaxsiy maʼlumotlar</span></legend>
 
@@ -770,7 +769,7 @@
             <p class="wiz-note" data-i18n="s1_agenote">Ishtirokchilar anketa topshirish paytida 14 dan 19 yoshgacha boʻlishi shart.</p>
           </fieldset>
 
-          <!-- ===== STEP 2 · Parent ===== -->
+          <!-- ===== 2-QADAM — Ota-ona ===== -->
           <fieldset class="wiz-panel" data-step="2">
             <legend class="wiz-panel__title"><span class="wiz-panel__num">2</span><span data-i18n="sec2">Ota-ona / qonuniy vakil</span></legend>
             <p class="wiz-note wiz-note--accent" data-i18n="s2_note">Barcha ishtirokchilar uchun toʻldirilishi shart.</p>
@@ -803,7 +802,7 @@
             </label>
           </fieldset>
 
-          <!-- ===== STEP 3 · Creative ===== -->
+          <!-- ===== 3-QADAM — Ijod ===== -->
           <fieldset class="wiz-panel" data-step="3">
             <legend class="wiz-panel__title"><span class="wiz-panel__num">3</span><span data-i18n="sec3">Ijodiy maʼlumot</span></legend>
 
@@ -874,7 +873,7 @@
             </div>
           </fieldset>
 
-          <!-- ===== STEP 4 · About ===== -->
+          <!-- ===== 4-QADAM — Oʻzi haqida ===== -->
           <fieldset class="wiz-panel" data-step="4">
             <legend class="wiz-panel__title"><span class="wiz-panel__num">4</span><span data-i18n="sec4">Oʻzingiz haqingizda</span></legend>
 
@@ -926,7 +925,7 @@
             </div>
           </fieldset>
 
-          <!-- ===== STEP 5 · Health ===== -->
+          <!-- ===== 5-QADAM — Salomatlik ===== -->
           <fieldset class="wiz-panel" data-step="5">
             <legend class="wiz-panel__title"><span class="wiz-panel__num">5</span><span data-i18n="sec5">Tibbiy maʼlumot</span></legend>
             <div class="field">
@@ -945,7 +944,7 @@
             </div>
           </fieldset>
 
-          <!-- ===== STEP 6 · Logistics ===== -->
+          <!-- ===== 6-QADAM — Logistika ===== -->
           <fieldset class="wiz-panel" data-step="6">
             <legend class="wiz-panel__title"><span class="wiz-panel__num">6</span><span data-i18n="sec6">Logistika</span></legend>
             <label class="consent consent--req">
@@ -965,7 +964,7 @@
             </label>
           </fieldset>
 
-          <!-- ===== STEP 7 · Consent ===== -->
+          <!-- ===== 7-QADAM — Rozilik ===== -->
           <fieldset class="wiz-panel" data-step="7">
             <legend class="wiz-panel__title"><span class="wiz-panel__num">7</span><span data-i18n="sec7">Rozilik va tasdiqlash</span></legend>
             <label class="consent consent--req">
@@ -991,7 +990,7 @@
             <p class="wiz-note" data-i18n="s7_final">Yuborishdan oldin maʼlumotlarni tekshiring.</p>
           </fieldset>
 
-          <!-- error summary + navigation -->
+          <!-- xatolar xulosasi va navigatsiya -->
           <p class="wiz-panel__err" id="wizErr" data-i18n="err_fill" hidden>Belgilangan majburiy maydonlarni toʻldiring.</p>
 
           <div class="wiz-nav">
@@ -1007,7 +1006,7 @@
         </form>
       </div>
 
-      <!-- SUCCESS -->
+      <!-- MUVAFFAQIYAT -->
       <div class="success" id="success" hidden>
         <div class="success__mark" aria-hidden="true">
           <svg viewBox="0 0 52 52" width="52" height="52">
@@ -1023,13 +1022,13 @@
   </section>
 
 </main>
-<!-- ============ FOOTER ============ -->
+<!-- ============ SAHIFA OSTI ============ -->
 
 <footer class="foot">
 
   <div class="foot__inner">
 
-    <!-- TOP: brand + partner logos -->
+    <!-- yuqori qator: brend va hamkorlar logolari -->
     <div class="foot__top">
 
       <div class="foot__brand">
@@ -1053,7 +1052,7 @@
 
     </div>
 
-    <!-- BOTTOM: legal bar -->
+    <!-- pastki huquqiy qator -->
     <div class="foot__bottom">
       <span data-i18n="footer_copy">© 2026 UPOP TREND</span>
       <span class="foot__sep foot__sep--sm" aria-hidden="true"></span>
@@ -1071,7 +1070,7 @@
 </footer>
 
 
-<!-- ============ GIRIH PATTERN ============ -->
+<!-- ============ GIRIH NAQSHI ============ -->
 
 <svg
   width="0"

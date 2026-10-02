@@ -1,8 +1,9 @@
 # Higgsfield source assets — large masters + input stills (keep local)
-hero-logo.mp4
 4k animation.mp4
 hero-input-*.png
+hero-logo.mp4
 
 # System / editor / tooling
 .DS_Store
 .claude/
+server.log

@@ -1,12 +1,13 @@
 /* ============================================================
-   U POP TREND — casting landing
-   Palette locked to brand deck. Dark theme, one accent system:
-   GOLD = structure/metal · MAGENTA→VIOLET = the "pop" action
-   TURQUOISE = spark/focus · IVORY = text · MIDNIGHT = ground
+   U POP TREND — kasting sayti
+   Palitra brend kitobidan. Qorongʻu mavzu, bitta aksent tizimi:
+   OLTIN — tuzilma va metall, MAGENTA→BINAFSHA — "pop" harakati,
+   FIRUZA — uchqun va fokus, FIL SUYAGI — matn, TUN RANGI — fon.
+   teiior
    ============================================================ */
 
 :root {
-  /* brand */
+  /* brend */
   --midnight:  #06141C;
   --gold:      #D3A63F;
   --gold-lo:   #8A5F1C;
@@ -17,35 +18,35 @@
   --ivory:     #F2E4C6;
   --graphite:  #2A2F35;
 
-  /* surfaces */
+  /* yuzalar */
   --bg:        #050C11;
   --bg-2:      #081A23;
   --surface:   #0A1E28;
   --surface-2: #0D242F;
 
-  /* ink */
+  /* matn ranglari */
   --ink:       #F2E4C6;
   --ink-70:    rgba(242,228,198,.72);
   --ink-50:    rgba(242,228,198,.52);
   --ink-34:    rgba(242,228,198,.34);
 
-  /* lines */
+  /* chiziqlar */
   --line:      rgba(242,228,198,.10);
   --line-gold: rgba(201,162,90,.24);
 
-  /* gradients */
+  /* gradientlar */
   --pop:       linear-gradient(120deg, #D63E8C 0%, #6A39D9 100%);
-  --pop-btn:   linear-gradient(135deg, #7457C9 0%, #4E36A8 55%, #372777 100%); /* dark lavender-purple */
+  --pop-btn:   linear-gradient(135deg, #7457C9 0%, #4E36A8 55%, #372777 100%); /* toʻq lavanda-binafsha */
   --pop-3:     linear-gradient(120deg, #D63E8C 0%, #6A39D9 55%, #18B8C9 110%);
   --metal:     linear-gradient(160deg, #FCEEB0 0%, #F1D275 18%, #E0B143 40%, #C6922B 56%, #F0CE6C 74%, #A0721E 100%);
 
-  /* motion */
+  /* harakat */
   --e-quint:   cubic-bezier(.23, 1, .32, 1);
   --e-cubic:   cubic-bezier(.33, 1, .68, 1);
   --e-inout:   cubic-bezier(.645, .045, .355, 1);
-  --magnet:    cubic-bezier(.2, 1.28, .38, 1); /* slight overshoot for the dock snap */
+  --magnet:    cubic-bezier(.2, 1.28, .38, 1); /* dokka oʻtirishda ozgina oshib ketish */
 
-  /* system */
+  /* tizim */
   --nav-h: 74px;
   --maxw: 1200px;
   --pad: clamp(20px, 5vw, 64px);
@@ -60,11 +61,11 @@
 html {
   scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
-  /* clip the off-screen reveal transforms (translateX) so they never
-     open a sliver of horizontal scroll on mobile; `clip` (unlike hidden)
-     does not create a scroll container, so position:sticky keeps working */
+  /* ekran tashqarisidagi reveal siljishlarini (translateX) kesib qoʻyamiz — mobilda
+       gorizontal aylantirish paydo boʻlmasin; clip (hidden dan farqli) scroll
+       konteyner yaratmaydi, shuning uchun position:sticky ishlayveradi */
   overflow-x: clip;
-  /* keep anchor jumps from landing section headings under the sticky nav */
+  /* ankerga oʻtganda boʻlim sarlavhasi yopishqoq nav ostida qolmasin */
   scroll-padding-top: calc(var(--nav-h) + 8px);
 }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
@@ -78,15 +79,15 @@ body {
   line-height: 1.62;
   font-weight: 400;
   letter-spacing: .006em;
-  /* `clip`, not `hidden` — hidden makes <body> a scroll container and that
-     is what breaks the sticky navbar on iOS (it stops pinning). clip trims
-     the same overflow without ever creating a scroll container. */
+  /* hidden emas, clip — hidden <body> ni scroll konteynerga aylantiradi va iOS da
+       yopishqoq navbar ishlamay qoladi. clip esa xuddi shu ortiqchasini kesadi,
+       lekin konteyner yaratmaydi. */
   overflow-x: clip;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
 
-/* fixed base vignette — keeps the hero near-black; colour is added by .bgfx */
+/* qoʻzgʻalmas asosiy vinyetka — hero deyarli qora qoladi; rangni .bgfx beradi */
 body::before {
   content: "";
   position: fixed;
@@ -96,21 +97,21 @@ body::before {
   background: radial-gradient(130% 90% at 50% -12%, rgba(255,255,255,.035), transparent 58%);
 }
 
-/* scroll colour journey: stacked primary washes cross-fade per section */
+/* rang sayohati: boʻlimga qarab bir-biriga oʻtuvchi rang qatlamlari */
 .bgfx { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
 .bgfx b { position: absolute; inset: 0; display: block; opacity: 0; transition: opacity 1.6s var(--e-inout); }
 .bgfx .g { background: radial-gradient(1150px 860px at 12% 6%, rgba(201,162,90,.22), transparent 62%); }
 .bgfx .v { background: radial-gradient(1250px 980px at 88% 2%, rgba(106,57,217,.28), transparent 60%); }
 .bgfx .t { background: radial-gradient(1150px 980px at 52% 108%, rgba(24,184,201,.26), transparent 60%); }
 .bgfx .m { background: radial-gradient(1150px 880px at 16% 96%, rgba(214,62,140,.26), transparent 60%); }
-/* hero (default): all washes off -> dark black */
+/* hero (standart): barcha qatlamlar oʻchiq → toʻq qora */
 body.sec-who    .bgfx .g { opacity: 1; }
 body.sec-how    .bgfx .g { opacity: .55; } body.sec-how .bgfx .v { opacity: 1; }
 body.sec-cities .bgfx .v { opacity: .6; }  body.sec-cities .bgfx .t { opacity: 1; }
 body.sec-faq    .bgfx .t { opacity: .6; }  body.sec-faq .bgfx .m { opacity: 1; }
 body.sec-apply  .bgfx .g { opacity: .55; } body.sec-apply .bgfx .v { opacity: .7; }
 body.sec-apply  .bgfx .t { opacity: .6; }  body.sec-apply .bgfx .m { opacity: .85; }
-/* film grain — fixed, cheap, never on a scrolling layer */
+/* plyonka donasi — qoʻzgʻalmas, yengil, aylanadigan qatlamda emas */
 body::after {
   content: "";
   position: fixed;
@@ -128,7 +129,7 @@ img { display: block; max-width: 100%; height: auto; }
 a { color: inherit; text-decoration: none; }
 :focus-visible { outline: 2px solid var(--turquoise); outline-offset: 3px; border-radius: 4px; }
 
-/* browser surfaces carry the brand too */
+/* brauzer elementlari ham brend rangida */
 ::selection { background: var(--gold); color: var(--midnight); }
 html { scrollbar-width: thin; scrollbar-color: var(--gold-lo) var(--bg); }
 ::-webkit-scrollbar { width: 10px; }
@@ -160,7 +161,7 @@ html { scrollbar-width: thin; scrollbar-color: var(--gold-lo) var(--bg); }
   }
 }
 
-/* ---------- shared type ---------- */
+/* ---------- umumiy tipografika ---------- */
 .hl {
   background: var(--metal);
   background-size: 220% auto;
@@ -188,7 +189,7 @@ html { scrollbar-width: thin; scrollbar-color: var(--gold-lo) var(--bg); }
 .section-head { max-width: var(--maxw); margin: 0 auto clamp(2rem, 5vw, 3.4rem); }
 .section-head .lede { margin-top: .9rem; }
 
-/* ---------- Milliy: girih watermark (echoes the logo lattice) ---------- */
+/* ---------- Milliy: girih suv belgisi (logo panjarasiga hamohang) ---------- */
 .who, .steps, .apply { position: relative; }
 .girih {
   position: absolute; inset: 0; z-index: 0; pointer-events: none;
@@ -201,14 +202,14 @@ html { scrollbar-width: thin; scrollbar-color: var(--gold-lo) var(--bg); }
 .steps > *:not(.girih),
 .apply > *:not(.girih) { position: relative; z-index: 1; }
 
-/* ---------- numbered section marks — the page's wayfinding ---------- */
+/* ---------- raqamlangan boʻlim belgilari — sahifa boʻylab yoʻl koʻrsatkich ---------- */
 .sec-mark {
   display: flex; align-items: center; gap: 14px;
   margin: 0 0 clamp(14px, 2.4vw, 22px);
 }
 .sec-mark--center { justify-content: center; }
 .who .sec-mark { justify-content: center; }
-/* number sits upright over a rotated girih diamond (echoes the logo lattice) */
+/* raqam burilgan girih rombi ustida tik turadi */
 .sec-mark__no {
   position: relative; flex: 0 0 auto;
   width: 36px; height: 36px; display: grid; place-items: center;
@@ -238,7 +239,7 @@ html { scrollbar-width: thin; scrollbar-color: var(--gold-lo) var(--bg); }
   letter-spacing: .22em; text-transform: uppercase; color: var(--gold);
 }
 
-/* ---------- buttons ---------- */
+/* ---------- tugmalar ---------- */
 .btn {
   --tsy: 0px;
   position: relative;
@@ -270,7 +271,7 @@ html { scrollbar-width: thin; scrollbar-color: var(--gold-lo) var(--bg); }
   background-size: 220% 220%;
   box-shadow: 0 6px 18px -6px rgba(92,58,178,.55), inset 0 1px 0 rgba(255,255,255,.22);
   overflow: hidden;
-  /* living gradient: the magenta->violet slowly breathes even at rest */
+  /* jonli gradient: magenta→binafsha tinch holatda ham sekin "nafas oladi" */
   animation: popShift 7s var(--e-inout) infinite;
 }
 @keyframes popShift {
@@ -284,8 +285,8 @@ html { scrollbar-width: thin; scrollbar-color: var(--gold-lo) var(--bg); }
   box-shadow: 0 12px 26px -8px rgba(92,58,178,.6), 0 4px 12px -6px rgba(70,45,140,.5), inset 0 1px 0 rgba(255,255,255,.3);
 }
 
-/* Создаем красивый широкий блик
-   (.wiz-next is excluded: its ::after carries the drawn chevron instead) */
+/* keng chiroyli yaltirash
+   (.wiz-next bundan mustasno: uning ::after ida chizilgan strelka turadi) */
 .btn--pop:not(.wiz-next)::after {
   content: ""; position: absolute; inset: 0; border-radius: inherit;
   background: linear-gradient(115deg, transparent 20%, rgba(255,255,255,.4) 50%, transparent 80%);
@@ -293,7 +294,7 @@ html { scrollbar-width: thin; scrollbar-color: var(--gold-lo) var(--bg); }
   opacity: 0; transition: opacity .3s ease;
 }
 
-/* Запускаем цикличную анимацию блика при наведении */
+/* hover da yaltirash animatsiyasi takrorlanadi */
 .btn--pop:not(.wiz-next):hover::after { 
   opacity: 1; 
   animation: sheen 1.5s var(--e-cubic) infinite; 
@@ -303,12 +304,12 @@ html { scrollbar-width: thin; scrollbar-color: var(--gold-lo) var(--bg); }
   --tsy: -1px; scale: .985; 
 }
 
-/* Обновляем ключевые кадры для бесконечного блика */
+/* cheksiz yaltirash uchun kalit kadrlar */
 @keyframes sheen { 
   from { background-position: 200% 0; } 
   to { background-position: -200% 0; } 
 }
-/* button loading */
+/* tugma yuklanmoqda */
 .btn__spinner { display: none; width: 18px; height: 18px; border-radius: 50%;
   border: 2.5px solid rgba(255,255,255,.35); border-top-color: #fff; }
 .btn.is-loading { pointer-events: none; }
@@ -316,14 +317,14 @@ html { scrollbar-width: thin; scrollbar-color: var(--gold-lo) var(--bg); }
 .btn.is-loading .btn__spinner { display: inline-block; animation: spin .7s linear infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }
 
-/* hero CTA: radiating pulse ring on top of the living gradient */
+/* hero CTA: jonli gradient ustida tarqaluvchi puls halqasi */
 .hero__cta .btn--pop {
   animation:
     popShift 7s var(--e-inout) infinite,
     ctaPulse 2.6s ease-out .4s infinite;
 }
-/* pause the ring while interacting so the hover/active shadow can apply
-   (a running box-shadow animation outranks the hover declaration) */
+/* oʻzaro taʼsir paytida halqani toʻxtatamiz — hover/active soyasi qoʻllansin
+   (ishlayotgan box-shadow animatsiyasi hover qoidasidan ustun turadi) */
 .hero__cta .btn--pop:hover,
 .hero__cta .btn--pop:active {
   animation: popShift 7s var(--e-inout) infinite;
@@ -339,7 +340,7 @@ html { scrollbar-width: thin; scrollbar-color: var(--gold-lo) var(--bg); }
   }
 }
 
-/* drawn chevrons on the wizard nav buttons */
+/* qadam tugmalaridagi chizilgan strelkalar */
 .wiz-next::after, .wiz-back::before {
   content: ""; width: 13px; height: 13px; flex: 0 0 auto;
   background: currentColor;
@@ -349,7 +350,7 @@ html { scrollbar-width: thin; scrollbar-color: var(--gold-lo) var(--bg); }
 }
 .wiz-back::before { rotate: 180deg; }
 .wiz-next:hover::after { transform: translateX(4px); }
-.wiz-back:hover::before { transform: translateX(4px); } /* rotated: +x moves it left */
+.wiz-back:hover::before { transform: translateX(4px); } /* burilgan: +x uni chapga suradi */
 
 /* ============================================================
    NAV
@@ -357,7 +358,7 @@ html { scrollbar-width: thin; scrollbar-color: var(--gold-lo) var(--bg); }
 .nav {
   position: -webkit-sticky; position: sticky; top: 0; z-index: 40;
   background: rgba(6,20,28,.94);
-  /* always reads as a solid, active bar — permanent gold hairline + shadow */
+  /* doim toʻliq, faol panel koʻrinishida — doimiy oltin chiziq va soya */
   border-bottom: 1px solid rgba(211,166,63,.16);
   box-shadow: 0 10px 30px -24px rgba(0,0,0,.9);
   transition: border-color .4s ease, box-shadow .4s ease;
@@ -365,7 +366,7 @@ html { scrollbar-width: thin; scrollbar-color: var(--gold-lo) var(--bg); }
 .nav.is-stuck { border-bottom-color: var(--line); box-shadow: 0 14px 36px -22px rgba(0,0,0,.95); }
 .nav.is-stuck { border-bottom-color: var(--line); box-shadow: 0 8px 30px -20px rgba(0,0,0,.8); }
 /* ============================================================
-   NAV (Desktop Navigation)
+   NAV (ish stoli navigatsiyasi)
    ============================================================ */
 .nav__inner {
   max-width: var(--maxw);
@@ -379,7 +380,7 @@ html { scrollbar-width: thin; scrollbar-color: var(--gold-lo) var(--bg); }
   gap: clamp(16px, 3vw, 40px);
 }
 
-/* Brand mark (left) */
+/* Brend belgisi (chapda) */
 .nav__brand {
   flex: 0 0 auto;
   display: inline-flex;
@@ -394,7 +395,7 @@ html { scrollbar-width: thin; scrollbar-color: var(--gold-lo) var(--bg); }
 }
 .nav__brand:hover { opacity: .82; }
 
-/* Primary links (center) */
+/* Asosiy havolalar (markazda) */
 .nav__desktop {
   display: flex;
   align-items: center;
@@ -415,7 +416,7 @@ html { scrollbar-width: thin; scrollbar-color: var(--gold-lo) var(--bg); }
   transition: color 0.25s var(--e-quint);
   cursor: pointer;
 }
-/* clean per-link underline — robust, no JS offset math */
+/* har havola tagida toza chiziq — JS hisob-kitobisiz */
 .nav__desktop a::after {
   content: "";
   position: absolute;
@@ -432,7 +433,7 @@ html { scrollbar-width: thin; scrollbar-color: var(--gold-lo) var(--bg); }
 .nav__desktop a:hover,
 .nav__desktop a:focus-visible { color: var(--ink); }
 
-/* current section lights up its nav link (body.sec-* is set on scroll) */
+/* joriy boʻlim oʻz nav havolasini yoritadi (body.sec-* aylantirishda qoʻyiladi) */
 body.sec-who    .nav__desktop a[href="#who"],
 body.sec-how    .nav__desktop a[href="#how"],
 body.sec-cities .nav__desktop a[href="#cities"],
@@ -440,14 +441,14 @@ body.sec-faq    .nav__desktop a[href="#faq"] { color: var(--gold-hi); }
 .nav__desktop a:hover::after,
 .nav__desktop a:focus-visible::after { transform: scaleX(1); }
 
-/* Actions (right) */
+/* Amallar (oʻngda) */
 .nav__actions {
   display: flex;
   align-items: center;
   gap: 12px;
   flex: 0 0 auto;
 }
-/* CTA sized for the nav bar */
+/* nav paneliga mos CTA */
 .nav__actions .btn--pop {
   padding: 0 1.25em;
   height: 40px;
@@ -455,7 +456,7 @@ body.sec-faq    .nav__desktop a[href="#faq"] { color: var(--gold-hi); }
 }
 
 /* ============================================================
-   HERO (Full Screen Hero Section - Centered, Minimal)
+   HERO (toʻliq ekran, markazda, minimal)
    ============================================================ */
 .hero {
   display: flex;
@@ -484,7 +485,7 @@ body.sec-faq    .nav__desktop a[href="#faq"] { color: var(--gold-hi); }
   line-height: 1.1;
   letter-spacing: -0.02em;
   margin: 0;
-  /* real metallic gold (same leaf as .hl), no glow behind it */
+  /* haqiqiy metall oltin (.hl bilan bir xil), orqasida nur yoʻq */
   background: var(--metal);
   background-size: 220% auto;
   -webkit-background-clip: text; background-clip: text;
@@ -498,7 +499,7 @@ body.sec-faq    .nav__desktop a[href="#faq"] { color: var(--gold-hi); }
   z-index: 1;
   margin-top: 0;
 }
-/* Language select dropdown */
+/* Til tanlash roʻyxati */
 .langswitch-select {
   appearance: none;
   -webkit-appearance: none;
@@ -536,7 +537,7 @@ body.sec-faq    .nav__desktop a[href="#faq"] { color: var(--gold-hi); }
 
 .nav__burger { display: none; }
 
-/* mobile menu */
+/* mobil menyu */
 .mobilemenu {
   display: none; flex-direction: column; gap: 4px;
   padding: 10px var(--pad) 22px;
@@ -551,15 +552,15 @@ body.sec-faq    .nav__desktop a[href="#faq"] { color: var(--gold-hi); }
 .mobilemenu.is-open { display: flex; animation: menuIn .3s var(--e-quint); }
 @keyframes menuIn { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: none; } }
 
-/* Language select inside the mobile menu — full width */
+/* mobil menyu ichidagi til tanlash — toʻliq kenglikda */
 .mobilemenu .langswitch-select {
   display: block;
   width: 100%;
   margin: 4px 0 8px;
 }
 
-/* The mobile menu belongs to burger widths only — never leak onto desktop
-   (e.g. when the viewport is resized while the menu is open) */
+/* Mobil menyu faqat burger kengliklari uchun — ish stoliga chiqib ketmasin
+   (masalan, menyu ochiq turganda oyna kengaytirilsa) */
 @media (min-width: 821px) {
   .mobilemenu,
   .mobilemenu.is-open { display: none; }
@@ -608,11 +609,11 @@ body.sec-faq    .nav__desktop a[href="#faq"] { color: var(--gold-hi); }
   max-width: min(88vw, 1020px);
   margin: 0 auto;
   transform-origin: center;
-  /* depth shadow only — no gold glow */
+  /* faqat chuqurlik soyasi — oltin nur yoʻq */
   filter: drop-shadow(0 24px 60px rgba(0,0,0,.55));
 }
 
-/* Living logo: a gentle breathing float. */
+/* Jonli logo: yengil nafas olib suzadi. */
 .is-ready .hero__logo img {
   animation: logoZoom 5.5s var(--e-inout) 1.1s infinite;
 }
@@ -622,26 +623,23 @@ body.sec-faq    .nav__desktop a[href="#faq"] { color: var(--gold-hi); }
 }
 
 /* ============================================================
-   SCROLL-PINNED HERO — parallax-style logo dock
-   The .hero-pin block is 200vh tall; its inner sticks to the viewport for
-   one screen of scroll (~50%) before the page moves on. During that window
-   the JS writes progress 0..1 into --dock, and the hero logo scales down
-   & slides up-left toward the navbar slot while the navbar logo fades in.
-   Everything drives off --dock in CSS (GPU transforms only), which stays
-   iOS-smooth during momentum scrolling.
+   AYLANTIRISHGA BOGʻLANGAN HERO — logo dokiga parallaks
+   .hero-pin bloki 200vh; ichki qismi bir ekran aylantirish (~50%) davomida
+   yopishib turadi. Shu oraliqda JS --dock ga 0..1 yozadi: hero logosi
+   kichrayib, navbar oʻrniga yuqori-chapga siljiydi, navbar logosi paydo boʻladi.
+   Hammasi CSS da --dock orqali (faqat GPU transformlari) — iOS da ham silliq.
    ============================================================ */
-/* Scroll-locked logo dock: the JS captures scroll gestures on the hero and
-   drives progress 0..1 into the logo transforms WITHOUT moving the page.
-   The page unlocks only once the anim completes; scroll up locks again for
-   the reverse. Only transform + opacity animate (GPU, iOS-smooth). */
+/* Qulflangan logo doki: JS hero dagi aylantirish harakatini ushlab, sahifani
+   siljitmasdan 0..1 progressni logo transformlariga beradi. Animatsiya tugagach
+   sahifa boʻshaydi; yuqoriga aylantirilsa yana qulflanadi. Faqat transform va
+   opacity animatsiya qilinadi (GPU, iOS da silliq). */
 /* ============================================================
-   LOGO — original behaviour: the big hero logo breathes (zoom), and the
-   navbar keeps an always-visible logo with a constant golden shimmer.
-   No scroll morph.
+   LOGO — asl xatti-harakat: katta hero logosi nafas oladi (zoom), navbar da
+   esa doim koʻrinadigan, oltin jilolanuvchi logo. Aylantirishda morf yoʻq.
    ============================================================ */
 .hero__logo-inner { display: inline-block; }
 
-/* navbar logo: always visible, gentle constant golden zoom + glow loop */
+/* navbar logosi: doim koʻrinadi, yengil doimiy oltin zoom va nur */
 .nav__brand img { filter: drop-shadow(0 2px 6px rgba(0,0,0,.45)); animation: navGold 3.8s var(--e-inout) infinite; }
 @keyframes navGold {
   0%, 100% { transform: scale(1);    filter: drop-shadow(0 2px 6px rgba(0,0,0,.45)); }
@@ -654,7 +652,7 @@ body.sec-faq    .nav__desktop a[href="#faq"] { color: var(--gold-hi); }
 
 .hero__cta { position: relative; z-index: 1; margin-top: clamp(16px, 3vh, 28px); }
 
-/* hero entrance choreography (hidden only when JS is present) */
+/* hero kirish xoreografiyasi (faqat JS bor boʻlganda yashiriladi) */
 .js [data-animate] { opacity: 0; }
 .is-ready [data-animate] { animation: riseIn .9s var(--e-quint) forwards; }
 .is-ready .hero__logo  { animation: logoIn 1.15s var(--e-quint) .2s forwards; }
@@ -669,7 +667,7 @@ body.sec-faq    .nav__desktop a[href="#faq"] { color: var(--gold-hi); }
                     100% { opacity: 1; transform: none; filter: blur(0); } }
 
 /* ============================================================
-   WHO / CHANCE + STATS
+   KIMLAR UCHUN / IMKONIYAT + STATISTIKA
    ============================================================ */
 .who { padding: clamp(64px, 12vh, 150px) var(--pad); }
 .who__grid { max-width: 900px; margin: 0 auto; text-align: center; }
@@ -688,7 +686,7 @@ body.sec-faq    .nav__desktop a[href="#faq"] { color: var(--gold-hi); }
   background: linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,0));
   transition: transform .4s var(--e-quint), border-color .4s ease, background .4s ease;
 }
-/* metallic hairline crown that widens on hover */
+/* hover da kengayadigan metall chiziq-toj */
 .stat::before {
   content: ""; position: absolute; top: -1px; left: 26%; right: 26%; height: 2px;
   background: var(--metal); border-radius: 2px; opacity: .55;
@@ -703,7 +701,7 @@ body.sec-faq    .nav__desktop a[href="#faq"] { color: var(--gold-hi); }
 }
 
 /* ============================================================
-   STEPS
+   QADAMLAR
    ============================================================ */
 .steps { padding: clamp(64px, 12vh, 150px) var(--pad); }
 .steplist { list-style: none; margin: 0 auto; padding: 0; max-width: var(--maxw); }
@@ -728,7 +726,7 @@ body.sec-faq    .nav__desktop a[href="#faq"] { color: var(--gold-hi); }
 .step:hover .step__idx { opacity: 1; }
 
 /* ============================================================
-   CITIES / CARAVAN
+   SHAHARLAR / KARVON
    ============================================================ */
 .cities { position: relative; padding: clamp(64px, 12vh, 150px) var(--pad); overflow: hidden; }
 .cities .girih { position: absolute; inset: 0; z-index: 0; opacity: .05; pointer-events: none;
@@ -760,7 +758,7 @@ body.sec-faq    .nav__desktop a[href="#faq"] { color: var(--gold-hi); }
   transition: transform .35s var(--e-quint), background .35s ease, box-shadow .35s ease;
 }
 .stop--final .stop__dot { background: var(--pop); border-color: transparent; }
-/* the final stop's dot radiates */
+/* oxirgi bekat nuqtasi nur taratadi */
 .stop--final .stop__dot::after {
   content: ""; position: absolute; inset: -7px; border-radius: 50%;
   border: 2px solid rgba(214,62,140,.55);
@@ -792,7 +790,7 @@ body.sec-faq    .nav__desktop a[href="#faq"] { color: var(--gold-hi); }
 .stop:hover .stop__city { color: var(--gold-hi); }
 
 /* ============================================================
-   FAQ
+   SAVOL-JAVOB
    ============================================================ */
 .faq { padding: clamp(64px, 12vh, 150px) var(--pad); }
 .accordion { max-width: 860px; margin: 0 auto; }
@@ -805,8 +803,8 @@ body.sec-faq    .nav__desktop a[href="#faq"] { color: var(--gold-hi); }
   font-family: var(--font-disp); font-weight: 500; font-size: clamp(1rem, 1.9vw, 1.28rem); letter-spacing: -.01em;
   transition: color .25s ease;
 }
-/* questions carry the same numbering language as the rest of the page
-   (real aria-hidden spans, so the number stays out of the accessible name) */
+/* savollar sahifaning qolgan qismi kabi raqamlangan
+   (aria-hidden span lar — raqam ovozli nomga kirmaydi) */
 .ac__no {
   flex: 0 0 30px;
   font-size: .78rem; font-weight: 700; color: var(--gold);
@@ -834,7 +832,7 @@ body.sec-faq    .nav__desktop a[href="#faq"] { color: var(--gold-hi); }
 @media (max-width: 560px) { .ac__inner p { padding-left: 4px; } }
 
 /* ============================================================
-   APPLY / FORM
+   ARIZA / ANKETA
    ============================================================ */
 .apply { padding: clamp(64px, 12vh, 150px) var(--pad) clamp(80px, 12vh, 150px); }
 .apply__head { max-width: 760px; margin: 0 auto clamp(28px, 5vw, 46px); text-align: center; }
@@ -844,8 +842,8 @@ body.sec-faq    .nav__desktop a[href="#faq"] { color: var(--gold-hi); }
   margin: 0; text-wrap: balance;
 }
 
-/* application deadline — a plain gold line with a drawn calendar icon
-   (no pill / no plaque) */
+/* ariza muddati — oddiy oltin qator va chizilgan taqvim ikonkasi
+   (plashkasiz) */
 .apply__deadline {
   display: block; text-align: center;
   margin: clamp(14px, 2vw, 20px) auto 0; max-width: 32ch;
@@ -872,7 +870,7 @@ body.sec-faq    .nav__desktop a[href="#faq"] { color: var(--gold-hi); }
   position: absolute; inset: -1px; z-index: 0; border-radius: inherit; pointer-events: none;
   background: radial-gradient(120% 60% at 50% -10%, rgba(214,62,140,.16), transparent 60%);
 }
-/* metallic crown + girih corner ornaments on the anketa card */
+/* anketa kartasida metall toj va burchaklarda girih naqshlari */
 .card::before {
   content: ""; position: absolute; top: 0; left: 18%; right: 18%; height: 2px;
   background: var(--metal); opacity: .7; border-radius: 2px; z-index: 1;
@@ -905,7 +903,7 @@ body.sec-faq    .nav__desktop a[href="#faq"] { color: var(--gold-hi); }
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none'%3E%3Cpath d='M4 6l4 4 4-4' stroke='%23C9A25A' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
   background-repeat: no-repeat; background-position: right 15px center; padding-right: 40px;
 }
-/* dark date-picker text/icon in WebKit */
+/* WebKit da sana tanlagichning toʻq matni va ikonkasi */
 .field input[type="date"] { color-scheme: dark; }
 .field input::placeholder, .field textarea::placeholder { color: var(--ink-34); }
 .field input:focus, .field select:focus, .field textarea:focus {
@@ -913,14 +911,14 @@ body.sec-faq    .nav__desktop a[href="#faq"] { color: var(--gold-hi); }
   box-shadow: 0 0 0 3px rgba(24,184,201,.18); background: rgba(6,20,28,.85);
 }
 .field.has-err input, .field.has-err select, .field.has-err textarea { border-color: var(--magenta); box-shadow: 0 0 0 3px rgba(214,62,140,.16); }
-/* required marker */
+/* majburiy belgisi */
 .field--req > label::after { content: " *"; color: var(--gold); font-weight: 700; }
-/* casting-date read-out */
+/* kasting sanasi koʻrsatkichi */
 .field__date { font-family: var(--font-disp); font-weight: 600; color: var(--gold-hi); font-size: 1rem; padding: 13px 2px; display: block; }
 .field__err { font-size: .8rem; color: #ff9fc6; font-weight: 500; }
 .field__err--consent { display: block; margin-top: -4px; }
 
-/* ---- candidate photo upload ---- */
+/* ---- nomzod suratini yuklash ---- */
 .photoup { display: flex; gap: 18px; align-items: flex-start; flex-wrap: wrap; }
 .photoup__drop {
   position: relative; width: 138px; height: 176px; flex: 0 0 auto; overflow: hidden; cursor: pointer;
@@ -961,15 +959,15 @@ body.sec-faq    .nav__desktop a[href="#faq"] { color: var(--gold-hi); }
 .consent input:focus-visible + .consent__box { outline: 2px solid var(--turquoise); outline-offset: 2px; }
 .consent__text { font-size: .86rem; color: var(--ink-70); line-height: 1.5; }
 .consent.has-err .consent__box { border-color: var(--magenta); box-shadow: 0 0 0 3px rgba(214,62,140,.16); }
-/* checkbox rows presented as cards inside the wizard */
+/* anketa ichida checkbox qatorlari karta koʻrinishida */
 .consent--req { padding: 13px 14px; border: 1px solid var(--line); border-radius: var(--r-input); background: rgba(255,255,255,.02); margin-top: 0; transition: border-color .25s ease, background .25s ease; }
 .consent--req:hover { border-color: var(--line-gold); }
 .consent--req:has(input:checked) { border-color: var(--line-gold); background: rgba(201,162,90,.06); }
 
 /* ============================================================
-   ANKETA WIZARD
+   ANKETA QADAMLARI
    ============================================================ */
-/* progress stepper */
+/* qadamlar koʻrsatkichi */
 .wiz-progress { margin: 4px 0 clamp(22px, 3.5vw, 30px); }
 .wiz-steps { list-style: none; display: flex; gap: 2px; padding: 0 0 2px; margin: 0 0 12px; overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
 .wiz-steps::-webkit-scrollbar { display: none; }
@@ -988,11 +986,11 @@ body.sec-faq    .nav__desktop a[href="#faq"] { color: var(--gold-hi); }
   background: var(--pop-3); background-size: 300% 100%;
   transform: scaleX(0); transform-origin: left center;
   transition: transform .45s var(--e-quint);
-  animation: barFlow 4s linear infinite; /* the filled part glimmers */
+  animation: barFlow 4s linear infinite; /* toʻlgan qismi jilolanadi */
 }
 @keyframes barFlow { to { background-position: -300% 0; } }
 
-/* panels */
+/* panellar */
 .wiz-form { display: block; }
 .wiz-panel { border: 0; padding: 0; margin: 0; min-inline-size: 0; display: grid; gap: 18px; }
 .wiz-panel:not(.is-active) { display: none; }
@@ -1006,13 +1004,13 @@ body.sec-faq    .nav__desktop a[href="#faq"] { color: var(--gold-hi); }
 .wiz-note--accent { color: var(--gold-hi); font-weight: 600; margin: -4px 0 2px; }
 .wiz-panel__err { font-size: .84rem; color: #ff9fc6; font-weight: 600; margin: 6px 0 0; }
 
-/* performance-rule callout */
+/* chiqish qoidasi haqida eslatma */
 .wiz-rule { display: flex; gap: 12px; padding: 14px 16px; border-radius: var(--r-input); border: 1px solid var(--line-gold); background: linear-gradient(180deg, rgba(201,162,90,.09), rgba(255,255,255,0)); }
 .wiz-rule__badge { flex: 0 0 auto; width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; background: var(--metal); color: var(--midnight); font-family: var(--font-disp); font-weight: 800; }
 .wiz-rule__title { font-family: var(--font-disp); font-weight: 600; color: var(--gold-hi); margin: 0 0 4px; font-size: .96rem; }
 .wiz-rule__text { margin: 0; font-size: .86rem; color: var(--ink-70); line-height: 1.55; }
 
-/* navigation */
+/* navigatsiya */
 .wiz-nav { display: flex; align-items: center; gap: 12px; margin-top: 10px; flex-wrap: wrap; }
 .wiz-back { margin-right: auto; border: 1px solid var(--line-gold); color: var(--ink-70); background: transparent; }
 .wiz-back:hover { color: var(--ink); border-color: var(--gold); }
@@ -1020,8 +1018,8 @@ body.sec-faq    .nav__desktop a[href="#faq"] { color: var(--gold-hi); }
 .wiz-count b { color: var(--gold-hi); }
 .wiz-next, .wiz-submit { min-width: 148px; }
 
-/* full-width anketa on desktop: fill the page and lay fields in 2 columns
-   so the form spreads out instead of running long */
+/* ish stolida anketa toʻliq kenglikda: maydonlar 2 ustunda joylashadi,
+   forma choʻzilib ketmaydi */
 @media (min-width: 900px) {
   .card { max-width: var(--maxw); }
   .apply__head { max-width: var(--maxw); }
@@ -1034,7 +1032,7 @@ body.sec-faq    .nav__desktop a[href="#faq"] { color: var(--gold-hi); }
   .wiz-panel > .consent,
   .wiz-panel > .field--wide,
   .wiz-panel > .field:has(textarea) { grid-column: 1 / -1; }
-  /* inside a full-width row the two inputs can breathe wider */
+  /* toʻliq kenglikdagi qatorda ikki maydon kengroq joylashadi */
   .field-row { gap: clamp(20px, 2.4vw, 34px); }
 }
 
@@ -1048,7 +1046,7 @@ body.sec-faq    .nav__desktop a[href="#faq"] { color: var(--gold-hi); }
   .wiz-next, .wiz-submit { flex: 1 1 auto; }
 }
 
-/* success */
+/* muvaffaqiyat */
 .success { text-align: center; padding: clamp(14px, 3vw, 30px) 0; animation: riseIn .6s var(--e-quint); }
 .success__mark { position: relative; color: var(--turquoise); display: flex; justify-content: center; margin-bottom: 18px; }
 .success__mark::after {
@@ -1065,9 +1063,7 @@ body.sec-faq    .nav__desktop a[href="#faq"] { color: var(--gold-hi); }
 
 
 /* ============================================================
-
-   FOOTER
-
+   SAHIFA OSTI
    ============================================================ */
 
 .foot {
@@ -1080,7 +1076,7 @@ body.sec-faq    .nav__desktop a[href="#faq"] { color: var(--gold-hi); }
   display: flex; flex-direction: column; gap: clamp(24px, 4vw, 36px);
 }
 
-/* top row: brand left · partner logos right, split by hairlines */
+/* yuqori qator: chapda brend, oʻngda hamkorlar logolari, orasida chiziqlar */
 .foot__top {
   display: flex; align-items: center; justify-content: space-between;
   gap: 28px; flex-wrap: wrap;
@@ -1105,14 +1101,14 @@ body.sec-faq    .nav__desktop a[href="#faq"] { color: var(--gold-hi); }
 .foot__logo--sq { height: clamp(56px, 6vw, 72px); }
 .foot__logo:hover { opacity: 1; transform: translateY(-3px); filter: grayscale(0%); }
 
-/* the "|" dividers — gold hairlines, not typed pipes */
+/* "|" ajratgichlar — terilgan belgi emas, oltin chiziqlar */
 .foot__sep {
   width: 1px; height: 34px; flex: 0 0 auto;
   background: linear-gradient(180deg, transparent, var(--line-gold) 30%, var(--line-gold) 70%, transparent);
 }
 .foot__sep--sm { height: 12px; background: var(--line-gold); }
 
-/* bottom legal bar */
+/* pastki huquqiy qator */
 .foot__bottom {
   display: flex; align-items: center; justify-content: center;
   gap: 14px; flex-wrap: wrap;
@@ -1125,26 +1121,26 @@ body.sec-faq    .nav__desktop a[href="#faq"] { color: var(--gold-hi); }
 .foot__credit a:hover { text-decoration: underline; text-underline-offset: 3px; }
 
 /* ============================================================
-   SCROLL REVEAL
+   AYLANTIRISHDA PAYDO BOʻLISH
    ============================================================ */
-/* bidirectional reveals: replay on scroll up AND down, with varied flavours */
+/* ikki yoʻnalishli paydo boʻlish: yuqoriga ham, pastga ham aylantirganda qayta oʻynaydi */
 .reveal { transition: opacity .7s var(--e-quint), transform .75s var(--e-quint), filter .7s var(--e-quint); will-change: opacity, transform; }
 .js .reveal            { opacity: 0; transform: translateY(46px); }
-.js .reveal.from-above { transform: translateY(-46px); }      /* slide in from the top when scrolling up */
+.js .reveal.from-above { transform: translateY(-46px); }      /* yuqoriga aylantirganda tepadan kiradi */
 .js .reveal--left      { transform: translateX(-64px); }
 .js .reveal--right     { transform: translateX(64px); }
 .js .reveal--scale     { transform: scale(.8); }
 .js .reveal--blur      { transform: translateY(30px); filter: blur(14px); }
 .js .reveal--rotate    { transform: rotate(-5deg) translateY(40px) scale(.9); transform-origin: bottom left; }
 .reveal.is-in { opacity: 1 !important; transform: none !important; filter: none !important; }
-/* stagger children of a revealed group */
+/* guruh elementlari ketma-ket paydo boʻladi */
 .caravan .stop  { transition-delay: calc(var(--i, 0) * 100ms); }
 .steplist .step { transition-delay: calc(var(--i, 0) * 75ms); }
 .stats .stat    { transition-delay: calc(var(--i, 0) * 95ms); }
 .accordion .ac  { transition-delay: calc(var(--i, 0) * 60ms); }
 
 /* ============================================================
-   RESPONSIVE
+   MOSLASHUVCHAN
    ============================================================ */
 @media (max-width: 620px) {
   .stats { grid-template-columns: 1fr; }
@@ -1152,7 +1148,7 @@ body.sec-faq    .nav__desktop a[href="#faq"] { color: var(--gold-hi); }
 
 @media (max-width: 620px) {
   .step {
-    /* fixed number column so 01 / 02 / 03 and their titles line up */
+    /* raqam ustuni qatʼiy kenglikda — 01 / 02 / 03 va sarlavhalar bir chiziqda */
     grid-template-columns: 74px 1fr;
     gap: 16px;
   }
@@ -1175,8 +1171,8 @@ body.sec-faq    .nav__desktop a[href="#faq"] { color: var(--gold-hi); }
   .caravan__line { top: 0; bottom: 0; left: 7px; right: auto; width: 2px; height: auto; transform-origin: top;
     background: linear-gradient(180deg, var(--gold-lo), var(--gold), var(--turquoise)); scale: 1 0; }
   .caravan.is-in .caravan__line { scale: 1 1; }
-  /* wrap so the date chip and final badge drop to a second line on narrow
-     phones instead of clipping past the viewport edge */
+  /* tor telefonlarda sana va yakuniy belgi ikkinchi qatorga tushsin,
+       ekrandan chiqib ketmasin */
   .stop { flex-direction: row; flex-wrap: wrap; align-items: baseline; row-gap: 4px; gap: 12px; text-align: left; padding: 20px 0 20px 30px; }
   .stop__dot { top: 24px; left: 1px; translate: 0 0; }
   .stop:hover .stop__dot { transform: scale(1.35); }
@@ -1185,7 +1181,7 @@ body.sec-faq    .nav__desktop a[href="#faq"] { color: var(--gold-hi); }
   .stop__date { white-space: nowrap; margin-top: 0; }
   .stop__badge { white-space: nowrap; margin-top: 0; }
   
-  /* Mobile nav improvements */
+  /* Mobil nav */
   .nav__inner {
     padding: 0 16px;
     height: auto;
@@ -1205,18 +1201,18 @@ body.sec-faq    .nav__desktop a[href="#faq"] { color: var(--gold-hi); }
   .foot__logos { justify-content: center; }
   .foot__logo { height: 40px; }
   .foot__logo--sq { height: 52px; }
-  .foot__logos .foot__sep { height: 26px; } /* keep the legal bar's --sm at 12px */
+  .foot__logos .foot__sep { height: 26px; } /* huquqiy qatorning --sm qiymati 12px da qoladi */
   .sec-mark { gap: 10px; }
   .sec-mark__rule { width: 22px; }
 }
-/* below ~480px the logo row and legal bar wrap — a divider dangling at a
-   line end divides nothing, so drop them and let the wrap do the grouping */
+/* ~480px dan past logo qatori va huquqiy qator oʻraladi — qator oxirida qolgan
+   ajratgich hech narsani ajratmaydi, shuning uchun ularni olib tashlaymiz */
 @media (max-width: 479px) {
   .foot__sep { display: none; }
 }
 
 /* ============================================================
-   REDUCED MOTION — collapse everything to instant
+   KAMAYTIRILGAN HARAKAT — hammasi bir zumda
    ============================================================ */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; }
@@ -1224,14 +1220,14 @@ body.sec-faq    .nav__desktop a[href="#faq"] { color: var(--gold-hi); }
   .hero__aura { animation: none; }
   .caravan__line { scale: 1 1 !important; }
   .success__tick { stroke-dashoffset: 0 !important; }
-  /* the pulse rings only exist inside their keyframes — without motion
-     they would freeze as solid rings, so remove them entirely */
+  /* puls halqalari faqat kalit kadrlar ichida mavjud — harakatsiz ular qotib
+       qolgan halqaga aylanar edi, shuning uchun butunlay olib tashlaymiz */
   .stop--final .stop__dot::after,
   .success__mark::after { content: none; }
 }
 
 /* ============================================================
-   HERO MOBILE STYLES
+   HERO MOBIL USLUBLARI
    ============================================================ */
 @media (max-width: 768px) {
   .hero {
@@ -1264,7 +1260,7 @@ body.sec-faq    .nav__desktop a[href="#faq"] { color: var(--gold-hi); }
   }
 }
 
-/* Desktop: hide button in hero, show only in nav */
+/* Ish stoli: tugma hero da yashirin, faqat nav da */
 @media (min-width: 769px) {
   .hero__cta {
     display: flex; justify-content: center;
