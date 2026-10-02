@@ -862,6 +862,9 @@
     ".titles .logo{height:66px;width:auto;display:block;margin:0 0 10px}"+
     ".name{font-weight:800;font-size:33px;line-height:1.02;letter-spacing:-.02em;color:#1a0f3d;margin:0}"+
     ".meta{margin:8px 0 0;font-size:15px;font-weight:800;color:#6A39D9}"+
+    ".num{flex:0 0 auto;align-self:flex-start;text-align:right;padding-top:6px;margin-left:12px}"+
+    ".num .nn{font-weight:800;font-size:34px;line-height:1;letter-spacing:-.02em;color:#6A39D9;white-space:nowrap}"+
+    ".num .nl{margin-top:5px;font-size:12px;font-weight:700;color:#6b7080}"+
     /* content scales to fill exactly one page */
     ".fitwrap{flex:1;min-height:0;overflow:hidden}"+
     ".fit{transform-origin:top left;column-count:2;column-gap:16px}"+
@@ -942,7 +945,9 @@
       '<div class="titles"><img class="logo" src="'+logo+'">'+
         '<div class="name">'+esc(r.fullname||"—")+'</div>'+
         (meta?'<div class="meta">'+esc(meta)+'</div>':'')+
-      '</div></div>';
+      '</div>'+
+      (r._row?'<div class="num"><div class="nn">№ '+esc(r._row)+'</div><div class="nl">'+esc(x.num_lab)+'</div></div>':'')+
+      '</div>';
     // round stamp at the very bottom: "Designed & Developed by teiior" around, UPOP logo inside
     var stamp='<div class="stampwrap"><div class="stamp"><svg viewBox="0 0 126 126" xmlns="http://www.w3.org/2000/svg">'+
       '<defs><path id="sr" d="M63,63 m-49,0 a49,49 0 1,1 98,0 a49,49 0 1,1 -98,0"/></defs>'+
