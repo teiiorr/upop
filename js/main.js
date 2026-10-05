@@ -1,621 +1,15 @@
 /* ============================================================
    U POP TREND — kasting sayti
-   Saytdagi barcha matnlar quyidagi DICT ichida (uz / ru / en).
-   Bu yerda oʻzgartirsangiz, sahifaning hamma joyida yangilanadi.
+   Matnlar js/content.js da, admin tahrirlari Apps Script orqali keladi.
    Standart til: UZ.
    teiior
    ============================================================ */
-
-const DICT = {
-  /* ---------------------------------------------------- UZ */
-  uz: {
-    meta_title: `U POP TREND — Milliy kasting`,
-    meta_desc:  `14–19 yoshdagi yoshlar uchun milliy tanlov. Videongizni #UPOPTREND bilan joylang va anketani toʻldiring. Arizalar 1-oktabrgacha.`,
-    skip: `Kastingga oʻtish`,
-
-    nav_who: `Kim qatnashadi`,
-    nav_how: `Bu qanday ishlaydi`,
-    nav_cities: `Shaharlar va sanalar`,
-    nav_faq: `Savollar`,
-    nav_apply: `Anketani toʻldiring`,
-
-    hero_title: `“Qadriyatlarning qayta tirilishi”`,
-    hero_cta: `Anketani toʻldiring`,
-    deadline: `Arizalar 2026-yil 1-oktabrgacha qabul qilinadi`,
-chance_title: `Yoshingiz <span class="hl">14 dan 19 gacha!</span><br>Va siz jonli kuylay olasiz!<br>Demak, bu sizning sahnangiz!`,
-    who_lede: `Oʻzbekiston tarixidagi ilk milliy kasting — tajriba va tayyorgarlikdan qat'i nazar, barcha uchun ochiq.`,
-
-    stat1_num: `14–19`,
-    stat1_label: `Ishtirokchilar yoshi`,
-    stat2_label: `Oxirgi muddat`,
-    stat3_label: `Milliy loyiha`,
-
-    steps_title: `Sahnagacha <span class="hl">uch qadam</span>`,
-
-    step1_title: `Video yozing`,
-    step1_text: `Oʻzingizga xos uslubda istalgan xalq qoʻshigʻini ijro eting va videoni ijtimoiy tarmoqdagi shaxsiy sahifangizga joylang. Albatta #UPOPTREND xeshtegini qoʻying va @upoptrend sahifasini belgilang — aks holda tashkilotchilar arizangizni koʻrmaydi.`,
-
-    step2_title: `Anketani toʻldiring`,
-    step2_text: `Maʼlumotlaringizni qoldiring. Bu ikki daqiqadan kam vaqt oladi — tasdiq anketada koʻrsatilgan raqamga keladi.`,
-
-    step3_title: `Milliy loyihaning bir qismiga aylaning`,
-    step3_text: `Mamlakatning eng iqtidorli ovozlari milliy loyiha doirasida birlashadi. Ishtirokchilar professional prodyuserlar va ommaviy axborot vositalari eʼtiboriga tushib, katta sahnaga chiqish imkoniyatiga ega boʻladi.`,
-
-    cities_title: `Kasting <span class="hl">respublika boʻylab</span> oʻtkaziladi`,
-    cities_lede: `Besh shahar — besh sahna. Oʻzingizga qulayini tanlang.`,
-    final_badge: `Katta final`,
-
-    city1_name: `Fargʻona`,
-    city1_date: `7-sentabr`,
-
-    city2_name: `Xorazm`,
-    city2_date: `9-sentabr`,
-
-    city3_name: `Buxoro`,
-    city3_date: `11-sentabr`,
-
-    city4_name: `Samarqand`,
-    city4_date: `13-sentabr`,
-
-    city5_name: `Toshkent`,
-    city5_date: `19–20-sentabr`,
-
-    faq_title: `Koʻp beriladigan <span class="hl">savollar</span>`,
-
-    q1: `Sahna tajribasi kerakmi?`,
-    a1: `Yoʻq. Kasting 14 yoshdan 19 yoshgacha boʻlganlar uchun ochiq. Musiqa maktabi ham, avvalgi sahna tajribasi ham talab qilinmaydi, hakamlar ovoz va aktyorlik mahoratiga baho beradi.`,
-
-    q2: `Ishtirok pullikmi?`,
-    a2: `Yoʻq. Ishtirok barcha besh shaharda bepul. Tashkilotchilar hech bir bosqichda badal yigʻmaydi.`,
-
-    q3: `Oʻzim bilan nima olib borishim kerak?`,
-    a3: `Shaxsni tasdiqlovchi hujjat. Milliy yoʻnalishdagi asar ijrosiga tayyorgarlik koʻrish va a cappella kuylash.`,
-
-    q4: `Istalgan shaharni tanlasa boʻladimi?`,
-    a4: `Ha. Ishtirok doimiy roʻyxatga olingan manzilga bogʻliq emas — oʻzingizga qulay shaharni tanlang.`,
-
-    q5: `Natijalar qachon maʼlum boʻladi?`,
-    a5: `Tashkilotchilar saralashdan oʻtgan ishtirokchilar bilan anketada koʻrsatilgan telefon raqami orqali bogʻlanadi.`,
-
-    q6: `Qanday qoʻshiqlarni ijro etish mumkin?`,
-    a6: `Tanlovda faqat milliy qoʻshiqlar va folklor — maqom, baxshi, ashula, suvora, yalla, lapar va boshqa anʼanaviy janrlar — qatnashishga qabul qilinadi. Xorijiy hamda zamonaviy oʻzbek qoʻshiqlari koʻrib chiqilmaydi.`,
-
-    q7: `Videoni joylashning oxirgi muddati qachon?`,
-    a7: `Barcha ishtirokchilarning videolari 2026-yil 1-oktabrdan kechiktirmay joylashtirilishi kerak.`,
-
-    eyebrow_apply: `Anketa`,
-    form_kicker: `Sahnaga chiqishga tayyormisiz?`,
-    form_card_title: `Milliy tanlov anketasi`,
-    form_sub: `Anketani diqqat bilan toʻldiring — bu sizni sahnaga chiqishdan avval yaxshiroq bilishimizga yordam beradi.`,
-
-    /* ---- anketa qadamlari ---- */
-    wiz_back: `Orqaga`,
-    wiz_next: `Keyingi`,
-    err_fill: `Belgilangan (*) majburiy maydonlarni toʻldiring.`,
-    err_email: `Toʻgʻri e-mail kiriting`,
-
-    st1: `Shaxsiy`, st2: `Ota-ona`, st3: `Ijod`, st4: `Oʻzingiz`, st5: `Sogʻliq`, st6: `Logistika`, st7: `Rozilik`,
-    sec1: `Shaxsiy maʼlumotlar`,
-    sec2: `Ota-ona / qonuniy vakil`,
-    sec3: `Ijodiy maʼlumot`,
-    sec4: `Oʻzingiz haqingizda`,
-    sec5: `Tibbiy maʼlumot`,
-    sec6: `Logistika`,
-    sec7: `Rozilik va tasdiqlash`,
-
-    s1_city: `Kasting shahri`,
-    s1_date_label: `Kasting sanasi`,
-    s1_photo: `Suratingiz`,
-    s1_photo_btn: `Rasm tanlash`,
-    s1_photo_hint: `Yuzingiz toʻgʻridan-toʻgʻri koʻrinsin — koʻzoynak va bosh kiyimsiz, tekis fon, yaxshi yorugʻlikda. Yaqinda olingan aniq surat.`,
-    err_photo: `Iltimos, suratingizni qoʻshing.`,
-    s1_fullname: `F.I.Sh. (toʻliq)`,
-    s1_fullname_ph: `Familiya Ism Sharif`,
-    s1_birth: `Tugʻilgan sana`,
-    s1_age: `Yosh`,
-    s1_gender: `Jins`,
-    gender_ph: `Tanlang`,
-    gender_m: `Erkak`,
-    gender_f: `Ayol`,
-    s1_citizen: `Fuqarolik`,
-    s1_region: `Yashash shahri / tumani`,
-    s1_phone: `Telefon`,
-    s1_email: `E-mail`,
-    s1_socials: `Ijtimoiy tarmoqlar`,
-    s1_agenote: `Ishtirokchilar anketa topshirish paytida 14 dan 19 yoshgacha boʻlishi shart.`,
-
-    s2_note: `Barcha ishtirokchilar uchun toʻldirilishi shart.`,
-    s2_name: `Ota-ona / vakil F.I.Sh.`,
-    s2_relation: `Ishtirokchiga kimsiz?`,
-    s2_relation_ph: `masalan, otasi`,
-    s2_phone: `Telefon`,
-    s2_email: `E-mail`,
-    s2_consent: `Men ishtirokchining ota-onasi / qonuniy vakili ekanligimni tasdiqlayman va uning U-POP TREND kastingida ishtirok etishiga hamda materiallardan loyiha doirasida foydalanishga rozilik beraman.`,
-
-    s3_rule_title: `Ijro qoidasi`,
-    s3_rule: `Kastingning barcha bosqichlarida faqat milliy va folklor yoʻnalishidagi asarlar ijro etiladi (maqom, ashula, suvora, yalla, lapar, baxshi va boshqalar). Xorijiy hamda zamonaviy estrada qoʻshiqlari taqiqlanadi. Minusovka kerak emas — barcha ishtirokchilar a cappella kuylaydi.`,
-    s3_agree: `Qoidalar bilan tanishdim va tayyorlagan asarim talablarga toʻliq javob berishini kafolatlayman.`,
-    s3_piece: `Ijro etiladigan asar (nomi, muallifi)`,
-    s3_genre: `Janr / yoʻnalish`,
-    s3_genre_ph: `maqom, ashula, suvora, yalla, lapar, baxshi…`,
-    genre_other: `Boshqa`,
-    s3_edu: `Musiqiy maʼlumotingiz bormi? Qayerda?`,
-    s3_instr: `Musiqa asbobida chalasizmi? Qaysi?`,
-    s3_years: `Necha yildan beri kuylaysiz?`,
-    s3_teacher: `Vokal ustozingiz bormi?`,
-    s3_contests: `Tanlov / shoularda qatnashganmisiz? Natijangiz?`,
-    s3_video: `Ijro videosiga havola (agar boʻlsa)`,
-
-    s4_why: `Nega U-POP TREND’da ishtirok etmoqchisiz?`,
-    s4_music: `Musiqa siz uchun nima?`,
-    s4_words: `Uch soʻz bilan oʻzingizni taʼriflang`,
-    s4_idol: `Kumiringiz / ilhomlantiruvchi`,
-    s4_hobby: `Qiziqishlaringiz (musiqadan tashqari)`,
-    s4_free: `Boʻsh vaqtdagi sevimli mashgʻulot`,
-    s4_family: `Mening oilam`,
-    s4_father: `Otam — F.I.Sh.`,
-    s4_father_job: `Otamning ish joyi`,
-    s4_mother: `Onam — F.I.Sh.`,
-    s4_mother_job: `Onamning ish joyi`,
-    s4_siblings: `Aka-uka / opa-singillar (ism, yosh)`,
-    s4_livewith: `Kim bilan istiqomat qilasiz?`,
-    s4_support: `Sizni kim koʻproq qoʻllaydi va nega?`,
-
-    s5_chronic: `Surunkali kasalliklar / cheklovlar (agar boʻlsa)`,
-    s5_allergy: `Allergiya (agar boʻlsa)`,
-    s5_emergency: `Favqulodda holat uchun kontakt (F.I.Sh., telefon)`,
-
-    s6_1: `Belgilangan shahar va vaqtda kastingga shaxsan boraman.`,
-    s6_2: `Kastingdan oʻtsam, loyihaning keyingi barcha bosqichlarida qatnashishga tayyorman.`,
-    s6_3: `Loyiha jadvaliga koʻra boshqa shaharlarga borish kerak boʻlishi mumkinligini tushunaman.`,
-
-    s7_1: `Shaxsiy maʼlumotlarimni (anketadagi va boshqa) kasting va shou uchun qayta ishlashga rozilik beraman.`,
-    s7_2: `Foto-, video-, audioyozuv hamda tasvir, ovoz va ijodiy materiallarimdan efir, promo va ijtimoiy tarmoqlarda qoʻshimcha toʻlovsiz foydalanishga rozilik beraman.`,
-    s7_3: `U-POP TREND kastingi va loyihasining qoidalari bilan tanishdim va roziman.`,
-    s7_4: `Anketadagi barcha maʼlumotlar haqqoniy ekanligini tasdiqlayman.`,
-    s7_final: `Yuborishdan oldin maʼlumotlarni tekshiring. Kerak boʻlsa, «Orqaga» tugmasi orqali qayting.`,
-
-    label_name: `Ism va familiya`,
-    ph_name: `Ismingiz nima?`,
-
-    label_age: `Yosh`,
-    ph_age: `Yoshingiz`,
-
-    label_city: `Kasting shahri`,
-    city_ph: `Shaharni tanlang`,
-
-    label_phone: `Telefon`,
-
-    consent: `Shaxsiy maʼlumotlarim qayta ishlanishiga va UPOP TREND kastingi haqida maʼlumot olishga roziman`,
-
-    err_name: `Ismingizni kiriting`,
-    err_age: `Yosh 14–19 oraligʻida boʻlishi kerak`,
-    err_city: `Shaharni tanlang`,
-    err_phone: `Toʻgʻri telefon raqamini kiriting`,
-    err_consent: `Davom etish uchun rozilik bering`,
-
-    submit: `Anketani yuborish`,
-    submit_loading: `Yuborilmoqda…`,
-
-    success_title: `Anketa qabul qilindi`,
-    success_text: `Arizangiz uchun rahmat! Saralashdan oʻtsangiz, anketada koʻrsatilgan raqam orqali siz bilan bogʻlanamiz. Tafsilotlarni upop.uz saytida kuzating.`,
-
-    golden_title: `HAQIQIY ISTEDODLARNI QIDIRAMIZ!`,
-    golden_subtitle: `Agar siz 14-19 yoshda boʻlsangiz va milliy madaniyatimizni chuqur bilsangiz - bu loyiha siz uchun!`,
-
-    footer_details: `Barcha tafsilotlar — <a href="https://upop.uz" target="_blank" rel="noopener">upop.uz</a>`,
-    footer_copy: `© 2026 UPOP TREND`,
-    footer_credit: `Designed & Developed by <a href="https://teiior.uz" target="_blank" rel="noopener">teiior</a>`,
-  },
-
-  /* ---------------------------------------------------- RU */
-  ru: {
-    meta_title: `U POP TREND — Национальный кастинг`,
-    meta_desc:  `Национальный конкурс для молодёжи 14-19 лет. Опубликуйте видео с #UPOPTREND и заполните анкету. Приём заявок до 1 октября.`,
-    skip: `Перейти к заявке`,
-
-    nav_who: `Кто участвует`,
-    nav_how: `Как это работает`,
-    nav_cities: `Города и даты`,
-    nav_faq: `Вопросы`,
-    nav_apply: `Заполнить анкету`,
-
-    hero_title: `«Возрождение ценностей»`,
-    hero_cta: `Заполнить анкету`,
-    deadline: `Приём заявок до 1 октября 2026 года`,
-    chance_title: `Вам <span class="hl">от 14-19 лет!</span><br>И вы умеете петь вживую?<br>Значит, это ваша сцена!`,
-    who_lede: `Первый национальный кастинг в истории Узбекистана — открыт для всех, независимо от опыта и подготовки.`,
-
-    stat1_num: `14–19`,
-    stat1_label: `Возраст участников`,
-    stat2_label: `Крайний срок`,
-    stat3_label: `национальный проект`,
-
-    steps_title: `Три шага <span class="hl">до сцены</span>`,
-
-    step1_title: `Запишите видео`,
-    step1_text: `Исполните любую народную песню в своём стиле и опубликуйте видео на личной странице в соцсетях. Обязательно поставьте хэштег #UPOPTREND и отметьте страницу @upoptrend — иначе организаторы не увидят вашу заявку.`,
-
-    step2_title: `Заполните анкету`,
-    step2_text: `Оставьте свои данные. Это займёт меньше двух минут — подтверждение придёт на номер, указанный в анкете.`,
-
-    step3_title: `Станьте частью национального проекта`,
-    step3_text: `Самые талантливые голоса страны объединятся в рамках национального проекта. Участники окажутся в поле внимания профессиональных продюсеров и СМИ и смогут выйти на большую сцену.`,
-
-    cities_title: `Кастинг проходит <span class="hl">по всей республике</span>`,
-    cities_lede: `Пять городов — пять сцен. Выбирайте, куда удобнее добраться.`,
-    final_badge: `Большой финал`,
-
-    city1_name: `Фергана`,
-    city1_date: `7 сентября`,
-
-    city2_name: `Хорезм`,
-    city2_date: `9 сентября`,
-
-    city3_name: `Бухара`,
-    city3_date: `11 сентября`,
-
-    city4_name: `Самарканд`,
-    city4_date: `13 сентября`,
-
-    city5_name: `Ташкент`,
-    city5_date: `19–20 сентября`,
-
-    faq_title: `Частые <span class="hl">вопросы</span>`,
-
-    q1: `Нужен ли опыт выступлений?`,
-    a1: `Нет. Кастинг открыт для всех в возрасте от 14-19 лет. Ни музыкальная школа, ни предыдущий сценический опыт не требуются — жюри оценивает вокальные и артистические способности.`,
-
-    q2: `Участие платное?`,
-    a2: `Нет. Участие бесплатное во всех пяти городах. Организаторы не собирают взносы ни на одном этапе.`,
-
-    q3: `Что нужно взять с собой?`,
-    a3: `Документ, удостоверяющий личность. Рекомендуется подготовить произведение национального направления и быть готовым исполнить его a cappella.`,
-
-    q4: `Можно выбрать любой город?`,
-    a4: `Да. Участие не зависит от места постоянной регистрации — выберите город, который вам удобнее.`,
-
-    q5: `Когда будут известны результаты?`,
-    a5: `Организаторы свяжутся с участниками, прошедшими отбор, по номеру телефона, указанному в анкете.`,
-
-    q6: `Какие песни можно исполнять?`,
-    a6: `К участию допускаются только национальные песни и фольклор — маком, бахши, ашула, сувора, ялла, лапар и другие традиционные жанры. Зарубежные и современные узбекские песни рассматриваться не будут.`,
-
-    q7: `Какой крайний срок публикации видео?`,
-    a7: `Все видео участников должны быть опубликованы не позднее 1 октября 2026 года.`,
-
-    eyebrow_apply: `Анкета`,
-    form_kicker: `Готовы выйти на сцену?`,
-    form_card_title: `Анкета участника кастинга`,
-    form_sub: `Заполни анкету внимательно — она поможет узнать тебя ещё до того, как ты выйдешь на сцену.`,
-
-    /* ---- anketa qadamlari ---- */
-    wiz_back: `Назад`,
-    wiz_next: `Далее`,
-    err_fill: `Заполните обязательные поля, отмеченные *.`,
-    err_email: `Введите корректный e-mail`,
-
-    st1: `Личные`, st2: `Родитель`, st3: `Творчество`, st4: `О себе`, st5: `Здоровье`, st6: `Логистика`, st7: `Согласия`,
-    sec1: `Личные данные`,
-    sec2: `Родитель / законный представитель`,
-    sec3: `Творческая информация`,
-    sec4: `О себе`,
-    sec5: `Медицинская информация`,
-    sec6: `Логистика`,
-    sec7: `Согласия и подтверждение`,
-
-    s1_city: `Город кастинга`,
-    s1_date_label: `Дата кастинга`,
-    s1_photo: `Ваше фото`,
-    s1_photo_btn: `Выбрать фото`,
-    s1_photo_hint: `Лицо анфас — без очков и головных уборов, ровный фон, хорошее освещение. Недавнее чёткое фото.`,
-    err_photo: `Пожалуйста, добавьте фото.`,
-    s1_fullname: `ФИО (полностью)`,
-    s1_fullname_ph: `Фамилия Имя Отчество`,
-    s1_birth: `Дата рождения`,
-    s1_age: `Возраст`,
-    s1_gender: `Пол`,
-    gender_ph: `Выберите`,
-    gender_m: `Мужской`,
-    gender_f: `Женский`,
-    s1_citizen: `Гражданство`,
-    s1_region: `Город / регион проживания`,
-    s1_phone: `Телефон`,
-    s1_email: `E-mail`,
-    s1_socials: `Соцсети`,
-    s1_agenote: `На момент подачи анкеты участнику должно быть от 14-19 лет включительно.`,
-
-    s2_note: `Обязательно к заполнению для всех участников.`,
-    s2_name: `ФИО родителя / опекуна`,
-    s2_relation: `Кем приходится участнику?`,
-    s2_relation_ph: `например, отец`,
-    s2_phone: `Телефон`,
-    s2_email: `E-mail`,
-    s2_consent: `Я подтверждаю, что являюсь родителем / законным представителем участника, и даю согласие на его участие в кастинге U-POP TREND и использование материалов в рамках проекта.`,
-
-    s3_rule_title: `Правило исполнения`,
-    s3_rule: `На всех этапах кастинга исполняются только национальные и фольклорные произведения (маком, ашула, сувора, ялла, лапар, бахши и др.). Зарубежная и современная эстрада запрещены. Минусовка не нужна — все участники поют a cappella.`,
-    s3_agree: `Ознакомлен(а) с правилами и гарантирую, что подготовленное произведение полностью им соответствует.`,
-    s3_piece: `Произведение для исполнения (название, автор)`,
-    s3_genre: `Жанр / направление`,
-    s3_genre_ph: `маком, ашула, сувора, ялла, лапар, бахши…`,
-    genre_other: `Другое`,
-    s3_edu: `Есть ли музыкальное образование? Где?`,
-    s3_instr: `Играете на инструментах? На каких?`,
-    s3_years: `Сколько лет поёте?`,
-    s3_teacher: `Есть вокальный педагог?`,
-    s3_contests: `Участвовали в конкурсах / шоу? С каким результатом?`,
-    s3_video: `Ссылка на видео с исполнением (если есть)`,
-
-    s4_why: `Почему вы хотите участвовать в U-POP TREND?`,
-    s4_music: `Что музыка значит для вас?`,
-    s4_words: `Три слова, которые описывают вас`,
-    s4_idol: `Кумир / вдохновение`,
-    s4_hobby: `Увлечения (кроме музыки)`,
-    s4_free: `Любимое занятие в свободное время`,
-    s4_family: `Моя семья`,
-    s4_father: `Папа — ФИО`,
-    s4_father_job: `Род деятельности отца`,
-    s4_mother: `Мама — ФИО`,
-    s4_mother_job: `Род деятельности матери`,
-    s4_siblings: `Братья / сёстры (имена, возраст)`,
-    s4_livewith: `С кем вы проживаете?`,
-    s4_support: `Кто поддерживает вас больше всех и почему?`,
-
-    s5_chronic: `Хронические заболевания / ограничения (если есть)`,
-    s5_allergy: `Аллергии (если есть)`,
-    s5_emergency: `Экстренный контакт (ФИО, телефон)`,
-
-    s6_1: `Готов(а) присутствовать на кастинге лично в указанные дату и город.`,
-    s6_2: `В случае прохождения готов(а) участвовать во всех последующих этапах проекта.`,
-    s6_3: `Понимаю, что участие может потребовать выездов в другие города по графику проекта.`,
-
-    s7_1: `Даю согласие на обработку персональных данных (указанных в анкете и иных) для проведения кастинга и производства шоу.`,
-    s7_2: `Даю согласие на фото-, видео-, аудиосъёмку и использование изображения, голоса и материалов в эфире, промо и соцсетях без дополнительного вознаграждения.`,
-    s7_3: `Ознакомлен(а) и согласен(на) с правилами и регламентом кастинга и проекта U-POP TREND.`,
-    s7_4: `Подтверждаю, что все указанные в анкете данные достоверны.`,
-    s7_final: `Перед отправкой проверьте данные. При необходимости вернитесь кнопкой «Назад».`,
-
-    label_name: `Имя и фамилия`,
-    ph_name: `Как вас зовут?`,
-
-    label_age: `Возраст`,
-    ph_age: `Ваш возраст`,
-
-    label_city: `Город кастинга`,
-    city_ph: `Выберите город`,
-
-    label_phone: `Телефон`,
-
-    consent: `Я согласен(на) на обработку моих персональных данных и получение информации о кастинге UPOP TREND`,
-
-    err_name: `Введите имя`,
-    err_age: `Возраст должен быть от 14-19 лет`,
-    err_city: `Выберите город`,
-    err_phone: `Введите корректный номер телефона`,
-    err_consent: `Дайте согласие, чтобы продолжить`,
-
-    submit: `Отправить анкету`,
-    submit_loading: `Отправка…`,
-
-    success_title: `Анкета принята`,
-    success_text: `Спасибо за заявку! Если вы пройдёте отбор, мы свяжемся с вами по номеру из анкеты. Следите за деталями на upop.uz.`,
-
-    golden_title: `ИЩЕМ НАСТОЯЩИЕ ТАЛАНТЫ!`,
-    golden_subtitle: `Если вам от 14-19 лет и вы глубоко знаете нашу национальную культуру — этот проект для вас!`,
-
-    footer_details: `Все подробности — <a href="https://upop.uz" target="_blank" rel="noopener">upop.uz</a>`,
-    footer_copy: `© 2026 UPOP TREND`,
-    footer_credit: `Designed & Developed by <a href="https://teiior.uz" target="_blank" rel="noopener">teiior</a>`,
-  },
-
-  /* ---------------------------------------------------- EN */
-  en: {
-    meta_title: `U POP TREND — National Casting`,
-    meta_desc:  `A national contest for youth aged 14–19. Post your video with #UPOPTREND and fill in the form. Applications until 1 October.`,
-    skip: `Skip to apply`,
-
-    nav_who: `Who can join`,
-    nav_how: `How it works`,
-    nav_cities: `Cities & dates`,
-    nav_faq: `FAQ`,
-    nav_apply: `Fill in the form`,
-
-    hero_title: `“The revival of values”`,
-    hero_cta: `Fill in the form`,
-    deadline: `Applications accepted until 1 October 2026`,
-    chance_title: `Are you <span class="hl">14 to 19 years old?</span><br>And can you sing live?<br>Then this is your stage!`,
-    who_lede: `The first national casting in Uzbekistan's history — open to everyone, regardless of experience or training.`,
-
-    stat1_num: `14–19`,
-    stat1_label: `Age of participants`,
-    stat2_label: `Deadline`,
-    stat3_label: `national project`,
-
-    steps_title: `Three steps <span class="hl">to the stage</span>`,
-
-    step1_title: `Record a video`,
-    step1_text: `Perform any folk song in your own style and post the video on your personal social-media page. Be sure to add the hashtag #UPOPTREND and tag @upoptrend — otherwise the organizers won't see your entry.`,
-
-    step2_title: `Fill in the form`,
-    step2_text: `Leave your details. It takes under two minutes — a confirmation is sent to the number you provide in the form.`,
-
-    step3_title: `Become part of the national project`,
-    step3_text: `The country's most talented voices come together within a national project. Participants gain the attention of professional producers and the media, and a chance to step onto the big stage.`,
-
-    cities_title: `The casting travels <span class="hl">across the republic</span>`,
-    cities_lede: `Five cities — five stages. Pick the one easiest to reach.`,
-    final_badge: `Grand final`,
-
-    city1_name: `Fergana`,
-    city1_date: `September 7`,
-
-    city2_name: `Khorezm`,
-    city2_date: `September 9`,
-
-    city3_name: `Bukhara`,
-    city3_date: `September 11`,
-
-    city4_name: `Samarkand`,
-    city4_date: `September 13`,
-
-    city5_name: `Tashkent`,
-    city5_date: `September 19–20`,
-
-    faq_title: `Frequently asked <span class="hl">questions</span>`,
-
-    q1: `Do I need stage experience?`,
-    a1: `No. The casting is open to everyone aged 14–19. Neither music school nor previous stage experience is required — the jury evaluates vocal and performance skills.`,
-
-    q2: `Is participation paid?`,
-    a2: `No. Participation is free in all five cities. The organizers do not collect any fees at any stage.`,
-
-    q3: `What should I bring with me?`,
-    a3: `A valid identity document. Prepare a piece from the national tradition and be ready to perform it a cappella.`,
-
-    q4: `Can I choose any city?`,
-    a4: `Yes. Participation is not tied to your permanent registration address — choose whichever city is most convenient for you.`,
-
-    q5: `When will the results be announced?`,
-    a5: `The organizers will contact the selected participants using the phone number provided in the application.`,
-
-    q6: `What songs can be performed?`,
-    a6: `Only national songs and folklore are accepted — maqom, bakhshi, ashula, suvora, yalla, lapar and other traditional genres. Foreign and modern Uzbek songs will not be considered.`,
-
-    q7: `What is the deadline to publish the video?`,
-    a7: `All participants' videos must be published no later than 1 October 2026.`,
-
-    eyebrow_apply: `Application`,
-    form_kicker: `Ready to take the stage?`,
-    form_card_title: `Casting application form`,
-    form_sub: `Fill it in carefully — it helps us get to know you before you step on stage.`,
-
-    /* ---- anketa qadamlari ---- */
-    wiz_back: `Back`,
-    wiz_next: `Next`,
-    err_fill: `Please complete the required fields marked *.`,
-    err_email: `Enter a valid email`,
-
-    st1: `Personal`, st2: `Parent`, st3: `Creative`, st4: `About`, st5: `Health`, st6: `Logistics`, st7: `Consent`,
-    sec1: `Personal details`,
-    sec2: `Parent / legal guardian`,
-    sec3: `Creative background`,
-    sec4: `About you`,
-    sec5: `Health information`,
-    sec6: `Logistics`,
-    sec7: `Consent & confirmation`,
-
-    s1_city: `Casting city`,
-    s1_date_label: `Casting date`,
-    s1_photo: `Your photo`,
-    s1_photo_btn: `Choose photo`,
-    s1_photo_hint: `Face forward — no glasses or headwear, plain background, good lighting. A recent, clear photo.`,
-    err_photo: `Please add your photo.`,
-    s1_fullname: `Full name`,
-    s1_fullname_ph: `First name, last name`,
-    s1_birth: `Date of birth`,
-    s1_age: `Age`,
-    s1_gender: `Gender`,
-    gender_ph: `Select`,
-    gender_m: `Male`,
-    gender_f: `Female`,
-    s1_citizen: `Citizenship`,
-    s1_region: `City / region of residence`,
-    s1_phone: `Phone`,
-    s1_email: `E-mail`,
-    s1_socials: `Social media`,
-    s1_agenote: `Participants must be between 14 and 19 years old at the time of applying.`,
-
-    s2_note: `Required for every participant.`,
-    s2_name: `Parent / guardian full name`,
-    s2_relation: `Relation to the participant?`,
-    s2_relation_ph: `e.g. father`,
-    s2_phone: `Phone`,
-    s2_email: `E-mail`,
-    s2_consent: `I confirm that I am the participant's parent / legal guardian and consent to their participation in the U-POP TREND casting and the use of materials within the project.`,
-
-    s3_rule_title: `Performance rule`,
-    s3_rule: `Only national and folk repertoire is performed at every stage (maqom, ashula, suvora, yalla, lapar, baxshi and others). Foreign and modern pop songs are not allowed. No backing track — everyone sings a cappella.`,
-    s3_agree: `I have read the rules and guarantee my prepared piece fully meets them.`,
-    s3_piece: `Piece to perform (title, author)`,
-    s3_genre: `Genre / style`,
-    s3_genre_ph: `maqom, ashula, suvora, yalla, lapar, baxshi…`,
-    genre_other: `Other`,
-    s3_edu: `Any musical education? Where?`,
-    s3_instr: `Do you play instruments? Which ones?`,
-    s3_years: `How many years have you been singing?`,
-    s3_teacher: `Do you have a vocal coach?`,
-    s3_contests: `Have you taken part in contests / shows? With what result?`,
-    s3_video: `Link to a performance video (if any)`,
-
-    s4_why: `Why do you want to take part in U-POP TREND?`,
-    s4_music: `What does music mean to you?`,
-    s4_words: `Three words that describe you`,
-    s4_idol: `Your idol / inspiration`,
-    s4_hobby: `Hobbies (besides music)`,
-    s4_free: `Favourite free-time activity`,
-    s4_family: `My family`,
-    s4_father: `Father — full name`,
-    s4_father_job: `Father's occupation`,
-    s4_mother: `Mother — full name`,
-    s4_mother_job: `Mother's occupation`,
-    s4_siblings: `Siblings (names, ages)`,
-    s4_livewith: `Who do you live with?`,
-    s4_support: `Who supports you the most, and why?`,
-
-    s5_chronic: `Chronic conditions / limitations (if any)`,
-    s5_allergy: `Allergies (if any)`,
-    s5_emergency: `Emergency contact (name, phone)`,
-
-    s6_1: `I will attend the casting in person on the given date and in the given city.`,
-    s6_2: `If selected, I am ready to take part in all further stages of the project.`,
-    s6_3: `I understand participation may require travelling to other cities per the project schedule.`,
-
-    s7_1: `I consent to the processing of my personal data (in this form and otherwise) for the casting and the production of the show.`,
-    s7_2: `I consent to photo, video and audio recording and to the use of my image, voice and materials on air, in promo and on social media without additional payment.`,
-    s7_3: `I have read and agree to the rules and regulations of the U-POP TREND casting and project.`,
-    s7_4: `I confirm that all information in this form is accurate.`,
-    s7_final: `Please review your answers before sending — use "Back" if you need to edit.`,
-
-    label_name: `Full name`,
-    ph_name: `What is your name?`,
-
-    label_age: `Age`,
-    ph_age: `Your age`,
-
-    label_city: `Casting city`,
-    city_ph: `Select a city`,
-
-    label_phone: `Phone`,
-
-    consent: `I consent to the processing of my personal data and to receiving information about the UPOP TREND casting`,
-
-    err_name: `Enter your name`,
-    err_age: `Age must be between 14 and 19`,
-    err_city: `Choose a city`,
-    err_phone: `Enter a valid phone number`,
-    err_consent: `Please give your consent to continue`,
-
-    submit: `Submit application`,
-    submit_loading: `Sending…`,
-
-    success_title: `Application received`,
-    success_text: `Thank you for your application! If you pass the selection, we'll contact you using the number from the form. Follow updates at upop.uz.`,
-
-    golden_title: `WE ARE LOOKING FOR REAL TALENTS!`,
-    golden_subtitle: `If you are between 14 and 19 years old and deeply know our national culture - this project is for you!`,
-
-    footer_details: `All details — <a href="https://upop.uz" target="_blank" rel="noopener">upop.uz</a>`,
-    footer_copy: `© 2026 UPOP TREND`,
-    footer_credit: `Designed & Developed by <a href="https://teiior.uz" target="_blank" rel="noopener">teiior</a>`,
-  },
-};
 
 /* ============================================================
    Tarjima mexanizmi
    ============================================================ */
 
-const LANGS = ["uz", "ru", "en"];
+const LANGS = ["uz", "oz", "ru", "en"];
 const LS_KEY = "upop_lang";
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -646,6 +40,80 @@ function clearSubmissionId() {
   try { localStorage.removeItem(SUBMISSION_ID_KEY); } catch (_) {}
 }
 
+/* ============================================================
+   Matnlar: standart qiymatlar va admin tahrirlari
+   Oxirgi tahrirlar localStorage da turadi — sahifa ular bilan
+   darhol ochiladi, yangilari esa fonda Apps Script dan soʻraladi.
+   ============================================================ */
+
+const CONTENT_KEY = "upop_content";
+const HTML_KEYS = new Set(window.UPOP_HTML_KEYS);
+
+/* Har til uchun yakuniy lugʻat: tahrir boʻlsa tahrir, boʻlmasa standart matn.
+   HTML kalitlar tahriri belgilashdan xavfsiz HTML ga oʻtkaziladi — xom HTML
+   hech qachon qoʻyilmaydi. ÖZ tahrirlanmagan boʻlsa, UZ matnidan yasaladi. */
+function buildDict(overrides) {
+  const base = window.UPOP_CONTENT;
+  const kit = window.UPOP_KIT;
+  const c = overrides || {};
+  const edited = (key, lang) => {
+    const v = c[key] && c[key][lang];
+    if (typeof v !== "string" || v === "") return null;
+    return HTML_KEYS.has(key) ? kit.markupToHtml(v) : v;
+  };
+
+  const dict = {};
+  ["uz", "ru", "en"].forEach((lang) => {
+    dict[lang] = {};
+    Object.keys(base[lang]).forEach((key) => {
+      dict[lang][key] = edited(key, lang) ?? base[lang][key];
+    });
+  });
+  dict.oz = {};
+  Object.keys(dict.uz).forEach((key) => {
+    dict.oz[key] = edited(key, "oz") ?? kit.toOz(dict.uz[key]);
+  });
+  return dict;
+}
+
+function readContentCache() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(CONTENT_KEY));
+    if (saved && saved.v != null && saved.c && typeof saved.c === "object") return saved;
+  } catch (_) {}
+  return null;
+}
+
+let content = readContentCache();
+let DICT = buildDict(content && content.c);
+let currentLang = null; // ekranda koʻrsatilayotgan til
+
+/* Yangi tahrirlarni soʻraymiz. Javobda v va c boʻlmasa, Apps Script ning yangi
+   versiyasi hali joylanmagan — hech narsa oʻzgarmaydi va saqlanmaydi.
+   Tarmoq xatosida yoki javob 8 soniyadan kechiksa, jim qolamiz. */
+function loadContent() {
+  if (!SHEET_ENDPOINT) return;
+  const ctrl = new AbortController();
+  const timer = setTimeout(() => ctrl.abort(), 8000);
+
+  fetch(SHEET_ENDPOINT + "?action=content", { signal: ctrl.signal })
+    .then((res) => res.json())
+    .then((res) => {
+      if (!res || res.v == null || !res.c || typeof res.c !== "object") return;
+      const v = String(res.v);
+      if (v === (content ? String(content.v) : "0")) return; // "0" — tahrir yoʻq
+      content = { v, c: res.c };
+      try { localStorage.setItem(CONTENT_KEY, JSON.stringify(content)); } catch (_) {}
+      DICT = buildDict(content.c);
+      // Joriy til qayta qoʻllanadi; forma qiymatlari va qadam joyida qoladi.
+      if (currentLang) applyLang(currentLang);
+    })
+    .catch(() => {})
+    .finally(() => clearTimeout(timer));
+}
+
+loadContent();
+
 function getLang() {
   const saved = localStorage.getItem(LS_KEY);
   return LANGS.includes(saved) ? saved : "uz";
@@ -654,8 +122,10 @@ function getLang() {
 function applyLang(lang) {
   const dict = DICT[lang];
   if (!dict) return;
+  currentLang = lang;
 
-  document.documentElement.lang = lang;
+  // Özbekça ham oʻzbek tili, faqat alifbosi boshqa.
+  document.documentElement.lang = lang === "oz" ? "uz" : lang;
   document.title = dict.meta_title;
 
   const md = document.querySelector('meta[name="description"]');
@@ -899,23 +369,30 @@ function initReveal() {
 
 let countsDone = false;
 
+/* Raqam 0 dan joriy matngacha sanaladi. Matn (admin tahriri boʻlishi mumkin)
+   butun son boʻlmasa, sanalmaydi — oʻzicha koʻrsatiladi. */
 function runCountUps(instant) {
   if (countsDone) return;
 
   countsDone = true;
 
   document.querySelectorAll("[data-count]").forEach((el) => {
-    const target = parseInt(el.dataset.count, 10);
+    const final = el.textContent;
+    const text = final.trim();
 
-    if (instant || reduceMotion) {
-      el.textContent = String(target);
+    if (instant || reduceMotion || !/^\d+$/.test(text)) {
       return;
     }
 
+    const target = parseInt(text, 10);
     const dur = 900;
     const start = performance.now();
+    let shown = final;
 
     const tick = (now) => {
+      // Matn tashqaridan almashgan boʻlsa (til yoki yangi tahrir), toʻxtaymiz.
+      if (el.textContent !== shown) return;
+
       const p = Math.min(
         1,
         (now - start) / dur
@@ -924,9 +401,8 @@ function runCountUps(instant) {
       const eased =
         1 - Math.pow(1 - p, 3);
 
-      el.textContent = String(
-        Math.round(eased * target)
-      );
+      shown = p < 1 ? String(Math.round(eased * target)) : final;
+      el.textContent = shown;
 
       if (p < 1) {
         requestAnimationFrame(tick);
@@ -1258,7 +734,7 @@ function initForm() {
       }
     }
 
-    const lang = getLang();
+    const lang = currentLang;
     const data = collectData(form, lang);
 
     submitBtn.classList.add("is-loading");
@@ -1272,9 +748,7 @@ function initForm() {
       console.error("[UPOP] submit failed:", err);
       submitBtn.classList.remove("is-loading");
       submitBtn.querySelector(".btn__label").textContent = DICT[lang].submit;
-      alert(
-        "Xatolik yuz berdi. Qayta urinib koʻring / Произошла ошибка. Попробуйте ещё раз / Something went wrong, please try again."
-      );
+      alert(DICT[lang].err_submit);
     }
   });
 

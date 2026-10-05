@@ -8,6 +8,8 @@
  *    marta yozilmaydi.
  *  • Sarlavha qatori muzlatilgan va oltin rangda; sana-vaqt haqiqiy formatda,
  *    ha/yoʻq maydonlari Ha/— koʻrinishida; qatorlar navbatma-navbat boʻyaladi.
+ *  • Sayt matnlari (admindagi "Tahrirlash") Content varagʻida saqlanadi;
+ *    sayt ularni GET ?action=content orqali oʻqiydi.
  *
  * Oʻrnatish — SETUP.md. Faylni oʻzgartirgach qayta joylang:
  * Deploy ▸ Manage deployments ▸ ✏️ ▸ Version: New version ▸ Deploy.
@@ -114,6 +116,22 @@ var HISTORY_HEADER = 'Ishtirokchi tarixi / История участника';
 var PHOTO_HEADER = 'Foto / Фото';
 var PHOTO_FOLDER = 'UPOP_casting_photos';
 
+/* Sayt matnlari — admindagi "Tahrirlash" boʻlimi. Har kalit uchun bitta qator,
+   har til uchun alohida ustun. Faqat toʻldirilgan kataklar saytdagi asl matnni
+   (js/content.js) almashtiradi. HTML kalitlar xom HTML emas, belgilash
+   koʻrinishida saqlanadi: *oltin*, [matn](havola). */
+var CONTENT_SHEET = 'Content';
+var CONTENT_LANGS = ['uz', 'oz', 'ru', 'en'];   // 2–5-ustunlar
+var CONTENT_HEADERS = ['Key', 'Oʻzbekcha (uz)', 'Özbekça (oz)', 'Русский (ru)', 'English (en)', 'Yangilangan'];
+var CONTENT_KEY_RE = /^[a-z][a-z0-9_]{0,63}$/;
+var CONTENT_MAX_ITEMS = 500;
+var CONTENT_MAX_LEN = 8000;
+var CONTENT_TTL = 21600;                        // 6 soat — CacheService ruxsat beradigan eng uzoq muddat
+
+/* doPost biladigan amallar. Boshqa nomli action rad etiladi — u hech qachon
+   ariza qatori sifatida yozilmasligi kerak. */
+var ACTIONS = ['list', 'setStatus', 'review', 'admin', 'content_save'];
+
 /* ---------------------------------------------------------------- POST */
 function doPost(e) {
   // Tanani oldindan oʻqiymiz — faqat oʻqiydigan amallar yozish qulfini kutmasin.
@@ -124,6 +142,11 @@ function doPost(e) {
     }
   } catch (err) {
     return json({ ok: false, error: 'bad json' });
+  }
+
+  // Nomaʼlum amal jadvalga yetib bormaydi.
+  if (data && data.action != null && data.action !== '' && ACTIONS.indexOf(data.action) < 0) {
+    return json({ ok: false, error: 'unknown action' });
   }
 
   var ss = SpreadsheetApp.getActive();
@@ -151,6 +174,12 @@ function doPost(e) {
   }
 
   try {
+    // Sayt matnlarini saqlash — faqat Content varagʻi, arizalar varagʻiga tegmaydi. Parol bilan.
+    if (data && data.action === 'content_save') {
+      if (!authorized(data)) return json({ ok: false, error: 'forbidden' });
+      return json(saveContent(ss, data.items));
+    }
+
     ensureHeaders(sheet);
 
     // Baho holatini oʻrnatish (green/yellow/red yoki '' — tozalash). Parol bilan.
@@ -273,9 +302,222 @@ function doPost(e) {
   }
 }
 
-/* ---------------------------------------------------------------- GET (holat) */
-function doGet() {
+/* ---------------------------------------------------------------- GET (holat, sayt matnlari) */
+function doGet(e) {
+  // ?action=content — sayt matnlari: ochiq, parolsiz, faqat oʻqish uchun.
+  if (e && e.parameter && e.parameter.action === 'content') {
+    return ContentService
+      .createTextOutput(contentJson())
+      .setMimeType(ContentService.MimeType.JSON);
+  }
   return json({ ok: true, service: 'UPOP_casting', time: new Date() });
+}
+
+/* ---------------------------------------------------------------- sayt matnlari
+   Content varagʻi: Key | uz | oz | ru | en | Yangilangan, barcha kataklar matn
+   ('@'). Varaq birinchi saqlashda yaratiladi. Versiya (CONTENT_V) har saqlashda
+   bittaga oshadi; sayt oʻzidagi nusxani faqat versiya oʻzgarganda yangilaydi. */
+
+/* GET javobi (JSON matni): avval keshdan, boʻlmasa varaqdan. Kesh kaliti
+   versiyani oʻz ichiga oladi — saqlash paytida kelgan oʻqish eski maʼlumotni
+   yangi versiya nomi ostida keshga yoza olmaydi. */
+function contentJson() {
+  try {
+    var v = contentVersion();
+    var hit = null;
+    try { hit = CacheService.getScriptCache().get('content_' + v); } catch (err) {}
+    if (hit) return hit;
+    var text = JSON.stringify(contentState(SpreadsheetApp.getActive(), v));
+    cacheContent(v, text);
+    return text;
+  } catch (err) {
+    return JSON.stringify({ ok: false, error: String(err) });
+  }
+}
+
+function contentVersion() {
+  return PropertiesService.getScriptProperties().getProperty('CONTENT_V') || '0';
+}
+
+/* Qiymat 100 KB dan oshsa put() xato beradi — unda javob har safar varaqdan
+   oʻqiladi: sekinroq, lekin toʻgʻri. */
+function cacheContent(v, text) {
+  try { CacheService.getScriptCache().put('content_' + v, text, CONTENT_TTL); } catch (err) {}
+}
+
+/* Varaqdagi barcha toʻldirilgan kataklar: { ok, v, c: { kalit: { til: matn } } }.
+   Bir kalit ikki qatorda boʻlsa, birinchisi hisobga olinadi. */
+function contentState(ss, v) {
+  var c = {};
+  var sh = ss.getSheetByName(CONTENT_SHEET);
+  var last = sh ? sh.getLastRow() : 0;
+  if (last > 1) {
+    var rows = sh.getRange(2, 1, last - 1, CONTENT_LANGS.length + 1).getDisplayValues();
+    var seen = {};
+    for (var r = 0; r < rows.length; r++) {
+      var k = String(rows[r][0]).trim();
+      if (!CONTENT_KEY_RE.test(k) || hasOwn(seen, k)) continue;
+      seen[k] = true;
+      var item = {}, any = false;
+      for (var l = 0; l < CONTENT_LANGS.length; l++) {
+        var val = rows[r][l + 1];
+        if (val !== '') { item[CONTENT_LANGS[l]] = val; any = true; }
+      }
+      if (any) c[k] = item;
+    }
+  }
+  return { ok: true, v: v, c: c };
+}
+
+/* Admindan kelgan oʻzgarishlarni yozadi. Har til uchun: matn — oʻrnatadi,
+   "" — tozalaydi, berilmagan til oʻzgarmaydi. Toʻrt tili ham boʻsh qolgan
+   kalitning qatori oʻchiriladi. doPost qulfi ichida chaqiriladi. */
+function saveContent(ss, items) {
+  var keys = contentKeys(items);
+  if (!keys) return { ok: false, error: 'bad input' };
+
+  var sh = ss.getSheetByName(CONTENT_SHEET) || ss.insertSheet(CONTENT_SHEET);
+  ensureContentHeaders(sh);
+
+  var n = CONTENT_LANGS.length;
+  var width = CONTENT_HEADERS.length;
+  var last = sh.getLastRow();
+  var rows = last > 1 ? sh.getRange(2, 1, last - 1, width).getDisplayValues() : [];
+  var at = {};                                   // kalit → rows dagi oʻrni
+  for (var r = 0; r < rows.length; r++) {
+    var rk = String(rows[r][0]).trim();
+    if (CONTENT_KEY_RE.test(rk) && !hasOwn(at, rk)) at[rk] = r;
+  }
+
+  var stamp = Utilities.formatDate(new Date(), ss.getSpreadsheetTimeZone(), 'yyyy-MM-dd HH:mm');
+  var lo = -1, hi = -1;                          // oʻzgargan mavjud qatorlar oraligʻi
+  var added = [], drop = [];
+  for (var i = 0; i < keys.length; i++) {
+    var k = keys[i], item = items[k];
+    var fresh = !hasOwn(at, k);
+    var row = fresh ? [k, '', '', '', '', ''] : rows[at[k]];
+    var changed = false;
+    for (var l = 0; l < n; l++) {
+      if (!hasOwn(item, CONTENT_LANGS[l])) continue;
+      var val = item[CONTENT_LANGS[l]].replace(/\r\n?/g, '\n');
+      if (row[l + 1] !== val) { row[l + 1] = val; changed = true; }
+    }
+    var empty = row.slice(1, n + 1).join('') === '';
+    if (fresh) {
+      if (!empty) { row[width - 1] = stamp; added.push(row); }
+    } else if (empty) {
+      drop.push(at[k] + 2);
+    } else if (changed) {
+      row[width - 1] = stamp;
+      lo = lo < 0 ? at[k] : Math.min(lo, at[k]);
+      hi = Math.max(hi, at[k]);
+    }
+  }
+
+  if (lo >= 0) writeContentRows(sh, lo + 2, rows.slice(lo, hi + 1));
+  dropRows(sh, drop);
+  if (added.length) writeContentRows(sh, sh.getLastRow() + 1, added);
+
+  // Avval yozuvlar yakunlanadi, keyin versiya oshadi: yangi versiyani koʻrgan
+  // har bir oʻqish yangi matnni oladi.
+  SpreadsheetApp.flush();
+  var old = contentVersion();
+  var v = String((parseInt(old, 10) || 0) + 1);
+  PropertiesService.getScriptProperties().setProperty('CONTENT_V', v);
+  var state = contentState(ss, v);
+  try { CacheService.getScriptCache().remove('content_' + old); } catch (err) {}
+  cacheContent(v, JSON.stringify(state));
+  return state;
+}
+
+/* items ni tekshiradi: oddiy obyekt, koʻpi bilan 500 kalit, kalit nomi qoidaga
+   mos, har qiymat faqat uz/oz/ru/en dan iborat obyekt, matnlar 8000 belgigacha.
+   Kalitlar roʻyxatini, xato boʻlsa null qaytaradi. */
+function contentKeys(items) {
+  if (!isObject(items)) return null;
+  var keys = Object.keys(items);
+  if (keys.length > CONTENT_MAX_ITEMS) return null;
+  for (var i = 0; i < keys.length; i++) {
+    var item = items[keys[i]];
+    if (!CONTENT_KEY_RE.test(keys[i]) || !isObject(item)) return null;
+    var langs = Object.keys(item);
+    for (var l = 0; l < langs.length; l++) {
+      var val = item[langs[l]];
+      if (CONTENT_LANGS.indexOf(langs[l]) < 0 || typeof val !== 'string' || val.length > CONTENT_MAX_LEN) return null;
+    }
+  }
+  return keys;
+}
+
+/* Qatorlarni bitta yozuv bilan joylaydi. Avval format '@' — "=" yoki "+" bilan
+   boshlangan matn formulaga aylanmasin. */
+function writeContentRows(sh, start, rows) {
+  var need = start + rows.length - 1 - sh.getMaxRows();
+  if (need > 0) sh.insertRowsAfter(sh.getMaxRows(), need);
+  var range = sh.getRange(start, 1, rows.length, CONTENT_HEADERS.length);
+  range.setNumberFormat('@');
+  range.setValues(rows);
+  range.setVerticalAlignment('top');
+  sh.getRange(start, 2, rows.length, CONTENT_LANGS.length).setWrap(true);
+}
+
+/* Qatorlarni pastdan yuqoriga oʻchiradi; ketma-ket qatorlar bitta chaqiruvda. */
+function dropRows(sh, list) {
+  list.sort(function (a, b) { return b - a; });
+  // Sheets muzlatilmagan qatorlarning hammasini oʻchirishga yoʻl qoʻymaydi —
+  // bunday holda oxiriga bitta boʻsh qator qoʻshamiz.
+  if (list.length && sh.getMaxRows() - list.length < 2) sh.insertRowsAfter(sh.getMaxRows(), 1);
+  for (var i = 0; i < list.length; ) {
+    var end = list[i], cnt = 1;
+    while (i + cnt < list.length && list[i + cnt] === end - cnt) cnt++;
+    sh.deleteRows(end - cnt + 1, cnt);
+    i += cnt;
+  }
+}
+
+/* Sarlavha yoʻq yoki boshqacha boʻlsa, qayta yoziladi va bezaladi. */
+function ensureContentHeaders(sh) {
+  var n = CONTENT_HEADERS.length;
+  if (sh.getLastRow() === 0 || sh.getMaxColumns() < n ||
+      sh.getRange(1, 1, 1, n).getValues()[0].join('\t') !== CONTENT_HEADERS.join('\t')) {
+    styleContentHeader(sh);
+  }
+}
+
+/* Arizalar varagʻidagidek sarlavha: muzlatilgan, qalin, brend oltini.
+   Maʼlumot kataklari matn ('@'), til ustunlari oʻraladi. */
+function styleContentHeader(sh) {
+  var n = CONTENT_HEADERS.length;
+  if (sh.getMaxColumns() < n) sh.insertColumnsAfter(sh.getMaxColumns(), n - sh.getMaxColumns());
+  var header = sh.getRange(1, 1, 1, n);
+  header.setValues([CONTENT_HEADERS]);
+  header
+    .setFontSize(12)
+    .setFontWeight('bold')
+    .setFontColor('#241704')
+    .setBackground('#D3A63F')
+    .setHorizontalAlignment('center')
+    .setVerticalAlignment('middle')
+    .setWrap(true);
+  sh.setRowHeight(1, 40);
+  sh.setFrozenRows(1);
+  sh.setFrozenColumns(1);
+  sh.setColumnWidth(1, 200);                                      // kalit
+  for (var c = 2; c <= CONTENT_LANGS.length + 1; c++) sh.setColumnWidth(c, 360);
+  sh.setColumnWidth(n, 150);                                      // vaqt
+  var maxRows = sh.getMaxRows();
+  if (maxRows >= 2) {
+    sh.getRange(2, 1, maxRows - 1, n).setNumberFormat('@').setVerticalAlignment('top');
+    sh.getRange(2, 2, maxRows - 1, CONTENT_LANGS.length).setWrap(true);
+  }
+}
+
+function isObject(o) {
+  return !!o && typeof o === 'object' && !Array.isArray(o);
+}
+
+function hasOwn(o, k) {
+  return Object.prototype.hasOwnProperty.call(o, k);
 }
 
 /* ---------------------------------------------------------------- surat (Drive)

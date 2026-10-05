@@ -67,6 +67,7 @@
     <div class="nav__actions">
       <select class="langswitch-select" role="group" aria-label="Language">
         <option value="uz" selected>🇺🇿 UZ</option>
+        <option value="oz">🇺🇿 ÖZ</option>
         <option value="ru">🇷🇺 RU</option>
         <option value="en">🇬🇧 EN</option>
       </select>
@@ -98,6 +99,7 @@
 
     <select class="langswitch-select" role="group" aria-label="Language">
       <option value="uz" selected>🇺🇿 UZ</option>
+      <option value="oz">🇺🇿 ÖZ</option>
       <option value="ru">🇷🇺 RU</option>
       <option value="en">🇬🇧 EN</option>
     </select>
@@ -195,7 +197,7 @@
 
       <p class="lede sec-lede reveal" data-i18n="who_lede">
         Oʻzbekiston tarixidagi ilk milliy kasting — tajriba va
-        tayyorgarlikdan qat'i nazar, barcha uchun ochiq.
+        tayyorgarlikdan qatʼi nazar, barcha uchun ochiq.
       </p>
 
       </div>
@@ -234,7 +236,10 @@
             Kasting shaharlari soni
           </span>
 
-          <span class="stat__num hl">
+          <span
+            class="stat__num hl"
+            data-i18n="stat2_num"
+          >
             01.10
           </span>
 
@@ -252,7 +257,8 @@
 
           <span
             class="stat__num hl"
-            data-count="1"
+            data-i18n="stat3_num"
+            data-count
           >
             1
           </span>
@@ -346,7 +352,7 @@
           <p data-i18n="step2_text">
             Belgilangan vaqtda kastingda ishtirok eting.
             Kasting fonogrammasiz, faqat jonli ijroda boʻlib oʻtadi.
-            Hakamlar hay'ati ishtirokchining tabiiy vokal imkoniyatlari
+            Hakamlar hayʼati ishtirokchining tabiiy vokal imkoniyatlari
             va ijro mahoratini baholaydi.
           </p>
 
@@ -563,7 +569,7 @@
               Kastingning barcha bosqichlarida faqat milliy
               qoʻshiqlar va folklor asarlari ijrosiga ruxsat
               beriladi: maqom, baxshi, ashula, suvora, yalla,
-              lapar va boshqa an'anaviy janrlar.
+              lapar va boshqa anʼanaviy janrlar.
               <br><br>
               Xorijiy qoʻshiqlar va zamonaviy oʻzbek qoʻshiqlarini
               ijro etish taqiqlanadi.
@@ -726,20 +732,20 @@
               <label for="f-region" data-i18n="s1_region">Yashash shahri / tumani</label>
               <select id="f-region" name="region" required>
                 <option value="" data-i18n="gender_ph">Tanlang</option>
-                <option value="Toshkent shahri">Toshkent shahri</option>
-                <option value="Toshkent viloyati">Toshkent viloyati</option>
-                <option value="Andijon">Andijon</option>
-                <option value="Buxoro">Buxoro</option>
-                <option value="Fargʻona">Fargʻona</option>
-                <option value="Jizzax">Jizzax</option>
-                <option value="Xorazm">Xorazm</option>
-                <option value="Namangan">Namangan</option>
-                <option value="Navoiy">Navoiy</option>
-                <option value="Qashqadaryo">Qashqadaryo</option>
-                <option value="Qoraqalpogʻiston">Qoraqalpogʻiston</option>
-                <option value="Samarqand">Samarqand</option>
-                <option value="Sirdaryo">Sirdaryo</option>
-                <option value="Surxondaryo">Surxondaryo</option>
+                <option value="Toshkent shahri" data-i18n="region_tashkent_city">Toshkent shahri</option>
+                <option value="Toshkent viloyati" data-i18n="region_tashkent">Toshkent viloyati</option>
+                <option value="Andijon" data-i18n="region_andijan">Andijon</option>
+                <option value="Buxoro" data-i18n="region_bukhara">Buxoro</option>
+                <option value="Fargʻona" data-i18n="region_fergana">Fargʻona</option>
+                <option value="Jizzax" data-i18n="region_jizzakh">Jizzax</option>
+                <option value="Xorazm" data-i18n="region_khorezm">Xorazm</option>
+                <option value="Namangan" data-i18n="region_namangan">Namangan</option>
+                <option value="Navoiy" data-i18n="region_navoi">Navoiy</option>
+                <option value="Qashqadaryo" data-i18n="region_kashkadarya">Qashqadaryo</option>
+                <option value="Qoraqalpogʻiston" data-i18n="region_karakalpakstan">Qoraqalpogʻiston</option>
+                <option value="Samarqand" data-i18n="region_samarkand">Samarqand</option>
+                <option value="Sirdaryo" data-i18n="region_syrdarya">Sirdaryo</option>
+                <option value="Surxondaryo" data-i18n="region_surkhandarya">Surxondaryo</option>
               </select>
             </div>
 
@@ -828,17 +834,17 @@
                 <label for="f-genre" data-i18n="s3_genre">Janr / yoʻnalish</label>
                 <select id="f-genre" name="genre" required>
                   <option value="" data-i18n="gender_ph">Tanlang</option>
-                  <option value="Maqom">Maqom</option>
-                  <option value="Ashula">Ashula</option>
-                  <option value="Katta ashula">Katta ashula</option>
-                  <option value="Lapar">Lapar</option>
-                  <option value="Yalla">Yalla</option>
-                  <option value="Suvora">Suvora</option>
-                  <option value="Baxshi">Baxshi</option>
-                  <option value="Doston">Doston</option>
-                  <option value="Terma">Terma</option>
-                  <option value="Alla">Alla</option>
-                  <option value="Yor-yor">Yor-yor</option>
+                  <option value="Maqom" data-i18n="genre_maqom">Maqom</option>
+                  <option value="Ashula" data-i18n="genre_ashula">Ashula</option>
+                  <option value="Katta ashula" data-i18n="genre_katta_ashula">Katta ashula</option>
+                  <option value="Lapar" data-i18n="genre_lapar">Lapar</option>
+                  <option value="Yalla" data-i18n="genre_yalla">Yalla</option>
+                  <option value="Suvora" data-i18n="genre_suvora">Suvora</option>
+                  <option value="Baxshi" data-i18n="genre_baxshi">Baxshi</option>
+                  <option value="Doston" data-i18n="genre_doston">Doston</option>
+                  <option value="Terma" data-i18n="genre_terma">Terma</option>
+                  <option value="Alla" data-i18n="genre_alla">Alla</option>
+                  <option value="Yor-yor" data-i18n="genre_yor_yor">Yor-yor</option>
                   <option value="Boshqa" data-i18n="genre_other">Boshqa</option>
                 </select>
               </div>
@@ -1032,7 +1038,7 @@
     <div class="foot__top">
 
       <div class="foot__brand">
-        <span class="foot__tag">#UPopTrend</span>
+        <span class="foot__tag" data-i18n="footer_tag">#UPopTrend</span>
         <span
           class="foot__details"
           data-i18n-html="footer_details"
@@ -1127,4 +1133,6 @@
 </svg>
 
 
+<script src="js/content.js"></script>
+<script src="js/i18n-kit.js"></script>
 <script src="js/main.js"></script>

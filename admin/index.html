@@ -47,6 +47,7 @@
   @keyframes sheen{ from{ background-position:200% 0; } to{ background-position:-200% 0; } }
   .btn.is-loading{ pointer-events:none; }
   .btn.is-loading .btn__label{ opacity:.55; }
+  .btn:disabled,.ghost:disabled{ opacity:.42; cursor:default; pointer-events:none; }
 
   body{ background:var(--bg); min-height:100vh; margin:0; color:var(--ink); font-family:var(--font-sans);
     font-size:clamp(15px,1.05vw,17px); line-height:1.62; letter-spacing:.006em;
@@ -305,6 +306,55 @@
   @media (max-width:900px){ .panel,.panel--third{ grid-column:span 12; } }
   @media (max-width:640px){ .vtabs{ order:6; flex-basis:100%; } .kpi__n{ font-size:2.1rem; } .bar{ grid-template-columns:82px 1fr auto 36px; gap:9px; } }
 
+  /* ---------- tahrirlash ---------- */
+  .edsel select{ max-width:300px; }
+  .edsite{ margin-left:auto; color:var(--ink-70); font-family:'Manrope',sans-serif; font-weight:700; font-size:.9rem; white-space:nowrap;
+    text-decoration:underline; text-decoration-color:var(--line-gold); text-underline-offset:4px; transition:.16s; }
+  .edsite:hover{ color:var(--ink); text-decoration-color:var(--gold); }
+  .ednote{ margin:18px 0 0; max-width:820px; color:var(--ink-70); font-size:.95rem; line-height:1.6; overflow-wrap:anywhere; }
+  .ednote b{ color:var(--gold-hi); font-weight:700; }
+  .edmsg{ margin:0; padding:64px 0; text-align:center; color:var(--ink-70); }
+  .edlink{ appearance:none; border:0; background:none; padding:0; font:inherit; font-weight:700; color:var(--ink); cursor:pointer;
+    text-decoration:underline; text-decoration-color:var(--gold); text-underline-offset:4px; }
+  .edlist{ display:flex; flex-direction:column; gap:18px; padding:18px 0 24px; }
+  /* boʻlim: statistika panellari kabi tekis yuza, bandlar ingichka chiziq bilan ajratiladi */
+  .eds{ background:var(--surface); border:1px solid var(--line); border-radius:18px; padding:20px 22px 4px; min-width:0;
+    box-shadow:0 20px 50px -38px rgba(0,0,0,.8); }
+  .eds__h{ margin:0 0 14px; font-family:'Manrope',sans-serif; font-weight:800; font-size:1.06rem; letter-spacing:-.01em; color:var(--gold-hi); overflow-wrap:anywhere; }
+  .edi{ padding:18px 0 20px; border-top:1px solid var(--line); min-width:0; }
+  .edi__h{ display:flex; flex-wrap:wrap; align-items:baseline; gap:2px 10px; margin:0 0 10px; min-width:0; }
+  .edi__n{ font-family:'Manrope',sans-serif; font-weight:700; font-size:1rem; color:var(--ink); overflow-wrap:anywhere; }
+  .edi__k{ font-size:.78rem; font-weight:600; color:var(--ink-50); overflow-wrap:anywhere; }
+  .edi__hint{ margin:-4px 0 12px; font-size:.84rem; line-height:1.5; color:var(--ink-50); overflow-wrap:anywhere; }
+  .edi__f{ display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px 18px; }
+  .edf{ display:flex; flex-direction:column; gap:6px; min-width:0; }
+  .edf__top{ display:flex; flex-wrap:wrap; align-items:baseline; gap:2px 12px; min-width:0; }
+  .edf__l{ font-family:'Manrope',sans-serif; font-size:.8rem; font-weight:600; color:var(--ink-50); }
+  .edf__s{ font-size:.8rem; font-weight:700; color:var(--gold); }
+  .edf__s:empty{ display:none; }
+  .edf.is-dirty .edf__s{ color:var(--ink); }
+  .edf__r{ appearance:none; border:0; background:none; padding:0; margin-left:auto; font:inherit; font-family:'Manrope',sans-serif;
+    font-size:.8rem; font-weight:600; color:var(--ink-50); cursor:pointer; text-decoration:underline; text-decoration-color:var(--line-gold);
+    text-underline-offset:3px; transition:.16s; }
+  .edf__r:hover{ color:var(--ink); text-decoration-color:var(--gold); }
+  .edf__ta{ display:block; width:100%; min-height:44px; resize:none; overflow:hidden; font:inherit; font-size:.95rem; line-height:1.5;
+    color:var(--ink); background:var(--bg); border:1px solid var(--line); border-radius:12px; padding:10px 14px; overflow-wrap:anywhere;
+    transition:border-color .18s, box-shadow .18s; }
+  .edf__ta::placeholder{ color:var(--ink-34); }
+  .edf__ta:focus{ outline:none; border-color:var(--gold); box-shadow:0 0 0 3px rgba(211,166,63,.14); }
+  .edf__ta[readonly]{ color:var(--ink-70); }
+  /* standartdan farq qiladigan maydon: chap chetida ingichka oltin chiziq */
+  .edf.is-custom .edf__ta{ box-shadow:inset 2px 0 0 var(--gold); }
+  .edf.is-custom .edf__ta:focus{ box-shadow:inset 2px 0 0 var(--gold), 0 0 0 3px rgba(211,166,63,.14); }
+  .edf__hint{ margin:0; font-size:.78rem; line-height:1.45; color:var(--ink-50); }
+  /* saqlash qatori: roʻyxat uzun, shuning uchun pastga yopishib turadi */
+  .edbar{ position:sticky; bottom:0; z-index:15; display:flex; align-items:center; flex-wrap:wrap; gap:10px 14px;
+    padding:12px 0 calc(12px + env(safe-area-inset-bottom)); margin-bottom:40px; border-top:1px solid var(--line);
+    background:rgba(5,12,17,.86); backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px); }
+  .edbar__st{ flex:1 1 220px; min-width:0; color:var(--ink-70); font-size:.9rem; font-weight:600; overflow-wrap:anywhere; }
+  .edbar__st.is-ok{ color:var(--gold); }
+  .edbar__st.is-err{ color:#e0466f; }
+
   /* ================= YORUGʻ REJIM ================= */
   html.light{
     --bg:#F4EFE3; --bg-2:#EBE3D3; --surface:#FFFFFF; --surface-2:#F7F1E6;
@@ -322,13 +372,18 @@
   html.light .ank__contact a,html.light .ank__fv a{ color:#946a16; }
   html.light .cnt b,html.light .ank__grp h4,html.light .ank__hist h4,html.light .rev__label{ color:#8A5F1C; }
   html.light .rev::backdrop{ background:rgba(60,45,20,.4); }
+  html.light .eds{ box-shadow:0 18px 44px -32px rgba(60,40,10,.3); }
+  html.light .eds__h,html.light .ednote b,html.light .edf__s,html.light .edbar__st.is-ok{ color:#8A5F1C; }
+  html.light .edbar{ background:rgba(255,255,255,.86); }
 
   /* ================= MOSLASHUVCHAN ================= */
   @media (max-width:900px){ .ank__grid{ grid-template-columns:repeat(2,minmax(0,1fr)); } }
+  /* uchta yorliq yuqori panelga sigʻsin */
+  @media (max-width:820px){ .abar__in{ gap:8px; } .vtab{ padding:10px 8px; } .vtab.is-on::after{ left:8px; right:8px; } }
   @media (max-width:640px){
     .abar__in{ flex-wrap:wrap; gap:6px 4px; padding:10px 0; }
     .vtabs{ order:6; flex-basis:100%; border-top:1px solid var(--line); margin-top:4px; padding-top:2px; }
-    .vtab{ flex:1 1 0; text-align:center; padding:10px 6px; }
+    .vtab{ flex:1 1 auto; text-align:center; padding:10px 4px; font-size:.88rem; }
     .vtab.is-on::after{ left:20%; right:20%; }
     .iconbtn,.tgl{ width:38px; height:38px; } .ghost{ height:38px; padding:0 12px; font-size:.82rem; }
     .tools{ gap:8px 14px; padding:14px 0 0; }
@@ -347,8 +402,18 @@
     .ank__foot{ gap:10px; } .ank__foot .rvbtn,.ank__foot .prbtn{ flex:1 1 auto; justify-content:center; }
     .rev__card{ padding:20px 18px 16px; border-radius:18px; }
     .rev__actions{ flex-wrap:wrap; } .rev__actions .btn,.rev__actions .ghost{ flex:1 1 100%; }
+    .edsite{ margin-left:0; }
+    .ednote{ margin-top:14px; font-size:.9rem; }
+    .edlist{ gap:14px; padding:14px 0 18px; }
+    .eds{ padding:16px 16px 2px; border-radius:16px; }
+    .edi{ padding:16px 0 18px; }
+    .edi__f{ grid-template-columns:minmax(0,1fr); gap:12px; }
+    .edbar{ gap:8px 10px; padding-top:10px; padding-bottom:calc(10px + env(safe-area-inset-bottom)); margin-bottom:24px; }
+    .edbar__st{ flex-basis:100%; font-size:.86rem; }
+    .edbar .ghost{ flex:0 0 auto; } .edbar .btn{ flex:1 1 auto; }
   }
-  @media (max-width:380px){ .anketa{ padding:17px 15px; } .ank__name{ font-size:1.2rem; } }
+  @media (max-width:380px){ .anketa{ padding:17px 15px; } .ank__name{ font-size:1.2rem; }
+    .vtab{ font-size:.82rem; } .edbar .ghost{ padding:0 10px; font-size:.78rem; } .edbar .btn{ padding:.7em 1em; } }
 </style>
 </head>
 <body>
@@ -379,6 +444,7 @@
       <nav class="vtabs" id="vtabs">
         <button class="vtab is-on" type="button" data-view="list" id="vt_list">Заявки</button>
         <button class="vtab" type="button" data-view="stats" id="vt_stats">Статистика</button>
+        <button class="vtab" type="button" data-view="edit" id="vt_edit">Редактирование</button>
       </nav>
       <div class="abar__sp"></div>
       <button class="tgl" id="langBtn">UZ</button>
@@ -409,6 +475,24 @@
     <div id="content"></div>
     </div>
     <div id="stats" hidden></div>
+    <div id="editor" hidden>
+      <div class="tools" id="edTools" hidden>
+        <label class="srch">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+          <input id="edQ" type="search" autocomplete="off" />
+        </label>
+        <div class="sel edsel"><select id="edG"></select></div>
+        <a class="edsite" id="edSite" href="https://upop.uz/" target="_blank" rel="noopener">Открыть сайт</a>
+      </div>
+      <p class="ednote" id="edNote" hidden><b id="edNoteH"></b> <span id="edNoteP"></span></p>
+      <p class="edmsg" id="edMsg" hidden></p>
+      <div class="edlist" id="edList"></div>
+      <div class="edbar" id="edBar" hidden>
+        <span class="edbar__st" id="edSt" role="status" aria-live="polite"></span>
+        <button class="ghost" id="edUndo" type="button" disabled>Отменить изменения</button>
+        <button class="btn btn--pop" id="edSave" type="button" disabled><span class="btn__label" id="edSaveL">Сохранить</span></button>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -449,6 +533,7 @@
   </div>
 </dialog>
 
+<script src="/js/i18n-kit.js"></script>
 <script>
   var ENDPOINT = "https://script.google.com/macros/s/AKfycby7z5nB-DfFxk6tBGVCFkMQNpPCdNbHI9DSURAMYiUt8GKPasqRNULcyG-A3lZzZzEIwQ/exec";
   /* Google Sheets havolasi ("Applications" varagʻi) — ishtirokchi qatoriga
@@ -520,7 +605,7 @@
       expand:"Открыть анкету", collapse:"Свернуть анкету",
       sheet:"Открыть в таблице", sheet_row:"Строка в Google-таблице", num_lab:"Участник",
       p_title:"Личные данные", p_age:"Возраст", p_gender:"Пол", p_birth:"Дата рождения", p_region:"Город / регион", lbl_green:"Зелёный", lbl_yellow:"Жёлтый", lbl_red:"Красный", lbl_none:"Без оценки",
-      nav_list:"Заявки", nav_stats:"Статистика",
+      nav_list:"Заявки", nav_stats:"Статистика", nav_edit:"Редактирование",
       st_total:"Всего заявок", st_cities:"Городов", st_genres:"Жанров", st_avgage:"Средний возраст",
       st_byday:"Динамика заявок", st_genre:"По жанрам", st_region:"По городам",
       st_age:"Возраст участников", st_gender:"Пол", st_lang:"Язык анкеты",
@@ -539,6 +624,20 @@
       savefail:"Не удалось сохранить. Попробуйте ещё раз.",
       anketa_title:"Анкета кандидата", print_sub:"Национальный кастинг — Milliy tanlov",
       count:function(n,d,tt){ return "Показано <b>"+n+"</b>, оценённых <b>"+d+"</b> из "+tt; },
+      ed_search:"Поиск: название или текст на любом языке…", ed_all:"Все разделы", ed_site:"Открыть сайт",
+      ed_undo:"Отменить изменения", ed_undo_q:"Отменить все несохранённые изменения?",
+      ed_leave:"Есть несохранённые изменения. Уйти и отменить их?",
+      ed_dirty:function(n){ return "Несохранённых полей: "+n; },
+      ed_clean:"Все изменения сохранены", ed_saved:"Сохранено",
+      ed_savefail:"Не удалось сохранить. Изменения остались на странице — попробуйте ещё раз.",
+      ed_loading:"Загружаю тексты сайта…", ed_loadfail:"Не удалось загрузить тексты сайта.",
+      ed_datafail:"Не удалось получить сохранённые изменения из таблицы.", ed_retry:"Повторить",
+      ed_old_h:"Сохранение пока недоступно.",
+      ed_old_p:"Скрипт таблицы (Google Apps Script) ещё старой версии. Откройте скрипт и опубликуйте новую версию: Deploy → Manage deployments → значок карандаша → Version: New version → Deploy. Затем обновите эту страницу.",
+      ed_changed:"Изменено", ed_unsaved:"Не сохранено", ed_reset:"Вернуть исходное",
+      ed_oz_hint:"Пусто — пишется автоматически из узбекского",
+      ed_html_hint:"*слово* — золотое выделение, [текст](https://…) — ссылка, Enter — новая строка",
+      ed_g_all:"Все тексты", ed_g_other:"Прочее",
       L:{ citizenship:"Гражданство", email:"E-mail", phone:"Телефон",
         parent_name:"Родитель/представитель", parent_relation:"Кем приходится", parent_phone:"Телефон родителя",
         parent_email:"E-mail родителя", parent_consent:"Согласие родителя",
@@ -566,7 +665,7 @@
       expand:"Anketani ochish", collapse:"Yigʻish",
       sheet:"Jadvalda ochish", sheet_row:"Google jadvaldagi qator", num_lab:"Ishtirokchi",
       p_title:"Shaxsiy maʼlumotlar", p_age:"Yosh", p_gender:"Jinsi", p_birth:"Tugʻilgan sana", p_region:"Shahar / viloyat", lbl_green:"Yashil", lbl_yellow:"Sariq", lbl_red:"Qizil", lbl_none:"Bahosiz",
-      nav_list:"Arizalar", nav_stats:"Statistika",
+      nav_list:"Arizalar", nav_stats:"Statistika", nav_edit:"Tahrirlash",
       st_total:"Jami arizalar", st_cities:"Shaharlar", st_genres:"Janrlar", st_avgage:"Oʻrtacha yosh",
       st_byday:"Arizalar dinamikasi", st_genre:"Janrlar boʻyicha", st_region:"Shaharlar boʻyicha",
       st_age:"Ishtirokchilar yoshi", st_gender:"Jinsi", st_lang:"Anketa tili",
@@ -585,6 +684,20 @@
       savefail:"Saqlab boʻlmadi. Qayta urinib koʻring.",
       anketa_title:"Nomzod anketasi", print_sub:"Milliy kasting — Национальный кастинг",
       count:function(n,d,tt){ return "Koʻrsatildi <b>"+n+"</b>, baholangan <b>"+d+"</b> / "+tt; },
+      ed_search:"Qidiruv: nom yoki istalgan tildagi matn…", ed_all:"Barcha boʻlimlar", ed_site:"Saytni ochish",
+      ed_undo:"Bekor qilish", ed_undo_q:"Barcha saqlanmagan oʻzgarishlar bekor qilinsinmi?",
+      ed_leave:"Saqlanmagan oʻzgarishlar bor. Ularni bekor qilib chiqasizmi?",
+      ed_dirty:function(n){ return "Saqlanmagan maydonlar: "+n; },
+      ed_clean:"Barcha oʻzgarishlar saqlangan", ed_saved:"Saqlandi",
+      ed_savefail:"Saqlab boʻlmadi. Oʻzgarishlar sahifada qoldi — qayta urinib koʻring.",
+      ed_loading:"Sayt matnlari yuklanmoqda…", ed_loadfail:"Sayt matnlarini yuklab boʻlmadi.",
+      ed_datafail:"Saqlangan oʻzgarishlarni jadvaldan olib boʻlmadi.", ed_retry:"Qayta urinish",
+      ed_old_h:"Saqlash hozircha ishlamaydi.",
+      ed_old_p:"Jadval skripti (Google Apps Script) hali eski versiyada. Skriptni oching va yangi versiyani joylang: Deploy → Manage deployments → qalam belgisi → Version: New version → Deploy. Soʻng bu sahifani yangilang.",
+      ed_changed:"Oʻzgartirilgan", ed_unsaved:"Saqlanmagan", ed_reset:"Asl holiga qaytarish",
+      ed_oz_hint:"Boʻsh — oʻzbekchadan avtomatik yoziladi",
+      ed_html_hint:"*soʻz* — oltin rang, [matn](https://…) — havola, Enter — yangi qator",
+      ed_g_all:"Barcha matnlar", ed_g_other:"Boshqa",
       L:{ citizenship:"Fuqarolik", email:"E-mail", phone:"Telefon",
         parent_name:"Ota-ona / vakil", parent_relation:"Kim boʻladi", parent_phone:"Ota-ona telefoni",
         parent_email:"Ota-ona e-mail", parent_consent:"Ota-ona roziligi",
@@ -601,6 +714,18 @@
       G:{ contacts:"Kontaktlar", parent:"Ota-ona", creative:"Ijod", about:"Oʻzi haqida", family:"Oila", health:"Sogʻliq", consents:"Logistika va roziliklar" }
     }
   };
+  function toOz(s){ return window.UPOP_KIT ? window.UPOP_KIT.toOz(s) : s; }
+  /* Özbekça: oʻzbekcha lugʻat yangi alifboga oʻtkaziladi — ichma-ich obyektlar ham.
+       Funksiyalar oʻraladi: ular qaytaradigan matn ham oʻtkaziladi. */
+  function ozify(v){
+    if(typeof v==="string") return toOz(v);
+    if(typeof v==="function") return function(){ var r=v.apply(this,arguments); return typeof r==="string"?toOz(r):r; };
+    if(v && typeof v==="object"){ var o={}; for(var k in v){ if(Object.prototype.hasOwnProperty.call(v,k)) o[k]=ozify(v[k]); } return o; }
+    return v;
+  }
+  T.oz=ozify(T.uz);
+  if(!T[lang]) lang="ru";
+  var LANG_NEXT={ ru:"uz", uz:"oz", oz:"ru" }, LANG_CODE={ ru:"RU", uz:"UZ", oz:"ÖZ" };
   function tr(){ return T[lang]||T.ru; }
 
   function $(id){ return document.getElementById(id); }
@@ -618,27 +743,33 @@
   /* Apps Script qayta joylangandan yoki sovuq startdan keyingi birinchi soʻrovda
        JSON oʻrniga HTML sahifa qaytarishi mumkin. Shuning uchun matn sifatida oʻqib,
        bir necha marta qayta urinamiz — kirish "Unexpected token '<'" bilan qulamasin. */
-  function api(payload, tries){
+  function fetchJSON(url, base, tries){
     if(tries==null) tries=3;
     var ac=(typeof AbortController!=="undefined")?new AbortController():null;
     var to=ac?setTimeout(function(){ try{ ac.abort(); }catch(e){} },15000):null;
-    var opt={ method:"POST", headers:{"Content-Type":"text/plain;charset=utf-8"}, body:JSON.stringify(payload), redirect:"follow" };
+    var opt={}; for(var k in base) opt[k]=base[k];
     if(ac) opt.signal=ac.signal;
-    return fetch(ENDPOINT,opt)
+    return fetch(url,opt)
       .then(function(r){ return r.text(); })
       .then(function(t){ if(to) clearTimeout(to);
         try{ return JSON.parse(t); }
         catch(e){
           // Sovuq start HTML qaytardi — qisqa kutib qayta urinamiz (300/600/1200 ms).
           if(tries>0 && /^\s*</.test(t)){ var d=300*Math.pow(2,3-tries);
-            return new Promise(function(res){ setTimeout(res,d); }).then(function(){ return api(payload, tries-1); }); }
+            return new Promise(function(res){ setTimeout(res,d); }).then(function(){ return fetchJSON(url, base, tries-1); }); }
           throw new Error("badjson");
         }
       })
       .catch(function(err){ if(to) clearTimeout(to);
-        if(err && err.name==="AbortError" && tries>0) return api(payload, tries-1);
+        if(err && err.name==="AbortError" && tries>0) return fetchJSON(url, base, tries-1);
         throw err;
       });
+  }
+  function api(payload, tries){
+    return fetchJSON(ENDPOINT, { method:"POST", headers:{"Content-Type":"text/plain;charset=utf-8"}, body:JSON.stringify(payload), redirect:"follow" }, tries);
+  }
+  function apiGet(query, tries){
+    return fetchJSON(ENDPOINT+"?"+query, { method:"GET", redirect:"follow", cache:"no-store" }, tries);
   }
   function rowById(id){ for(var i=0;i<state.rows.length;i++){ if(String(state.rows[i].submissionId)===String(id)) return state.rows[i]; } return null; }
 
@@ -661,9 +792,10 @@
     if($("themeBtn")) $("themeBtn").innerHTML=ic; if($("themeBtn2")) $("themeBtn2").innerHTML=ic;
     if($("refresh")) $("refresh").innerHTML=ICN.refresh; if($("revX")) $("revX").innerHTML=ICN.close; }
   function toggleTheme(){ theme=(theme==="light"?"dark":"light"); try{localStorage.setItem(THEME_STORE,theme);}catch(e){} applyTheme(); }
-  function toggleLang(){ lang=(lang==="ru"?"uz":"ru"); try{localStorage.setItem(LANG_STORE,lang);}catch(e){} applyLang(); }
+  function toggleLang(){ lang=LANG_NEXT[lang]||"ru"; try{localStorage.setItem(LANG_STORE,lang);}catch(e){} applyLang(); }
   function applyLang(){
-    var x=tr(), other=(lang==="ru"?"UZ":"RU");
+    var x=tr(), other=LANG_CODE[LANG_NEXT[lang]]||"RU";
+    document.documentElement.lang=(lang==="ru"?"ru":"uz");
     if($("langBtn")) $("langBtn").textContent=other; if($("langBtn2")) $("langBtn2").textContent=other;
     $("l_title").textContent=x.title;
     var swl={ "":x.lbl_none, green:x.lbl_green, yellow:x.lbl_yellow, red:x.lbl_red };
@@ -680,7 +812,11 @@
     $("revPhotoHint").textContent=x.photo_hint;
     if($("vt_list")) $("vt_list").textContent=x.nav_list;
     if($("vt_stats")) $("vt_stats").textContent=x.nav_stats;
-    if(!$("app").hidden){ buildFilters(); if(state.view==="stats") renderStats(); else render(false); }
+    if($("vt_edit")) $("vt_edit").textContent=x.nav_edit;
+    $("edQ").placeholder=x.ed_search; $("edSite").textContent=x.ed_site;
+    $("edUndo").textContent=x.ed_undo; $("edSaveL").textContent=x.save;
+    $("edNoteH").textContent=x.ed_old_h; $("edNoteP").textContent=x.ed_old_p;
+    if(!$("app").hidden){ buildFilters(); if(state.view==="stats") renderStats(); else render(false); if(ed.st) edPaint(); }
   }
 
   /* ---- kirish ---- */
@@ -704,8 +840,11 @@
       .catch(function(ex){ $("loginErr").textContent=ex.message||"Error"; })
       .then(function(){ btn.classList.remove("is-loading"); });
   });
-  $("logout").addEventListener("click", function(){ try{ PS.removeItem(KEY_STORE); }catch(e){} clearCache(); location.reload(); });
+  $("logout").addEventListener("click", function(){
+    if(edDirtyCount()){ if(!confirm(tr().ed_leave)) return; ed.e={}; }
+    try{ PS.removeItem(KEY_STORE); }catch(e){} clearCache(); location.reload(); });
   $("refresh").addEventListener("click", function(){
+    if(state.view==="edit"){ edReload(); return; }
     var btn=$("refresh"); btn.classList.add("is-spin");
     loadList(state.key).then(function(changed){ if(changed){ buildFilters(); if(state.view==="stats") renderStats(); else render(true); } })
       .catch(function(){})
@@ -904,16 +1043,17 @@
     "window.__s=s;}"+
     "if(document.fonts&&document.fonts.ready){document.fonts.ready.then(fit);}fit();setTimeout(fit,250);window.__fit=fit;})();";
 
-  // "YYYY-MM-DD" / "DD.MM.YYYY" → "2 ноября 2009" (ru) yoki "2-noyabr 2009" (uz)
+  // "YYYY-MM-DD" / "DD.MM.YYYY" → "2 ноября 2009" (ru) yoki "2-noyabr 2009" (uz, oz)
   var MONTHS={ ru:["января","февраля","марта","апреля","мая","июня","июля","августа","сентября","октября","ноября","декабря"],
                uz:["yanvar","fevral","mart","aprel","may","iyun","iyul","avgust","sentabr","oktabr","noyabr","dekabr"] };
+  MONTHS.oz=MONTHS.uz.map(function(m){ return toOz(m); });
   function fmtLongDate(v){ var t=String(v==null?"":v).trim(); if(!t) return t; var d,mo,y,m;
     if((m=t.match(/^(\d{4})-(\d{2})-(\d{2})/))){ y=+m[1]; mo=+m[2]; d=+m[3]; }
     else if((m=t.match(/^(\d{1,2})\.(\d{1,2})\.(\d{4})/))){ d=+m[1]; mo=+m[2]; y=+m[3]; }
     else return t;
     if(!(mo>=1&&mo<=12&&d>=1&&d<=31)) return t;
     var names=MONTHS[lang]||MONTHS.ru;
-    return lang==="uz" ? (d+"-"+names[mo-1]+" "+y) : (d+" "+names[mo-1]+" "+y); }
+    return (lang==="uz"||lang==="oz") ? (d+"-"+names[mo-1]+" "+y) : (d+" "+names[mo-1]+" "+y); }
 
   function printAnketa(id){
     var r=rowById(id); if(!r) return; var x=tr();
@@ -1040,11 +1180,13 @@
 
   /* ---- statistika ---- */
   function switchView(v){
+    if(state.view==="edit" && v!=="edit" && edDirtyCount()){ if(!confirm(tr().ed_leave)) return; edDiscard(); }
     state.view=v;
     document.querySelectorAll(".vtab").forEach(function(b){ b.classList.toggle("is-on", b.getAttribute("data-view")===v); });
     $("listview").hidden = v!=="list";
     $("stats").hidden = v!=="stats";
-    if(v==="stats") renderStats(); else { var d=state.rows.filter(function(r){return r.reviewed;}).length; $("count").innerHTML=tr().count(document.querySelectorAll('.anketa').length,d,state.rows.length); }
+    $("editor").hidden = v!=="edit";
+    if(v==="stats") renderStats(); else if(v==="edit") edOpen(); else { var d=state.rows.filter(function(r){return r.reviewed;}).length; $("count").innerHTML=tr().count(document.querySelectorAll('.anketa').length,d,state.rows.length); }
   }
   function kpiTile(n,l,color){ return '<div class="kpi" style="--kc:'+color+'"><span class="kpi__n">'+n+'</span><span class="kpi__l">'+esc(l)+'</span></div>'; }
   function panel(title,body,mod,note){ return '<div class="panel'+(mod?' panel--'+mod:'')+'"><p class="panel__h">'+esc(title)+'</p>'+body+(note?'<p class="panel__note">'+esc(note)+'</p>':'')+'</div>'; }
@@ -1150,6 +1292,264 @@
     '</div>';
   }
   $("vtabs").addEventListener("click", function(e){ var b=e.target.closest(".vtab"); if(b) switchView(b.getAttribute("data-view")); });
+
+  /* ---- tahrirlash: saytdagi barcha matnlar ----
+       Standart matnlar /js/content.js da (birinchi ochilganda yuklanadi), admin
+       oʻzgartirganlari jadvalning "Content" varagʻida. Standart bilan bir xil yoki
+       boʻsh maydon "" boʻlib yuboriladi — sayt standartni koʻrsatadi. Özbekça boʻsh
+       boʻlsa, oʻzbekcha matndan avtomatik yasaladi. */
+  var ED_LANGS=["uz","oz","ru","en"];
+  var ED_NAMES={ uz:"Oʻzbekcha", oz:"Özbekça", ru:"Русский", en:"English" };
+  var SITE_CACHE="upop_content";   // saytning oʻz keshi (shu domenda ochilganda darhol yangilanadi)
+  // st: "" | loading | ready | fail;  c — saqlangan qiymatlar, e — hali saqlanmagan tahrirlar
+  var ed={ st:"", fail:"", ro:false, v:"", c:{}, e:{}, groups:[], items:{}, html:{}, q:"", g:"", saving:false, msg:"", tone:"" };
+
+  function edClean(s){ return String(s==null?"":s).replace(/\r\n?/g,"\n").replace(/^\s+|\s+$/g,""); }
+  function edFold(s){ return String(s==null?"":s).toLowerCase().replace(/[ʻʼ‘’'`]/g,"'"); }
+  function edHas(o,k){ return !!o && Object.prototype.hasOwnProperty.call(o,k); }
+  // uz/ru/en standarti (HTML kalitlari belgilash koʻrinishida); oz ning standarti yoʻq
+  function edDef(k,l){
+    if(l==="oz") return "";
+    var C=window.UPOP_CONTENT||{}, v=C[l] && C[l][k];
+    v=(v==null?"":String(v));
+    return edClean(ed.html[k] ? window.UPOP_KIT.htmlToMarkup(v) : v);
+  }
+  function edSaved(k,l){ var r=ed.c[k]; return (r && typeof r[l]==="string") ? edClean(r[l]) : ""; }
+  // maydonning saqlangan holati; oz uchun boʻsh — avtomatik
+  function edBase(k,l){ var s=edSaved(k,l); return l==="oz" ? s : (s||edDef(k,l)); }
+  function edVal(k,l){ return edHas(ed.e[k],l) ? ed.e[k][l] : edBase(k,l); }
+  // saytda chiqadigan matn: boʻsh maydon standartni bildiradi
+  function edEff(k,l){ return edClean(edVal(k,l)) || edDef(k,l); }
+  function edAuto(k){ return edClean(toOz(edEff(k,"uz"))); }
+  // jadvalga yoziladigan qiymat: standart (oz uchun avtomatik matn) bilan bir xil boʻlsa ""
+  function edNorm(k,l,v){
+    v=edClean(v); if(!v) return "";
+    return v===(l==="oz" ? edAuto(k) : edDef(k,l)) ? "" : v;
+  }
+  function edDirty(k,l){ return edNorm(k,l,edVal(k,l))!==edNorm(k,l,edBase(k,l)); }
+  function edCustom(k,l){ return edNorm(k,l,edVal(k,l))!==""; }
+  function edDirtyCount(){ var n=0;
+    Object.keys(ed.e).forEach(function(k){ Object.keys(ed.e[k]).forEach(function(l){ if(edDirty(k,l)) n++; }); });
+    return n; }
+  // { kalit: { til: qiymat } } — faqat oʻzgargan maydonlar
+  function edCollect(){ var items={}, n=0;
+    Object.keys(ed.e).forEach(function(k){ Object.keys(ed.e[k]).forEach(function(l){
+      if(edDirty(k,l)){ (items[k]=items[k]||{})[l]=edNorm(k,l,edVal(k,l)); n++; } }); });
+    return { items:items, n:n }; }
+  function edSet(k,l,v){ var e=ed.e[k]||(ed.e[k]={});
+    if(v===edBase(k,l)) delete e[l]; else e[l]=v;
+    if(!Object.keys(e).length) delete ed.e[k]; }
+  // saqlangach: yuborilgan tahrirlar tushadi, saqlash paytida yozilganlari qoladi
+  function edMerge(snap){
+    Object.keys(ed.e).forEach(function(k){
+      Object.keys(ed.e[k]).forEach(function(l){ var v=ed.e[k][l];
+        if((edHas(snap[k],l) && snap[k][l]===v) || v===edBase(k,l)) delete ed.e[k][l]; });
+      if(!Object.keys(ed.e[k]).length) delete ed.e[k];
+    }); }
+  // yangi skript {v, c} qaytaradi; eskisi bu soʻrovga oddiy holat JSON ini beradi
+  function edHasApi(r){ return !!(r && r.v!=null && r.c && typeof r.c==="object" && !Array.isArray(r.c)); }
+  function edObj(c){ var o={};
+    Object.keys(c||{}).forEach(function(k){ var r=c[k], m={};
+      if(r && typeof r==="object") ED_LANGS.forEach(function(l){ if(typeof r[l]==="string" && r[l]!=="") m[l]=r[l]; });
+      o[k]=m; });
+    return o; }
+
+  // boʻlimlar UPOP_GROUPS tartibida; u boʻlmasa, barcha kalitlar bitta boʻlimda
+  function edSetup(){
+    var C=window.UPOP_CONTENT||{}, seen={}, groups=[];
+    var src=Array.isArray(window.UPOP_GROUPS) ? window.UPOP_GROUPS : [];
+    var hk=Array.isArray(window.UPOP_HTML_KEYS) ? window.UPOP_HTML_KEYS : null;
+    src.forEach(function(g,gi){ var items=[];
+      ((g && g.items)||[]).forEach(function(it){ var o=(typeof it==="string")?{k:it}:it;
+        if(!o || !o.k || seen[o.k]) return; seen[o.k]=1; items.push(o); });
+      if(items.length) groups.push({ id:String(g.id||("g"+gi)), t:g, items:items });
+    });
+    var rest=Object.keys(C.uz||{}).filter(function(k){ return !seen[k]; }).map(function(k){ return {k:k}; });
+    if(rest.length) groups.push({ id:"_rest", t:(groups.length?"other":"all"), items:rest });
+    ed.groups=groups; ed.items={}; ed.html={};
+    groups.forEach(function(g){ g.items.forEach(function(it){ ed.items[it.k]=it;
+      ed.html[it.k]=hk ? hk.indexOf(it.k)>=0
+        : ["uz","ru","en"].some(function(l){ return /<\/?[a-z][^>]*>/i.test(String((C[l]||{})[it.k]||"")); });
+    }); });
+  }
+  function edLabel(o,fb){
+    var s=(o && typeof o==="object") ? (lang==="ru" ? (o.ru||o.uz) : (o.uz||o.ru)) : "";
+    if(!s) return fb;
+    return lang==="oz" ? toOz(s) : s; }
+  function edGroupTitle(g){ var x=tr(); return g.t==="all" ? x.ed_g_all : g.t==="other" ? x.ed_g_other : edLabel(g.t,g.id); }
+  function edMatch(k,q){
+    if(!q) return true;
+    var it=ed.items[k]||{}, hay=[k, it.ru, it.uz, edLabel(it,k), edVal(k,"oz"), edAuto(k)];
+    ["uz","ru","en"].forEach(function(l){ hay.push(edVal(k,l), edDef(k,l)); });
+    return edFold(hay.join("\n")).indexOf(q)>=0; }
+
+  function edItemHtml(it){
+    var k=it.k, ek=esc(k), x=tr(), name=edLabel(it,k);
+    var fields=ED_LANGS.map(function(l){ var id="ef-"+ek+"-"+l;
+      return '<div class="edf" data-l="'+l+'">'+
+        '<div class="edf__top"><label class="edf__l" id="'+id+'-l" for="'+id+'">'+esc(ED_NAMES[l])+'</label>'+
+          '<span class="edf__s"></span><button class="edf__r" type="button" hidden>'+esc(x.ed_reset)+'</button></div>'+
+        '<textarea class="edf__ta" id="'+id+'" rows="1" lang="'+(l==="oz"?"uz":l)+'" aria-labelledby="edn-'+ek+' '+id+'-l"'+
+          (l==="uz"||l==="oz"?' spellcheck="false"':'')+(l!=="oz"?' placeholder="'+esc(edDef(k,l))+'"':'')+(ed.ro?' readonly':'')+'></textarea>'+
+        (l==="oz"?'<p class="edf__hint">'+esc(x.ed_oz_hint)+'</p>':'')+
+      '</div>'; }).join("");
+    return '<div class="edi" data-k="'+ek+'">'+
+      '<div class="edi__h"><b class="edi__n" id="edn-'+ek+'">'+esc(name)+'</b>'+(name!==k?'<span class="edi__k">'+ek+'</span>':'')+'</div>'+
+      (ed.html[k]?'<p class="edi__hint">'+esc(x.ed_html_hint)+'</p>':'')+
+      '<div class="edi__f">'+fields+'</div></div>';
+  }
+  function edEach(fn){ var its=$("edList").querySelectorAll(".edi"); for(var i=0;i<its.length;i++) fn(its[i], its[i].getAttribute("data-k")); }
+  function edSyncItem(it,k){ var x=tr();
+    it.querySelectorAll(".edf").forEach(function(f){ var l=f.getAttribute("data-l"), dirty=edDirty(k,l), custom=edCustom(k,l);
+      f.classList.toggle("is-dirty",dirty); f.classList.toggle("is-custom",custom);
+      f.querySelector(".edf__s").textContent=dirty ? x.ed_unsaved : custom ? x.ed_changed : "";
+      f.querySelector(".edf__r").hidden=!custom || ed.ro;
+      if(l==="oz"){ var ta=f.querySelector(".edf__ta"), ph=edAuto(k);
+        if(ta.placeholder!==ph) ta.placeholder=ph;
+        f.querySelector(".edf__hint").hidden=!!edClean(edVal(k,l)); }
+    }); }
+  function edSyncBar(){
+    var x=tr(), n=edDirtyCount(), st=$("edSt");
+    var s=ed.saving ? x.saving : ed.msg ? x[ed.msg] : n ? x.ed_dirty(n) : x.ed_clean;
+    $("edSave").disabled=!n || ed.saving || ed.ro;
+    $("edUndo").disabled=!n || ed.saving;
+    st.className="edbar__st"+(ed.tone?" is-"+ed.tone:"");
+    if(st.textContent!==s) st.textContent=s;   // oʻzgarmagan matn ekran oʻquvchida qayta oʻqilmasin
+  }
+  /* Maydon balandligi matnga moslanadi: avval hammasiga yozamiz, keyin oʻqiymiz —
+       yuzlab maydon uchun bitta qayta hisoblash. Boʻsh maydon placeholder boʻyicha
+       oʻlchanadi (faol maydon bundan mustasno — uning bekor qilish tarixi buzilmasin). */
+  function edGrow(list){
+    var tas=[], ph=[], h=[], i, y=window.pageYOffset;
+    for(i=0;i<list.length;i++){ if(list[i] && list[i].offsetParent!==null) tas.push(list[i]); }
+    for(i=0;i<tas.length;i++){ var t=tas[i];
+      ph[i]=!t.value && !!t.placeholder && t!==document.activeElement;
+      if(ph[i]) t.value=t.placeholder;
+      t.style.height="auto"; }
+    for(i=0;i<tas.length;i++) h[i]=tas[i].scrollHeight;
+    for(i=0;i<tas.length;i++){ if(ph[i]) tas[i].value=""; tas[i].style.height=(h[i]+2)+"px"; }
+    if(tas.length && window.pageYOffset!==y) window.scrollTo(0,y);
+  }
+  function edGrowAll(){ edGrow($("edList").querySelectorAll(".edf__ta")); }
+  function edFilter(){
+    var q=edFold(ed.q.trim()), any=false;
+    $("edList").querySelectorAll(".eds").forEach(function(s){
+      var inG=!ed.g || ed.g===s.getAttribute("data-g"), on=0;
+      s.querySelectorAll(".edi").forEach(function(it){ var vis=inG && edMatch(it.getAttribute("data-k"),q); it.hidden=!vis; if(vis) on++; });
+      s.hidden=!on; if(on) any=true;
+    });
+    if($("edNone")) $("edNone").hidden=any;
+  }
+  function edBuild(){
+    var x=tr(), sel=$("edG");
+    sel.innerHTML='<option value="">'+esc(x.ed_all)+'</option>'+ed.groups.map(function(g){
+      return '<option value="'+esc(g.id)+'">'+esc(edGroupTitle(g))+'</option>'; }).join("");
+    sel.value=ed.g; if(sel.value!==ed.g){ ed.g=""; sel.value=""; }
+    $("edList").innerHTML=ed.groups.map(function(g){
+      return '<section class="eds" data-g="'+esc(g.id)+'"><h2 class="eds__h">'+esc(edGroupTitle(g))+'</h2>'+g.items.map(edItemHtml).join("")+'</section>'; }).join("")+
+      '<div class="state" id="edNone" hidden><h3>'+esc(x.none_h)+'</h3><p>'+esc(x.none_p)+'</p></div>';
+    edFill(); edFilter(); edGrowAll(); edSyncBar();
+  }
+  // maydonlarga holatdagi qiymatlarni qoʻyadi (.value orqali — boshidagi yangi qator yoʻqolmasin)
+  function edFill(){
+    edEach(function(it,k){
+      it.querySelectorAll(".edf__ta").forEach(function(ta){ var v=edVal(k,ta.closest(".edf").getAttribute("data-l")); if(ta.value!==v) ta.value=v; });
+      edSyncItem(it,k); });
+  }
+  function edRefresh(){ edFill(); edGrowAll(); edSyncBar(); }
+  function edPaint(){
+    var x=tr(), ready=(ed.st==="ready"), msg=$("edMsg");
+    $("edTools").hidden=!ready; $("edNote").hidden=!(ready && ed.ro); $("edBar").hidden=!ready || ed.ro;
+    if(ed.st==="loading") msg.textContent=x.ed_loading;
+    else if(ed.st==="fail") msg.innerHTML=esc(ed.fail==="script"?x.ed_loadfail:x.ed_datafail)+' <button class="edlink" type="button" id="edRetry">'+esc(x.ed_retry)+'</button>';
+    else msg.textContent="";
+    msg.hidden=!(ed.st==="loading" || ed.st==="fail");
+    if(ready) edBuild(); else $("edList").innerHTML="";
+  }
+
+  // skriptni bir marta yuklaydi; xato boʻlsa tegni olib tashlaydi — qayta urinish mumkin
+  function edScript(src, ready){
+    return new Promise(function(res,rej){
+      if(ready()) return res();
+      var s=document.createElement("script"); s.src=src; s.async=true;
+      function drop(){ if(s.parentNode) s.parentNode.removeChild(s); rej(new Error(src)); }
+      s.onload=function(){ if(ready()) res(); else drop(); };
+      s.onerror=drop;
+      document.head.appendChild(s);
+    });
+  }
+  function edLoad(){
+    ed.st="loading"; edPaint();
+    var data=apiGet("action=content").catch(function(){ return null; });
+    var scripts=edScript("/js/i18n-kit.js", function(){ return !!window.UPOP_KIT; })
+      .then(function(){ return edScript("/js/content.js", function(){ return !!window.UPOP_CONTENT; }); })
+      .then(function(){ return true; }, function(){ return false; });
+    Promise.all([scripts, data]).then(function(a){
+      var r=a[1];
+      if(!a[0]){ ed.st="fail"; ed.fail="script"; }
+      else if(!r || r.ok===false){ ed.st="fail"; ed.fail="data"; }
+      else {
+        // eski skriptga content_save yuborilmaydi — u arizalar varagʻiga keraksiz qator qoʻshib qoʻyadi
+        ed.ro=!edHasApi(r); ed.c=ed.ro ? {} : edObj(r.c); ed.v=ed.ro ? "" : String(r.v);
+        ed.e={}; ed.msg=""; ed.tone=""; edSetup(); ed.st="ready";
+      }
+      edPaint();
+    });
+  }
+  function edOpen(){ if(!ed.st || ed.st==="fail") edLoad(); else if(ed.st==="ready") edGrowAll(); }
+  function edReload(){
+    if(ed.st==="loading" || ed.saving) return;
+    if(edDirtyCount() && !confirm(tr().ed_undo_q)) return;
+    ed.e={}; edLoad();
+  }
+  function edDiscard(){ ed.e={}; ed.msg=""; ed.tone=""; if(ed.st==="ready") edRefresh(); }
+  function edSave(){
+    if(ed.st!=="ready" || ed.ro || ed.saving) return;
+    var out=edCollect(); if(!out.n) return;
+    var snap=JSON.parse(JSON.stringify(ed.e)), btn=$("edSave");
+    ed.saving=true; ed.msg=""; ed.tone=""; btn.classList.add("is-loading"); edSyncBar();
+    api({ action:"content_save", key:state.key, items:out.items }).then(function(res){
+      if(res && res.error==="forbidden"){ ed.msg="wrongpw"; ed.tone="err"; return; }
+      if(!res || res.ok!==true || !edHasApi(res)){ ed.msg="ed_savefail"; ed.tone="err"; return; }
+      ed.c=edObj(res.c); ed.v=String(res.v); edMerge(snap);
+      try{ localStorage.setItem(SITE_CACHE, JSON.stringify({ v:ed.v, c:ed.c })); }catch(e){}
+      ed.msg="ed_saved"; ed.tone="ok";
+    }).catch(function(){ ed.msg="ed_savefail"; ed.tone="err"; })
+      .then(function(){ ed.saving=false; btn.classList.remove("is-loading"); edRefresh(); });
+  }
+
+  $("edList").addEventListener("input", function(e){
+    var ta=e.target; if(!ta.classList || !ta.classList.contains("edf__ta")) return;
+    var it=ta.closest(".edi"), k=it.getAttribute("data-k"), l=ta.closest(".edf").getAttribute("data-l");
+    edSet(k,l,ta.value); ed.msg=""; ed.tone="";
+    edSyncItem(it,k); edSyncBar();
+    edGrow(l==="uz" ? [ta, it.querySelector('.edf[data-l="oz"] .edf__ta')] : [ta]);   // oz placeholder ham oʻzgaradi
+  });
+  $("edList").addEventListener("click", function(e){
+    var b=e.target.closest(".edf__r"); if(!b || ed.ro) return;
+    var f=b.closest(".edf"), it=b.closest(".edi"), k=it.getAttribute("data-k"), l=f.getAttribute("data-l"), ta=f.querySelector(".edf__ta");
+    ta.value=(l==="oz" ? "" : edDef(k,l)); edSet(k,l,ta.value); ed.msg=""; ed.tone="";
+    edSyncItem(it,k); edSyncBar(); edGrow(it.querySelectorAll(".edf__ta"));
+    if(e.detail===0) ta.focus();   // klaviaturadan bosilgan boʻlsa, fokus maydonga oʻtadi
+  });
+  // boʻshatilgan maydon fokusdan chiqqach placeholder boʻyicha oʻlchanadi
+  $("edList").addEventListener("focusout", function(e){
+    var ta=e.target; if(ta.classList && ta.classList.contains("edf__ta") && !ta.value) setTimeout(function(){ edGrow([ta]); },0);
+  });
+  $("edMsg").addEventListener("click", function(e){ if(e.target.closest("#edRetry")) edLoad(); });
+  var edQT; $("edQ").addEventListener("input", function(){ clearTimeout(edQT); edQT=setTimeout(function(){ ed.q=$("edQ").value; edFilter(); edGrowAll(); },160); });
+  $("edG").addEventListener("change", function(){ ed.g=this.value; edFilter(); edGrowAll(); });
+  $("edSave").addEventListener("click", edSave);
+  $("edUndo").addEventListener("click", function(){ if(edDirtyCount() && confirm(tr().ed_undo_q)) edDiscard(); });
+  document.addEventListener("keydown", function(e){
+    if(state.view!=="edit" || !(e.metaKey||e.ctrlKey) || e.altKey) return;
+    if(e.code==="KeyS" || e.key==="s" || e.key==="S"){ e.preventDefault(); edSave(); }
+  });
+  window.addEventListener("beforeunload", function(e){ if(edDirtyCount()){ e.preventDefault(); e.returnValue=""; return ""; } });
+  var edW=window.innerWidth, edRT;
+  window.addEventListener("resize", function(){ if(window.innerWidth===edW) return; edW=window.innerWidth; clearTimeout(edRT);
+    edRT=setTimeout(function(){ if(state.view==="edit" && ed.st==="ready") edGrowAll(); },150); });
+  if(document.fonts && document.fonts.ready) document.fonts.ready.then(function(){ if(state.view==="edit" && ed.st==="ready") edGrowAll(); });
 
   /* ---- ishga tushirish ---- */
   applyTheme(); applyLang();
