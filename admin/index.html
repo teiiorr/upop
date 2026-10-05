@@ -307,7 +307,13 @@
   @media (max-width:640px){ .vtabs{ order:6; flex-basis:100%; } .kpi__n{ font-size:2.1rem; } .bar{ grid-template-columns:82px 1fr auto 36px; gap:9px; } }
 
   /* ---------- tahrirlash ---------- */
-  .edsel select{ max-width:300px; }
+  .edtools{ display:flex; flex-direction:column; gap:10px; padding:22px 0 0; }
+  .edtools__row{ display:flex; flex-wrap:wrap; align-items:center; gap:8px 22px; min-width:0; }
+  .edq{ flex:1 1 320px; }
+  .edsel{ display:none; }
+  .edsel select{ max-width:none; width:100%; }
+  .edlv{ flex:0 1 auto; margin-left:-11px; }   /* birinchi variant matni qidiruv chetiga tekislanadi */
+  .edonly{ flex:0 0 auto; }
   .edsite{ margin-left:auto; color:var(--ink-70); font-family:'Manrope',sans-serif; font-weight:700; font-size:.9rem; white-space:nowrap;
     text-decoration:underline; text-decoration-color:var(--line-gold); text-underline-offset:4px; transition:.16s; }
   .edsite:hover{ color:var(--ink); text-decoration-color:var(--gold); }
@@ -316,20 +322,42 @@
   .edmsg{ margin:0; padding:64px 0; text-align:center; color:var(--ink-70); }
   .edlink{ appearance:none; border:0; background:none; padding:0; font:inherit; font-weight:700; color:var(--ink); cursor:pointer;
     text-decoration:underline; text-decoration-color:var(--gold); text-underline-offset:4px; }
-  .edlist{ display:flex; flex-direction:column; gap:18px; padding:18px 0 24px; }
-  /* boʻlim: statistika panellari kabi tekis yuza, bandlar ingichka chiziq bilan ajratiladi */
-  .eds{ background:var(--surface); border:1px solid var(--line); border-radius:18px; padding:20px 22px 4px; min-width:0;
-    box-shadow:0 20px 50px -38px rgba(0,0,0,.8); }
-  .eds__h{ margin:0 0 14px; font-family:'Manrope',sans-serif; font-weight:800; font-size:1.06rem; letter-spacing:-.01em; color:var(--gold-hi); overflow-wrap:anywhere; }
-  .edi{ padding:18px 0 20px; border-top:1px solid var(--line); min-width:0; }
-  .edi__h{ display:flex; flex-wrap:wrap; align-items:baseline; gap:2px 10px; margin:0 0 10px; min-width:0; }
-  .edi__n{ font-family:'Manrope',sans-serif; font-weight:700; font-size:1rem; color:var(--ink); overflow-wrap:anywhere; }
-  .edi__k{ font-size:.78rem; font-weight:600; color:var(--ink-50); overflow-wrap:anywhere; }
-  .edi__hint{ margin:-4px 0 12px; font-size:.84rem; line-height:1.5; color:var(--ink-50); overflow-wrap:anywhere; }
-  .edi__f{ display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px 18px; }
-  .edf{ display:flex; flex-direction:column; gap:6px; min-width:0; }
+  /* ikki ustun: chapda boʻlimlar roʻyxati (yopishib turadi), oʻngda faqat tanlangan boʻlim */
+  .edwrap{ display:grid; grid-template-columns:minmax(190px,240px) minmax(0,1fr); gap:0 52px; align-items:start; padding:28px 0 0; }
+  .ednav{ position:sticky; top:84px; max-height:calc(100vh - 180px); overflow-y:auto; overscroll-behavior:contain; scrollbar-width:thin;
+    display:flex; flex-direction:column; border-left:1px solid var(--line); padding:2px 0; }
+  .ednav__b{ appearance:none; border:0; background:transparent; cursor:pointer; position:relative; width:100%; text-align:left;
+    display:flex; align-items:baseline; gap:10px; padding:8px 10px 8px 18px; color:var(--ink-70);
+    font-family:'Manrope',sans-serif; font-weight:600; font-size:.93rem; line-height:1.4; transition:color .16s; }
+  .ednav__b:hover{ color:var(--ink); }
+  .ednav__b.is-on{ color:var(--gold); }
+  .ednav__b.is-on::before{ content:""; position:absolute; left:-1px; top:7px; bottom:7px; width:2px; border-radius:2px; background:var(--gold); }
+  .ednav.is-dim .ednav__b.is-on{ color:var(--ink-70); }
+  .ednav.is-dim .ednav__b.is-on::before{ background:var(--line-gold); }
+  .ednav__t{ flex:1 1 auto; min-width:0; overflow-wrap:anywhere; }
+  .ednav__n{ flex:0 0 auto; color:var(--ink-50); font-size:.8rem; font-weight:600; font-variant-numeric:tabular-nums; }
+  .edmain{ min-width:0; min-height:calc(100vh - 160px); }
+  .edhead{ min-height:36px; padding:0 0 6px; }
+  .edhead__t{ margin:0; font-family:'Manrope',sans-serif; font-weight:800; font-size:1.32rem; line-height:1.3; letter-spacing:-.015em;
+    color:var(--gold-hi); overflow-wrap:anywhere; }
+  .edhead__n{ margin:0; padding-top:5px; color:var(--ink-70); font-size:.95rem; font-weight:600; }
+  .edlist{ padding:0 0 40px; }
+  /* bandlar orasida faqat ingichka chiziq — quti ichida quti yoʻq */
+  .edi{ padding:26px 0 30px; border-top:1px solid var(--line); min-width:0; }
+  .edi__sec{ appearance:none; display:block; border:0; background:none; padding:0; margin:0 0 8px; text-align:left; cursor:pointer;
+    font:inherit; font-family:'Manrope',sans-serif; font-size:.82rem; font-weight:600; color:var(--ink-50); transition:color .16s; }
+  .edi__sec:hover{ color:var(--gold); }
+  .edi__h{ display:flex; flex-wrap:wrap; align-items:baseline; gap:2px 12px; margin:0 0 14px; min-width:0; }
+  .edi__n{ font-family:'Manrope',sans-serif; font-weight:700; font-size:1.02rem; line-height:1.45; color:var(--ink); overflow-wrap:anywhere; }
+  .edi__k{ font-size:.76rem; font-weight:600; color:var(--ink-50); overflow-wrap:anywhere; }
+  .edi__hint{ margin:-4px 0 14px; font-size:.84rem; line-height:1.55; color:var(--ink-50); overflow-wrap:anywhere; }
+  .edi__f{ display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:22px 26px; }
+  .edf{ display:flex; flex-direction:column; gap:8px; min-width:0; }
   .edf__top{ display:flex; flex-wrap:wrap; align-items:baseline; gap:2px 12px; min-width:0; }
-  .edf__l{ font-family:'Manrope',sans-serif; font-size:.8rem; font-weight:600; color:var(--ink-50); }
+  .edf__l{ font-family:'Manrope',sans-serif; font-size:.84rem; font-weight:600; color:var(--ink-70); }
+  /* bitta til: maydon yorligʻi — bandning nomi */
+  .edi--one .edf__l{ font-size:1.02rem; font-weight:700; line-height:1.45; color:var(--ink); overflow-wrap:anywhere; }
+  .edi--one .edi__hint{ margin:0; }
   .edf__s{ font-size:.8rem; font-weight:700; color:var(--gold); }
   .edf__s:empty{ display:none; }
   .edf.is-dirty .edf__s{ color:var(--ink); }
@@ -337,23 +365,28 @@
     font-size:.8rem; font-weight:600; color:var(--ink-50); cursor:pointer; text-decoration:underline; text-decoration-color:var(--line-gold);
     text-underline-offset:3px; transition:.16s; }
   .edf__r:hover{ color:var(--ink); text-decoration-color:var(--gold); }
-  .edf__ta{ display:block; width:100%; min-height:44px; resize:none; overflow:hidden; font:inherit; font-size:.95rem; line-height:1.5;
-    color:var(--ink); background:var(--bg); border:1px solid var(--line); border-radius:12px; padding:10px 14px; overflow-wrap:anywhere;
+  .edf__ta{ display:block; width:100%; min-height:48px; resize:none; overflow:hidden; field-sizing:content; font:inherit; font-size:1rem; line-height:1.6;
+    color:var(--ink); background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:11px 16px; overflow-wrap:anywhere;
     transition:border-color .18s, box-shadow .18s; }
   .edf__ta::placeholder{ color:var(--ink-34); }
+  .edf__ta:hover{ border-color:var(--line-gold); }
   .edf__ta:focus{ outline:none; border-color:var(--gold); box-shadow:0 0 0 3px rgba(211,166,63,.14); }
   .edf__ta[readonly]{ color:var(--ink-70); }
   /* standartdan farq qiladigan maydon: chap chetida ingichka oltin chiziq */
   .edf.is-custom .edf__ta{ box-shadow:inset 2px 0 0 var(--gold); }
   .edf.is-custom .edf__ta:focus{ box-shadow:inset 2px 0 0 var(--gold), 0 0 0 3px rgba(211,166,63,.14); }
-  .edf__hint{ margin:0; font-size:.78rem; line-height:1.45; color:var(--ink-50); }
-  /* saqlash qatori: roʻyxat uzun, shuning uchun pastga yopishib turadi */
+  .edf__hint{ margin:0; font-size:.8rem; line-height:1.5; color:var(--ink-50); }
+  /* saqlash qatori pastga yopishib turadi */
   .edbar{ position:sticky; bottom:0; z-index:15; display:flex; align-items:center; flex-wrap:wrap; gap:10px 14px;
     padding:12px 0 calc(12px + env(safe-area-inset-bottom)); margin-bottom:40px; border-top:1px solid var(--line);
     background:rgba(5,12,17,.86); backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px); }
-  .edbar__st{ flex:1 1 220px; min-width:0; color:var(--ink-70); font-size:.9rem; font-weight:600; overflow-wrap:anywhere; }
+  .edbar__info{ flex:1 1 240px; min-width:0; display:flex; flex-wrap:wrap; align-items:baseline; gap:2px 14px; }
+  .edbar__st{ min-width:0; color:var(--ink-70); font-size:.9rem; font-weight:600; overflow-wrap:anywhere; }
   .edbar__st.is-ok{ color:var(--gold); }
   .edbar__st.is-err{ color:#e0466f; }
+  .edbar .edlink{ font-size:.9rem; }
+  .edkbd{ color:var(--ink-50); font-size:.84rem; font-weight:600; white-space:nowrap; }
+  @media (hover:none) and (pointer:coarse){ .edkbd{ display:none; } }
 
   /* ================= YORUGʻ REJIM ================= */
   html.light{
@@ -372,12 +405,15 @@
   html.light .ank__contact a,html.light .ank__fv a{ color:#946a16; }
   html.light .cnt b,html.light .ank__grp h4,html.light .ank__hist h4,html.light .rev__label{ color:#8A5F1C; }
   html.light .rev::backdrop{ background:rgba(60,45,20,.4); }
-  html.light .eds{ box-shadow:0 18px 44px -32px rgba(60,40,10,.3); }
-  html.light .eds__h,html.light .ednote b,html.light .edf__s,html.light .edbar__st.is-ok{ color:#8A5F1C; }
+  html.light .edhead__t,html.light .ednote b,html.light .edf__s,html.light .edbar__st.is-ok,
+  html.light .ednav__b.is-on,html.light .edi__sec:hover{ color:#8A5F1C; }
+  html.light .ednav.is-dim .ednav__b.is-on{ color:var(--ink-70); }
   html.light .edbar{ background:rgba(255,255,255,.86); }
 
   /* ================= MOSLASHUVCHAN ================= */
   @media (max-width:900px){ .ank__grid{ grid-template-columns:repeat(2,minmax(0,1fr)); } }
+  /* tor ekranda boʻlimlar roʻyxati oʻrniga tanlash maydoni */
+  @media (max-width:899px){ .edwrap{ display:block; padding-top:18px; } .ednav{ display:none; } .edsel{ display:block; } }
   /* uchta yorliq yuqori panelga sigʻsin */
   @media (max-width:820px){ .abar__in{ gap:8px; } .vtab{ padding:10px 8px; } .vtab.is-on::after{ left:8px; right:8px; } }
   @media (max-width:640px){
@@ -402,14 +438,18 @@
     .ank__foot{ gap:10px; } .ank__foot .rvbtn,.ank__foot .prbtn{ flex:1 1 auto; justify-content:center; }
     .rev__card{ padding:20px 18px 16px; border-radius:18px; }
     .rev__actions{ flex-wrap:wrap; } .rev__actions .btn,.rev__actions .ghost{ flex:1 1 100%; }
+    .edtools{ gap:8px; padding-top:14px; }
+    .edtools__row{ gap:4px 16px; }
     .edsite{ margin-left:0; }
     .ednote{ margin-top:14px; font-size:.9rem; }
-    .edlist{ gap:14px; padding:14px 0 18px; }
-    .eds{ padding:16px 16px 2px; border-radius:16px; }
-    .edi{ padding:16px 0 18px; }
-    .edi__f{ grid-template-columns:minmax(0,1fr); gap:12px; }
+    .edwrap{ padding-top:14px; }
+    .edhead__t{ font-size:1.16rem; }
+    .edlist{ padding-bottom:24px; }
+    .edi{ padding:20px 0 24px; }
+    .edi__f{ grid-template-columns:minmax(0,1fr); gap:16px; }
     .edbar{ gap:8px 10px; padding-top:10px; padding-bottom:calc(10px + env(safe-area-inset-bottom)); margin-bottom:24px; }
-    .edbar__st{ flex-basis:100%; font-size:.86rem; }
+    .edbar__info{ flex-basis:100%; }
+    .edbar__st{ font-size:.86rem; }
     .edbar .ghost{ flex:0 0 auto; } .edbar .btn{ flex:1 1 auto; }
   }
   @media (max-width:380px){ .anketa{ padding:17px 15px; } .ank__name{ font-size:1.2rem; }
@@ -476,20 +516,42 @@
     </div>
     <div id="stats" hidden></div>
     <div id="editor" hidden>
-      <div class="tools" id="edTools" hidden>
-        <label class="srch">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
-          <input id="edQ" type="search" autocomplete="off" />
-        </label>
+      <div class="edtools" id="edTools" hidden>
+        <div class="edtools__row">
+          <label class="srch edq">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+            <input id="edQ" type="search" autocomplete="off" />
+          </label>
+          <a class="edsite" id="edSite" href="https://upop.uz/" target="_blank" rel="noopener">Открыть сайт</a>
+        </div>
         <div class="sel edsel"><select id="edG"></select></div>
-        <a class="edsite" id="edSite" href="https://upop.uz/" target="_blank" rel="noopener">Открыть сайт</a>
+        <div class="edtools__row">
+          <div class="segf edlv" id="edLv" role="group">
+            <button class="segf__b" type="button" data-v="all">Все языки</button>
+            <button class="segf__b" type="button" data-v="uz">Oʻzbekcha</button>
+            <button class="segf__b" type="button" data-v="oz">Özbekça</button>
+            <button class="segf__b" type="button" data-v="ru">Русский</button>
+            <button class="segf__b" type="button" data-v="en">English</button>
+          </div>
+          <button class="segf__b edonly" id="edOnly" type="button" aria-pressed="false">Только изменённые</button>
+        </div>
       </div>
       <p class="ednote" id="edNote" hidden><b id="edNoteH"></b> <span id="edNoteP"></span></p>
       <p class="edmsg" id="edMsg" hidden></p>
-      <div class="edlist" id="edList"></div>
+      <div class="edwrap" id="edWrap" hidden>
+        <nav class="ednav" id="edNav"></nav>
+        <div class="edmain">
+          <div class="edhead" id="edHead"></div>
+          <div class="edlist" id="edList"></div>
+        </div>
+      </div>
       <div class="edbar" id="edBar" hidden>
-        <span class="edbar__st" id="edSt" role="status" aria-live="polite"></span>
+        <div class="edbar__info">
+          <span class="edbar__st" id="edSt" role="status" aria-live="polite"></span>
+          <button class="edlink" id="edRestX" type="button" hidden>Отменить их</button>
+        </div>
         <button class="ghost" id="edUndo" type="button" disabled>Отменить изменения</button>
+        <span class="edkbd" id="edKbd" aria-hidden="true"></span>
         <button class="btn btn--pop" id="edSave" type="button" disabled><span class="btn__label" id="edSaveL">Сохранить</span></button>
       </div>
     </div>
@@ -624,12 +686,21 @@
       savefail:"Не удалось сохранить. Попробуйте ещё раз.",
       anketa_title:"Анкета кандидата", print_sub:"Национальный кастинг — Milliy tanlov",
       count:function(n,d,tt){ return "Показано <b>"+n+"</b>, оценённых <b>"+d+"</b> из "+tt; },
-      ed_search:"Поиск: название или текст на любом языке…", ed_all:"Все разделы", ed_site:"Открыть сайт",
+      ed_search:"Поиск: название или текст на любом языке…", ed_site:"Открыть сайт",
+      ed_sections:"Разделы", ed_lv:"Язык полей", ed_v_all:"Все языки", ed_only:"Только изменённые",
+      ed_found:function(n){ return "Найдено: "+n; },
+      ed_changed_n:function(n){ return "Изменённых текстов: "+n; },
+      ed_nochg_h:"Изменённых текстов нет", ed_nochg_p:"Здесь появятся тексты, которые отличаются от исходных или ещё не сохранены.",
       ed_undo:"Отменить изменения", ed_undo_q:"Отменить все несохранённые изменения?",
       ed_leave:"Есть несохранённые изменения. Уйти и отменить их?",
       ed_dirty:function(n){ return "Несохранённых полей: "+n; },
+      ed_restored:function(n){ return "Восстановлены несохранённые правки: "+n; }, ed_rest_x:"Отменить их",
       ed_clean:"Все изменения сохранены", ed_saved:"Сохранено",
-      ed_savefail:"Не удалось сохранить. Изменения остались на странице — попробуйте ещё раз.",
+      ed_live:"Сохранено. Сайт обновится у всех в течение нескольких секунд.",
+      ed_savefail:"Не удалось сохранить, правки не потеряны — нажмите «Сохранить» ещё раз",
+      ed_wait:"Проверяю связь с таблицей…",
+      ed_offline:"Нет связи с таблицей. Правки не потеряны — нажмите «Сохранить» ещё раз чуть позже.",
+      ed_nolink:"Нет связи с таблицей — показана последняя загруженная версия.",
       ed_loading:"Загружаю тексты сайта…", ed_loadfail:"Не удалось загрузить тексты сайта.",
       ed_datafail:"Не удалось получить сохранённые изменения из таблицы.", ed_retry:"Повторить",
       ed_old_h:"Сохранение пока недоступно.",
@@ -684,12 +755,21 @@
       savefail:"Saqlab boʻlmadi. Qayta urinib koʻring.",
       anketa_title:"Nomzod anketasi", print_sub:"Milliy kasting — Национальный кастинг",
       count:function(n,d,tt){ return "Koʻrsatildi <b>"+n+"</b>, baholangan <b>"+d+"</b> / "+tt; },
-      ed_search:"Qidiruv: nom yoki istalgan tildagi matn…", ed_all:"Barcha boʻlimlar", ed_site:"Saytni ochish",
+      ed_search:"Qidiruv: nom yoki istalgan tildagi matn…", ed_site:"Saytni ochish",
+      ed_sections:"Boʻlimlar", ed_lv:"Maydonlar tili", ed_v_all:"Barcha tillar", ed_only:"Faqat oʻzgartirilganlar",
+      ed_found:function(n){ return "Topildi: "+n; },
+      ed_changed_n:function(n){ return "Oʻzgartirilgan matnlar: "+n; },
+      ed_nochg_h:"Oʻzgartirilgan matnlar yoʻq", ed_nochg_p:"Asl holidan farq qiladigan yoki hali saqlanmagan matnlar shu yerda koʻrinadi.",
       ed_undo:"Bekor qilish", ed_undo_q:"Barcha saqlanmagan oʻzgarishlar bekor qilinsinmi?",
       ed_leave:"Saqlanmagan oʻzgarishlar bor. Ularni bekor qilib chiqasizmi?",
       ed_dirty:function(n){ return "Saqlanmagan maydonlar: "+n; },
+      ed_restored:function(n){ return "Saqlanmagan tahrirlar tiklandi: "+n; }, ed_rest_x:"Ularni bekor qilish",
       ed_clean:"Barcha oʻzgarishlar saqlangan", ed_saved:"Saqlandi",
-      ed_savefail:"Saqlab boʻlmadi. Oʻzgarishlar sahifada qoldi — qayta urinib koʻring.",
+      ed_live:"Saqlandi. Sayt bir necha soniyada hamma uchun yangilanadi.",
+      ed_savefail:"Saqlab boʻlmadi, tahrirlar yoʻqolmadi — «Saqlash» tugmasini yana bosing",
+      ed_wait:"Jadval bilan aloqa tekshirilmoqda…",
+      ed_offline:"Jadval bilan aloqa yoʻq. Tahrirlar yoʻqolmadi — birozdan soʻng «Saqlash» tugmasini yana bosing.",
+      ed_nolink:"Jadval bilan aloqa yoʻq — oxirgi yuklangan nusxa koʻrsatilmoqda.",
       ed_loading:"Sayt matnlari yuklanmoqda…", ed_loadfail:"Sayt matnlarini yuklab boʻlmadi.",
       ed_datafail:"Saqlangan oʻzgarishlarni jadvaldan olib boʻlmadi.", ed_retry:"Qayta urinish",
       ed_old_h:"Saqlash hozircha ishlamaydi.",
@@ -816,7 +896,12 @@
     $("edQ").placeholder=x.ed_search; $("edSite").textContent=x.ed_site;
     $("edUndo").textContent=x.ed_undo; $("edSaveL").textContent=x.save;
     $("edNoteH").textContent=x.ed_old_h; $("edNoteP").textContent=x.ed_old_p;
-    if(!$("app").hidden){ buildFilters(); if(state.view==="stats") renderStats(); else render(false); if(ed.st) edPaint(); }
+    $("edLv").querySelector('[data-v="all"]').textContent=x.ed_v_all; $("edLv").setAttribute("aria-label",x.ed_lv);
+    $("edOnly").textContent=x.ed_only; $("edRestX").textContent=x.ed_rest_x; $("edKbd").textContent=edKbd();
+    $("edNav").setAttribute("aria-label",x.ed_sections); $("edG").setAttribute("aria-label",x.ed_sections);
+    edViewSync();
+    if(!$("app").hidden){ buildFilters(); if(state.view==="stats") renderStats(); else render(false); }
+    if(ed.st){ if(state.view==="edit") edPaint(); else ed.built=false; }
   }
 
   /* ---- kirish ---- */
@@ -841,7 +926,7 @@
       .then(function(){ btn.classList.remove("is-loading"); });
   });
   $("logout").addEventListener("click", function(){
-    if(edDirtyCount()){ if(!confirm(tr().ed_leave)) return; ed.e={}; }
+    if(edDirtyCount()){ if(!confirm(tr().ed_leave)) return; ed.e={}; edDraftSave(); }
     try{ PS.removeItem(KEY_STORE); }catch(e){} clearCache(); location.reload(); });
   $("refresh").addEventListener("click", function(){
     if(state.view==="edit"){ edReload(); return; }
@@ -853,7 +938,7 @@
   $("langBtn").addEventListener("click",toggleLang); $("langBtn2").addEventListener("click",toggleLang);
   $("themeBtn").addEventListener("click",toggleTheme); $("themeBtn2").addEventListener("click",toggleTheme);
 
-  function showApp(){ $("login").hidden=true; $("app").hidden=false; buildFilters(); render(true); }
+  function showApp(){ $("login").hidden=true; $("app").hidden=false; buildFilters(); render(true); edIdle(); }
   function buildFilters(){
     var g={}; state.rows.forEach(function(r){ if(r.genre) g[String(r.genre).trim()]=1; });
     var el=$("fGenre"), cur=el.value, opts=Object.keys(g).sort();
@@ -1180,7 +1265,10 @@
 
   /* ---- statistika ---- */
   function switchView(v){
-    if(state.view==="edit" && v!=="edit" && edDirtyCount()){ if(!confirm(tr().ed_leave)) return; edDiscard(); }
+    if(state.view==="edit" && v!=="edit"){
+      if(edDirtyCount()){ if(!confirm(tr().ed_leave)) return; edDiscard(); }
+      if(ed.st==="ready") ed.sy[edMode()]=window.pageYOffset;   // qaytganda shu joydan davom etadi
+    }
     state.view=v;
     document.querySelectorAll(".vtab").forEach(function(b){ b.classList.toggle("is-on", b.getAttribute("data-view")===v); });
     $("listview").hidden = v!=="list";
@@ -1294,29 +1382,54 @@
   $("vtabs").addEventListener("click", function(e){ var b=e.target.closest(".vtab"); if(b) switchView(b.getAttribute("data-view")); });
 
   /* ---- tahrirlash: saytdagi barcha matnlar ----
-       Standart matnlar /js/content.js da (birinchi ochilganda yuklanadi), admin
-       oʻzgartirganlari jadvalning "Content" varagʻida. Standart bilan bir xil yoki
-       boʻsh maydon "" boʻlib yuboriladi — sayt standartni koʻrsatadi. Özbekça boʻsh
-       boʻlsa, oʻzbekcha matndan avtomatik yasaladi. */
-  var ED_LANGS=["uz","oz","ru","en"];
+       Standart matnlar /js/content.js da, admin oʻzgartirganlari jadvalning
+       "Content" varagʻida. Standart bilan bir xil yoki boʻsh maydon "" boʻlib
+       yuboriladi — sayt standartni koʻrsatadi. Özbekça boʻsh boʻlsa, oʻzbekcha
+       matndan avtomatik yasaladi.
+       Tezlik: skript va saqlangan matnlar admin ochilgach fonda yuklanadi, oxirgi
+       nusxa keshdan darhol chiziladi, ekranda faqat tanlangan boʻlim turadi.
+       Saqlash kutdirmaydi: maydonlar darhol saqlangan boʻladi, soʻrovlar navbat
+       bilan fonda ketadi, xato boʻlsa tahrirlar joyiga qaytadi. */
+  var ED_LANGS=["uz","oz","ru","en"], ED_VIEWS=["all","uz","oz","ru","en"];
   var ED_NAMES={ uz:"Oʻzbekcha", oz:"Özbekça", ru:"Русский", en:"English" };
   var SITE_CACHE="upop_content";   // saytning oʻz keshi (shu domenda ochilganda darhol yangilanadi)
-  // st: "" | loading | ready | fail;  c — saqlangan qiymatlar, e — hali saqlanmagan tahrirlar
-  var ed={ st:"", fail:"", ro:false, v:"", c:{}, e:{}, groups:[], items:{}, html:{}, q:"", g:"", saving:false, msg:"", tone:"" };
+  var ED_CACHE="upop_admin_content", ED_DRAFT="upop_admin_ed_draft", ED_VIEW="upop_admin_ed_view", ED_SEC="upop_admin_ed_sec";
+  // field-sizing bor brauzerda maydon balandligini CSS oʻzi moslaydi, JS kerak emas
+  var ED_FS=!!(window.CSS && CSS.supports && CSS.supports("field-sizing","content"));
+  var ED_UA=window.navigator||{};
+  var ED_MAC=/Mac|iPhone|iPad|iPod/.test(ED_UA.platform||ED_UA.userAgent||"");
+  /* c — jadvaldagi (tasdiqlangan) qiymatlar, p — yuborilgan, hali tasdiqlanmagan,
+       e — saqlanmagan tahrirlar; out — yoʻldagi soʻrov, nx — navbatdagisi.
+       live: "" tekshirilmoqda | ok — yangi skript | old — eski skript | fail — aloqa yoʻq */
+  var ed={ st:"", fail:"", ro:false, live:"", v:"", c:{}, p:{}, e:{}, d:{}, out:null, nx:{}, seq:0, want:false,
+    groups:[], items:{}, html:{}, sec:{}, q:"", g:"", view:"all", only:false, sy:{}, msg:"", tone:"", rest:0,
+    sOk:false, sBusy:false, sErr:false, dOk:false, checking:false, drafted:false, built:false };
+  try{ var edV0=PS.getItem(ED_VIEW); if(ED_VIEWS.indexOf(edV0)>=0) ed.view=edV0; }catch(e){}
+  try{ ed.g=sessionStorage.getItem(ED_SEC)||""; }catch(e){}
 
+  function edKbd(){ return ED_MAC ? "⌘S" : "Ctrl+S"; }
   function edClean(s){ return String(s==null?"":s).replace(/\r\n?/g,"\n").replace(/^\s+|\s+$/g,""); }
   function edFold(s){ return String(s==null?"":s).toLowerCase().replace(/[ʻʼ‘’'`]/g,"'"); }
   function edHas(o,k){ return !!o && Object.prototype.hasOwnProperty.call(o,k); }
-  // uz/ru/en standarti (HTML kalitlari belgilash koʻrinishida); oz ning standarti yoʻq
+  // { kalit: { til: qiymat } } koʻrinishidagi xaritalar uchun yordamchilar
+  function edEach(o,fn){ Object.keys(o).forEach(function(k){ Object.keys(o[k]||{}).forEach(function(l){ if(o[k] && edHas(o[k],l)) fn(k,l,o[k][l]); }); }); }
+  function edPut(o,k,l,v){ (o[k]||(o[k]={}))[l]=v; }
+  function edDel(o,k,l){ if(o[k]){ delete o[k][l]; if(!Object.keys(o[k]).length) delete o[k]; } }
+  function edCount(o){ var n=0; edEach(o,function(){ n++; }); return n; }
+
+  // uz/ru/en standarti (HTML kalitlari belgilash koʻrinishida), bir marta hisoblanadi; oz ning standarti yoʻq
   function edDef(k,l){
     if(l==="oz") return "";
-    var C=window.UPOP_CONTENT||{}, v=C[l] && C[l][k];
-    v=(v==null?"":String(v));
-    return edClean(ed.html[k] ? window.UPOP_KIT.htmlToMarkup(v) : v);
+    var d=ed.d[k]||(ed.d[k]={});
+    if(!edHas(d,l)){ var C=window.UPOP_CONTENT||{}, v=C[l] && C[l][k]; v=(v==null?"":String(v));
+      d[l]=edClean(ed.html[k] ? window.UPOP_KIT.htmlToMarkup(v) : v); }
+    return d[l];
   }
-  function edSaved(k,l){ var r=ed.c[k]; return (r && typeof r[l]==="string") ? edClean(r[l]) : ""; }
-  // maydonning saqlangan holati; oz uchun boʻsh — avtomatik
-  function edBase(k,l){ var s=edSaved(k,l); return l==="oz" ? s : (s||edDef(k,l)); }
+  // saqlangan qiymat: avval yuborilgani (p), boʻlmasa jadvaldagisi (c)
+  function edSavedRaw(k,l){ var p=ed.p[k]; if(p && edHas(p,l)) return p[l]; var r=ed.c[k]; return (r && typeof r[l]==="string") ? edClean(r[l]) : ""; }
+  // maydonda koʻrinadigan matn: boʻsh — standart; oz boʻsh qoladi (avtomatik)
+  function edShow(k,l,s){ return l==="oz" ? s : (s||edDef(k,l)); }
+  function edBase(k,l){ return edShow(k,l,edSavedRaw(k,l)); }
   function edVal(k,l){ return edHas(ed.e[k],l) ? ed.e[k][l] : edBase(k,l); }
   // saytda chiqadigan matn: boʻsh maydon standartni bildiradi
   function edEff(k,l){ return edClean(edVal(k,l)) || edDef(k,l); }
@@ -1326,26 +1439,18 @@
     v=edClean(v); if(!v) return "";
     return v===(l==="oz" ? edAuto(k) : edDef(k,l)) ? "" : v;
   }
-  function edDirty(k,l){ return edNorm(k,l,edVal(k,l))!==edNorm(k,l,edBase(k,l)); }
+  function edDirty(k,l){ return edHas(ed.e[k],l) && edNorm(k,l,ed.e[k][l])!==edNorm(k,l,edBase(k,l)); }
   function edCustom(k,l){ return edNorm(k,l,edVal(k,l))!==""; }
-  function edDirtyCount(){ var n=0;
-    Object.keys(ed.e).forEach(function(k){ Object.keys(ed.e[k]).forEach(function(l){ if(edDirty(k,l)) n++; }); });
-    return n; }
+  function edDirtyCount(){ var n=0; edEach(ed.e,function(k,l){ if(edDirty(k,l)) n++; }); return n; }
+  // boʻlimlar boʻyicha saqlanmagan maydonlar soni
+  function edSecCounts(){ var m={}; edEach(ed.e,function(k,l){ if(edDirty(k,l)){ var g=ed.sec[k]; m[g]=(m[g]||0)+1; } }); return m; }
   // { kalit: { til: qiymat } } — faqat oʻzgargan maydonlar
   function edCollect(){ var items={}, n=0;
-    Object.keys(ed.e).forEach(function(k){ Object.keys(ed.e[k]).forEach(function(l){
-      if(edDirty(k,l)){ (items[k]=items[k]||{})[l]=edNorm(k,l,edVal(k,l)); n++; } }); });
+    edEach(ed.e,function(k,l,v){ if(edDirty(k,l)){ edPut(items,k,l,edNorm(k,l,v)); n++; } });
     return { items:items, n:n }; }
-  function edSet(k,l,v){ var e=ed.e[k]||(ed.e[k]={});
-    if(v===edBase(k,l)) delete e[l]; else e[l]=v;
-    if(!Object.keys(e).length) delete ed.e[k]; }
-  // saqlangach: yuborilgan tahrirlar tushadi, saqlash paytida yozilganlari qoladi
-  function edMerge(snap){
-    Object.keys(ed.e).forEach(function(k){
-      Object.keys(ed.e[k]).forEach(function(l){ var v=ed.e[k][l];
-        if((edHas(snap[k],l) && snap[k][l]===v) || v===edBase(k,l)) delete ed.e[k][l]; });
-      if(!Object.keys(ed.e[k]).length) delete ed.e[k];
-    }); }
+  function edSet(k,l,v){ if(v===edBase(k,l)) edDel(ed.e,k,l); else edPut(ed.e,k,l,v); }
+  // asos oʻzgargach unga teng boʻlib qolgan tahrirlar tushib qoladi
+  function edTidy(){ edEach(ed.e,function(k,l){ if(!edDirty(k,l)) edDel(ed.e,k,l); }); }
   // yangi skript {v, c} qaytaradi; eskisi bu soʻrovga oddiy holat JSON ini beradi
   function edHasApi(r){ return !!(r && r.v!=null && r.c && typeof r.c==="object" && !Array.isArray(r.c)); }
   function edObj(c){ var o={};
@@ -1354,6 +1459,72 @@
       o[k]=m; });
     return o; }
 
+  /* ---- kesh va qoralama ---- */
+  function edCacheRead(){ try{ var o=JSON.parse(PS.getItem(ED_CACHE)||"null"); return edHasApi(o) ? o : null; }catch(e){ return null; } }
+  function edCacheWrite(site){ var s=JSON.stringify({ v:ed.v, c:ed.c });
+    try{ PS.setItem(ED_CACHE,s); }catch(e){}
+    if(site){ try{ localStorage.setItem(SITE_CACHE,s); }catch(e){} } }
+  // qoralama: saqlanmagan va hali tasdiqlanmagan qiymatlar — sahifa yopilsa ham yoʻqolmaydi
+  function edDraftData(){ var o={};
+    edEach(ed.p,function(k,l,v){ edPut(o,k,l,edShow(k,l,v)); });
+    edEach(ed.e,function(k,l,v){ if(edDirty(k,l)) edPut(o,k,l,v); });
+    return edCount(o) ? o : null; }
+  var edDT;
+  function edDraftSave(){ clearTimeout(edDT);
+    if(ed.st!=="ready" || ed.ro || !ed.drafted) return;   // tiklanmagan qoralama ustidan yozilmaydi
+    var d=edDraftData();
+    try{ if(d) PS.setItem(ED_DRAFT, JSON.stringify({ t:Date.now(), e:d })); else PS.removeItem(ED_DRAFT); }catch(e){} }
+  function edDraftLater(){ clearTimeout(edDT); edDT=setTimeout(edDraftSave,400); }
+  function edDraftLoad(){ var d=null;
+    try{ d=JSON.parse(PS.getItem(ED_DRAFT)||"null"); }catch(e){}
+    var e=d && d.e;
+    if(e && typeof e==="object") Object.keys(e).forEach(function(k){ var r=e[k];
+      if(!ed.items[k] || !r || typeof r!=="object") return;
+      ED_LANGS.forEach(function(l){ if(typeof r[l]==="string" && !edHas(ed.e[k],l)) edSet(k,l,r[l]); }); });
+    edTidy();
+    return edDirtyCount(); }
+
+  /* ---- saqlash: optimistik, navbat bilan ----
+       Bosilganda tahrirlar darhol "yuborilgan"ga oʻtadi (ekranda saqlangan).
+       Bir vaqtda bitta soʻrov; qolganlari navbatda birlashadi. */
+  function edSave(){
+    if(ed.st!=="ready" || ed.ro) return;
+    var out=edCollect(); if(!out.n) return;
+    // yangi skript hali tasdiqlanmagan — tekshiruvdan keyin oʻzi saqlanadi
+    if(ed.live!=="ok"){ ed.want=true; if(ed.live==="fail") edCheck(); edSyncBar(); return; }
+    ed.want=false; ed.rest=0; ed.msg="ed_saved"; ed.tone="ok";
+    edEach(out.items,function(k,l,v){ edPut(ed.p,k,l,v); edPut(ed.nx,k,l,v); edDel(ed.e,k,l); });
+    edDraftSave(); edRefresh(); edPump();
+  }
+  function edPump(){
+    if(ed.out || !edCount(ed.nx)) return;
+    var items=ed.nx; ed.nx={}; ed.out=items; ed.seq++;
+    api({ action:"content_save", key:state.key, items:items }).then(function(res){
+      if(res && res.error==="forbidden") throw new Error("wrongpw");
+      if(!res || res.ok!==true || !edHasApi(res)) throw new Error("ed_savefail");
+      ed.out=null; ed.c=edObj(res.c); ed.v=String(res.v);
+      // tasdiqlanganlar kutishdan chiqadi; navbatda yangisi boʻlsa, u qoladi
+      edEach(items,function(k,l,v){ if(ed.p[k] && ed.p[k][l]===v) edDel(ed.p,k,l); });
+      edTidy(); edCacheWrite(true);
+      if(edCount(ed.nx)) edPump(); else { ed.msg="ed_live"; ed.tone="ok"; }
+    }).catch(function(err){
+      ed.out=null; edRollback();
+      ed.msg=(err && err.message==="wrongpw") ? "wrongpw" : "ed_savefail"; ed.tone="err";
+    }).then(function(){ edDraftSave(); edRefresh(); });
+  }
+  // xato: yuborilgan va navbatdagi qiymatlar yana saqlanmagan tahrir boʻladi (keyin yozilganlari saqlanib qoladi)
+  function edRollback(){
+    var p=ed.p; ed.p={}; ed.nx={};
+    edEach(p,function(k,l,v){ if(!edHas(ed.e[k],l)) edPut(ed.e,k,l,edShow(k,l,v)); });
+    edTidy();
+  }
+  function edDiscard(){
+    ed.e={}; ed.rest=0; ed.want=false;
+    if(!ed.out || ed.tone==="err"){ ed.msg=""; ed.tone=""; }
+    edDraftSave(); if(ed.st==="ready") edRefresh();
+  }
+
+  /* ---- yuklash ---- */
   // boʻlimlar UPOP_GROUPS tartibida; u boʻlmasa, barcha kalitlar bitta boʻlimda
   function edSetup(){
     var C=window.UPOP_CONTENT||{}, seen={}, groups=[];
@@ -1366,107 +1537,13 @@
     });
     var rest=Object.keys(C.uz||{}).filter(function(k){ return !seen[k]; }).map(function(k){ return {k:k}; });
     if(rest.length) groups.push({ id:"_rest", t:(groups.length?"other":"all"), items:rest });
-    ed.groups=groups; ed.items={}; ed.html={};
-    groups.forEach(function(g){ g.items.forEach(function(it){ ed.items[it.k]=it;
+    ed.groups=groups; ed.items={}; ed.html={}; ed.sec={}; ed.d={};
+    groups.forEach(function(g){ g.items.forEach(function(it){ ed.items[it.k]=it; ed.sec[it.k]=g.id;
       ed.html[it.k]=hk ? hk.indexOf(it.k)>=0
         : ["uz","ru","en"].some(function(l){ return /<\/?[a-z][^>]*>/i.test(String((C[l]||{})[it.k]||"")); });
     }); });
+    if(!edGroup(ed.g,true)) ed.g=groups.length ? groups[0].id : "";
   }
-  function edLabel(o,fb){
-    var s=(o && typeof o==="object") ? (lang==="ru" ? (o.ru||o.uz) : (o.uz||o.ru)) : "";
-    if(!s) return fb;
-    return lang==="oz" ? toOz(s) : s; }
-  function edGroupTitle(g){ var x=tr(); return g.t==="all" ? x.ed_g_all : g.t==="other" ? x.ed_g_other : edLabel(g.t,g.id); }
-  function edMatch(k,q){
-    if(!q) return true;
-    var it=ed.items[k]||{}, hay=[k, it.ru, it.uz, edLabel(it,k), edVal(k,"oz"), edAuto(k)];
-    ["uz","ru","en"].forEach(function(l){ hay.push(edVal(k,l), edDef(k,l)); });
-    return edFold(hay.join("\n")).indexOf(q)>=0; }
-
-  function edItemHtml(it){
-    var k=it.k, ek=esc(k), x=tr(), name=edLabel(it,k);
-    var fields=ED_LANGS.map(function(l){ var id="ef-"+ek+"-"+l;
-      return '<div class="edf" data-l="'+l+'">'+
-        '<div class="edf__top"><label class="edf__l" id="'+id+'-l" for="'+id+'">'+esc(ED_NAMES[l])+'</label>'+
-          '<span class="edf__s"></span><button class="edf__r" type="button" hidden>'+esc(x.ed_reset)+'</button></div>'+
-        '<textarea class="edf__ta" id="'+id+'" rows="1" lang="'+(l==="oz"?"uz":l)+'" aria-labelledby="edn-'+ek+' '+id+'-l"'+
-          (l==="uz"||l==="oz"?' spellcheck="false"':'')+(l!=="oz"?' placeholder="'+esc(edDef(k,l))+'"':'')+(ed.ro?' readonly':'')+'></textarea>'+
-        (l==="oz"?'<p class="edf__hint">'+esc(x.ed_oz_hint)+'</p>':'')+
-      '</div>'; }).join("");
-    return '<div class="edi" data-k="'+ek+'">'+
-      '<div class="edi__h"><b class="edi__n" id="edn-'+ek+'">'+esc(name)+'</b>'+(name!==k?'<span class="edi__k">'+ek+'</span>':'')+'</div>'+
-      (ed.html[k]?'<p class="edi__hint">'+esc(x.ed_html_hint)+'</p>':'')+
-      '<div class="edi__f">'+fields+'</div></div>';
-  }
-  function edEach(fn){ var its=$("edList").querySelectorAll(".edi"); for(var i=0;i<its.length;i++) fn(its[i], its[i].getAttribute("data-k")); }
-  function edSyncItem(it,k){ var x=tr();
-    it.querySelectorAll(".edf").forEach(function(f){ var l=f.getAttribute("data-l"), dirty=edDirty(k,l), custom=edCustom(k,l);
-      f.classList.toggle("is-dirty",dirty); f.classList.toggle("is-custom",custom);
-      f.querySelector(".edf__s").textContent=dirty ? x.ed_unsaved : custom ? x.ed_changed : "";
-      f.querySelector(".edf__r").hidden=!custom || ed.ro;
-      if(l==="oz"){ var ta=f.querySelector(".edf__ta"), ph=edAuto(k);
-        if(ta.placeholder!==ph) ta.placeholder=ph;
-        f.querySelector(".edf__hint").hidden=!!edClean(edVal(k,l)); }
-    }); }
-  function edSyncBar(){
-    var x=tr(), n=edDirtyCount(), st=$("edSt");
-    var s=ed.saving ? x.saving : ed.msg ? x[ed.msg] : n ? x.ed_dirty(n) : x.ed_clean;
-    $("edSave").disabled=!n || ed.saving || ed.ro;
-    $("edUndo").disabled=!n || ed.saving;
-    st.className="edbar__st"+(ed.tone?" is-"+ed.tone:"");
-    if(st.textContent!==s) st.textContent=s;   // oʻzgarmagan matn ekran oʻquvchida qayta oʻqilmasin
-  }
-  /* Maydon balandligi matnga moslanadi: avval hammasiga yozamiz, keyin oʻqiymiz —
-       yuzlab maydon uchun bitta qayta hisoblash. Boʻsh maydon placeholder boʻyicha
-       oʻlchanadi (faol maydon bundan mustasno — uning bekor qilish tarixi buzilmasin). */
-  function edGrow(list){
-    var tas=[], ph=[], h=[], i, y=window.pageYOffset;
-    for(i=0;i<list.length;i++){ if(list[i] && list[i].offsetParent!==null) tas.push(list[i]); }
-    for(i=0;i<tas.length;i++){ var t=tas[i];
-      ph[i]=!t.value && !!t.placeholder && t!==document.activeElement;
-      if(ph[i]) t.value=t.placeholder;
-      t.style.height="auto"; }
-    for(i=0;i<tas.length;i++) h[i]=tas[i].scrollHeight;
-    for(i=0;i<tas.length;i++){ if(ph[i]) tas[i].value=""; tas[i].style.height=(h[i]+2)+"px"; }
-    if(tas.length && window.pageYOffset!==y) window.scrollTo(0,y);
-  }
-  function edGrowAll(){ edGrow($("edList").querySelectorAll(".edf__ta")); }
-  function edFilter(){
-    var q=edFold(ed.q.trim()), any=false;
-    $("edList").querySelectorAll(".eds").forEach(function(s){
-      var inG=!ed.g || ed.g===s.getAttribute("data-g"), on=0;
-      s.querySelectorAll(".edi").forEach(function(it){ var vis=inG && edMatch(it.getAttribute("data-k"),q); it.hidden=!vis; if(vis) on++; });
-      s.hidden=!on; if(on) any=true;
-    });
-    if($("edNone")) $("edNone").hidden=any;
-  }
-  function edBuild(){
-    var x=tr(), sel=$("edG");
-    sel.innerHTML='<option value="">'+esc(x.ed_all)+'</option>'+ed.groups.map(function(g){
-      return '<option value="'+esc(g.id)+'">'+esc(edGroupTitle(g))+'</option>'; }).join("");
-    sel.value=ed.g; if(sel.value!==ed.g){ ed.g=""; sel.value=""; }
-    $("edList").innerHTML=ed.groups.map(function(g){
-      return '<section class="eds" data-g="'+esc(g.id)+'"><h2 class="eds__h">'+esc(edGroupTitle(g))+'</h2>'+g.items.map(edItemHtml).join("")+'</section>'; }).join("")+
-      '<div class="state" id="edNone" hidden><h3>'+esc(x.none_h)+'</h3><p>'+esc(x.none_p)+'</p></div>';
-    edFill(); edFilter(); edGrowAll(); edSyncBar();
-  }
-  // maydonlarga holatdagi qiymatlarni qoʻyadi (.value orqali — boshidagi yangi qator yoʻqolmasin)
-  function edFill(){
-    edEach(function(it,k){
-      it.querySelectorAll(".edf__ta").forEach(function(ta){ var v=edVal(k,ta.closest(".edf").getAttribute("data-l")); if(ta.value!==v) ta.value=v; });
-      edSyncItem(it,k); });
-  }
-  function edRefresh(){ edFill(); edGrowAll(); edSyncBar(); }
-  function edPaint(){
-    var x=tr(), ready=(ed.st==="ready"), msg=$("edMsg");
-    $("edTools").hidden=!ready; $("edNote").hidden=!(ready && ed.ro); $("edBar").hidden=!ready || ed.ro;
-    if(ed.st==="loading") msg.textContent=x.ed_loading;
-    else if(ed.st==="fail") msg.innerHTML=esc(ed.fail==="script"?x.ed_loadfail:x.ed_datafail)+' <button class="edlink" type="button" id="edRetry">'+esc(x.ed_retry)+'</button>';
-    else msg.textContent="";
-    msg.hidden=!(ed.st==="loading" || ed.st==="fail");
-    if(ready) edBuild(); else $("edList").innerHTML="";
-  }
-
   // skriptni bir marta yuklaydi; xato boʻlsa tegni olib tashlaydi — qayta urinish mumkin
   function edScript(src, ready){
     return new Promise(function(res,rej){
@@ -1478,78 +1555,296 @@
       document.head.appendChild(s);
     });
   }
-  function edLoad(){
-    ed.st="loading"; edPaint();
-    var data=apiGet("action=content").catch(function(){ return null; });
-    var scripts=edScript("/js/i18n-kit.js", function(){ return !!window.UPOP_KIT; })
+  function edScripts(){
+    if(ed.sOk || ed.sBusy) return;
+    ed.sBusy=true; ed.sErr=false;
+    edScript("/js/i18n-kit.js", function(){ return !!window.UPOP_KIT; })
       .then(function(){ return edScript("/js/content.js", function(){ return !!window.UPOP_CONTENT; }); })
-      .then(function(){ return true; }, function(){ return false; });
-    Promise.all([scripts, data]).then(function(a){
-      var r=a[1];
-      if(!a[0]){ ed.st="fail"; ed.fail="script"; }
-      else if(!r || r.ok===false){ ed.st="fail"; ed.fail="data"; }
-      else {
+      .then(function(){ ed.sOk=true; }, function(){ ed.sErr=true; })
+      .then(function(){ ed.sBusy=false; edTry(); });
+  }
+  // yuklashni boshlaydi (qayta chaqirish xavfsiz); kesh boʻlsa jadvalni kutmasdan tayyor boʻladi
+  function edStart(){
+    if(ed.st==="loading" || ed.st==="ready") return;
+    ed.st="loading"; ed.fail="";
+    if(!ed.dOk){ var cc=edCacheRead(); if(cc){ ed.c=edObj(cc.c); ed.v=String(cc.v); ed.dOk=true; } }
+    edScripts();
+    if(ed.live!=="ok" && ed.live!=="old") edCheck();
+    edTry();
+  }
+  function edTry(){
+    if(ed.st!=="loading") return;
+    if(ed.sErr){ ed.st="fail"; ed.fail="script"; }
+    else if(!ed.dOk && ed.live==="fail"){ ed.st="fail"; ed.fail="data"; }
+    else if(ed.sOk && ed.dOk){ edSetup(); ed.st="ready"; ed.built=false; }
+    else return;
+    if(state.view==="edit") edPaint();
+  }
+  // saqlangan matnlarni jadvaldan oladi (fonda); eski skript {v, c} bermaydi — saqlash yopiladi
+  function edCheck(spin){
+    if(ed.checking) return;
+    ed.checking=true; if(ed.live!=="ok") ed.live="";
+    var seq=ed.seq, ro0=ed.ro, btn=$("refresh");
+    if(spin) btn.classList.add("is-spin");
+    if(ed.st==="ready") edSyncBar();
+    apiGet("action=content").then(null, function(){ return null; }).then(function(r){
+      ed.checking=false; if(spin) btn.classList.remove("is-spin");
+      if(!r || r.ok===false){ if(ed.live!=="ok") ed.live="fail"; ed.want=false; }
+      else if(!edHasApi(r)){
         // eski skriptga content_save yuborilmaydi — u arizalar varagʻiga keraksiz qator qoʻshib qoʻyadi
-        ed.ro=!edHasApi(r); ed.c=ed.ro ? {} : edObj(r.c); ed.v=ed.ro ? "" : String(r.v);
-        ed.e={}; ed.msg=""; ed.tone=""; edSetup(); ed.st="ready";
+        ed.live="old"; ed.ro=true; ed.c={}; ed.v=""; ed.e={}; ed.p={}; ed.nx={}; ed.want=false; ed.dOk=true;
+        try{ PS.removeItem(ED_CACHE); }catch(e){}
       }
-      edPaint();
+      else { ed.live="ok"; ed.ro=false; ed.dOk=true;
+        // saqlash yoʻlda yoki shu orada tugagan boʻlsa, eskiroq javob qoʻllanmaydi
+        if(!ed.out && seq===ed.seq){ ed.c=edObj(r.c); ed.v=String(r.v); edCacheWrite(false); } }
+      if(ed.st!=="ready"){ edTry(); return; }
+      edTidy();
+      if(ro0!==ed.ro){ ed.built=false; if(state.view==="edit") edPaint(); }
+      else edRefresh();
+      if(ed.want && ed.live==="ok") edSave();
     });
   }
-  function edOpen(){ if(!ed.st || ed.st==="fail") edLoad(); else if(ed.st==="ready") edGrowAll(); }
-  function edReload(){
-    if(ed.st==="loading" || ed.saving) return;
-    if(edDirtyCount() && !confirm(tr().ed_undo_q)) return;
-    ed.e={}; edLoad();
+  // admin ochilgach boʻsh vaqtda oldindan yuklaymiz — yorliq darhol ochiladi
+  var edIdleOn=false;
+  function edIdle(){ if(edIdleOn) return; edIdleOn=true;
+    var go=function(){ if(!ed.st) edStart(); };
+    if(window.requestIdleCallback) requestIdleCallback(go,{ timeout:3000 }); else setTimeout(go,1200); }
+  function edOpen(){
+    if(ed.st!=="ready"){ edStart(); if(ed.st!=="ready") edPaint(); }   // tayyor boʻlsa edTry oʻzi chizgan
+    else if(!ed.built || !ed.drafted) edPaint();
+    else { edGrowAll(); edSyncBar(); }
+    if(ed.st==="ready") window.scrollTo(0, ed.sy[edMode()]||0);
   }
-  function edDiscard(){ ed.e={}; ed.msg=""; ed.tone=""; if(ed.st==="ready") edRefresh(); }
-  function edSave(){
-    if(ed.st!=="ready" || ed.ro || ed.saving) return;
-    var out=edCollect(); if(!out.n) return;
-    var snap=JSON.parse(JSON.stringify(ed.e)), btn=$("edSave");
-    ed.saving=true; ed.msg=""; ed.tone=""; btn.classList.add("is-loading"); edSyncBar();
-    api({ action:"content_save", key:state.key, items:out.items }).then(function(res){
-      if(res && res.error==="forbidden"){ ed.msg="wrongpw"; ed.tone="err"; return; }
-      if(!res || res.ok!==true || !edHasApi(res)){ ed.msg="ed_savefail"; ed.tone="err"; return; }
-      ed.c=edObj(res.c); ed.v=String(res.v); edMerge(snap);
-      try{ localStorage.setItem(SITE_CACHE, JSON.stringify({ v:ed.v, c:ed.c })); }catch(e){}
-      ed.msg="ed_saved"; ed.tone="ok";
-    }).catch(function(){ ed.msg="ed_savefail"; ed.tone="err"; })
-      .then(function(){ ed.saving=false; btn.classList.remove("is-loading"); edRefresh(); });
+  function edReload(){
+    if(ed.st==="ready") edCheck(true);
+    else if(ed.st!=="loading"){ edStart(); if(ed.st!=="ready") edPaint(); }
+  }
+
+  /* ---- koʻrsatish ---- */
+  function edGroup(id,strict){ for(var i=0;i<ed.groups.length;i++){ if(ed.groups[i].id===id) return ed.groups[i]; } return strict ? null : (ed.groups[0]||null); }
+  function edLabel(o,fb){
+    var s=(o && typeof o==="object") ? (lang==="ru" ? (o.ru||o.uz) : (o.uz||o.ru)) : "";
+    if(!s) return fb;
+    return lang==="oz" ? toOz(s) : s; }
+  function edGroupTitle(g){ var x=tr(); if(!g) return ""; return g.t==="all" ? x.ed_g_all : g.t==="other" ? x.ed_g_other : edLabel(g.t,g.id); }
+  function edMatch(k,q){
+    if(!q) return true;
+    var it=ed.items[k]||{}, hay=[k, it.ru, it.uz, edLabel(it,k), edVal(k,"oz"), edAuto(k)];
+    ["uz","ru","en"].forEach(function(l){ hay.push(edVal(k,l), edDef(k,l)); });
+    return edFold(hay.join("\n")).indexOf(q)>=0; }
+  // tanlangan tilda (yoki istalganida) asl holidan farq qiladi yoki saqlanmagan
+  function edTouched(k){ var ls=ed.view==="all" ? ED_LANGS : [ed.view];
+    for(var i=0;i<ls.length;i++){ if(edCustom(k,ls[i]) || edDirty(k,ls[i])) return true; }
+    return false; }
+  // "?" — qidiruv yoki "faqat oʻzgartirilganlar": barcha boʻlimlardan; aks holda faol boʻlim
+  function edMode(){ return (edClean(ed.q) || ed.only) ? "?" : ed.g; }
+  function edShown(){
+    var q=edFold(edClean(ed.q)), out=[];
+    if(!q && !ed.only){ var g=edGroup(ed.g); return g ? g.items.slice() : []; }
+    ed.groups.forEach(function(g){ g.items.forEach(function(it){
+      if(ed.only && !edTouched(it.k)) return;
+      if(q && !edMatch(it.k,q)) return;
+      out.push(it); }); });
+    return out;
+  }
+  function edItemHtml(it,withSec){
+    var k=it.k, ek=esc(k), x=tr(), name=edLabel(it,k), one=ed.view!=="all";
+    var sec=withSec ? '<button class="edi__sec" type="button" data-go="'+esc(ed.sec[k])+'">'+esc(edGroupTitle(edGroup(ed.sec[k])))+'</button>' : '';
+    var keyTag=(name!==k ? '<span class="edi__k">'+ek+'</span>' : '');
+    var hint=ed.html[k] ? '<p class="edi__hint">'+esc(x.ed_html_hint)+'</p>' : '';
+    var fields=(one ? [ed.view] : ED_LANGS).map(function(l){ var id="ef-"+ek+"-"+l;
+      // bitta tilda yorliq — bandning nomi, hammasida — til nomi
+      var lab=one ? '<label class="edf__l" for="'+id+'">'+esc(name)+'</label>'+keyTag
+                  : '<label class="edf__l" id="'+id+'-l" for="'+id+'">'+esc(ED_NAMES[l])+'</label>';
+      return '<div class="edf" data-l="'+l+'">'+
+        '<div class="edf__top">'+lab+'<span class="edf__s"></span><button class="edf__r" type="button" hidden>'+esc(x.ed_reset)+'</button></div>'+
+        (one ? hint : '')+
+        '<textarea class="edf__ta" id="'+id+'" rows="1" lang="'+(l==="oz"?"uz":l)+'"'+(one?'':' aria-labelledby="edn-'+ek+' '+id+'-l"')+
+          (l==="uz"||l==="oz"?' spellcheck="false"':'')+(l!=="oz"?' placeholder="'+esc(edDef(k,l))+'"':'')+(ed.ro?' readonly':'')+'></textarea>'+
+        (l==="oz"?'<p class="edf__hint">'+esc(x.ed_oz_hint)+'</p>':'')+
+      '</div>'; }).join("");
+    if(one) return '<div class="edi edi--one" data-k="'+ek+'">'+sec+fields+'</div>';
+    return '<div class="edi" data-k="'+ek+'">'+sec+
+      '<div class="edi__h"><b class="edi__n" id="edn-'+ek+'">'+esc(name)+'</b>'+keyTag+'</div>'+hint+
+      '<div class="edi__f">'+fields+'</div></div>';
+  }
+  function edSyncItem(it,k){ var x=tr();
+    it.querySelectorAll(".edf").forEach(function(f){ var l=f.getAttribute("data-l"), dirty=edDirty(k,l), custom=edCustom(k,l);
+      f.classList.toggle("is-dirty",dirty); f.classList.toggle("is-custom",custom);
+      f.querySelector(".edf__s").textContent=dirty ? x.ed_unsaved : custom ? x.ed_changed : "";
+      f.querySelector(".edf__r").hidden=!custom || ed.ro;
+      if(l==="oz"){ var ta=f.querySelector(".edf__ta"), ph=edAuto(k);
+        if(ta.placeholder!==ph) ta.placeholder=ph;
+        f.querySelector(".edf__hint").hidden=!!edClean(edVal(k,l)); }
+    }); }
+  // maydonlarga holatdagi qiymatlarni qoʻyadi (.value orqali — boshidagi yangi qator yoʻqolmasin);
+  // yozilayotgan maydonga faqat chetidagi boʻshliq farq qilsa tegilmaydi — kursor sakramasin
+  function edFill(){
+    var its=$("edList").querySelectorAll(".edi"), act=document.activeElement;
+    for(var i=0;i<its.length;i++){ var it=its[i], k=it.getAttribute("data-k"), tas=it.querySelectorAll(".edf__ta");
+      for(var j=0;j<tas.length;j++){ var ta=tas[j], v=edVal(k,ta.parentNode.getAttribute("data-l"));
+        if(ta.value!==v && !(ta===act && edClean(ta.value)===edClean(v))) ta.value=v; }
+      edSyncItem(it,k); }
+  }
+  /* field-sizing yoʻq brauzerda: maydon balandligi matnga moslanadi — avval hammasiga
+       yozamiz, keyin oʻqiymiz, soʻng yozamiz: bitta qayta hisoblash. Boʻsh maydon
+       placeholder boʻyicha oʻlchanadi (faol maydondan tashqari — bekor qilish tarixi buzilmasin). */
+  function edGrow(list){
+    if(ED_FS) return;
+    var tas=[], ph=[], h=[], i, y=window.pageYOffset;
+    for(i=0;i<list.length;i++){ if(list[i] && list[i].offsetParent!==null) tas.push(list[i]); }
+    for(i=0;i<tas.length;i++){ var t=tas[i];
+      ph[i]=!t.value && !!t.placeholder && t!==document.activeElement;
+      if(ph[i]) t.value=t.placeholder;
+      t.style.height="auto"; }
+    for(i=0;i<tas.length;i++) h[i]=tas[i].scrollHeight;
+    for(i=0;i<tas.length;i++){ if(ph[i]) tas[i].value=""; tas[i].style.height=(h[i]+2)+"px"; }
+    if(tas.length && window.pageYOffset!==y) window.scrollTo(0,y);
+  }
+  function edGrowAll(){ if(!ED_FS) edGrow($("edList").querySelectorAll(".edf__ta")); }
+  function edStatus(n){
+    var x=tr();
+    if(ed.tone==="err") return [x[ed.msg]||x.ed_savefail, "err"];
+    if(ed.rest) return [x.ed_restored(n), ""];
+    if(n && ed.want) return [x.ed_wait, ""];
+    if(n && ed.live==="fail") return [x.ed_offline, "err"];
+    if(n) return [x.ed_dirty(n), ""];
+    if(ed.msg) return [x[ed.msg]||"", ed.tone];
+    if(ed.live==="fail") return [x.ed_nolink, ""];
+    return [x.ed_clean, ""];
+  }
+  function edSyncBar(){
+    var n=edDirtyCount(), st=$("edSt");
+    if(!n){ ed.rest=0; if(ed.tone==="err"){ ed.msg=""; ed.tone=""; } }
+    var s=edStatus(n);
+    $("edSave").disabled=!n || ed.ro || ed.want;
+    $("edUndo").disabled=!n;
+    $("edRestX").hidden=!ed.rest;
+    st.className="edbar__st"+(s[1]?" is-"+s[1]:"");
+    if(st.textContent!==s[0]) st.textContent=s[0];   // oʻzgarmagan matn ekran oʻquvchida qayta oʻqilmasin
+    edNav();
+  }
+  function edNavBuild(){
+    $("edNav").innerHTML=ed.groups.map(function(g){
+      return '<button class="ednav__b" type="button" data-g="'+esc(g.id)+'"><span class="ednav__t">'+esc(edGroupTitle(g))+'</span><span class="ednav__n"></span></button>'; }).join("");
+    $("edG").innerHTML=ed.groups.map(function(g){ return '<option value="'+esc(g.id)+'"></option>'; }).join("");
+  }
+  // faol boʻlim va har boʻlimdagi saqlanmagan maydonlar soni (oddiy matn)
+  function edNav(){
+    var x=tr(), cnt=edSecCounts(), nav=$("edNav"), bs=nav.children, os=$("edG").options, i;
+    nav.classList.toggle("is-dim", edMode()==="?");
+    for(i=0;i<bs.length;i++){ var b=bs[i], id=b.getAttribute("data-g"), n=cnt[id]||0, s=n?String(n):"", nn=b.lastChild;
+      b.classList.toggle("is-on", id===ed.g);
+      if(id===ed.g) b.setAttribute("aria-current","true"); else b.removeAttribute("aria-current");
+      if(nn.textContent!==s) nn.textContent=s;
+      b.title=n ? x.ed_dirty(n) : ""; }
+    for(i=0;i<os.length && i<ed.groups.length;i++){ var g=ed.groups[i], m=cnt[g.id]||0, t=edGroupTitle(g)+(m?" ("+m+")":"");
+      if(os[i].text!==t) os[i].text=t; }
+    if($("edG").value!==ed.g) $("edG").value=ed.g;
+  }
+  function edViewSync(){
+    $("edLv").querySelectorAll(".segf__b").forEach(function(b){ var on=b.getAttribute("data-v")===ed.view;
+      b.classList.toggle("is-on",on); b.setAttribute("aria-pressed",on?"true":"false"); });
+    $("edOnly").classList.toggle("is-on",ed.only); $("edOnly").setAttribute("aria-pressed",ed.only?"true":"false");
+  }
+  function edRender(){
+    var x=tr(), list=edShown(), q=edClean(ed.q), el=$("edList"), srch=edMode()==="?";
+    $("edHead").innerHTML=srch
+      ? '<p class="edhead__n">'+esc(q ? x.ed_found(list.length) : x.ed_changed_n(list.length))+'</p>'
+      : '<h2 class="edhead__t">'+esc(edGroupTitle(edGroup(ed.g)))+'</h2>';
+    var empty=(!q && ed.only) ? [x.ed_nochg_h, x.ed_nochg_p] : [x.none_h, x.none_p];
+    el.classList.toggle("is-one", ed.view!=="all");
+    el.innerHTML=list.length ? list.map(function(it){ return edItemHtml(it,srch); }).join("")
+      : '<div class="state"><h3>'+esc(empty[0])+'</h3><p>'+esc(empty[1])+'</p></div>';
+    edFill(); edGrowAll(); edSyncBar(); ed.built=true;
+  }
+  function edRefresh(){ edFill(); edGrowAll(); edSyncBar(); }
+  function edPaint(){
+    var x=tr(), ready=(ed.st==="ready"), msg=$("edMsg"), a=(ready && ed.built) ? edAnchor() : null;
+    // qoralama tahrirlash birinchi ochilganda tiklanadi
+    if(ready && !ed.ro && !ed.drafted){ ed.drafted=true; ed.rest=edDraftLoad(); }
+    $("edTools").hidden=!ready; $("edWrap").hidden=!ready;
+    $("edNote").hidden=!(ready && ed.ro); $("edBar").hidden=!ready || ed.ro;
+    if(ed.st==="loading") msg.textContent=x.ed_loading;
+    else if(ed.st==="fail") msg.innerHTML=esc(ed.fail==="script"?x.ed_loadfail:x.ed_datafail)+' <button class="edlink" type="button" id="edRetry">'+esc(x.ed_retry)+'</button>';
+    else msg.textContent="";
+    msg.hidden=!(ed.st==="loading" || ed.st==="fail");
+    if(!ready){ $("edList").innerHTML=""; $("edNav").innerHTML=""; ed.built=false; return; }
+    edNavBuild(); edViewSync(); edRender(); edToAnchor(a);
+  }
+
+  /* ---- aylanish: boʻlim, qidiruv, til koʻrinishi; scroll joyi saqlanadi ---- */
+  function edOff(){ var b=document.querySelector(".abar"); return (b ? b.offsetHeight : 0)+16; }
+  function edTop(force){ var y=Math.max(0, $("edWrap").getBoundingClientRect().top+window.pageYOffset-edOff());
+    if(force || window.pageYOffset>y) window.scrollTo(0,y); }
+  function edCss(k){ return (window.CSS && CSS.escape) ? CSS.escape(k) : k; }
+  // qayta chizishdan oldin koʻrinib turgan birinchi band — keyin aynan shu joyga qaytamiz
+  function edAnchor(){ var its=$("edList").querySelectorAll(".edi"), lim=edOff();
+    for(var i=0;i<its.length;i++){ var r=its[i].getBoundingClientRect(); if(r.bottom>lim) return { k:its[i].getAttribute("data-k"), y:r.top }; }
+    return null; }
+  function edToAnchor(a){ if(!a) return; var el=$("edList").querySelector('.edi[data-k="'+edCss(a.k)+'"]');
+    if(el) window.scrollBy(0, el.getBoundingClientRect().top-a.y); }
+  function edGo(g,k){
+    var from=edMode();
+    if(g && g===ed.g && from===g && !k){ edTop(true); return; }
+    ed.sy[from]=window.pageYOffset;
+    if(g){ clearTimeout(edQT); ed.g=g; ed.q=""; ed.only=false; $("edQ").value=""; edViewSync(); try{ sessionStorage.setItem(ED_SEC,g); }catch(e){} }
+    edRender();
+    var to=edMode(), el=k ? $("edList").querySelector('.edi[data-k="'+edCss(k)+'"]') : null;
+    if(el) window.scrollTo(0, Math.max(0, el.getBoundingClientRect().top+window.pageYOffset-edOff()));
+    else if(to!==from){ if(to!=="?" && ed.sy[to]!=null) window.scrollTo(0,ed.sy[to]); else edTop(); }
   }
 
   $("edList").addEventListener("input", function(e){
     var ta=e.target; if(!ta.classList || !ta.classList.contains("edf__ta")) return;
-    var it=ta.closest(".edi"), k=it.getAttribute("data-k"), l=ta.closest(".edf").getAttribute("data-l");
-    edSet(k,l,ta.value); ed.msg=""; ed.tone="";
-    edSyncItem(it,k); edSyncBar();
-    edGrow(l==="uz" ? [ta, it.querySelector('.edf[data-l="oz"] .edf__ta')] : [ta]);   // oz placeholder ham oʻzgaradi
+    var it=ta.closest(".edi"), k=it.getAttribute("data-k"), l=ta.parentNode.getAttribute("data-l");
+    edSet(k,l,ta.value); ed.rest=0; if(ed.tone!=="err"){ ed.msg=""; ed.tone=""; }
+    edSyncItem(it,k); edSyncBar(); edDraftLater();
+    if(!ED_FS){ var oz=it.querySelector('.edf[data-l="oz"] .edf__ta'); edGrow(l==="uz" && oz ? [ta,oz] : [ta]); }   // oz placeholder ham oʻzgaradi
   });
   $("edList").addEventListener("click", function(e){
+    var go=e.target.closest(".edi__sec"); if(go){ edGo(go.getAttribute("data-go"), go.closest(".edi").getAttribute("data-k")); return; }
     var b=e.target.closest(".edf__r"); if(!b || ed.ro) return;
     var f=b.closest(".edf"), it=b.closest(".edi"), k=it.getAttribute("data-k"), l=f.getAttribute("data-l"), ta=f.querySelector(".edf__ta");
-    ta.value=(l==="oz" ? "" : edDef(k,l)); edSet(k,l,ta.value); ed.msg=""; ed.tone="";
-    edSyncItem(it,k); edSyncBar(); edGrow(it.querySelectorAll(".edf__ta"));
+    ta.value=(l==="oz" ? "" : edDef(k,l)); edSet(k,l,ta.value); ed.rest=0; if(ed.tone!=="err"){ ed.msg=""; ed.tone=""; }
+    edSyncItem(it,k); edSyncBar(); edDraftLater(); edGrow(it.querySelectorAll(".edf__ta"));
     if(e.detail===0) ta.focus();   // klaviaturadan bosilgan boʻlsa, fokus maydonga oʻtadi
   });
   // boʻshatilgan maydon fokusdan chiqqach placeholder boʻyicha oʻlchanadi
   $("edList").addEventListener("focusout", function(e){
-    var ta=e.target; if(ta.classList && ta.classList.contains("edf__ta") && !ta.value) setTimeout(function(){ edGrow([ta]); },0);
+    var ta=e.target; if(!ED_FS && ta.classList && ta.classList.contains("edf__ta") && !ta.value) setTimeout(function(){ edGrow([ta]); },0);
   });
-  $("edMsg").addEventListener("click", function(e){ if(e.target.closest("#edRetry")) edLoad(); });
-  var edQT; $("edQ").addEventListener("input", function(){ clearTimeout(edQT); edQT=setTimeout(function(){ ed.q=$("edQ").value; edFilter(); edGrowAll(); },160); });
-  $("edG").addEventListener("change", function(){ ed.g=this.value; edFilter(); edGrowAll(); });
+  $("edNav").addEventListener("click", function(e){ var b=e.target.closest(".ednav__b"); if(b) edGo(b.getAttribute("data-g")); });
+  $("edG").addEventListener("change", function(){ edGo(this.value); });
+  var edQT; $("edQ").addEventListener("input", function(){ clearTimeout(edQT); edQT=setTimeout(function(){ ed.q=$("edQ").value; edGo(); },120); });
+  $("edLv").addEventListener("click", function(e){
+    var b=e.target.closest(".segf__b"); if(!b) return; var v=b.getAttribute("data-v");
+    if(v===ed.view || ED_VIEWS.indexOf(v)<0) return;
+    var a=edAnchor(); ed.view=v; try{ PS.setItem(ED_VIEW,v); }catch(err){}
+    edViewSync(); edRender(); edToAnchor(a);
+  });
+  $("edOnly").addEventListener("click", function(){ ed.only=!ed.only; edViewSync(); edGo(); });
+  $("edMsg").addEventListener("click", function(e){ if(e.target.closest("#edRetry")) edReload(); });
   $("edSave").addEventListener("click", edSave);
   $("edUndo").addEventListener("click", function(){ if(edDirtyCount() && confirm(tr().ed_undo_q)) edDiscard(); });
+  $("edRestX").addEventListener("click", function(){ if(confirm(tr().ed_undo_q)) edDiscard(); });
+  // ⌘S / Ctrl+S tahrirlashning istalgan joyida saqlaydi
   document.addEventListener("keydown", function(e){
     if(state.view!=="edit" || !(e.metaKey||e.ctrlKey) || e.altKey) return;
     if(e.code==="KeyS" || e.key==="s" || e.key==="S"){ e.preventDefault(); edSave(); }
   });
-  window.addEventListener("beforeunload", function(e){ if(edDirtyCount()){ e.preventDefault(); e.returnValue=""; return ""; } });
+  window.addEventListener("beforeunload", function(e){
+    edDraftSave();
+    if(edDirtyCount() || ed.out || edCount(ed.nx)){ e.preventDefault(); e.returnValue=""; return ""; }
+  });
+  // sahifa yopilsa yoki yashirilsa, qoralama darhol yoziladi (400 ms kutilmaydi)
+  window.addEventListener("pagehide", edDraftSave);
+  document.addEventListener("visibilitychange", function(){ if(document.visibilityState==="hidden") edDraftSave(); });
   var edW=window.innerWidth, edRT;
-  window.addEventListener("resize", function(){ if(window.innerWidth===edW) return; edW=window.innerWidth; clearTimeout(edRT);
+  window.addEventListener("resize", function(){ if(ED_FS || window.innerWidth===edW) return; edW=window.innerWidth; clearTimeout(edRT);
     edRT=setTimeout(function(){ if(state.view==="edit" && ed.st==="ready") edGrowAll(); },150); });
-  if(document.fonts && document.fonts.ready) document.fonts.ready.then(function(){ if(state.view==="edit" && ed.st==="ready") edGrowAll(); });
+  if(!ED_FS && document.fonts && document.fonts.ready) document.fonts.ready.then(function(){ if(state.view==="edit" && ed.st==="ready") edGrowAll(); });
 
   /* ---- ishga tushirish ---- */
   applyTheme(); applyLang();
