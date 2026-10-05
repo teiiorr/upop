@@ -88,18 +88,30 @@ let content = readContentCache();
 let DICT = buildDict(content && content.c);
 let currentLang = null; // ekranda koʻrsatilayotgan til
 
-/* Yangi tahrirlarni soʻraymiz. Javobda v va c boʻlmasa, Apps Script ning yangi
-   versiyasi hali joylanmagan — hech narsa oʻzgarmaydi va saqlanmaydi.
-   Tarmoq xatosida yoki javob 8 soniyadan kechiksa, jim qolamiz. */
-function loadContent() {
-  if (!SHEET_ENDPOINT) return;
-  const ctrl = new AbortController();
-  const timer = setTimeout(() => ctrl.abort(), 8000);
+/* Yangi tahrirlarni soʻraymiz: avval /api/content (Vercel CDN, tez va hammaga bir xil),
+   u ishlamasa — Apps Script ning oʻzidan (sovuq startda HTML qaytsa, yana bir marta).
+   Javobda v va c boʻlmasa, hech narsa oʻzgarmaydi. Xatolarda jim qolamiz. */
+const CONTENT_SOURCES = [
+  ["/api/content", 1],
+  [SHEET_ENDPOINT ? SHEET_ENDPOINT + "?action=content" : "", 2],
+];
+let contentCheckedAt = 0;
 
-  fetch(SHEET_ENDPOINT + "?action=content", { signal: ctrl.signal })
-    .then((res) => res.json())
-    .then((res) => {
-      if (!res || res.v == null || !res.c || typeof res.c !== "object") return;
+function fetchJson(url, ms) {
+  const ctrl = new AbortController();
+  const timer = setTimeout(() => ctrl.abort(), ms);
+  return fetch(url, { signal: ctrl.signal, cache: "no-store" })
+    .then((res) => res.json()) // HTML (sovuq start) boʻlsa — xato, keyingi urinish
+    .finally(() => clearTimeout(timer));
+}
+
+async function loadContent() {
+  contentCheckedAt = Date.now();
+  for (const [url, tries] of CONTENT_SOURCES) {
+    for (let i = 0; url && i < tries; i++) {
+      let res = null;
+      try { res = await fetchJson(url, 8000); } catch (_) {}
+      if (!res || res.v == null || !res.c || typeof res.c !== "object") continue;
       const v = String(res.v);
       if (v === (content ? String(content.v) : "0")) return; // "0" — tahrir yoʻq
       content = { v, c: res.c };
@@ -107,12 +119,20 @@ function loadContent() {
       DICT = buildDict(content.c);
       // Joriy til qayta qoʻllanadi; forma qiymatlari va qadam joyida qoladi.
       if (currentLang) applyLang(currentLang);
-    })
-    .catch(() => {})
-    .finally(() => clearTimeout(timer));
+      return;
+    }
+  }
 }
 
 loadContent();
+
+// Ochiq turgan sahifa ham yangilansin: varaqqa qaytganda va har daqiqada.
+document.addEventListener("visibilitychange", () => {
+  if (document.visibilityState === "visible" && Date.now() - contentCheckedAt > 15000) loadContent();
+});
+setInterval(() => {
+  if (document.visibilityState === "visible") loadContent();
+}, 60000);
 
 function getLang() {
   const saved = localStorage.getItem(LS_KEY);
