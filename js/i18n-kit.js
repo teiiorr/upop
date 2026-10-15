@@ -5,7 +5,7 @@
      #xeshteglarga tegmaydi.
    • markupToHtml / htmlToMarkup: admin tahrirlaydigan oddiy belgilash
      (*oltin*, [matn](https://…), yangi qator) ↔ xavfsiz HTML.
-   teiior
+   Ishlab chiquvchi: teiior — https://teiior.uz
    ============================================================ */
 (function (root) {
   "use strict";

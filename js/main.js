@@ -2,7 +2,7 @@
    U POP TREND — kasting sayti
    Matnlar js/content.js da, admin tahrirlari Apps Script orqali keladi.
    Standart til: UZ.
-   teiior
+   Ishlab chiquvchi: teiior — https://teiior.uz
    ============================================================ */
 
 /* ============================================================

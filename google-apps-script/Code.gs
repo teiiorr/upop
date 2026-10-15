@@ -14,7 +14,7 @@
  * Oʻrnatish — SETUP.md. Faylni oʻzgartirgach qayta joylang:
  * Deploy ▸ Manage deployments ▸ ✏️ ▸ Version: New version ▸ Deploy.
  *
- * teiior
+ * Ishlab chiquvchi: teiior — https://teiior.uz
  */
 
 var SHEET_NAME = 'Applications';

@@ -1,9 +1,8 @@
-# Higgsfield source assets — large masters + input stills (keep local)
+# Higgsfield manba fayllari — katta asl nusxalar va kirish suratlari (faqat kompyuterda)
 4k animation.mp4
 hero-input-*.png
 hero-logo.mp4
 
-# System / editor / tooling
+# Tizim va muharrir fayllari
 .DS_Store
-.claude/
 server.log

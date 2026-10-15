@@ -3,7 +3,7 @@
    Apps Script ga oʻzi boradi (sovuq startda HTML qaytsa, qayta urinadi)
    va javobni Vercel CDN da bir necha soniya saqlaydi. Shunda admin
    tahriri barcha tashrifchilarga tez va bir xil yetib boradi.
-   teiior
+   Ishlab chiquvchi: teiior — https://teiior.uz
    ============================================================ */
 
 const ENDPOINT =

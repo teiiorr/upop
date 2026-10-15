@@ -4,7 +4,7 @@
    oʻzgartirilganlari ustidan yoziladi. Özbekça (yangi alifbo)
    oʻzbekcha matndan avtomatik yasaladi — js/i18n-kit.js.
    Kalitlar sahifadagi tartibda, UPOP_GROUPS bilan bir xil.
-   teiior
+   Ishlab chiquvchi: teiior — https://teiior.uz
    ============================================================ */
 
 window.UPOP_CONTENT = {
