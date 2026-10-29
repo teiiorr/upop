@@ -411,6 +411,21 @@
   html.light .ednav.is-dim .ednav__b.is-on{ color:var(--ink-70); }
   html.light .edbar{ background:rgba(255,255,255,.86); }
 
+  /* ---------- kirishlar jurnali ---------- */
+  .jr{ padding:22px 0 80px; }
+  .jr__sum{ font-size:.95rem; color:var(--ink-70); margin:0 0 18px; line-height:1.65; }
+  .jr__sum b{ color:var(--ink); font-weight:700; }
+  .jr__t{ width:100%; border-collapse:collapse; font-size:.92rem; }
+  .jr__t th{ text-align:left; font-weight:700; font-size:.82rem; color:var(--ink-50); padding:10px 12px; border-bottom:1px solid var(--line); }
+  .jr__t td{ padding:12px; border-bottom:1px solid var(--line); vertical-align:top; color:var(--ink-70); line-height:1.45; overflow-wrap:anywhere; }
+  .jr__t td.jr__when{ white-space:nowrap; color:var(--ink); font-weight:600; }
+  .jr__t td.jr__what{ color:var(--ink); }
+  .jr__t tr.is-bad td.jr__what{ color:var(--st-red); font-weight:700; }
+  .jr__ip{ font-variant-numeric:tabular-nums; }
+  .jr__muted{ color:var(--ink-50); }
+  .jr__msg{ color:var(--ink-70); padding:30px 0; line-height:1.6; }
+  .jr__msg button{ margin-left:8px; background:none; border:0; padding:0; color:var(--gold-hi); font:inherit; font-weight:700; text-decoration:underline; text-underline-offset:3px; cursor:pointer; }
+
   /* ================= MOSLASHUVCHAN ================= */
   @media (max-width:900px){ .ank__grid{ grid-template-columns:repeat(2,minmax(0,1fr)); } }
   /* tor ekranda boʻlimlar roʻyxati oʻrniga tanlash maydoni */
@@ -419,8 +434,10 @@
   @media (max-width:820px){ .abar__in{ gap:8px; } .vtab{ padding:10px 8px; } .vtab.is-on::after{ left:8px; right:8px; } }
   @media (max-width:640px){
     .abar__in{ flex-wrap:wrap; gap:6px 4px; padding:10px 0; }
-    .vtabs{ order:6; flex-basis:100%; border-top:1px solid var(--line); margin-top:4px; padding-top:2px; }
-    .vtab{ flex:1 1 auto; text-align:center; padding:10px 4px; font-size:.88rem; }
+    .vtabs{ order:6; flex-basis:100%; border-top:1px solid var(--line); margin-top:4px; padding-top:2px; overflow-x:auto; scrollbar-width:none; }
+    .jr__t thead{ display:none; } .jr__t,.jr__t tbody,.jr__t tr,.jr__t td{ display:block; width:100%; }
+    .jr__t tr{ padding:12px 0; border-bottom:1px solid var(--line); } .jr__t td{ border:0; padding:2px 0; }
+    .vtab{ flex:1 1 auto; text-align:center; padding:10px 3px; font-size:.84rem; }
     .vtab.is-on::after{ left:20%; right:20%; }
     .iconbtn,.tgl{ width:38px; height:38px; } .ghost{ height:38px; padding:0 12px; font-size:.82rem; }
     .tools{ gap:8px 14px; padding:14px 0 0; }
@@ -486,6 +503,7 @@
         <button class="vtab is-on" type="button" data-view="list" id="vt_list">Заявки</button>
         <button class="vtab" type="button" data-view="stats" id="vt_stats">Статистика</button>
         <button class="vtab" type="button" data-view="edit" id="vt_edit">Редактирование</button>
+        <button class="vtab" type="button" data-view="log" id="vt_log">Журнал</button>
       </nav>
       <div class="abar__sp"></div>
       <button class="tgl" id="langBtn">UZ</button>
@@ -516,6 +534,7 @@
     <div id="content"></div>
     </div>
     <div id="stats" hidden></div>
+    <div id="journal" class="jr" hidden></div>
     <div id="editor" hidden>
       <div class="edtools" id="edTools" hidden>
         <div class="edtools__row">
@@ -668,7 +687,13 @@
       expand:"Открыть анкету", collapse:"Свернуть анкету",
       sheet:"Открыть в таблице", sheet_row:"Строка в Google-таблице", num_lab:"Участник",
       p_title:"Личные данные", p_age:"Возраст", p_gender:"Пол", p_birth:"Дата рождения", p_region:"Город / регион", lbl_green:"Зелёный", lbl_yellow:"Жёлтый", lbl_red:"Красный", lbl_none:"Без оценки",
-      nav_list:"Заявки", nav_stats:"Статистика", nav_edit:"Редактирование",
+      nav_list:"Заявки", nav_stats:"Статистика", nav_edit:"Редактирование", nav_log:"Журнал",
+      log_c1:"Время", log_c2:"Действие", log_c3:"IP", log_c4:"Место", log_c5:"Устройство",
+      log_loading:"Загружаю журнал…", log_empty:"Записей пока нет.", log_fail:"Не удалось загрузить журнал.", log_retry:"Повторить",
+      log_old:"Журнал заработает после обновления Apps Script: Deploy → Manage deployments → карандаш → Version: New version → Deploy.",
+      log_last:"Последний вход по паролю:", log_count:function(n){ return "Записей в журнале: "+n; },
+      log_direct:"напрямую, без IP", log_bad_pw:"Неверный пароль", log_bad_proxy:"Отклонено: запрос не через сайт",
+      proxyfail:"Сервер админки не ответил, попробуйте ещё раз",
       st_total:"Всего заявок", st_cities:"Городов", st_genres:"Жанров", st_avgage:"Средний возраст",
       st_byday:"Динамика заявок", st_genre:"По жанрам", st_region:"По городам",
       st_age:"Возраст участников", st_gender:"Пол", st_lang:"Язык анкеты",
@@ -737,7 +762,13 @@
       expand:"Anketani ochish", collapse:"Yigʻish",
       sheet:"Jadvalda ochish", sheet_row:"Google jadvaldagi qator", num_lab:"Ishtirokchi",
       p_title:"Shaxsiy maʼlumotlar", p_age:"Yosh", p_gender:"Jinsi", p_birth:"Tugʻilgan sana", p_region:"Shahar / viloyat", lbl_green:"Yashil", lbl_yellow:"Sariq", lbl_red:"Qizil", lbl_none:"Bahosiz",
-      nav_list:"Arizalar", nav_stats:"Statistika", nav_edit:"Tahrirlash",
+      nav_list:"Arizalar", nav_stats:"Statistika", nav_edit:"Tahrirlash", nav_log:"Jurnal",
+      log_c1:"Vaqt", log_c2:"Amal", log_c3:"IP", log_c4:"Joy", log_c5:"Qurilma",
+      log_loading:"Jurnal yuklanmoqda…", log_empty:"Hozircha yozuv yoʻq.", log_fail:"Jurnalni yuklab boʻlmadi.", log_retry:"Qayta urinish",
+      log_old:"Jurnal Apps Script yangilangach ishlaydi: Deploy → Manage deployments → qalam belgisi → Version: New version → Deploy.",
+      log_last:"Parol bilan oxirgi kirish:", log_count:function(n){ return "Jurnaldagi yozuvlar: "+n; },
+      log_direct:"toʻgʻridan-toʻgʻri, IP siz", log_bad_pw:"Notoʻgʻri parol", log_bad_proxy:"Rad etildi: sayt orqali emas",
+      proxyfail:"Admin serveri javob bermadi, qayta urinib koʻring",
       st_total:"Jami arizalar", st_cities:"Shaharlar", st_genres:"Janrlar", st_avgage:"Oʻrtacha yosh",
       st_byday:"Arizalar dinamikasi", st_genre:"Janrlar boʻyicha", st_region:"Shaharlar boʻyicha",
       st_age:"Ishtirokchilar yoshi", st_gender:"Jinsi", st_lang:"Anketa tili",
@@ -831,7 +862,9 @@
     var opt={}; for(var k in base) opt[k]=base[k];
     if(ac) opt.signal=ac.signal;
     return fetch(url,opt)
-      .then(function(r){ return r.text(); })
+      .then(function(r){
+        if(r.status===404 || r.status===405 || r.status===501){ var np=new Error("noproxy"); np.noproxy=true; throw np; }
+        return r.text(); })
       .then(function(t){ if(to) clearTimeout(to);
         try{ return JSON.parse(t); }
         catch(e){
@@ -846,8 +879,17 @@
         throw err;
       });
   }
+  /* Admin soʻrovlari /api/admin (Vercel) orqali ketadi — u IP, joy va qurilmani
+       qoʻshadi, Apps Script ularni "Kirishlar" jurnaliga yozadi. Funksiya yoʻq
+       joyda (kompyuterdagi oddiy server) soʻrov toʻgʻridan-toʻgʻri Apps Script ga boradi. */
+  var PROXY="/api/admin", useProxy=true;
   function api(payload, tries){
-    return fetchJSON(ENDPOINT, { method:"POST", headers:{"Content-Type":"text/plain;charset=utf-8"}, body:JSON.stringify(payload), redirect:"follow" }, tries);
+    var base={ method:"POST", headers:{"Content-Type":"text/plain;charset=utf-8"}, body:JSON.stringify(payload), redirect:"follow" };
+    if(!useProxy) return fetchJSON(ENDPOINT, base, tries);
+    return fetchJSON(PROXY, base, tries).catch(function(err){
+      if(err && err.noproxy){ useProxy=false; return fetchJSON(ENDPOINT, base, tries); }
+      throw err;
+    });
   }
   function apiGet(query, tries){
     return fetchJSON(ENDPOINT+"?"+query, { method:"GET", redirect:"follow", cache:"no-store" }, tries);
@@ -894,6 +936,7 @@
     if($("vt_list")) $("vt_list").textContent=x.nav_list;
     if($("vt_stats")) $("vt_stats").textContent=x.nav_stats;
     if($("vt_edit")) $("vt_edit").textContent=x.nav_edit;
+    if($("vt_log")) $("vt_log").textContent=x.nav_log;
     $("edQ").placeholder=x.ed_search; $("edSite").textContent=x.ed_site;
     $("edUndo").textContent=x.ed_undo; $("edSaveL").textContent=x.save;
     $("edNoteH").textContent=x.ed_old_h; $("edNoteP").textContent=x.ed_old_p;
@@ -903,12 +946,14 @@
     edViewSync();
     if(!$("app").hidden){ buildFilters(); if(state.view==="stats") renderStats(); else render(false); }
     if(ed.st){ if(state.view==="edit") edPaint(); else ed.built=false; }
+    if(state.view==="log") jrPaint();
   }
 
   /* ---- kirish ---- */
-  function loadList(key){
-    return api({ action:"list", key:key }).then(function(res){
+  function loadList(key, why){
+    return api({ action:"list", key:key, _why:why||"open" }).then(function(res){
       if(res && res.error==="forbidden"){ clearCache(); var ef=new Error(tr().wrongpw); ef.forbidden=true; throw ef; }
+      if(res && (res.error==="proxy_required" || res.error==="unavailable")) throw new Error(tr().proxyfail);
       if(!res || res.ok!==true || !Array.isArray(res.rows)) throw new Error(tr().needscript);
       if(res.sheetUrl) state.sheetUrl=res.sheetUrl; if(res.gid) state.gid=String(res.gid);
       var fresh=JSON.stringify(res.rows), prev=null;
@@ -922,7 +967,7 @@
   $("loginForm").addEventListener("submit", function(e){
     e.preventDefault();
     var btn=$("loginBtn"); btn.classList.add("is-loading"); $("loginErr").textContent="";
-    loadList($("pw").value.trim()).then(showApp)
+    loadList($("pw").value.trim(), "login").then(showApp)
       .catch(function(ex){ $("loginErr").textContent=ex.message||"Error"; })
       .then(function(){ btn.classList.remove("is-loading"); });
   });
@@ -931,8 +976,9 @@
     try{ PS.removeItem(KEY_STORE); }catch(e){} clearCache(); location.reload(); });
   $("refresh").addEventListener("click", function(){
     if(state.view==="edit"){ edReload(); return; }
+    if(state.view==="log"){ jrLoad(); return; }
     var btn=$("refresh"); btn.classList.add("is-spin");
-    loadList(state.key).then(function(changed){ if(changed){ buildFilters(); if(state.view==="stats") renderStats(); else render(true); } })
+    loadList(state.key, "refresh").then(function(changed){ if(changed){ buildFilters(); if(state.view==="stats") renderStats(); else render(true); } })
       .catch(function(){})
       .then(function(){ btn.classList.remove("is-spin"); });
   });
@@ -1248,7 +1294,7 @@
     if(photo) row.photo=photo;                 // yangi suratni darhol koʻrsatamiz (mahalliy)
     writeCache(); closeReview(); buildFilters(); render(false);
     function rerender(){ if($("rev")&&$("rev").open) return; buildFilters(); if(state.view==="stats") renderStats(); else render(false); }
-    var payload={ action:"review", key:state.key, submissionId:id, status:status, history:hist };
+    var payload={ action:"review", key:state.key, submissionId:id, status:status, history:hist, _ref:(row._row?"№ "+row._row:"") };
     if(photo){ payload.photo=photo; payload.photoType="image/jpeg"; }
     api(payload).then(function(res){
       if(!res||res.ok!==true) throw new Error((res&&res.error)||"error");
@@ -1264,6 +1310,50 @@
     });
   });
 
+  /* ---- kirishlar jurnali ---- */
+  var jr={ rows:null, busy:false, err:"" };
+  // Jadvaldagi amal nomlari oʻzbekcha; rus tilidagi panel uchun tarjima
+  var JR_RU=[[/^Kirish \(parol bilan\)/,"Вход по паролю"],[/^Admin ochildi/,"Админка открыта"],[/^Roʻyxat yangilandi/,"Обновление списка"],
+    [/^Baho va tarix saqlandi/,"Сохранены оценка и история"],[/^Baho oʻzgartirildi/,"Изменена оценка"],
+    [/^Sayt matnlari saqlandi \((\d+) ta maydon\)/,"Сохранены тексты сайта (полей: $1)"],[/^Xizmat amali/,"Служебное действие"]];
+  function jrAction(a){ var i; if(lang==="ru"){ for(i=0;i<JR_RU.length;i++){ if(JR_RU[i][0].test(a)) return a.replace(JR_RU[i][0],JR_RU[i][1]); } return a; }
+    return lang==="oz" ? toOz(a) : a; }
+  function jrWhen(iso){ var d=new Date(iso); if(isNaN(d)) return String(iso||"");
+    var names=lang==="ru"?MONTHS.ru:MONTHS.uz, hh=("0"+d.getHours()).slice(-2)+":"+("0"+d.getMinutes()).slice(-2);
+    var day=lang==="ru" ? d.getDate()+" "+names[d.getMonth()] : d.getDate()+"-"+names[d.getMonth()];
+    if(d.getFullYear()!==new Date().getFullYear()) day+=" "+d.getFullYear();
+    return (lang==="oz"?toOz(day):day)+", "+hh; }
+  function jrDevice(r){ return [r.dev,r.br].filter(function(v){ return v; }).join(", "); }
+  function jrLoad(){
+    if(jr.busy || !state.key) return; jr.busy=true;
+    api({ action:"log_list", key:state.key, limit:300 }).then(function(res){
+      if(res && res.ok===true && Array.isArray(res.rows)){ jr.rows=res.rows; jr.err=""; }
+      else jr.err=(res && res.error==="unknown action") ? "old" : "fail";
+    }, function(){ jr.err="fail"; }).then(function(){ jr.busy=false; if(state.view==="log") jrPaint(); });
+  }
+  function jrPaint(){
+    var x=tr(), el=$("journal");
+    if(!jr.rows){
+      if(jr.err) el.innerHTML='<p class="jr__msg">'+esc(jr.err==="old"?x.log_old:x.log_fail)+(jr.err==="fail"?'<button type="button" id="jrRetry">'+esc(x.log_retry)+'</button>':'')+'</p>';
+      else el.innerHTML='<p class="jr__msg">'+esc(x.log_loading)+'</p>';
+      if($("jrRetry")) $("jrRetry").addEventListener("click", function(){ jr.err=""; jrPaint(); jrLoad(); });
+      return;
+    }
+    if(!jr.rows.length){ el.innerHTML='<p class="jr__msg">'+esc(x.log_empty)+'</p>'; return; }
+    var last=null; for(var i=0;i<jr.rows.length;i++){ if(/^Kirish \(parol/.test(jr.rows[i].a) && jr.rows[i].r==="OK"){ last=jr.rows[i]; break; } }
+    var sum='<p class="jr__sum">'+esc(x.log_count(jr.rows.length));
+    if(last) sum+='<br>'+esc(x.log_last)+' <b>'+esc(jrWhen(last.t))+'</b>'+
+      esc([last.place, jrDevice(last), last.ip?"IP "+last.ip:""].filter(function(v){ return v; }).map(function(v){ return ", "+v; }).join(""));
+    sum+='</p>';
+    var body=jr.rows.map(function(r){
+      var bad=r.r && r.r!=="OK", what=jrAction(r.a)+(bad?" — "+(/parol/.test(r.r)?x.log_bad_pw:x.log_bad_proxy):"");
+      var ip=r.ip ? '<span class="jr__ip">'+esc(r.ip)+'</span>' : '<span class="jr__muted">'+esc(x.log_direct)+'</span>';
+      return '<tr'+(bad?' class="is-bad"':'')+'><td class="jr__when">'+esc(jrWhen(r.t))+'</td><td class="jr__what">'+esc(what)+'</td>'+
+        '<td>'+ip+'</td><td>'+esc(r.place||"")+'</td><td>'+esc(jrDevice(r))+'</td></tr>';
+    }).join("");
+    el.innerHTML=sum+'<table class="jr__t"><thead><tr><th>'+esc(x.log_c1)+'</th><th>'+esc(x.log_c2)+'</th><th>'+esc(x.log_c3)+'</th><th>'+esc(x.log_c4)+'</th><th>'+esc(x.log_c5)+'</th></tr></thead><tbody>'+body+'</tbody></table>';
+  }
+
   /* ---- statistika ---- */
   function switchView(v){
     if(state.view==="edit" && v!=="edit"){
@@ -1275,7 +1365,8 @@
     $("listview").hidden = v!=="list";
     $("stats").hidden = v!=="stats";
     $("editor").hidden = v!=="edit";
-    if(v==="stats") renderStats(); else if(v==="edit") edOpen(); else { var d=state.rows.filter(function(r){return r.reviewed;}).length; $("count").innerHTML=tr().count(document.querySelectorAll('.anketa').length,d,state.rows.length); }
+    $("journal").hidden = v!=="log";
+    if(v==="stats") renderStats(); else if(v==="edit") edOpen(); else if(v==="log"){ jrPaint(); jrLoad(); } else { var d=state.rows.filter(function(r){return r.reviewed;}).length; $("count").innerHTML=tr().count(document.querySelectorAll('.anketa').length,d,state.rows.length); }
   }
   function kpiTile(n,l,color){ return '<div class="kpi" style="--kc:'+color+'"><span class="kpi__n">'+n+'</span><span class="kpi__l">'+esc(l)+'</span></div>'; }
   function panel(title,body,mod,note){ return '<div class="panel'+(mod?' panel--'+mod:'')+'"><p class="panel__h">'+esc(title)+'</p>'+body+(note?'<p class="panel__note">'+esc(note)+'</p>':'')+'</div>'; }
@@ -1856,7 +1947,7 @@
     if(cached && cached.length){
       // avval keshdan darhol chizamiz, keyin fonda yangilaymiz
       state.key=key; state.rows=cached; showApp();
-      loadList(key).then(function(changed){
+      loadList(key, "open").then(function(changed){
         var rev=$("rev");
         if(changed && !(rev && rev.open)){ buildFilters(); if(state.view==="stats") renderStats(); else render(false); }
       }).catch(function(ex){
@@ -1869,7 +1960,7 @@
     }
     $("login").hidden=true;
     document.body.insertAdjacentHTML("afterbegin",'<div class="state" id="boot"><div class="spin"></div>'+esc(tr().loading)+'</div>');
-    loadList(key).then(function(){ var b=$("boot"); if(b) b.remove(); showApp(); })
+    loadList(key, "open").then(function(){ var b=$("boot"); if(b) b.remove(); showApp(); })
       .catch(function(){ var b=$("boot"); if(b) b.remove(); $("login").hidden=false; });
   })();
 </script>

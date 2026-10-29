@@ -6,3 +6,5 @@ hero-logo.mp4
 # Tizim va muharrir fayllari
 .DS_Store
 server.log
+.vercel
+.env*

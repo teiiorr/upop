@@ -130,7 +130,15 @@ var CONTENT_TTL = 21600;                        // 6 soat — CacheService ruxsa
 
 /* doPost biladigan amallar. Boshqa nomli action rad etiladi — u hech qachon
    ariza qatori sifatida yozilmasligi kerak. */
-var ACTIONS = ['list', 'setStatus', 'review', 'admin', 'content_save'];
+var ACTIONS = ['list', 'setStatus', 'review', 'admin', 'content_save', 'log_list'];
+
+/* Kirishlar jurnali: admin panelidagi har bir kirish va amal — vaqt, IP, joy,
+   qurilma. IP va joyni Apps Script koʻrmaydi, ularni /api/admin (Vercel) qoʻshadi.
+   Script properties da PROXY_SECRET boʻlsa, admin amallari faqat shu kalit bilan
+   kelgan (yaʼni Vercel orqali oʻtgan) soʻrovlardan qabul qilinadi. */
+var LOG_SHEET = 'Kirishlar';
+var LOG_HEADERS = ['Vaqt', 'Amal', 'Natija', 'IP', 'Joy', 'Qurilma', 'Brauzer', 'Manba', 'User-Agent'];
+var LOG_MAX_ROWS = 3000;                        // eskilari oʻchib boradi
 
 /* ---------------------------------------------------------------- POST */
 function doPost(e) {
@@ -150,6 +158,14 @@ function doPost(e) {
   }
 
   var ss = SpreadsheetApp.getActive();
+
+  // Har bir admin amali avval shu yerdan oʻtadi: proksi kaliti, parol, jurnal.
+  if (data && data.action) {
+    var denied = adminGate(ss, data);
+    if (denied) return json(denied);
+    if (data.action === 'log_list') return json(readLog(ss, data.limit));
+  }
+
   var sheet = ss.getSheetByName(SHEET_NAME) || ss.insertSheet(SHEET_NAME);
 
   // Admin paneli uchun roʻyxat — faqat oʻqish: qulf ham, sarlavha qayta yozish ham yoʻq.
@@ -300,6 +316,98 @@ function doPost(e) {
   } finally {
     lock.releaseLock();
   }
+}
+
+/* ---------------------------------------------------------------- kirishlar jurnali */
+function proxySecret() {
+  return String(PropertiesService.getScriptProperties().getProperty('PROXY_SECRET') || '').trim();
+}
+
+/* null — davom etish mumkin; aks holda rad javobi. Har bir urinish jurnalga yoziladi. */
+function adminGate(ss, data) {
+  var secret = proxySecret();
+  if (secret && data._proxy !== secret) {
+    logAccess(ss, data, 'Rad etildi: sayt orqali emas');
+    return { ok: false, error: 'proxy_required' };
+  }
+  if (!authorized(data)) {
+    logAccess(ss, data, 'Notoʻgʻri parol');
+    return { ok: false, error: 'forbidden' };
+  }
+  if (data.action !== 'log_list') logAccess(ss, data, 'OK');
+  return null;
+}
+
+function actionLabel(data) {
+  var a = data.action, why = String(data._why || '');
+  var ref = data._ref ? ', ' + String(data._ref).slice(0, 40) : '';
+  if (a === 'list') return why === 'login' ? 'Kirish (parol bilan)' : why === 'refresh' ? 'Roʻyxat yangilandi' : 'Admin ochildi';
+  if (a === 'review') return 'Baho va tarix saqlandi' + ref;
+  if (a === 'setStatus') return 'Baho oʻzgartirildi' + ref;
+  if (a === 'content_save') {
+    var n = 0, items = isObject(data.items) ? data.items : {};
+    for (var k in items) if (hasOwn(items, k) && isObject(items[k])) for (var l in items[k]) if (hasOwn(items[k], l)) n++;
+    return 'Sayt matnlari saqlandi (' + n + ' ta maydon)';
+  }
+  if (a === 'admin') return 'Xizmat amali';
+  if (a === 'log_list') return 'Jurnal koʻrildi';
+  return String(a);
+}
+
+// Formula boʻlib qolmasligi uchun (=, +, -, @ bilan boshlansa) matn belgisi qoʻyiladi.
+function logCell(v, max) {
+  var t = String(v == null ? '' : v).replace(/[\r\n\t]+/g, ' ').slice(0, max || 120);
+  return /^[=+\-@]/.test(t) ? "'" + t : t;
+}
+
+function logAccess(ss, data, result) {
+  try {
+    var sh = ss.getSheetByName(LOG_SHEET) || createLogSheet(ss);
+    var m = isObject(data._meta) ? data._meta : null;
+    var secret = proxySecret();
+    var source = !m ? 'Toʻgʻridan-toʻgʻri' : (secret && data._proxy === secret ? 'Sayt (tasdiqlangan)' : 'Sayt');
+    var place = m ? [m.city, m.region, m.country].filter(function (x) { return x; }).join(', ') : '';
+    sh.appendRow([
+      new Date(), logCell(actionLabel(data)), logCell(result),
+      logCell(m && m.ip, 64), logCell(place), logCell(m && m.device), logCell(m && m.browser),
+      source, logCell(m && m.ua, 400)
+    ]);
+    var extra = sh.getLastRow() - 1 - LOG_MAX_ROWS;
+    if (extra >= 100) sh.deleteRows(2, extra);
+  } catch (err) { /* jurnal xatosi asosiy amalni toʻxtatmasin */ }
+}
+
+function createLogSheet(ss) {
+  var sh = ss.insertSheet(LOG_SHEET);
+  var n = LOG_HEADERS.length;
+  if (sh.getMaxColumns() < n) sh.insertColumnsAfter(sh.getMaxColumns(), n - sh.getMaxColumns());
+  sh.getRange(1, 1, 1, n).setValues([LOG_HEADERS])
+    .setFontSize(12).setFontWeight('bold').setFontColor('#241704').setBackground('#D3A63F')
+    .setHorizontalAlignment('center').setVerticalAlignment('middle');
+  sh.setRowHeight(1, 36);
+  sh.setFrozenRows(1);
+  sh.getRange('A:A').setNumberFormat('yyyy-mm-dd hh:mm:ss');
+  [170, 280, 190, 130, 220, 170, 140, 160, 420].forEach(function (w, i) { sh.setColumnWidth(i + 1, w); });
+  return sh;
+}
+
+/* Oxirgi yozuvlar, yangilari oldinda. */
+function readLog(ss, limit) {
+  var sh = ss.getSheetByName(LOG_SHEET);
+  if (!sh || sh.getLastRow() < 2) return { ok: true, rows: [] };
+  var n = Math.min(Math.max(parseInt(limit, 10) || 300, 1), 1000);
+  var last = sh.getLastRow(), from = Math.max(2, last - n + 1);
+  var vals = sh.getRange(from, 1, last - from + 1, 8).getValues();
+  var out = [];
+  for (var i = vals.length - 1; i >= 0; i--) {
+    var v = vals[i];
+    out.push({
+      t: v[0] instanceof Date ? v[0].toISOString() : String(v[0]),
+      a: String(v[1]), r: String(v[2]), ip: String(v[3]), place: String(v[4]),
+      dev: String(v[5]), br: String(v[6]), src: String(v[7])
+    });
+  }
+  return { ok: true, rows: out };
 }
 
 /* ---------------------------------------------------------------- GET (holat, sayt matnlari) */
